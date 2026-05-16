@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@repo/design-system"],
+  transpilePackages: ["@jigsaw/design-system"],
 };
 
 export default nextConfig;

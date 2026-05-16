@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import "@repo/tokens/tokens.css";
+import "@jigsaw/tokens/tokens.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "James Howell | Portfolio",
-  description: "James Howell Portfolio",
+  title: "Jigsaw",
+  description: "Example Next.js app that dogfoods the Jigsaw design system.",
 };
 
 export default function RootLayout({

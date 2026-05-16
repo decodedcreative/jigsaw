@@ -1,5 +1,5 @@
 /** Tailwind config for design-system (IDE/IntelliSense). Build runs in consuming apps. */
-import theme from "@repo/tokens/theme";
+import theme from "@jigsaw/tokens/theme";
 
 /** @type {import('tailwindcss').Config} */
 export default {

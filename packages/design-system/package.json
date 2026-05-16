@@ -1,5 +1,5 @@
 {
-  "name": "@repo/design-system",
+  "name": "@jigsaw/design-system",
   "version": "0.0.1",
   "private": true,
   "main": "./dist/index.js",
@@ -19,7 +19,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@repo/tokens": "*",
+    "@jigsaw/tokens": "*",
     "class-variance-authority": "^0.7.1",
     "tailwind-merge": "^2.5.5"
   },

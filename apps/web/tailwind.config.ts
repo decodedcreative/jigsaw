@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import theme from "@repo/tokens/theme";
+import theme from "@jigsaw/tokens/theme";
 
 const config: Config = {
   content: [

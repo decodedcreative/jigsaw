@@ -1,5 +1,5 @@
 {
-  "name": "howelltocode",
+  "name": "jigsaw",
   "private": true,
   "scripts": {
     "build": "turbo run build",

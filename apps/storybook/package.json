@@ -9,8 +9,8 @@
     "clean": "rm -rf storybook-static"
   },
   "dependencies": {
-    "@repo/design-system": "*",
-    "@repo/tokens": "*",
+    "@jigsaw/design-system": "*",
+    "@jigsaw/tokens": "*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
