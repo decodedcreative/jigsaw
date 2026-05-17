@@ -30,6 +30,11 @@ npm-debug.log*
 # Vercel
 .vercel
 
+# Chromatic
+chromatic.log
+build-storybook.log
+chromatic-build-*.log
+
 # Prisma
 packages/db/generated
 
