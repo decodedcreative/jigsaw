@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "secondary", "outline"],
+      options: ["primary", "secondary", "accent", "outline", "ghost", "destructive", "link"],
     },
     size: {
       control: "select",
@@ -58,7 +58,28 @@ export const Sizes: Story = {
 
 export const Disabled: Story = {
   args: {
-    disabled: true,
+    isDisabled: true,
     children: "Disabled button",
   },
+};
+
+/**
+ * Visually a link, rendered as a `<button>`. Use for inline actions that
+ * trigger behavior (cancel, expand, dismiss) rather than navigation — the
+ * inverse of `LinkButton`, which is a `<a>` styled as a button.
+ */
+export const Link: Story = {
+  args: {
+    variant: "link",
+    children: "Forgot password?",
+  },
+};
+
+export const LinkInSentence: Story = {
+  render: () => (
+    <p className="text-sm text-text-secondary">
+      Don't have an account yet?{" "}
+      <Button variant="link">Sign up for free</Button>.
+    </p>
+  ),
 };
