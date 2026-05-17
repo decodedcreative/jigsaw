@@ -11,8 +11,15 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
-    "./tokens.css": "./dist/css/tokens.css",
-    "./theme": "./dist/theme.mjs"
+    "./base.css": "./dist/css/base.css",
+    "./semantic-light.css": "./dist/css/semantic-light.css",
+    "./semantic-dark.css": "./dist/css/semantic-dark.css",
+    "./theme": "./dist/theme.mjs",
+    "./semantic-colors": {
+      "types": "./dist/semantic-colors.d.ts",
+      "import": "./dist/semantic-colors.mjs",
+      "require": "./dist/semantic-colors.js"
+    }
   },
   "scripts": {
     "build": "npm run build:tokens && tsup",

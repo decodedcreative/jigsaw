@@ -1,21 +1,22 @@
-import * as React from 'react';
-import { useGetClassNames } from "@hooks";
-import { buttonStyles } from './Button.styles';
+"use client";
 
-export type ButtonProps = Omit<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  'children'
-> & {
-  children: React.ReactNode;
+import {
+  Button as AriaButton,
+  type ButtonProps as AriaButtonProps,
+} from "react-aria-components";
+import { useGetClassNames } from "@hooks";
+import { buttonStyles } from "./Button.styles";
+
+export type ButtonProps = AriaButtonProps & {
   classNameOverrides?: Record<string, string[]>;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'primary' | 'secondary' | 'outline';
+  size?: "sm" | "md" | "lg";
+  variant?: "primary" | "secondary" | "accent" | "outline" | "ghost" | "destructive" | "link";
 };
 
 export const Button = ({
-  variant = 'primary',
-  size = 'md',
-  classNameOverrides = undefined,
+  variant = "primary",
+  size = "md",
+  classNameOverrides,
   children,
   ...props
 }: ButtonProps) => {
@@ -24,10 +25,10 @@ export const Button = ({
   });
 
   return (
-    <button type='button' className={classNames.component} {...props}>
+    <AriaButton className={classNames.component} {...props}>
       {children}
-    </button>
+    </AriaButton>
   );
-}
+};
 
-Button.displayName = 'DS_Button';
+Button.displayName = "DS_Button";
