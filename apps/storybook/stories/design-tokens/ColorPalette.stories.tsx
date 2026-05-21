@@ -1,0 +1,61 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import theme from "../../../../packages/tokens/dist/theme.mjs";
+import { ColorSwatch, TokenPage, TokenRow, TokenSection } from "./_components";
+
+const paletteScales = ["navy", "orange", "grey"] as const;
+
+function ColorPaletteContent() {
+  const { color } = theme;
+
+  return (
+    <TokenPage>
+      <h1 className="text-3xl font-bold mb-2">Color palette</h1>
+      <p className="text-text-secondary mb-8 max-w-2xl">
+        Base palette tokens from <code className="font-mono text-sm">@jigsaw/tokens</code>. Use Tailwind
+        classes such as <code className="font-mono text-sm">bg-navy-500</code> or CSS variables like{" "}
+        <code className="font-mono text-sm">var(--color-navy-500)</code>.
+      </p>
+
+      {paletteScales.map((name) => {
+        const scale = color[name] as Record<string, string>;
+        return (
+          <TokenSection
+            key={name}
+            title={name.charAt(0).toUpperCase() + name.slice(1)}
+            description={`bg-${name}-{50–950}`}
+          >
+            <TokenRow>
+              {Object.entries(scale).map(([step, hex]) => (
+                <ColorSwatch key={step} label={step} value={hex} />
+              ))}
+            </TokenRow>
+          </TokenSection>
+        );
+      })}
+
+      <TokenSection title="Neutrals" description="bg-white · bg-black">
+        <TokenRow>
+          <ColorSwatch label="white" value={color.white as string} />
+          <ColorSwatch label="black" value={color.black as string} />
+        </TokenRow>
+      </TokenSection>
+    </TokenPage>
+  );
+}
+
+const meta = {
+  title: "Design Tokens/Color Palette",
+  component: ColorPaletteContent,
+  parameters: {
+    layout: "fullscreen",
+  },
+  tags: ["autodocs"],
+} satisfies Meta<typeof ColorPaletteContent>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Palette: Story = {
+  render: () => <ColorPaletteContent />,
+};
