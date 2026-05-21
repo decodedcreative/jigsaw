@@ -4,7 +4,7 @@ import * as React from "react";
 import {
   TextField,
   Label,
-  TextArea as AriaTextArea,
+  TextArea as ReactAriaTextArea,
   Text,
   type TextFieldProps,
 } from "react-aria-components";
@@ -50,7 +50,7 @@ export const Textarea = ({
       {...props}
     >
       {label && <Label className={classNames.label}>{label}</Label>}
-      <AriaTextArea className={classNames.textarea} placeholder={placeholder} rows={rows} />
+      <ReactAriaTextArea className={classNames.textarea} placeholder={placeholder} rows={rows} />
       {(description || errorMessage) && (
         <Text
           slot={errorMessage ? "errorMessage" : "description"}

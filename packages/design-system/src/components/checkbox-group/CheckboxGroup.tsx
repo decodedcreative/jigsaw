@@ -2,15 +2,15 @@
 
 import * as React from "react";
 import {
-  CheckboxGroup as AriaCheckboxGroup,
+  CheckboxGroup as ReactAriaCheckboxGroup,
   Label,
   Text,
-  type CheckboxGroupProps as AriaCheckboxGroupProps,
+  type CheckboxGroupProps as ReactAriaCheckboxGroupProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { checkboxGroupStyles } from "./CheckboxGroup.styles";
 
-export type CheckboxGroupProps = Omit<AriaCheckboxGroupProps, "children"> & {
+export type CheckboxGroupProps = Omit<ReactAriaCheckboxGroupProps, "children"> & {
   label?: string;
   description?: string;
   errorMessage?: string;
@@ -39,7 +39,7 @@ export const CheckboxGroup = ({
   });
 
   return (
-    <AriaCheckboxGroup
+    <ReactAriaCheckboxGroup
       className={classNames.group}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
@@ -57,7 +57,7 @@ export const CheckboxGroup = ({
           {errorMessage}
         </Text>
       )}
-    </AriaCheckboxGroup>
+    </ReactAriaCheckboxGroup>
   );
 };
 

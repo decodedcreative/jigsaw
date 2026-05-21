@@ -4,7 +4,7 @@ import * as React from "react";
 import {
   Dialog,
   DialogTrigger,
-  Modal as AriaModal,
+  Modal as ReactAriaModal,
   ModalOverlay,
   Heading,
   Button,
@@ -32,7 +32,7 @@ export const Modal = ({ children, classNameOverrides, ...props }: ModalProps) =>
 
   return (
     <ModalOverlay className={classNames.overlay} {...props}>
-      <AriaModal className={classNames.modal}>{children}</AriaModal>
+      <ReactAriaModal className={classNames.modal}>{children}</ReactAriaModal>
     </ModalOverlay>
   );
 };

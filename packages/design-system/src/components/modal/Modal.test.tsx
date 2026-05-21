@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Button as AriaButton } from 'react-aria-components';
+import { Button as ReactAriaButton } from 'react-aria-components';
 import { Modal, ModalContent, ModalTrigger, ModalFooter } from './Modal';
 
 afterEach(() => {
@@ -13,7 +13,7 @@ describe('Modal', () => {
     const user = userEvent.setup();
     render(
       <ModalTrigger>
-        <AriaButton>Open Modal</AriaButton>
+        <ReactAriaButton>Open Modal</ReactAriaButton>
         <Modal>
           <ModalContent title="Test Modal">Modal body content</ModalContent>
         </Modal>
@@ -27,7 +27,7 @@ describe('Modal', () => {
     const user = userEvent.setup();
     render(
       <ModalTrigger>
-        <AriaButton>Open</AriaButton>
+        <ReactAriaButton>Open</ReactAriaButton>
         <Modal>
           <ModalContent title="My Dialog Title">Content</ModalContent>
         </Modal>
@@ -41,7 +41,7 @@ describe('Modal', () => {
     const user = userEvent.setup();
     render(
       <ModalTrigger>
-        <AriaButton>Open</AriaButton>
+        <ReactAriaButton>Open</ReactAriaButton>
         <Modal>
           <ModalContent title="Dialog">Body text here</ModalContent>
         </Modal>
@@ -55,7 +55,7 @@ describe('Modal', () => {
     const user = userEvent.setup();
     render(
       <ModalTrigger>
-        <AriaButton>Open</AriaButton>
+        <ReactAriaButton>Open</ReactAriaButton>
         <Modal>
           <ModalContent title="Dialog">Content</ModalContent>
         </Modal>
@@ -71,7 +71,7 @@ describe('Modal', () => {
     const user = userEvent.setup();
     render(
       <ModalTrigger>
-        <AriaButton>Open</AriaButton>
+        <ReactAriaButton>Open</ReactAriaButton>
         <Modal>
           <ModalContent title="Dialog">Content</ModalContent>
         </Modal>
@@ -90,7 +90,7 @@ describe('Modal', () => {
     const user = userEvent.setup();
     render(
       <ModalTrigger>
-        <AriaButton>Open</AriaButton>
+        <ReactAriaButton>Open</ReactAriaButton>
         <Modal>
           <ModalContent title="Dialog" showCloseButton={false}>Content</ModalContent>
         </Modal>
@@ -105,7 +105,7 @@ describe('Modal', () => {
     const user = userEvent.setup();
     render(
       <ModalTrigger>
-        <AriaButton>Open</AriaButton>
+        <ReactAriaButton>Open</ReactAriaButton>
         <Modal>
           <ModalContent title="Dialog" showCloseButton={false}>
             {({ close }) => (
@@ -124,7 +124,7 @@ describe('Modal', () => {
   it('modal is not shown initially', () => {
     render(
       <ModalTrigger>
-        <AriaButton>Open</AriaButton>
+        <ReactAriaButton>Open</ReactAriaButton>
         <Modal>
           <ModalContent title="Dialog">Content</ModalContent>
         </Modal>

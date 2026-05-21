@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import {
-  Link as AriaLink,
-  type LinkProps as AriaLinkProps,
+  Link as ReactAriaLink,
+  type LinkProps as ReactAriaLinkProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { linkStyles, linkButtonStyles } from "./Link.styles";
 
-export type LinkProps = AriaLinkProps & {
+export type LinkProps = ReactAriaLinkProps & {
   classNameOverrides?: Record<string, string[]>;
   size?: "sm" | "md" | "lg";
   variant?: "default" | "accent" | "subtle" | "muted";
@@ -26,15 +26,15 @@ export const Link = ({
   });
 
   return (
-    <AriaLink className={classNames.component} {...props}>
+    <ReactAriaLink className={classNames.component} {...props}>
       {children}
-    </AriaLink>
+    </ReactAriaLink>
   );
 };
 
 Link.displayName = "DS_Link";
 
-export type LinkButtonProps = AriaLinkProps & {
+export type LinkButtonProps = ReactAriaLinkProps & {
   classNameOverrides?: Record<string, string[]>;
   size?: "sm" | "md" | "lg";
   variant?: "primary" | "secondary" | "accent" | "outline" | "ghost";
@@ -52,9 +52,9 @@ export const LinkButton = ({
   });
 
   return (
-    <AriaLink className={classNames.component} {...props}>
+    <ReactAriaLink className={classNames.component} {...props}>
       {children}
-    </AriaLink>
+    </ReactAriaLink>
   );
 };
 

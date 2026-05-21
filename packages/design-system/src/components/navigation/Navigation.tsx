@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, type HTMLAttributes } from "react";
-import { Link as AriaLink } from "react-aria-components";
+import { Link as ReactAriaLink } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { navigationStyles } from "./Navigation.styles";
 
@@ -52,9 +52,9 @@ export const NavigationBrand = ({
 }: NavigationBrandProps) => {
   const classNames = useGetClassNames(navigationStyles, classNameOverrides, { brand: {} });
   return (
-    <AriaLink href={href} className={classNames.brand}>
+    <ReactAriaLink href={href} className={classNames.brand}>
       {children}
-    </AriaLink>
+    </ReactAriaLink>
   );
 };
 
@@ -90,14 +90,14 @@ export const NavigationLink = ({
 }: NavigationLinkProps) => {
   const classNames = useGetClassNames(navigationStyles, classNameOverrides, { navItem: {} });
   return (
-    <AriaLink
+    <ReactAriaLink
       href={href}
       className={classNames.navItem}
       data-current={isCurrent ? "" : undefined}
       aria-current={isCurrent ? "page" : undefined}
     >
       {children}
-    </AriaLink>
+    </ReactAriaLink>
   );
 };
 
@@ -186,7 +186,7 @@ export const MobileNavigation = ({
           {/* Nav links */}
           <nav className={classNames.mobileMenuBody}>
             {links.map((link) => (
-              <AriaLink
+              <ReactAriaLink
                 key={link.href}
                 href={link.href}
                 className={classNames.mobileNavItem}
@@ -195,7 +195,7 @@ export const MobileNavigation = ({
                 onPress={() => onOpenChange(false)}
               >
                 {link.label}
-              </AriaLink>
+              </ReactAriaLink>
             ))}
           </nav>
         </div>

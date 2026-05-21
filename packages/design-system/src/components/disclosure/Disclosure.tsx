@@ -2,17 +2,17 @@
 
 import * as React from "react";
 import {
-  Disclosure as AriaDisclosure,
-  DisclosureGroup as AriaDisclosureGroup,
+  Disclosure as ReactAriaDisclosure,
+  DisclosureGroup as ReactAriaDisclosureGroup,
   DisclosurePanel,
   Button,
-  type DisclosureProps as AriaDisclosureProps,
-  type DisclosureGroupProps as AriaDisclosureGroupProps,
+  type DisclosureProps as ReactAriaDisclosureProps,
+  type DisclosureGroupProps as ReactAriaDisclosureGroupProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { disclosureStyles, disclosureGroupStyles } from "./Disclosure.styles";
 
-export type DisclosureProps = AriaDisclosureProps & {
+export type DisclosureProps = ReactAriaDisclosureProps & {
   title: string;
   children?: React.ReactNode;
   classNameOverrides?: Record<string, string[]>;
@@ -32,7 +32,7 @@ export const Disclosure = ({
   });
 
   return (
-    <AriaDisclosure className={`group ${classNames.wrapper}`} {...props}>
+    <ReactAriaDisclosure className={`group ${classNames.wrapper}`} {...props}>
       <Button slot="trigger" className={classNames.trigger}>
         <span>{title}</span>
         <svg className={classNames.chevron} viewBox="0 0 16 16" fill="none">
@@ -46,13 +46,13 @@ export const Disclosure = ({
         </svg>
       </Button>
       <DisclosurePanel className={classNames.panel}>{children}</DisclosurePanel>
-    </AriaDisclosure>
+    </ReactAriaDisclosure>
   );
 };
 
 Disclosure.displayName = "DS_Disclosure";
 
-export type DisclosureGroupProps = Omit<AriaDisclosureGroupProps, "children"> & {
+export type DisclosureGroupProps = Omit<ReactAriaDisclosureGroupProps, "children"> & {
   children?: React.ReactNode;
   classNameOverrides?: Record<string, string[]>;
 };
@@ -67,9 +67,9 @@ export const DisclosureGroup = ({
   });
 
   return (
-    <AriaDisclosureGroup className={classNames.wrapper} {...props}>
+    <ReactAriaDisclosureGroup className={classNames.wrapper} {...props}>
       {children}
-    </AriaDisclosureGroup>
+    </ReactAriaDisclosureGroup>
   );
 };
 

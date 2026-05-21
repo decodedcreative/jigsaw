@@ -4,7 +4,7 @@ import * as React from "react";
 import {
   TextField,
   Label,
-  Input as AriaInput,
+  Input as ReactAriaInput,
   Text,
   type TextFieldProps,
 } from "react-aria-components";
@@ -48,7 +48,7 @@ export const Input = ({
       {...props}
     >
       {label && <Label className={classNames.label}>{label}</Label>}
-      <AriaInput className={classNames.input} placeholder={placeholder} />
+      <ReactAriaInput className={classNames.input} placeholder={placeholder} />
       {(description || errorMessage) && (
         <Text slot={errorMessage ? "errorMessage" : "description"} className={classNames.description}>
           {errorMessage || description}

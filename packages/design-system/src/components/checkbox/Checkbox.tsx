@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import {
-  Checkbox as AriaCheckbox,
-  type CheckboxProps as AriaCheckboxProps,
+  Checkbox as ReactAriaCheckbox,
+  type CheckboxProps as ReactAriaCheckboxProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { checkboxStyles } from "./Checkbox.styles";
 
-export type CheckboxProps = Omit<AriaCheckboxProps, "children"> & {
+export type CheckboxProps = Omit<ReactAriaCheckboxProps, "children"> & {
   label?: string;
   description?: string;
   children?: React.ReactNode;
@@ -38,7 +38,7 @@ export const Checkbox = ({
   });
 
   return (
-    <AriaCheckbox className={classNames.wrapper} {...props}>
+    <ReactAriaCheckbox className={classNames.wrapper} {...props}>
       <div className={classNames.box}>
         <svg className={classNames.checkmark} viewBox="0 0 12 12" fill="none">
           <path
@@ -66,7 +66,7 @@ export const Checkbox = ({
           {description && <span className={classNames.description}>{description}</span>}
         </div>
       )}
-    </AriaCheckbox>
+    </ReactAriaCheckbox>
   );
 };
 

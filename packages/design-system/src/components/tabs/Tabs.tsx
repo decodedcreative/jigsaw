@@ -1,34 +1,34 @@
 "use client";
 
 import {
-  Tabs as AriaTabsRoot,
-  TabList as AriaTabList,
-  Tab as AriaTab,
-  TabPanel as AriaTabPanel,
-  type TabsProps as AriaTabsProps,
-  type TabListProps as AriaTabListProps,
-  type TabProps as AriaTabProps,
-  type TabPanelProps as AriaTabPanelProps,
+  Tabs as ReactAriaTabsRoot,
+  TabList as ReactAriaTabList,
+  Tab as ReactAriaTab,
+  TabPanel as ReactAriaTabPanel,
+  type TabsProps as ReactAriaTabsProps,
+  type TabListProps as ReactAriaTabListProps,
+  type TabProps as ReactAriaTabProps,
+  type TabPanelProps as ReactAriaTabPanelProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { tabsStyles, type TabsVariant } from "./Tabs.styles";
 
-export type TabsProps = AriaTabsProps & {
+export type TabsProps = ReactAriaTabsProps & {
   classNameOverrides?: Record<string, string[]>;
 };
 
 export const Tabs = ({ classNameOverrides, children, ...props }: TabsProps) => {
   const classNames = useGetClassNames(tabsStyles, classNameOverrides, { root: {} });
   return (
-    <AriaTabsRoot className={classNames.root} {...props}>
+    <ReactAriaTabsRoot className={classNames.root} {...props}>
       {children}
-    </AriaTabsRoot>
+    </ReactAriaTabsRoot>
   );
 };
 
 Tabs.displayName = "DS_Tabs";
 
-export type TabListProps<T extends object> = AriaTabListProps<T> & {
+export type TabListProps<T extends object> = ReactAriaTabListProps<T> & {
   variant?: TabsVariant;
   classNameOverrides?: Record<string, string[]>;
 };
@@ -43,13 +43,13 @@ export function TabList<T extends object>({
     list: { variant },
   });
   return (
-    <AriaTabList className={classNames.list} {...props}>
+    <ReactAriaTabList className={classNames.list} {...props}>
       {children}
-    </AriaTabList>
+    </ReactAriaTabList>
   );
 }
 
-export type TabProps = AriaTabProps & {
+export type TabProps = ReactAriaTabProps & {
   variant?: TabsVariant;
   classNameOverrides?: Record<string, string[]>;
 };
@@ -59,24 +59,24 @@ export const Tab = ({ variant = "default", classNameOverrides, children, ...prop
     tab: { variant },
   });
   return (
-    <AriaTab className={classNames.tab} {...props}>
+    <ReactAriaTab className={classNames.tab} {...props}>
       {children}
-    </AriaTab>
+    </ReactAriaTab>
   );
 };
 
 Tab.displayName = "DS_Tab";
 
-export type TabPanelProps = AriaTabPanelProps & {
+export type TabPanelProps = ReactAriaTabPanelProps & {
   classNameOverrides?: Record<string, string[]>;
 };
 
 export const TabPanel = ({ classNameOverrides, children, ...props }: TabPanelProps) => {
   const classNames = useGetClassNames(tabsStyles, classNameOverrides, { panel: {} });
   return (
-    <AriaTabPanel className={classNames.panel} {...props}>
+    <ReactAriaTabPanel className={classNames.panel} {...props}>
       {children}
-    </AriaTabPanel>
+    </ReactAriaTabPanel>
   );
 };
 

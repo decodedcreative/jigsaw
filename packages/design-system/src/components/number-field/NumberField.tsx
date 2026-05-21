@@ -2,18 +2,18 @@
 
 import * as React from "react";
 import {
-  NumberField as AriaNumberField,
+  NumberField as ReactAriaNumberField,
   Label,
   Group,
   Input,
   Button,
   Text,
-  type NumberFieldProps as AriaNumberFieldProps,
+  type NumberFieldProps as ReactAriaNumberFieldProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { numberFieldStyles } from "./NumberField.styles";
 
-export type NumberFieldProps = Omit<AriaNumberFieldProps, "children"> & {
+export type NumberFieldProps = Omit<ReactAriaNumberFieldProps, "children"> & {
   label?: string;
   description?: string;
   errorMessage?: string;
@@ -46,7 +46,7 @@ export const NumberField = ({
   const incrementClasses = numberFieldStyles.stepButton({ position: "increment", size, state });
 
   return (
-    <AriaNumberField
+    <ReactAriaNumberField
       className={classNames.wrapper}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
@@ -79,7 +79,7 @@ export const NumberField = ({
           {errorMessage || description}
         </Text>
       )}
-    </AriaNumberField>
+    </ReactAriaNumberField>
   );
 };
 

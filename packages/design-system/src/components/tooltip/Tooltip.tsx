@@ -2,10 +2,10 @@
 
 import { type ReactNode } from "react";
 import {
-  Tooltip as AriaTooltip,
-  TooltipTrigger as AriaTooltipTrigger,
+  Tooltip as ReactAriaTooltip,
+  TooltipTrigger as ReactAriaTooltipTrigger,
   OverlayArrow,
-  type TooltipProps as AriaTooltipProps,
+  type TooltipProps as ReactAriaTooltipProps,
   type TooltipTriggerComponentProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
@@ -16,12 +16,12 @@ export type TooltipTriggerProps = TooltipTriggerComponentProps & {
 };
 
 export function TooltipTrigger({ children, ...props }: TooltipTriggerProps) {
-  return <AriaTooltipTrigger {...props}>{children}</AriaTooltipTrigger>;
+  return <ReactAriaTooltipTrigger {...props}>{children}</ReactAriaTooltipTrigger>;
 }
 
 TooltipTrigger.displayName = "DS_TooltipTrigger";
 
-export type TooltipProps = Omit<AriaTooltipProps, "children"> & {
+export type TooltipProps = Omit<ReactAriaTooltipProps, "children"> & {
   children: ReactNode;
   showArrow?: boolean;
   classNameOverrides?: Record<string, string[]>;
@@ -40,7 +40,7 @@ export function Tooltip({
   });
 
   return (
-    <AriaTooltip
+    <ReactAriaTooltip
       offset={10}
       placement={placement}
       className={classNames.content}
@@ -54,7 +54,7 @@ export function Tooltip({
         </OverlayArrow>
       )}
       {children}
-    </AriaTooltip>
+    </ReactAriaTooltip>
   );
 }
 

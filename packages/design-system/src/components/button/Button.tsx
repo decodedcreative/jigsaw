@@ -1,14 +1,14 @@
 "use client";
 
 import {
-  Button as AriaButton,
-  type ButtonProps as AriaButtonProps,
+  Button as ReactAriaButton,
+  type ButtonProps as ReactAriaButtonProps,
 } from "react-aria-components";
 import { twMerge } from "tailwind-merge";
 import { useGetClassNames } from "@hooks";
 import { buttonStyles } from "./Button.styles";
 
-export type ButtonProps = AriaButtonProps & {
+export type ButtonProps = ReactAriaButtonProps & {
   classNameOverrides?: Record<string, string[]>;
   size?: "sm" | "md" | "lg";
   variant?: "primary" | "secondary" | "accent" | "outline" | "ghost" | "destructive" | "link";
@@ -32,9 +32,9 @@ export const Button = ({
       : twMerge(classNames.component, className);
 
   return (
-    <AriaButton className={mergedClassName} {...props}>
+    <ReactAriaButton className={mergedClassName} {...props}>
       {children}
-    </AriaButton>
+    </ReactAriaButton>
   );
 };
 

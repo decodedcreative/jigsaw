@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import {
-  Select as AriaSelect,
+  Select as ReactAriaSelect,
   Label,
   Button,
   SelectValue,
@@ -10,13 +10,13 @@ import {
   ListBox,
   ListBoxItem,
   Text,
-  type SelectProps as AriaSelectProps,
+  type SelectProps as ReactAriaSelectProps,
   type ListBoxItemProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { selectStyles } from "./Select.styles";
 
-export type SelectProps<T extends object> = Omit<AriaSelectProps<T>, "children"> & {
+export type SelectProps<T extends object> = Omit<ReactAriaSelectProps<T>, "children"> & {
   label?: string;
   description?: string;
   errorMessage?: string;
@@ -54,7 +54,7 @@ export function Select<T extends object>({
   });
 
   return (
-    <AriaSelect
+    <ReactAriaSelect
       className={classNames.wrapper}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
@@ -88,7 +88,7 @@ export function Select<T extends object>({
           {children as (item: T) => React.ReactNode}
         </ListBox>
       </Popover>
-    </AriaSelect>
+    </ReactAriaSelect>
   );
 }
 

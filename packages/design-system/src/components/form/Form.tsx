@@ -2,22 +2,22 @@
 
 import * as React from "react";
 import {
-  Form as AriaForm,
-  type FormProps as AriaFormProps,
+  Form as ReactAriaForm,
+  type FormProps as ReactAriaFormProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { formStyles } from "./Form.styles";
 
-export type FormProps = AriaFormProps & {
+export type FormProps = ReactAriaFormProps & {
   classNameOverrides?: Record<string, string[]>;
 };
 
 export const Form = ({ children, classNameOverrides, ...props }: FormProps) => {
   const classNames = useGetClassNames(formStyles, classNameOverrides, { form: {} });
   return (
-    <AriaForm className={classNames.form} {...props}>
+    <ReactAriaForm className={classNames.form} {...props}>
       {children}
-    </AriaForm>
+    </ReactAriaForm>
   );
 };
 

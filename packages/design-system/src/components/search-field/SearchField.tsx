@@ -2,17 +2,17 @@
 
 import * as React from "react";
 import {
-  SearchField as AriaSearchField,
+  SearchField as ReactAriaSearchField,
   Label,
   Input,
   Button,
   Text,
-  type SearchFieldProps as AriaSearchFieldProps,
+  type SearchFieldProps as ReactAriaSearchFieldProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { searchFieldStyles } from "./SearchField.styles";
 
-export type SearchFieldProps = Omit<AriaSearchFieldProps, "children"> & {
+export type SearchFieldProps = Omit<ReactAriaSearchFieldProps, "children"> & {
   label?: string;
   description?: string;
   placeholder?: string;
@@ -42,7 +42,7 @@ export const SearchField = ({
   });
 
   return (
-    <AriaSearchField className={classNames.wrapper} isDisabled={isDisabled} {...props}>
+    <ReactAriaSearchField className={classNames.wrapper} isDisabled={isDisabled} {...props}>
       {label && <Label className={classNames.label}>{label}</Label>}
       <div className={classNames.inputWrapper}>
         <svg className={classNames.searchIcon} viewBox="0 0 16 16" fill="none">
@@ -78,7 +78,7 @@ export const SearchField = ({
           {description}
         </Text>
       )}
-    </AriaSearchField>
+    </ReactAriaSearchField>
   );
 };
 

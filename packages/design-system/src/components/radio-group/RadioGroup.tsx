@@ -2,17 +2,17 @@
 
 import * as React from "react";
 import {
-  RadioGroup as AriaRadioGroup,
-  Radio as AriaRadio,
+  RadioGroup as ReactAriaRadioGroup,
+  Radio as ReactAriaRadio,
   Label,
   Text,
-  type RadioGroupProps as AriaRadioGroupProps,
-  type RadioProps as AriaRadioProps,
+  type RadioGroupProps as ReactAriaRadioGroupProps,
+  type RadioProps as ReactAriaRadioProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { radioGroupStyles, radioStyles } from "./RadioGroup.styles";
 
-export type RadioGroupProps = Omit<AriaRadioGroupProps, "children"> & {
+export type RadioGroupProps = Omit<ReactAriaRadioGroupProps, "children"> & {
   label?: string;
   description?: string;
   errorMessage?: string;
@@ -41,7 +41,7 @@ export const RadioGroup = ({
   });
 
   return (
-    <AriaRadioGroup
+    <ReactAriaRadioGroup
       className={classNames.group}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
@@ -59,13 +59,13 @@ export const RadioGroup = ({
           {errorMessage}
         </Text>
       )}
-    </AriaRadioGroup>
+    </ReactAriaRadioGroup>
   );
 };
 
 RadioGroup.displayName = "DS_RadioGroup";
 
-export type RadioProps = Omit<AriaRadioProps, "children"> & {
+export type RadioProps = Omit<ReactAriaRadioProps, "children"> & {
   label?: string;
   description?: string;
   children?: React.ReactNode;
@@ -94,7 +94,7 @@ export const Radio = ({
   });
 
   return (
-    <AriaRadio className={classNames.wrapper} {...props}>
+    <ReactAriaRadio className={classNames.wrapper} {...props}>
       <div className={classNames.circle}>
         <div className={classNames.dot} />
       </div>
@@ -106,7 +106,7 @@ export const Radio = ({
           {description && <span className={classNames.itemDescription}>{description}</span>}
         </div>
       )}
-    </AriaRadio>
+    </ReactAriaRadio>
   );
 };
 
