@@ -29,11 +29,16 @@ import {
 } from "@jigsaw/design-system";
 
 // ---------------------------------------------------------------------------
-// Story ID helper
+// Story ID helpers
 // ---------------------------------------------------------------------------
-function storyPath(title: string) {
+function docsPath(title: string) {
   const id = title.toLowerCase().replace(/\//g, "-").replace(/\s+/g, "-");
   return `/?path=/docs/${id}--docs`;
+}
+
+function storyPath(title: string, story = "default") {
+  const id = title.toLowerCase().replace(/\//g, "-").replace(/\s+/g, "-");
+  return `/?path=/story/${id}--${story}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -285,37 +290,37 @@ const tokenSections = [
   {
     title: "Color Palette",
     description: "Base palette — all named colours across the navy, orange, and grey scales.",
-    href: storyPath("Design Tokens/Color Palette"),
+    href: docsPath("Design Tokens/Color Palette"),
     icon: "🎨",
   },
   {
     title: "Semantic Colors",
     description: "Intent-based tokens: surface, text, border, interactive, feedback, and more.",
-    href: storyPath("Design Tokens/Semantic Colors"),
+    href: docsPath("Design Tokens/Semantic Colors"),
     icon: "🪄",
   },
   {
     title: "Typography",
     description: "Font families, sizes, weights, and line-height scale.",
-    href: storyPath("Design Tokens/Typography"),
+    href: docsPath("Design Tokens/Typography"),
     icon: "Aa",
   },
   {
     title: "Spacing",
     description: "Consistent spacing scale used for padding, margin, and gap utilities.",
-    href: storyPath("Design Tokens/Spacing"),
+    href: docsPath("Design Tokens/Spacing"),
     icon: "⬜",
   },
   {
     title: "Border Radius",
     description: "Corner-radius tokens from sharp to pill-shaped.",
-    href: storyPath("Design Tokens/Border Radius"),
+    href: docsPath("Design Tokens/Border Radius"),
     icon: "▢",
   },
   {
     title: "Shadows",
     description: "Elevation scale from flush to floating.",
-    href: storyPath("Design Tokens/Shadows"),
+    href: docsPath("Design Tokens/Shadows"),
     icon: "🌑",
   },
 ];
@@ -491,7 +496,7 @@ function WelcomeContent() {
           {componentSections.map((c) => (
             <ComponentCard
               key={c.title}
-              href={storyPath(`Design System/${c.title}`)}
+              href={docsPath(`Design System/${c.title}`)}
               title={c.title}
               description={c.description}
               preview={previews[c.title]}
