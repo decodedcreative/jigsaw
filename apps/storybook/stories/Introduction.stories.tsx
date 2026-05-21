@@ -1,17 +1,282 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Avatar,
+  AvatarFallback,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardTitle,
+  Checkbox,
+  Disclosure,
+  Input,
+  Link,
+  NumberField,
+  Radio,
+  RadioGroup,
+  SearchField,
+  Select,
+  SelectItem,
+  Skeleton,
+  SkeletonText,
+  Tab,
+  TabList,
+  Tabs,
+  Text,
+  Textarea,
+  Tooltip,
+  TooltipTrigger,
+} from "@jigsaw/design-system";
 
 // ---------------------------------------------------------------------------
-// Storybook story ID helpers
-// Storybook encodes story IDs as: <title-kebab>--<story-kebab>
-// e.g. "Design Tokens/Color Palette" → "design-tokens-color-palette--palette"
+// Story ID helper
 // ---------------------------------------------------------------------------
-function storyPath(title: string, story = "docs") {
-  const id = title
-    .toLowerCase()
-    .replace(/\//g, "-")
-    .replace(/\s+/g, "-");
-  return `/?path=/docs/${id}--${story}`;
+function storyPath(title: string) {
+  const id = title.toLowerCase().replace(/\//g, "-").replace(/\s+/g, "-");
+  return `/?path=/docs/${id}--docs`;
 }
+
+// ---------------------------------------------------------------------------
+// Component preview widgets — small, pointer-events-none snapshots
+// ---------------------------------------------------------------------------
+function Preview({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className="flex items-center justify-center bg-surface-muted rounded-md h-20 overflow-hidden pointer-events-none select-none px-3"
+      aria-hidden
+    >
+      <div className="flex items-center justify-center gap-2 scale-90 origin-center w-full">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+const previews: Record<string, React.ReactNode> = {
+  Avatar: (
+    <Preview>
+      <Avatar size="md">
+        <AvatarFallback>JH</AvatarFallback>
+      </Avatar>
+      <Avatar size="sm">
+        <AvatarFallback>AB</AvatarFallback>
+      </Avatar>
+      <Avatar size="xs">
+        <AvatarFallback>CD</AvatarFallback>
+      </Avatar>
+    </Preview>
+  ),
+
+  Badge: (
+    <Preview>
+      <Badge variant="default">Default</Badge>
+      <Badge variant="success">Success</Badge>
+      <Badge variant="error">Error</Badge>
+    </Preview>
+  ),
+
+  Button: (
+    <Preview>
+      <Button size="sm">Primary</Button>
+      <Button variant="secondary" size="sm">Secondary</Button>
+    </Preview>
+  ),
+
+  Card: (
+    <Preview>
+      <Card className="w-36 !p-3">
+        <CardTitle className="text-xs">Card title</CardTitle>
+        <CardContent className="!p-0 mt-1">
+          <p className="text-[10px] text-text-secondary leading-tight">
+            A short description.
+          </p>
+        </CardContent>
+      </Card>
+    </Preview>
+  ),
+
+  Checkbox: (
+    <Preview>
+      <div className="flex flex-col gap-1.5">
+        <Checkbox defaultSelected>Checked</Checkbox>
+        <Checkbox>Unchecked</Checkbox>
+      </div>
+    </Preview>
+  ),
+
+  CheckboxGroup: (
+    <Preview>
+      <div className="flex flex-col gap-1.5">
+        <Checkbox defaultSelected>Option A</Checkbox>
+        <Checkbox defaultSelected>Option B</Checkbox>
+        <Checkbox>Option C</Checkbox>
+      </div>
+    </Preview>
+  ),
+
+  Disclosure: (
+    <Preview>
+      <Disclosure defaultExpanded className="w-40" title="FAQ item">
+        <p className="text-[10px] text-text-secondary">Answer content goes here.</p>
+      </Disclosure>
+    </Preview>
+  ),
+
+  Form: (
+    <Preview>
+      <div className="flex flex-col gap-1.5 w-36">
+        <div className="h-4 w-16 rounded bg-border-default" />
+        <div className="h-6 w-full rounded border border-border-default bg-surface-default" />
+        <div className="h-5 w-20 rounded bg-interactive-accent" />
+      </div>
+    </Preview>
+  ),
+
+  Input: (
+    <Preview>
+      <div className="w-36 scale-90">
+        <Input label="Email" placeholder="you@example.com" />
+      </div>
+    </Preview>
+  ),
+
+  Link: (
+    <Preview>
+      <Link href="#">Learn more →</Link>
+    </Preview>
+  ),
+
+  Modal: (
+    <Preview>
+      <div className="w-36 border border-border-default rounded-lg bg-surface-default shadow-lg p-3">
+        <p className="text-[10px] font-semibold text-text-primary mb-1">Dialog title</p>
+        <p className="text-[9px] text-text-secondary leading-tight mb-2">Are you sure you want to continue?</p>
+        <div className="flex gap-1 justify-end">
+          <div className="h-4 w-10 rounded bg-border-default" />
+          <div className="h-4 w-10 rounded bg-interactive-accent" />
+        </div>
+      </div>
+    </Preview>
+  ),
+
+  Navigation: (
+    <Preview>
+      <div className="w-40 h-7 bg-navy-900 rounded-md flex items-center justify-between px-2">
+        <span className="text-[9px] font-bold text-white">Jigsaw</span>
+        <div className="flex gap-2">
+          <div className="h-1.5 w-6 rounded-full bg-white/40" />
+          <div className="h-1.5 w-6 rounded-full bg-white/40" />
+          <div className="h-1.5 w-6 rounded-full bg-orange-400" />
+        </div>
+      </div>
+    </Preview>
+  ),
+
+  NumberField: (
+    <Preview>
+      <div className="w-28 scale-90">
+        <NumberField label="Qty" defaultValue={3} />
+      </div>
+    </Preview>
+  ),
+
+  RadioGroup: (
+    <Preview>
+      <RadioGroup label="Plan" defaultValue="pro">
+        <Radio value="free">Free</Radio>
+        <Radio value="pro">Pro</Radio>
+      </RadioGroup>
+    </Preview>
+  ),
+
+  SearchField: (
+    <Preview>
+      <div className="w-36 scale-90">
+        <SearchField label="Search" placeholder="Search…" />
+      </div>
+    </Preview>
+  ),
+
+  Select: (
+    <Preview>
+      <div className="w-32 scale-90">
+        <Select label="Role" placeholder="Pick one">
+          <SelectItem id="admin">Admin</SelectItem>
+          <SelectItem id="editor">Editor</SelectItem>
+        </Select>
+      </div>
+    </Preview>
+  ),
+
+  Skeleton: (
+    <Preview>
+      <div className="flex flex-col gap-1.5 w-32">
+        <Skeleton height={10} width="100%" />
+        <SkeletonText width="80%" />
+        <SkeletonText width="60%" />
+      </div>
+    </Preview>
+  ),
+
+  Tabs: (
+    <Preview>
+      <Tabs className="w-40">
+        <TabList>
+          <Tab id="a">Overview</Tab>
+          <Tab id="b">Details</Tab>
+        </TabList>
+      </Tabs>
+    </Preview>
+  ),
+
+  Text: (
+    <Preview>
+      <div className="flex flex-col items-start gap-0.5">
+        <Text variant="heading-sm">Heading</Text>
+        <Text variant="body-sm" className="text-text-secondary">Body text</Text>
+        <Text variant="caption">Caption</Text>
+      </div>
+    </Preview>
+  ),
+
+  Textarea: (
+    <Preview>
+      <div className="w-36 scale-90">
+        <Textarea label="Notes" placeholder="Write something…" rows={2} />
+      </div>
+    </Preview>
+  ),
+
+  Toast: (
+    <Preview>
+      <div className="flex flex-col gap-1.5 w-36">
+        <div className="flex items-start gap-1.5 bg-feedback-success-subtle border border-feedback-success rounded-md p-2">
+          <div className="w-2 h-2 mt-0.5 rounded-full bg-feedback-success shrink-0" />
+          <div>
+            <p className="text-[9px] font-semibold text-text-primary">Saved!</p>
+            <p className="text-[8px] text-text-secondary">Your changes were saved.</p>
+          </div>
+        </div>
+        <div className="flex items-start gap-1.5 bg-feedback-error-subtle border border-feedback-error rounded-md p-2">
+          <div className="w-2 h-2 mt-0.5 rounded-full bg-feedback-error shrink-0" />
+          <div>
+            <p className="text-[9px] font-semibold text-text-primary">Error</p>
+            <p className="text-[8px] text-text-secondary">Something went wrong.</p>
+          </div>
+        </div>
+      </div>
+    </Preview>
+  ),
+
+  Tooltip: (
+    <Preview>
+      <TooltipTrigger defaultOpen delay={0}>
+        <Button size="sm" variant="secondary">Hover me</Button>
+        <Tooltip>Helpful context</Tooltip>
+      </TooltipTrigger>
+    </Preview>
+  ),
+};
 
 // ---------------------------------------------------------------------------
 // Data
@@ -55,7 +320,7 @@ const tokenSections = [
   },
 ];
 
-const componentSections = [
+const componentSections: { title: string; description: string }[] = [
   { title: "Avatar", description: "User identity display with image or initials fallback." },
   { title: "Badge", description: "Small label for status, counts, or categories." },
   { title: "Button", description: "Primary action trigger with multiple variants and sizes." },
@@ -78,20 +343,11 @@ const componentSections = [
   { title: "Textarea", description: "Multi-line text entry with auto-resize option." },
   { title: "Toast", description: "Transient notification that auto-dismisses." },
   { title: "Tooltip", description: "Contextual label that appears on hover or focus." },
-].map((c) => ({
-  ...c,
-  href: storyPath(`Design System/${c.title}`),
-}));
+];
 
 // ---------------------------------------------------------------------------
-// Sub-components
+// Card components
 // ---------------------------------------------------------------------------
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="text-xl font-semibold text-text-primary mb-1">{children}</h2>
-  );
-}
-
 function CardGrid({ children }: { children: React.ReactNode }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
@@ -100,7 +356,7 @@ function CardGrid({ children }: { children: React.ReactNode }) {
   );
 }
 
-function NavCard({
+function TokenCard({
   href,
   icon,
   title,
@@ -114,12 +370,7 @@ function NavCard({
   return (
     <a
       href={href}
-      className="
-        group flex flex-col gap-1 p-4
-        rounded-lg border border-border-default bg-surface-default
-        hover:border-interactive-accent hover:shadow-md
-        transition-all duration-150 no-underline
-      "
+      className="group flex flex-col gap-1 p-4 rounded-lg border border-border-default bg-surface-default hover:border-interactive-accent hover:shadow-md transition-all duration-150 no-underline"
     >
       {icon && (
         <span className="text-2xl mb-1 leading-none" aria-hidden>
@@ -130,6 +381,37 @@ function NavCard({
         {title}
       </span>
       <span className="text-xs text-text-secondary leading-relaxed">{description}</span>
+    </a>
+  );
+}
+
+function ComponentCard({
+  href,
+  title,
+  description,
+  preview,
+}: {
+  href: string;
+  title: string;
+  description: string;
+  preview?: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      className="group flex flex-col rounded-lg border border-border-default bg-surface-default hover:border-interactive-accent hover:shadow-md transition-all duration-150 no-underline overflow-hidden"
+    >
+      {/* Preview area */}
+      {preview ?? (
+        <div className="flex items-center justify-center bg-surface-muted h-20" aria-hidden />
+      )}
+      {/* Label */}
+      <div className="px-4 py-3 border-t border-border-subtle">
+        <span className="text-sm font-semibold text-text-primary group-hover:text-interactive-accent transition-colors block">
+          {title}
+        </span>
+        <span className="text-xs text-text-secondary leading-relaxed">{description}</span>
+      </div>
     </a>
   );
 }
@@ -153,34 +435,40 @@ function WelcomeContent() {
         </p>
       </div>
 
-      {/* Token section */}
+      {/* Tokens */}
       <section className="max-w-5xl mb-12">
-        <SectionHeading>Design Tokens</SectionHeading>
+        <h2 className="text-xl font-semibold text-text-primary mb-1">Design Tokens</h2>
         <p className="text-sm text-text-secondary max-w-2xl">
           Tokens are the single source of truth for colour, spacing, typography, and elevation.
-          They're generated from{" "}
+          Generated from{" "}
           <code className="font-mono text-xs bg-surface-muted px-1 py-0.5 rounded">
             packages/tokens
           </code>{" "}
-          via Style Dictionary and consumed by Tailwind and your CSS variables.
+          via Style Dictionary and consumed by Tailwind and CSS variables.
         </p>
         <CardGrid>
           {tokenSections.map((t) => (
-            <NavCard key={t.title} href={t.href} icon={t.icon} title={t.title} description={t.description} />
+            <TokenCard key={t.title} href={t.href} icon={t.icon} title={t.title} description={t.description} />
           ))}
         </CardGrid>
       </section>
 
-      {/* Components section */}
+      {/* Components */}
       <section className="max-w-5xl mb-12">
-        <SectionHeading>Components</SectionHeading>
+        <h2 className="text-xl font-semibold text-text-primary mb-1">Components</h2>
         <p className="text-sm text-text-secondary max-w-2xl">
-          22 production-ready components. Each story documents variants, states, accessibility
-          props, and Tailwind integration.
+          {componentSections.length} production-ready components. Each story documents variants,
+          states, accessibility props, and Tailwind integration.
         </p>
         <CardGrid>
           {componentSections.map((c) => (
-            <NavCard key={c.title} href={c.href} title={c.title} description={c.description} />
+            <ComponentCard
+              key={c.title}
+              href={storyPath(`Design System/${c.title}`)}
+              title={c.title}
+              description={c.description}
+              preview={previews[c.title]}
+            />
           ))}
         </CardGrid>
       </section>
