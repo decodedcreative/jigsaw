@@ -177,21 +177,23 @@ function QuickActions() {
         <div className="flex flex-col gap-2">
           <Button
             variant="secondary"
-            className="w-full justify-start gap-2"
+            className="w-full"
+            classNameOverrides={{ root: ["justify-start"] }}
             onPress={() => addToast({ title: "Build triggered", description: "Storybook deploying to Chromatic.", variant: "info" })}
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             Trigger Storybook build
           </Button>
           <Button
             variant="secondary"
-            className="w-full justify-start gap-2"
+            className="w-full"
+            classNameOverrides={{ root: ["justify-start"] }}
             onPress={() => addToast({ title: "Tokens rebuilt", variant: "success" })}
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
             Rebuild design tokens
           </Button>
-          <Button variant="secondary" className="w-full justify-start gap-2">
+          <Button variant="secondary" className="w-full" classNameOverrides={{ root: ["justify-start"] }}>
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             Open Storybook
           </Button>
