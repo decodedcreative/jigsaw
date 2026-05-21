@@ -320,6 +320,33 @@ const tokenSections = [
   },
 ];
 
+const exampleSections = [
+  {
+    title: "Sign In",
+    description: "Email/password form with OAuth buttons, remember-me, and a success state.",
+    href: storyPath("Examples/Sign In"),
+    icon: "🔐",
+  },
+  {
+    title: "Account Settings",
+    description: "Tabbed settings page covering profile, notifications, appearance, and danger zone.",
+    href: storyPath("Examples/Account Settings"),
+    icon: "⚙️",
+  },
+  {
+    title: "Team Directory",
+    description: "Searchable member grid with role badges, status indicators, and modal actions.",
+    href: storyPath("Examples/Team Directory"),
+    icon: "👥",
+  },
+  {
+    title: "Notifications",
+    description: "Toast trigger panel, a live notification feed, and a Disclosure FAQ.",
+    href: storyPath("Examples/Notifications"),
+    icon: "🔔",
+  },
+];
+
 const componentSections: { title: string; description: string }[] = [
   { title: "Avatar", description: "User identity display with image or initials fallback." },
   { title: "Badge", description: "Small label for status, counts, or categories." },
@@ -469,6 +496,19 @@ function WelcomeContent() {
               description={c.description}
               preview={previews[c.title]}
             />
+          ))}
+        </CardGrid>
+      </section>
+
+      {/* Examples */}
+      <section className="max-w-5xl mb-12">
+        <h2 className="text-xl font-semibold text-text-primary mb-1">Examples</h2>
+        <p className="text-sm text-text-secondary max-w-2xl">
+          Full-page compositions showing how components work together in realistic product scenarios.
+        </p>
+        <CardGrid>
+          {exampleSections.map((e) => (
+            <TokenCard key={e.title} href={e.href} icon={e.icon} title={e.title} description={e.description} />
           ))}
         </CardGrid>
       </section>
