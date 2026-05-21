@@ -15,8 +15,11 @@ import {
 } from "@jigsaw/design-system";
 
 const NAV_LINKS = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/settings",  label: "Settings"  },
+  { href: "/dashboard",     label: "Dashboard"     },
+  { href: "/team",          label: "Team"          },
+  { href: "/notifications", label: "Notifications" },
+  { href: "/activity",      label: "Activity"      },
+  { href: "/settings",      label: "Settings"      },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
