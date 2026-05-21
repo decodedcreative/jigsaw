@@ -10,6 +10,12 @@ const config: StorybookConfig = {
     "../../../packages/design-system/src/components/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
   framework: "@storybook/react-vite",
+  addons: [
+    "@storybook/addon-docs",
+    "@storybook/addon-vitest",
+    "@storybook/addon-a11y",
+    "@chromatic-com/storybook"
+  ],
   viteFinal: async (viteConfig) => {
     const repoRoot = path.resolve(__dirname, "../../..");
     const designSystemSrc = path.resolve(repoRoot, "packages", "design-system", "src");

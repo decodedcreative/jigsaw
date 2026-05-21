@@ -1,5 +1,7 @@
-/* Use relative path so Vite can resolve tokens CSS without package resolution issues */
-@import "../../packages/tokens/dist/css/tokens.css";
+/* Use relative paths so Vite can resolve tokens CSS without package resolution issues */
+@import "../../packages/tokens/dist/css/base.css";
+@import "../../packages/tokens/dist/css/semantic-light.css";
+@import "../../packages/tokens/dist/css/semantic-dark.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -9,6 +9,18 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    options: {
+      storySort: {
+        method: "alphabetical",
+        order: ["Introduction", ["Welcome"], "Design Tokens", "Design System"],
+      },
+    },
+    docs: {
+      source: {
+        // Always show the code snippet under each story example
+        state: "open",
+      },
+    },
   },
 };
 
