@@ -23,11 +23,17 @@ export const navigationStyles = {
     "outline-none focus-visible:ring-2 focus-visible:ring-interactive-focus",
   ]),
   mobileMenu: cva([
-    "md:hidden border-t border-border-primary bg-surface-primary",
-    "px-4 py-3 space-y-1",
+    "fixed inset-0 z-50 bg-surface-primary flex flex-col",
+    "md:hidden",
+  ]),
+  mobileMenuHeader: cva([
+    "flex items-center justify-between h-16 px-4 border-b border-border-primary shrink-0",
+  ]),
+  mobileMenuBody: cva([
+    "flex-1 overflow-y-auto px-4 py-6 space-y-1",
   ]),
   mobileNavItem: cva([
-    "block px-3 py-2 text-base font-medium rounded-md transition-colors",
+    "flex items-center px-4 py-3 text-lg font-medium rounded-lg transition-colors",
     "text-text-secondary hover:text-text-primary hover:bg-surface-hover",
     "data-[current]:text-interactive-primary data-[current]:bg-interactive-secondary",
   ]),

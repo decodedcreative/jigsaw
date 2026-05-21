@@ -125,6 +125,21 @@ export type MobileNavigationProps = {
   classNameOverrides?: Record<string, string[]>;
 };
 
+const HamburgerIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="4" x2="20" y1="6" y2="6" />
+    <line x1="4" x2="20" y1="12" y2="12" />
+    <line x1="4" x2="20" y1="18" y2="18" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 6 6 18" />
+    <path d="m6 6 12 12" />
+  </svg>
+);
+
 export const MobileNavigation = ({
   isOpen,
   onOpenChange,
@@ -134,11 +149,14 @@ export const MobileNavigation = ({
   const classNames = useGetClassNames(navigationStyles, classNameOverrides, {
     mobileMenuButton: {},
     mobileMenu: {},
+    mobileMenuHeader: {},
+    mobileMenuBody: {},
     mobileNavItem: {},
   });
 
   return (
     <>
+      {/* Hamburger toggle — always visible on mobile */}
       <button
         type="button"
         className={classNames.mobileMenuButton}
@@ -146,52 +164,40 @@ export const MobileNavigation = ({
         aria-expanded={isOpen}
         aria-label="Toggle menu"
       >
-        {isOpen ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
-        ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="4" x2="20" y1="12" y2="12" />
-            <line x1="4" x2="20" y1="6" y2="6" />
-            <line x1="4" x2="20" y1="18" y2="18" />
-          </svg>
-        )}
+        <HamburgerIcon />
       </button>
+
+      {/* Full-screen overlay */}
       {isOpen && (
-        <div className={classNames.mobileMenu}>
-          {links.map((link) => (
-            <AriaLink
-              key={link.href}
-              href={link.href}
-              className={classNames.mobileNavItem}
-              data-current={link.isCurrent ? "" : undefined}
-              aria-current={link.isCurrent ? "page" : undefined}
+        <div className={classNames.mobileMenu} role="dialog" aria-modal="true" aria-label="Navigation menu">
+          {/* Header row mirrors the nav bar */}
+          <div className={classNames.mobileMenuHeader}>
+            <span className="text-lg font-semibold text-text-primary">Menu</span>
+            <button
+              type="button"
+              className={classNames.mobileMenuButton}
+              onClick={() => onOpenChange(false)}
+              aria-label="Close menu"
             >
-              {link.label}
-            </AriaLink>
-          ))}
+              <CloseIcon />
+            </button>
+          </div>
+
+          {/* Nav links */}
+          <nav className={classNames.mobileMenuBody}>
+            {links.map((link) => (
+              <AriaLink
+                key={link.href}
+                href={link.href}
+                className={classNames.mobileNavItem}
+                data-current={link.isCurrent ? "" : undefined}
+                aria-current={link.isCurrent ? "page" : undefined}
+                onPress={() => onOpenChange(false)}
+              >
+                {link.label}
+              </AriaLink>
+            ))}
+          </nav>
         </div>
       )}
     </>
