@@ -4,6 +4,7 @@ import {
   Button as AriaButton,
   type ButtonProps as AriaButtonProps,
 } from "react-aria-components";
+import { twMerge } from "tailwind-merge";
 import { useGetClassNames } from "@hooks";
 import { buttonStyles } from "./Button.styles";
 
@@ -17,6 +18,7 @@ export const Button = ({
   variant = "primary",
   size = "md",
   classNameOverrides,
+  className,
   children,
   ...props
 }: ButtonProps) => {
@@ -24,8 +26,13 @@ export const Button = ({
     component: { variant, size },
   });
 
+  const mergedClassName =
+    typeof className === "function"
+      ? className
+      : twMerge(classNames.component, className);
+
   return (
-    <AriaButton className={classNames.component} {...props}>
+    <AriaButton className={mergedClassName} {...props}>
       {children}
     </AriaButton>
   );

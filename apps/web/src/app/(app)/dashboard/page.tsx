@@ -177,8 +177,7 @@ function QuickActions() {
         <div className="flex flex-col gap-2">
           <Button
             variant="secondary"
-            className="w-full"
-            classNameOverrides={{ component: ["justify-start"] }}
+            className="w-full justify-start"
             onPress={() => addToast({ title: "Build triggered", description: "Storybook deploying to Chromatic.", variant: "info" })}
           >
             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -186,8 +185,7 @@ function QuickActions() {
           </Button>
           <Button
             variant="secondary"
-            className="w-full"
-            classNameOverrides={{ component: ["justify-start"] }}
+            className="w-full justify-start"
             onPress={() => addToast({ title: "Tokens rebuilt", variant: "success" })}
           >
             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
