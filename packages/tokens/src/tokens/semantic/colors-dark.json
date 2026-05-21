@@ -39,33 +39,33 @@
           "type": "color"
         },
         "inverse": {
-          "value": "#f9fafb",
+          "value": "#fafafa",
           "type": "color"
         }
       },
       "text": {
         "primary": {
-          "value": "#f9fafb",
+          "value": "#fafafa",
           "type": "color"
         },
         "secondary": {
-          "value": "#d1d5db",
+          "value": "#d4d4d4",
           "type": "color"
         },
         "tertiary": {
-          "value": "#9ca3af",
+          "value": "#a3a3a3",
           "type": "color"
         },
         "muted": {
-          "value": "#9ca3af",
+          "value": "#a3a3a3",
           "type": "color"
         },
         "disabled": {
-          "value": "#6b7280",
+          "value": "#737373",
           "type": "color"
         },
         "placeholder": {
-          "value": "#6b7280",
+          "value": "#737373",
           "type": "color"
         },
         "inverse": {

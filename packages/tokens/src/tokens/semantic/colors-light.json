@@ -7,11 +7,11 @@
           "type": "color"
         },
         "secondary": {
-          "value": "#f9fafb",
+          "value": "#fafafa",
           "type": "color"
         },
         "tertiary": {
-          "value": "#f3f4f6",
+          "value": "#f5f5f5",
           "type": "color"
         },
         "default": {
@@ -27,15 +27,15 @@
           "type": "color"
         },
         "muted": {
-          "value": "#f3f4f6",
+          "value": "#f5f5f5",
           "type": "color"
         },
         "subtle": {
-          "value": "#f3f4f6",
+          "value": "#f5f5f5",
           "type": "color"
         },
         "hover": {
-          "value": "#f3f4f6",
+          "value": "#f5f5f5",
           "type": "color"
         },
         "inverse": {
@@ -49,23 +49,23 @@
           "type": "color"
         },
         "secondary": {
-          "value": "#4b5563",
+          "value": "#525252",
           "type": "color"
         },
         "tertiary": {
-          "value": "#6b7280",
+          "value": "#737373",
           "type": "color"
         },
         "muted": {
-          "value": "#6b7280",
+          "value": "#737373",
           "type": "color"
         },
         "disabled": {
-          "value": "#9ca3af",
+          "value": "#a3a3a3",
           "type": "color"
         },
         "placeholder": {
-          "value": "#9ca3af",
+          "value": "#a3a3a3",
           "type": "color"
         },
         "inverse": {
@@ -83,23 +83,23 @@
       },
       "border": {
         "default": {
-          "value": "#e5e7eb",
+          "value": "#e5e5e5",
           "type": "color"
         },
         "primary": {
-          "value": "#e5e7eb",
+          "value": "#e5e5e5",
           "type": "color"
         },
         "strong": {
-          "value": "#d1d5db",
+          "value": "#d4d4d4",
           "type": "color"
         },
         "hover": {
-          "value": "#d1d5db",
+          "value": "#d4d4d4",
           "type": "color"
         },
         "subtle": {
-          "value": "#f3f4f6",
+          "value": "#f5f5f5",
           "type": "color"
         },
         "focus": {
@@ -107,7 +107,7 @@
           "type": "color"
         },
         "disabled": {
-          "value": "#e5e7eb",
+          "value": "#e5e5e5",
           "type": "color"
         }
       },
@@ -149,11 +149,11 @@
           "type": "color"
         },
         "secondary-hover": {
-          "value": "#f3f4f6",
+          "value": "#f5f5f5",
           "type": "color"
         },
         "secondary-active": {
-          "value": "#e5e7eb",
+          "value": "#e5e5e5",
           "type": "color"
         },
         "destructive": {
