@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Skeleton, SkeletonText, SkeletonCircle, SkeletonCard } from "./Skeleton";
+import { Skeleton, SkeletonText, SkeletonCircle, SkeletonCard } from "./index";
 
 const meta = {
   title: "Design System/Skeleton",

@@ -1,2 +1,3 @@
-export { Select, SelectItem } from "./Select";
-export type { SelectProps, SelectItemProps } from "./Select";
+export { Select } from "./Select";
+export type { SelectProps } from "./Select.types";
+export * from "./sub-components";

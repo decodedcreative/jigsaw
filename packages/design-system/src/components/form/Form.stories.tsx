@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Form, FormFieldset, FormActions } from "./Form";
+import { Form, FormFieldset } from "./index";
 import { Input } from "../input/Input";
 import { Button } from "../button/Button";
 
@@ -17,14 +17,14 @@ export const Default: Story = {
   render: () => (
     <div style={{ width: 360 }}>
       <Form>
-        <FormFieldset legend="Account details">
+        <FormFieldset label="Account details">
           <Input label="Name" />
           <Input label="Email" type="email" />
         </FormFieldset>
-        <FormActions>
-          <Button variant="secondary">Cancel</Button>
-          <Button type="submit">Save</Button>
-        </FormActions>
+        <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
+          <Button>Cancel</Button>
+          <Button type="submit" variant="primary">Save</Button>
+        </div>
       </Form>
     </div>
   ),

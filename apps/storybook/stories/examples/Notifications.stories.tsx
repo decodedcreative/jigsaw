@@ -9,6 +9,8 @@ import {
   Disclosure,
   DisclosureGroup,
   Select,
+  H1,
+  H3,
   SelectItem,
   Text,
   ToastProvider,
@@ -41,12 +43,12 @@ function ToastPanel() {
     <Card>
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <Text variant="heading-sm">Toast notifications</Text>
+          <H3>Toast notifications</H3>
           <div className="w-48">
             <Select
               label="Position"
-              selectedKey={position}
-              onSelectionChange={(k) => setPosition(k as string)}
+              value={position}
+              onChange={(k) => setPosition(k as string)}
             >
               <SelectItem id="top-left">Top left</SelectItem>
               <SelectItem id="top-center">Top centre</SelectItem>
@@ -61,7 +63,6 @@ function ToastPanel() {
           {TOAST_EXAMPLES.map((t) => (
             <Button
               key={t.label}
-              variant="secondary"
               size="sm"
               onPress={() =>
                 addToast({
@@ -79,7 +80,6 @@ function ToastPanel() {
           ))}
           <Button
             size="sm"
-            variant="secondary"
             onPress={() => {
               addToast({ title: "Step 1 of 3 complete", variant: "info" });
               setTimeout(() => addToast({ title: "Step 2 of 3 complete", variant: "info" }), 800);
@@ -141,7 +141,7 @@ const TYPE_ICON: Record<Notification["type"], React.ReactNode> = {
 const TYPE_COLOR: Record<Notification["type"], string> = {
   mention: "bg-interactive-accent/10 text-interactive-accent",
   invite:  "bg-feedback-success-subtle text-feedback-success",
-  update:  "bg-surface-muted text-text-secondary",
+  update:  "bg-surface-muted text-foreground-secondary",
   alert:   "bg-feedback-warning-subtle text-feedback-warning",
 };
 
@@ -157,7 +157,7 @@ function NotificationFeed() {
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Text variant="heading-sm">Notifications</Text>
+            <H3>Notifications</H3>
             {unread > 0 && <Badge variant="primary" size="sm">{unread}</Badge>}
           </div>
           <Button variant="ghost" size="sm" isDisabled={unread === 0} onPress={markAllRead}>
@@ -182,9 +182,9 @@ function NotificationFeed() {
               </div>
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <Text variant="body-sm" className={n.read ? "text-text-secondary" : "font-medium"}>{n.title}</Text>
-                <Text variant="caption" className="text-text-secondary truncate block">{n.body}</Text>
-                <Text variant="caption" className="text-text-muted mt-0.5">{n.time}</Text>
+                <Text variant="body-sm" className={n.read ? "text-foreground-secondary" : "font-medium"}>{n.title}</Text>
+                <Text variant="caption" className="text-foreground-secondary truncate block">{n.body}</Text>
+                <Text variant="caption" className="text-foreground-muted mt-0.5">{n.time}</Text>
               </div>
             </button>
           ))}
@@ -201,7 +201,7 @@ function NotificationFAQ() {
   return (
     <Card>
       <CardContent className="p-6">
-        <Text variant="heading-sm" className="mb-4">Frequently asked questions</Text>
+        <H3 classNameOverrides={{ component: ["mb-4"] }}>Frequently asked questions</H3>
         <DisclosureGroup>
           <Disclosure title="How do I mute a specific channel?">
             Open the channel settings, click the bell icon, and select <strong>Mute</strong>. You can set a duration or mute indefinitely.
@@ -230,8 +230,8 @@ function NotificationsPage() {
       <div className="min-h-screen bg-surface-default p-8">
         <div className="max-w-2xl mx-auto flex flex-col gap-6">
           <div>
-            <Text variant="heading-lg" as="h1">Notifications</Text>
-            <Text variant="body-sm" className="text-text-secondary mt-1">
+            <H1>Notifications</H1>
+            <Text variant="body-sm" className="text-foreground-secondary mt-1">
               Toast demos, notification feeds, and disclosure FAQs.
             </Text>
           </div>

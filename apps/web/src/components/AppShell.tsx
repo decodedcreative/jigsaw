@@ -1,57 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Avatar,
   AvatarFallback,
-  MobileNavigation,
   Navigation,
-  NavigationActions,
-  NavigationBrand,
-  NavigationInner,
   NavigationLink,
-  NavigationLinks,
 } from "@jigsaw/design-system";
 
 const NAV_LINKS = [
-  { href: "/dashboard",     label: "Dashboard"     },
-  { href: "/team",          label: "Team"          },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/team", label: "Team" },
   { href: "/notifications", label: "Notifications" },
-  { href: "/activity",      label: "Activity"      },
-  { href: "/settings",      label: "Settings"      },
+  { href: "/activity", label: "Activity" },
+  { href: "/settings", label: "Settings" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-surface-default flex flex-col">
-      <Navigation>
-        <NavigationInner>
-          <NavigationBrand href="/dashboard">Jigsaw</NavigationBrand>
-
-          <NavigationLinks>
-            {NAV_LINKS.map((l) => (
-              <NavigationLink key={l.href} href={l.href} isCurrent={pathname === l.href}>
-                {l.label}
-              </NavigationLink>
-            ))}
-          </NavigationLinks>
-
-          <NavigationActions>
-            <Avatar size="sm">
-              <AvatarFallback>JH</AvatarFallback>
-            </Avatar>
-            <MobileNavigation
-              isOpen={mobileOpen}
-              onOpenChange={setMobileOpen}
-              links={NAV_LINKS.map((l) => ({ ...l, isCurrent: pathname === l.href }))}
-            />
-          </NavigationActions>
-        </NavigationInner>
-      </Navigation>
+      <Navigation
+        brand={
+          <NextLink href="/dashboard" className="font-heading font-bold text-xl tracking-tight text-interactive-accent hover:text-interactive-accent-hover no-underline">
+            jigsaw
+          </NextLink>
+        }
+        links={NAV_LINKS.map((l) => (
+          <NavigationLink key={l.href} href={l.href} isCurrent={pathname === l.href}>
+            {l.label}
+          </NavigationLink>
+        ))}
+        actions={
+          <Avatar size="sm">
+            <AvatarFallback>JH</AvatarFallback>
+          </Avatar>
+        }
+      />
 
       <main className="flex-1">{children}</main>
     </div>

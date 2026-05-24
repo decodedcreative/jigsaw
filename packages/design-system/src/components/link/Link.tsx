@@ -1,20 +1,12 @@
 "use client";
 
-import * as React from "react";
-import {
-  Link as ReactAriaLink,
-  type LinkProps as ReactAriaLinkProps,
-} from "react-aria-components";
+import type { FC } from "react";
+import { Link as ReactAriaLink } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
-import { linkStyles, linkButtonStyles } from "./Link.styles";
+import { linkStyles } from "./Link.styles";
+import type { LinkProps } from "./Link.types";
 
-export type LinkProps = ReactAriaLinkProps & {
-  classNameOverrides?: Record<string, string[]>;
-  size?: "sm" | "md" | "lg";
-  variant?: "default" | "accent" | "subtle" | "muted";
-};
-
-export const Link = ({
+export const Link: FC<LinkProps> = ({
   variant = "default",
   size = "md",
   classNameOverrides,
@@ -33,32 +25,3 @@ export const Link = ({
 };
 
 Link.displayName = "DS_Link";
-
-export type LinkButtonProps = ReactAriaLinkProps & {
-  classNameOverrides?: Record<string, string[]>;
-  size?: "sm" | "md" | "lg";
-  variant?: "primary" | "secondary" | "accent" | "outline" | "ghost";
-};
-
-export const LinkButton = ({
-  variant = "primary",
-  size = "md",
-  classNameOverrides,
-  children,
-  ...props
-}: LinkButtonProps) => {
-  const classNames = useGetClassNames(linkButtonStyles, classNameOverrides, {
-    component: { variant, size },
-  });
-
-  return (
-    <ReactAriaLink className={classNames.component} {...props}>
-      {children}
-    </ReactAriaLink>
-  );
-};
-
-LinkButton.displayName = "DS_LinkButton";
-
-export const ButtonLink = LinkButton;
-ButtonLink.displayName = "DS_ButtonLink";

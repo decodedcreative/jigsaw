@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Avatar, AvatarImage, AvatarFallback, AvatarStatusIndicator } from "./Avatar";
+import { Avatar, AvatarImage, AvatarFallback, AvatarStatusIndicator } from "./index";
 
 const meta = {
   title: "Design System/Avatar",

@@ -45,7 +45,7 @@ function TypographyContent() {
   return (
     <TokenPage>
       <h1 className="text-3xl font-bold mb-2">Typography</h1>
-      <p className="text-text-secondary mb-8 max-w-2xl">
+      <p className="text-foreground-secondary mb-8 max-w-2xl">
         Type tokens from <code className="font-mono text-sm">typography.json</code>. Tailwind maps
         these to <code className="font-mono text-sm">font-*</code>, <code className="font-mono text-sm">text-*</code>,{" "}
         <code className="font-mono text-sm">font-[weight]</code>,{" "}

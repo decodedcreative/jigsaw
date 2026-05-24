@@ -1,20 +1,9 @@
-import * as React from "react";
+import type { FC } from "react";
 import { useGetClassNames } from "@hooks";
 import { textStyles } from "./Text.styles";
+import type { TextProps } from "./Text.types";
 
-export type TextProps = Omit<
-  React.HTMLAttributes<HTMLParagraphElement>,
-  "children"
-> & {
-  as?: "p" | "span";
-  children: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
-  muted?: boolean;
-  size?: "xs" | "sm" | "base" | "lg";
-  weight?: "normal" | "medium" | "semibold" | "bold";
-};
-
-export const Text = ({
+export const Text: FC<TextProps> = ({
   as: Component = "p",
   size = "base",
   weight = "normal",

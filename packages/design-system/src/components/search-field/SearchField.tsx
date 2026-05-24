@@ -1,26 +1,20 @@
 "use client";
 
-import * as React from "react";
+import type { FC } from "react";
+import { MagnifyingGlassIcon, XIcon } from "@phosphor-icons/react";
+import { Icon } from "@components/icon";
 import {
   SearchField as ReactAriaSearchField,
-  Label,
-  Input,
-  Button,
-  Text,
-  type SearchFieldProps as ReactAriaSearchFieldProps,
+  Label as ReactAriaLabel,
+  Input as ReactAriaInput,
+  Button as ReactAriaButton,
+  Text as ReactAriaText,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { searchFieldStyles } from "./SearchField.styles";
+import type { SearchFieldProps } from "./SearchField.types";
 
-export type SearchFieldProps = Omit<ReactAriaSearchFieldProps, "children"> & {
-  label?: string;
-  description?: string;
-  placeholder?: string;
-  classNameOverrides?: Record<string, string[]>;
-  size?: "sm" | "md" | "lg";
-};
-
-export const SearchField = ({
+export const SearchField: FC<SearchFieldProps> = ({
   label,
   description,
   placeholder = "Search...",
@@ -43,40 +37,18 @@ export const SearchField = ({
 
   return (
     <ReactAriaSearchField className={classNames.wrapper} isDisabled={isDisabled} {...props}>
-      {label && <Label className={classNames.label}>{label}</Label>}
+      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <div className={classNames.inputWrapper}>
-        <svg className={classNames.searchIcon} viewBox="0 0 16 16" fill="none">
-          <path
-            d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M14 14L10.5 10.5"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        <Input className={classNames.input} placeholder={placeholder} />
-        <Button className={classNames.clearButton}>
-          <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none">
-            <path
-              d="M11 3L3 11M3 3L11 11"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </Button>
+        <Icon icon={MagnifyingGlassIcon} classNameOverrides={{ component: [classNames.searchIcon] }} />
+        <ReactAriaInput className={classNames.input} placeholder={placeholder} />
+        <ReactAriaButton className={classNames.clearButton}>
+          <Icon icon={XIcon} size="sm" />
+        </ReactAriaButton>
       </div>
       {description && (
-        <Text slot="description" className={classNames.description}>
+        <ReactAriaText slot="description" className={classNames.description}>
           {description}
-        </Text>
+        </ReactAriaText>
       )}
     </ReactAriaSearchField>
   );

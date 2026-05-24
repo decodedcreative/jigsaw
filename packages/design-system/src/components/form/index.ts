@@ -1,2 +1,3 @@
-export { Form, FormFieldset, FormActions } from "./Form";
-export type { FormProps, FormFieldsetProps, FormActionsProps } from "./Form";
+export { Form } from "./Form";
+export type { FormProps } from "./Form.types";
+export * from "./sub-components";

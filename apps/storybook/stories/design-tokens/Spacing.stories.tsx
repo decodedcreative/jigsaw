@@ -8,7 +8,7 @@ function SpacingContent() {
   return (
     <TokenPage>
       <h1 className="text-3xl font-bold mb-2">Spacing scale</h1>
-      <p className="text-text-secondary mb-8 max-w-2xl">
+      <p className="text-foreground-secondary mb-8 max-w-2xl">
         Spacing tokens from <code className="font-mono text-sm">@jigsaw/tokens</code>. Use
         Tailwind utilities such as <code className="font-mono text-sm">p-4</code>,{" "}
         <code className="font-mono text-sm">gap-2</code>,{" "}

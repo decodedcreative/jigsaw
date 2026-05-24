@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Select, SelectItem } from './Select';
+import { Select } from './Select';
+import { SelectItem } from './sub-components/SelectItem';
 
 afterEach(() => {
   cleanup();
@@ -62,7 +63,6 @@ describe('Select', () => {
     renderSelect();
     await user.click(screen.getByRole('button'));
     await user.click(screen.getByRole('option', { name: 'Banana' }));
-    // After selection the listbox closes; trigger shows selected text
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
     expect(screen.getByRole('button')).toHaveTextContent('Banana');
   });
@@ -101,21 +101,20 @@ describe('Select', () => {
       </Select>
     );
     const buttons = screen.getAllByRole('button');
-    // The last rendered select has a disabled trigger
     expect(buttons[buttons.length - 1]).toBeDisabled();
   });
 
-  it('calls onSelectionChange when item selected', async () => {
+  it('calls onChange when item selected', async () => {
     const user = userEvent.setup();
-    const onSelectionChange = vi.fn();
+    const onChange = vi.fn();
     render(
-      <Select label="Fruit" onSelectionChange={onSelectionChange}>
+      <Select label="Fruit" onChange={onChange}>
         <SelectItem id="apple">Apple</SelectItem>
         <SelectItem id="banana">Banana</SelectItem>
       </Select>
     );
     await user.click(screen.getByRole('button'));
     await user.click(screen.getByRole('option', { name: 'Apple' }));
-    expect(onSelectionChange).toHaveBeenCalledWith('apple');
+    expect(onChange).toHaveBeenCalledWith('apple');
   });
 });

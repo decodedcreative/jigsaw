@@ -1,3 +1,4 @@
-export { ToastProvider, ToastItem, useToast } from "./Toast";
-export type { ToastData, ToastProviderProps, ToastItemProps } from "./Toast";
+export { useToast } from "./Toast.context";
+export type { ToastData, ToastProviderProps, ToastItemProps } from "./Toast.types";
 export type { ToastVariant, ToastPosition } from "./Toast.styles";
+export * from "./sub-components";

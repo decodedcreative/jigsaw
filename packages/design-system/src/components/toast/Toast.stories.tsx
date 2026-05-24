@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ToastProvider, useToast } from "./Toast";
+import { ToastProvider, useToast } from "./index";
 import { Button } from "../button/Button";
 
 const meta = {
@@ -16,7 +16,7 @@ const Trigger = () => {
   const { addToast } = useToast();
   return (
     <div className="flex flex-wrap gap-2">
-      <Button onPress={() => addToast({ title: "Saved", description: "Your changes are saved.", variant: "success" })}>
+      <Button variant="primary" onPress={() => addToast({ title: "Saved", description: "Your changes are saved.", variant: "success" })}>
         Success
       </Button>
       <Button variant="destructive" onPress={() => addToast({ title: "Error", description: "Something went wrong.", variant: "error" })}>

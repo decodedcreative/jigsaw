@@ -1,27 +1,21 @@
 "use client";
 
-import * as React from "react";
+import type { FC } from "react";
+import { MinusIcon, PlusIcon } from "@phosphor-icons/react";
+import { Icon } from "@components/icon";
 import {
   NumberField as ReactAriaNumberField,
-  Label,
-  Group,
-  Input,
-  Button,
-  Text,
-  type NumberFieldProps as ReactAriaNumberFieldProps,
+  Label as ReactAriaLabel,
+  Group as ReactAriaGroup,
+  Input as ReactAriaInput,
+  Button as ReactAriaButton,
+  Text as ReactAriaText,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { numberFieldStyles } from "./NumberField.styles";
+import type { NumberFieldProps } from "./NumberField.types";
 
-export type NumberFieldProps = Omit<ReactAriaNumberFieldProps, "children"> & {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  classNameOverrides?: Record<string, string[]>;
-  size?: "sm" | "md" | "lg";
-};
-
-export const NumberField = ({
+export const NumberField: FC<NumberFieldProps> = ({
   label,
   description,
   errorMessage,
@@ -52,32 +46,23 @@ export const NumberField = ({
       isInvalid={isInvalid || !!errorMessage}
       {...props}
     >
-      {label && <Label className={classNames.label}>{label}</Label>}
-      <Group className={classNames.group}>
-        <Button slot="decrement" className={decrementClasses}>
-          <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-        </Button>
-        <Input className={classNames.input} />
-        <Button slot="increment" className={incrementClasses}>
-          <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M8 3V13M3 8H13"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </Button>
-      </Group>
+      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
+      <ReactAriaGroup className={classNames.group}>
+        <ReactAriaButton slot="decrement" className={decrementClasses}>
+          <Icon icon={MinusIcon} />
+        </ReactAriaButton>
+        <ReactAriaInput className={classNames.input} />
+        <ReactAriaButton slot="increment" className={incrementClasses}>
+          <Icon icon={PlusIcon} />
+        </ReactAriaButton>
+      </ReactAriaGroup>
       {(description || errorMessage) && (
-        <Text
+        <ReactAriaText
           slot={errorMessage ? "errorMessage" : "description"}
           className={classNames.description}
         >
           {errorMessage || description}
-        </Text>
+        </ReactAriaText>
       )}
     </ReactAriaNumberField>
   );

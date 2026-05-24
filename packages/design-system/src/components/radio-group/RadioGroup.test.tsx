@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { RadioGroup, Radio } from './RadioGroup';
+import { RadioGroup } from './RadioGroup';
+import { Radio } from './sub-components/Radio';
 
 afterEach(() => {
   cleanup();
@@ -86,43 +87,5 @@ describe('RadioGroup', () => {
       </RadioGroup>
     );
     expect(screen.getByRole('radio', { name: 'Option B' })).toBeChecked();
-  });
-});
-
-describe('Radio', () => {
-  it('renders a radio input', () => {
-    render(
-      <RadioGroup label="Group">
-        <Radio label="Choice" value="choice" />
-      </RadioGroup>
-    );
-    expect(screen.getByRole('radio')).toBeInTheDocument();
-  });
-
-  it('renders with label text', () => {
-    render(
-      <RadioGroup label="Group">
-        <Radio label="My Option" value="opt" />
-      </RadioGroup>
-    );
-    expect(screen.getByText('My Option')).toBeInTheDocument();
-  });
-
-  it('renders children as label when no label prop given', () => {
-    render(
-      <RadioGroup label="Group">
-        <Radio value="opt">Custom Label</Radio>
-      </RadioGroup>
-    );
-    expect(screen.getByText('Custom Label')).toBeInTheDocument();
-  });
-
-  it('renders description', () => {
-    render(
-      <RadioGroup label="Group">
-        <Radio label="Option" value="opt" description="This is the best option" />
-      </RadioGroup>
-    );
-    expect(screen.getByText('This is the best option')).toBeInTheDocument();
   });
 });

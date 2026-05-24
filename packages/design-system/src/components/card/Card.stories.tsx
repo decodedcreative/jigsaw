@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "./Card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "./index";
 import { Button } from "../button/Button";
 
 const meta = {
@@ -9,7 +9,6 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     variant: { control: "select", options: ["default", "elevated", "interactive", "outline"] },
-    padding: { control: "select", options: ["none", "sm", "md", "lg"] },
   },
 } satisfies Meta<typeof Card>;
 
@@ -25,7 +24,7 @@ export const Composed: Story = {
         <CardDescription>Updated 3 minutes ago.</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-text-secondary">
+        <p className="text-sm text-foreground-secondary">
           12 tasks complete, 3 in progress, 5 blocked.
         </p>
       </CardContent>

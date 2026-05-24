@@ -1,39 +1,45 @@
 "use client";
 
-import {
-  Button as ReactAriaButton,
-  type ButtonProps as ReactAriaButtonProps,
-} from "react-aria-components";
-import { twMerge } from "tailwind-merge";
+import type { FC } from "react";
+import { Button as ReactAriaButton } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { buttonStyles } from "./Button.styles";
+import type { ButtonProps } from "./Button.types";
 
-export type ButtonProps = ReactAriaButtonProps & {
-  classNameOverrides?: Record<string, string[]>;
-  size?: "sm" | "md" | "lg";
-  variant?: "primary" | "secondary" | "accent" | "outline" | "ghost" | "destructive" | "link";
-};
-
-export const Button = ({
-  variant = "primary",
+export const Button: FC<ButtonProps> = ({
+  variant = "secondary",
   size = "md",
+  fullWidth = false,
+  mediaOnly = false,
+  mediaPosition,
+  media,
   classNameOverrides,
-  className,
   children,
   ...props
 }: ButtonProps) => {
+  const position = mediaPosition ?? "left";
+  const layoutPosition = media != null && !mediaOnly ? position : undefined;
+
   const classNames = useGetClassNames(buttonStyles, classNameOverrides, {
-    component: { variant, size },
+    component: {
+      variant,
+      size,
+      mediaOnly,
+      fullWidth,
+      mediaPosition: layoutPosition,
+    },
+    text: { fullWidth: fullWidth && children != null },
+    media: {},
   });
 
-  const mergedClassName =
-    typeof className === "function"
-      ? className
-      : twMerge(classNames.component, className);
+  const mediaSpan = media != null ? <span className={classNames.media}>{media}</span> : null;
+  const textSpan = children != null ? <span className={classNames.text}>{children}</span> : null;
 
   return (
-    <ReactAriaButton className={mergedClassName} {...props}>
-      {children}
+    <ReactAriaButton className={classNames.component} {...props}>
+      {position === "left" && mediaSpan}
+      {textSpan}
+      {position === "right" && mediaSpan}
     </ReactAriaButton>
   );
 };

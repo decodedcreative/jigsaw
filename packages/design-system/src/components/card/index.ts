@@ -1,11 +1,4 @@
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardImage } from "./Card";
-export type {
-  CardProps,
-  CardHeaderProps,
-  CardTitleProps,
-  CardDescriptionProps,
-  CardContentProps,
-  CardFooterProps,
-  CardImageProps,
-} from "./Card";
-export type { CardVariant, CardPadding } from "./Card.styles";
+export { Card } from "./Card";
+export type { CardProps } from "./Card.types";
+export type { CardVariant } from "./Card.styles";
+export * from "./sub-components";

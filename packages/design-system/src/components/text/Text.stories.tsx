@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { H1 } from "../heading/Heading.aliases";
+import { Caption, Detail, Notice, SectionLabel, Stat, Subheading, Title } from "./Text.aliases";
 import { Text } from "./Text";
+import type { TextProps } from "./Text.types";
 
 const meta = {
   title: "Design System/Text",
@@ -27,7 +30,7 @@ const meta = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<TextProps>;
 
 export const Default: Story = {
   args: {
@@ -47,7 +50,6 @@ export const Sizes: Story = {
 };
 
 export const Weights: Story = {
-  args: {},
   render: () => (
     <div className="flex flex-col gap-2">
       <Text weight="normal">Normal weight</Text>
@@ -61,8 +63,41 @@ export const Weights: Story = {
 export const Muted: Story = {
   args: {
     muted: true,
-    children: "Muted secondary text.",
+    children: "Muted tertiary text.",
   },
+};
+
+export const Presets: Story = {
+  render: () => (
+    <div className="flex max-w-sm flex-col gap-8">
+      <div className="flex flex-col gap-1">
+        <H1>Activity</H1>
+        <Subheading>Audit log of all workspace events.</Subheading>
+      </div>
+
+      <div className="flex flex-col items-center gap-1 text-center">
+        <Notice>No events found</Notice>
+        <Subheading>Try adjusting your filters.</Subheading>
+      </div>
+
+      <div className="flex flex-col gap-0.5">
+        <Title>James Howell</Title>
+        <Caption>james@example.com</Caption>
+        <Detail>Updated 2 hours ago</Detail>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <Caption>Components</Caption>
+        <Stat>22</Stat>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <SectionLabel>March 20, 2026</SectionLabel>
+        <Title>James Howell updated workspace settings</Title>
+        <Detail>10:42 AM</Detail>
+      </div>
+    </div>
+  ),
 };
 
 export const AsSpan: Story = {

@@ -13,12 +13,4 @@ export const modalStyles = {
     "exiting:animate-out exiting:fade-out exiting:zoom-out-95 exiting:slide-out-to-left-1/2 exiting:slide-out-to-top-[48%]",
     "focus:outline-none",
   ]),
-  header: cva(["flex items-center justify-between p-6 border-b border-border-default"]),
-  title: cva(["text-lg font-semibold text-text-primary"]),
-  closeButton: cva([
-    "p-1.5 rounded-md text-text-muted hover:text-text-primary hover:bg-surface-muted transition-colors",
-    "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent",
-  ]),
-  body: cva(["p-6"]),
-  footer: cva(["flex items-center justify-end gap-3 p-6 border-t border-border-default"]),
 };

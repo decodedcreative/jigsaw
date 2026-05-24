@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { PlayIcon } from "@phosphor-icons/react";
+import { Avatar, AvatarFallback } from "../avatar";
+import { Icon } from "../icon";
 import { Button } from "./Button";
 
 const meta = {
@@ -17,6 +20,11 @@ const meta = {
       control: "select",
       options: ["sm", "md", "lg"],
     },
+    mediaPosition: {
+      control: "select",
+      options: [undefined, "left", "right"],
+    },
+    mediaOnly: { control: "boolean" },
   },
 } satisfies Meta<typeof Button>;
 
@@ -31,10 +39,9 @@ export const Primary: Story = {
   },
 };
 
-export const Secondary: Story = {
+export const Default: Story = {
   args: {
-    variant: "secondary",
-    children: "Secondary button",
+    children: "Button",
   },
 };
 
@@ -46,7 +53,6 @@ export const Outline: Story = {
 };
 
 export const Sizes: Story = {
-  args: {},
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
       <Button size="sm">Small</Button>
@@ -63,10 +69,35 @@ export const Disabled: Story = {
   },
 };
 
+export const WithMediaLeft: Story = {
+  render: () => (
+    <Button
+      fullWidth
+      media={<Icon icon={PlayIcon} weight="fill" />}
+      classNameOverrides={{ component: ["max-w-xs"] }}
+    >
+      Trigger build
+    </Button>
+  ),
+};
+
+export const WithMediaRight: Story = {
+  render: () => (
+    <Button
+      fullWidth
+      mediaPosition="right"
+      media={<Icon icon={PlayIcon} />}
+      classNameOverrides={{ component: ["max-w-xs"] }}
+    >
+      Next step
+    </Button>
+  ),
+};
+
 /**
  * Visually a link, rendered as a `<button>`. Use for inline actions that
  * trigger behavior (cancel, expand, dismiss) rather than navigation — the
- * inverse of `LinkButton`, which is a `<a>` styled as a button.
+ * inverse of `LinkButton`, which is an `<a>` styled as a button.
  */
 export const Link: Story = {
   args: {
@@ -75,9 +106,31 @@ export const Link: Story = {
   },
 };
 
+/** Icon-only layout: set `mediaOnly` and provide `aria-label` (or `title`). */
+export const MediaOnly: Story = {
+  render: () => (
+    <Button variant="ghost" mediaOnly aria-label="Settings" media="⚙" />
+  ),
+};
+
+export const MediaOnlyAvatar: Story = {
+  render: () => (
+    <Button
+      variant="ghost"
+      mediaOnly
+      aria-label="James Howell"
+      media={
+        <Avatar size="sm">
+          <AvatarFallback>JH</AvatarFallback>
+        </Avatar>
+      }
+    />
+  ),
+};
+
 export const LinkInSentence: Story = {
   render: () => (
-    <p className="text-sm text-text-secondary">
+    <p className="text-sm text-foreground-secondary">
       Don't have an account yet?{" "}
       <Button variant="link">Sign up for free</Button>.
     </p>

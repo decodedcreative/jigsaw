@@ -1,13 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-  Navigation,
-  NavigationInner,
-  NavigationBrand,
-  NavigationLinks,
-  NavigationLink,
-  NavigationActions,
-} from "./Navigation";
+import { Navigation, NavigationLink } from "./index";
 import { Button } from "../button/Button";
+import { Link } from "../link";
 
 const meta = {
   title: "Design System/Navigation",
@@ -21,18 +15,24 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: () => (
-    <Navigation>
-      <NavigationInner>
-        <NavigationBrand>Jigsaw</NavigationBrand>
-        <NavigationLinks>
-          <NavigationLink href="#" isCurrent>Home</NavigationLink>
+    <Navigation
+      brand={
+        <Link href="/" variant="brand">
+          Jigsaw
+        </Link>
+      }
+      links={
+        <>
+          <NavigationLink href="#" isCurrent>
+            Home
+          </NavigationLink>
           <NavigationLink href="#">Components</NavigationLink>
           <NavigationLink href="#">Docs</NavigationLink>
-        </NavigationLinks>
-        <NavigationActions>
-          <Button size="sm">Sign in</Button>
-        </NavigationActions>
-      </NavigationInner>
-    </Navigation>
+        </>
+      }
+      actions={
+        <Button variant="primary" size="sm">Sign in</Button>
+      }
+    />
   ),
 };

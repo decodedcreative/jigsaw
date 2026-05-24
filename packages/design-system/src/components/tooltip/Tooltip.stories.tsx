@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tooltip, TooltipTrigger } from "./Tooltip";
+import { Avatar, AvatarFallback } from "../avatar";
 import { Button } from "../button/Button";
+import { Tooltip, TooltipTrigger } from "./index";
 
 const meta = {
   title: "Design System/Tooltip",
@@ -22,6 +23,25 @@ export const Default: Story = {
     <TooltipTrigger>
       <Button>Hover me</Button>
       <Tooltip {...args}>Helpful info</Tooltip>
+    </TooltipTrigger>
+  ),
+};
+
+export const AvatarTrigger: Story = {
+  args: { placement: "top", showArrow: true },
+  render: (args) => (
+    <TooltipTrigger delay={300}>
+      <Button
+        variant="ghost"
+        mediaOnly
+        aria-label="James Howell"
+        media={
+          <Avatar size="sm">
+            <AvatarFallback>JH</AvatarFallback>
+          </Avatar>
+        }
+      />
+      <Tooltip {...args}>James Howell</Tooltip>
     </TooltipTrigger>
   ),
 };

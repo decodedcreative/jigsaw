@@ -9,6 +9,9 @@ import {
   CardTitle,
   Checkbox,
   Disclosure,
+  H1,
+  H2,
+  H3,
   Input,
   Link,
   NumberField,
@@ -82,8 +85,8 @@ const previews: Record<string, React.ReactNode> = {
 
   Button: (
     <Preview>
-      <Button size="sm">Primary</Button>
-      <Button variant="secondary" size="sm">Secondary</Button>
+      <Button size="sm" variant="primary">Primary</Button>
+      <Button size="sm">Default</Button>
     </Preview>
   ),
 
@@ -92,7 +95,7 @@ const previews: Record<string, React.ReactNode> = {
       <Card className="w-36 !p-3">
         <CardTitle className="text-xs">Card title</CardTitle>
         <CardContent className="!p-0 mt-1">
-          <p className="text-[10px] text-text-secondary leading-tight">
+          <p className="text-[10px] text-foreground-secondary leading-tight">
             A short description.
           </p>
         </CardContent>
@@ -122,7 +125,7 @@ const previews: Record<string, React.ReactNode> = {
   Disclosure: (
     <Preview>
       <Disclosure defaultExpanded className="w-40" title="FAQ item">
-        <p className="text-[10px] text-text-secondary">Answer content goes here.</p>
+        <p className="text-[10px] text-foreground-secondary">Answer content goes here.</p>
       </Disclosure>
     </Preview>
   ),
@@ -133,6 +136,15 @@ const previews: Record<string, React.ReactNode> = {
         <div className="h-4 w-16 rounded bg-border-default" />
         <div className="h-6 w-full rounded border border-border-default bg-surface-default" />
         <div className="h-5 w-20 rounded bg-interactive-accent" />
+      </div>
+    </Preview>
+  ),
+
+  Heading: (
+    <Preview>
+      <div className="flex flex-col items-start gap-0.5">
+        <H3>Section title</H3>
+        <Text size="sm" muted>Body text</Text>
       </div>
     </Preview>
   ),
@@ -154,8 +166,8 @@ const previews: Record<string, React.ReactNode> = {
   Modal: (
     <Preview>
       <div className="w-36 border border-border-default rounded-lg bg-surface-default shadow-lg p-3">
-        <p className="text-[10px] font-semibold text-text-primary mb-1">Dialog title</p>
-        <p className="text-[9px] text-text-secondary leading-tight mb-2">Are you sure you want to continue?</p>
+        <p className="text-[10px] font-semibold text-foreground-primary mb-1">Dialog title</p>
+        <p className="text-[9px] text-foreground-secondary leading-tight mb-2">Are you sure you want to continue?</p>
         <div className="flex gap-1 justify-end">
           <div className="h-4 w-10 rounded bg-border-default" />
           <div className="h-4 w-10 rounded bg-interactive-accent" />
@@ -237,9 +249,9 @@ const previews: Record<string, React.ReactNode> = {
   Text: (
     <Preview>
       <div className="flex flex-col items-start gap-0.5">
-        <Text variant="heading-sm">Heading</Text>
-        <Text variant="body-sm" className="text-text-secondary">Body text</Text>
-        <Text variant="caption">Caption</Text>
+        <Text size="sm" weight="medium">Label</Text>
+        <Text size="sm" muted>Body text</Text>
+        <Text size="xs" muted>Caption</Text>
       </div>
     </Preview>
   ),
@@ -258,15 +270,15 @@ const previews: Record<string, React.ReactNode> = {
         <div className="flex items-start gap-1.5 bg-feedback-success-subtle border border-feedback-success rounded-md p-2">
           <div className="w-2 h-2 mt-0.5 rounded-full bg-feedback-success shrink-0" />
           <div>
-            <p className="text-[9px] font-semibold text-text-primary">Saved!</p>
-            <p className="text-[8px] text-text-secondary">Your changes were saved.</p>
+            <p className="text-[9px] font-semibold text-foreground-primary">Saved!</p>
+            <p className="text-[8px] text-foreground-secondary">Your changes were saved.</p>
           </div>
         </div>
         <div className="flex items-start gap-1.5 bg-feedback-error-subtle border border-feedback-error rounded-md p-2">
           <div className="w-2 h-2 mt-0.5 rounded-full bg-feedback-error shrink-0" />
           <div>
-            <p className="text-[9px] font-semibold text-text-primary">Error</p>
-            <p className="text-[8px] text-text-secondary">Something went wrong.</p>
+            <p className="text-[9px] font-semibold text-foreground-primary">Error</p>
+            <p className="text-[8px] text-foreground-secondary">Something went wrong.</p>
           </div>
         </div>
       </div>
@@ -276,7 +288,7 @@ const previews: Record<string, React.ReactNode> = {
   Tooltip: (
     <Preview>
       <TooltipTrigger defaultOpen delay={0}>
-        <Button size="sm" variant="secondary">Hover me</Button>
+        <Button size="sm">Hover me</Button>
         <Tooltip>Helpful context</Tooltip>
       </TooltipTrigger>
     </Preview>
@@ -361,6 +373,7 @@ const componentSections: { title: string; description: string }[] = [
   { title: "CheckboxGroup", description: "Accessible group of related checkboxes." },
   { title: "Disclosure", description: "Collapsible panel with animated open/close." },
   { title: "Form", description: "Layout and validation wrapper for form fields." },
+  { title: "Heading", description: "Semantic headings with independent visual size." },
   { title: "Input", description: "Single-line text entry with label and error state." },
   { title: "Link", description: "Navigational anchor with consistent styling." },
   { title: "Modal", description: "Focused dialog overlay for important actions." },
@@ -409,10 +422,10 @@ function TokenCard({
           {icon}
         </span>
       )}
-      <span className="text-sm font-semibold text-text-primary group-hover:text-interactive-accent transition-colors">
+      <span className="text-sm font-semibold text-foreground-primary group-hover:text-interactive-accent transition-colors">
         {title}
       </span>
-      <span className="text-xs text-text-secondary leading-relaxed">{description}</span>
+      <span className="text-xs text-foreground-secondary leading-relaxed">{description}</span>
     </a>
   );
 }
@@ -439,10 +452,10 @@ function ComponentCard({
       )}
       {/* Label */}
       <div className="px-4 py-3 border-t border-border-subtle">
-        <span className="text-sm font-semibold text-text-primary group-hover:text-interactive-accent transition-colors block">
+        <span className="text-sm font-semibold text-foreground-primary group-hover:text-interactive-accent transition-colors block">
           {title}
         </span>
-        <span className="text-xs text-text-secondary leading-relaxed">{description}</span>
+        <span className="text-xs text-foreground-secondary leading-relaxed">{description}</span>
       </div>
     </a>
   );
@@ -453,14 +466,14 @@ function ComponentCard({
 // ---------------------------------------------------------------------------
 function WelcomeContent() {
   return (
-    <div data-theme="dark" className="font-sans text-text-primary bg-surface-default min-h-screen p-8 md:p-12">
+    <div data-theme="dark" className="font-sans text-foreground-primary bg-surface-default min-h-screen p-8 md:p-12">
       {/* Hero */}
       <div className="max-w-2xl mb-12">
-        <div className="inline-flex items-center gap-2 bg-surface-muted text-text-secondary text-xs font-mono px-3 py-1 rounded-full mb-4">
+        <div className="inline-flex items-center gap-2 bg-surface-muted text-foreground-secondary text-xs font-mono px-3 py-1 rounded-full mb-4">
           @jigsaw/design-system
         </div>
-        <h1 className="text-4xl font-bold text-text-primary mb-3">Jigsaw</h1>
-        <p className="text-lg text-text-secondary leading-relaxed">
+        <H1 classNameOverrides={{ component: ["text-4xl mb-3"] }}>Jigsaw</H1>
+        <p className="text-lg text-foreground-secondary leading-relaxed">
           The design system and component library for this monorepo. Built on a two-layer token
           architecture — a base colour palette and semantic intent tokens — with accessible
           components powered by React Aria.
@@ -469,8 +482,8 @@ function WelcomeContent() {
 
       {/* Tokens */}
       <section className="max-w-5xl mb-12">
-        <h2 className="text-xl font-semibold text-text-primary mb-1">Design Tokens</h2>
-        <p className="text-sm text-text-secondary max-w-2xl">
+        <H2 size="h3" classNameOverrides={{ component: ["mb-1"] }}>Design Tokens</H2>
+        <p className="text-sm text-foreground-secondary max-w-2xl">
           Tokens are the single source of truth for colour, spacing, typography, and elevation.
           Generated from{" "}
           <code className="font-mono text-xs bg-surface-muted px-1 py-0.5 rounded">
@@ -487,8 +500,8 @@ function WelcomeContent() {
 
       {/* Components */}
       <section className="max-w-5xl mb-12">
-        <h2 className="text-xl font-semibold text-text-primary mb-1">Components</h2>
-        <p className="text-sm text-text-secondary max-w-2xl">
+        <H2 size="h3" classNameOverrides={{ component: ["mb-1"] }}>Components</H2>
+        <p className="text-sm text-foreground-secondary max-w-2xl">
           {componentSections.length} production-ready components. Each story documents variants,
           states, accessibility props, and Tailwind integration.
         </p>
@@ -507,8 +520,8 @@ function WelcomeContent() {
 
       {/* Examples */}
       <section className="max-w-5xl mb-12">
-        <h2 className="text-xl font-semibold text-text-primary mb-1">Examples</h2>
-        <p className="text-sm text-text-secondary max-w-2xl">
+        <H2 size="h3" classNameOverrides={{ component: ["mb-1"] }}>Examples</H2>
+        <p className="text-sm text-foreground-secondary max-w-2xl">
           Full-page compositions showing how components work together in realistic product scenarios.
         </p>
         <CardGrid>
@@ -519,7 +532,7 @@ function WelcomeContent() {
       </section>
 
       {/* Footer */}
-      <footer className="max-w-5xl border-t border-border-subtle pt-6 text-xs text-text-muted">
+      <footer className="max-w-5xl border-t border-border-subtle pt-6 text-xs text-foreground-muted">
         <p>
           Tokens and components are versioned together in the monorepo under{" "}
           <code className="font-mono">packages/tokens</code> and{" "}

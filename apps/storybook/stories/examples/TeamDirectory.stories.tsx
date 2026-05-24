@@ -12,6 +12,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalTrigger,
+  H1,
   SearchField,
   Select,
   SelectItem,
@@ -80,31 +81,32 @@ function MemberCard({ member }: { member: Member }) {
           <Badge variant={ROLE_VARIANT[member.role]} size="sm">{member.role}</Badge>
         </div>
 
-        <Text variant="caption" className="text-text-secondary block mb-1">{member.email}</Text>
-        <Text variant="caption" className="text-text-muted block mb-4">
+        <Text variant="caption" className="text-foreground-secondary block mb-1">{member.email}</Text>
+        <Text variant="caption" className="text-foreground-muted block mb-4">
           {member.department} · Joined {member.joined}
         </Text>
 
         {/* Actions */}
         <div className="flex gap-2">
           <ModalTrigger>
-            <Button variant="secondary" size="sm" className="flex-1">Edit role</Button>
+            <Button size="sm" className="flex-1">Edit role</Button>
             <Modal>
               <ModalContent title={`Edit role — ${member.name}`}>
                 {({ close }) => (
                   <>
-                    <Text variant="body-sm" className="text-text-secondary mb-4">
-                      Choose a new role for <strong className="text-text-primary">{member.name}</strong>.
+                    <Text variant="body-sm" className="text-foreground-secondary mb-4">
+                      Choose a new role for <strong className="text-foreground-primary">{member.name}</strong>.
                       This will update their permissions immediately.
                     </Text>
-                    <Select label="Role" defaultSelectedKey={member.role.toLowerCase()}>
+                    <Select label="Role" defaultValue={member.role.toLowerCase()}>
                       <SelectItem id="viewer">Viewer — read-only access</SelectItem>
                       <SelectItem id="editor">Editor — can create and edit</SelectItem>
                       <SelectItem id="admin">Admin — full workspace access</SelectItem>
                     </Select>
                     <ModalFooter>
-                      <Button variant="secondary" onPress={close}>Cancel</Button>
+                      <Button onPress={close}>Cancel</Button>
                       <Button
+                        variant="primary"
                         onPress={() => {
                           close();
                           addToast({ title: "Role updated", description: `${member.name}'s role has been changed.`, variant: "success" });
@@ -125,12 +127,12 @@ function MemberCard({ member }: { member: Member }) {
               <ModalContent title="Remove member">
                 {({ close }) => (
                   <>
-                    <Text variant="body-sm" className="text-text-secondary mb-4">
-                      Remove <strong className="text-text-primary">{member.name}</strong> from this workspace?
+                    <Text variant="body-sm" className="text-foreground-secondary mb-4">
+                      Remove <strong className="text-foreground-primary">{member.name}</strong> from this workspace?
                       They will lose access immediately.
                     </Text>
                     <ModalFooter>
-                      <Button variant="secondary" onPress={close}>Cancel</Button>
+                      <Button onPress={close}>Cancel</Button>
                       <Button
                         variant="destructive"
                         onPress={() => {
@@ -177,12 +179,12 @@ function TeamDirectoryPage() {
           {/* Header */}
           <div className="flex items-start justify-between mb-8">
             <div>
-              <Text variant="heading-lg" as="h1">Team</Text>
-              <Text variant="body-sm" className="text-text-secondary mt-1">
+              <H1>Team</H1>
+              <Text variant="body-sm" className="text-foreground-secondary mt-1">
                 {MEMBERS.length} members across Engineering, Design, Product, and Marketing.
               </Text>
             </div>
-            <Button>Invite member</Button>
+            <Button variant="primary">Invite member</Button>
           </div>
 
           {/* Filters */}
@@ -198,8 +200,8 @@ function TeamDirectoryPage() {
             <div className="w-40">
               <Select
                 label="Role"
-                selectedKey={roleFilter}
-                onSelectionChange={(k) => setRoleFilter(k as string)}
+                value={roleFilter}
+                onChange={(k) => setRoleFilter(k as string)}
               >
                 <SelectItem id="all">All roles</SelectItem>
                 <SelectItem id="owner">Owner</SelectItem>
@@ -211,8 +213,8 @@ function TeamDirectoryPage() {
             <div className="w-44">
               <Select
                 label="Department"
-                selectedKey={deptFilter}
-                onSelectionChange={(k) => setDeptFilter(k as string)}
+                value={deptFilter}
+                onChange={(k) => setDeptFilter(k as string)}
               >
                 <SelectItem id="all">All departments</SelectItem>
                 <SelectItem id="Engineering">Engineering</SelectItem>
@@ -233,7 +235,7 @@ function TeamDirectoryPage() {
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <Text variant="body-md" className="font-medium mb-1">No members found</Text>
-              <Text variant="body-sm" className="text-text-secondary">Try adjusting your search or filters.</Text>
+              <Text variant="body-sm" className="text-foreground-secondary">Try adjusting your search or filters.</Text>
             </div>
           )}
         </div>

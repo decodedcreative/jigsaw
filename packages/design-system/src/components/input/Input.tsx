@@ -1,26 +1,17 @@
 "use client";
 
-import * as React from "react";
+import type { FC } from "react";
 import {
-  TextField,
-  Label,
+  TextField as ReactAriaTextField,
+  Label as ReactAriaLabel,
   Input as ReactAriaInput,
-  Text,
-  type TextFieldProps,
+  Text as ReactAriaText,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { inputStyles } from "./Input.styles";
+import type { InputProps } from "./Input.types";
 
-export type InputProps = Omit<TextFieldProps, "children"> & {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  placeholder?: string;
-  classNameOverrides?: Record<string, string[]>;
-  size?: "sm" | "md" | "lg";
-};
-
-export const Input = ({
+export const Input: FC<InputProps> = ({
   label,
   description,
   errorMessage,
@@ -41,20 +32,20 @@ export const Input = ({
   });
 
   return (
-    <TextField
+    <ReactAriaTextField
       className={classNames.wrapper}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
     >
-      {label && <Label className={classNames.label}>{label}</Label>}
+      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <ReactAriaInput className={classNames.input} placeholder={placeholder} />
       {(description || errorMessage) && (
-        <Text slot={errorMessage ? "errorMessage" : "description"} className={classNames.description}>
+        <ReactAriaText slot={errorMessage ? "errorMessage" : "description"} className={classNames.description}>
           {errorMessage || description}
-        </Text>
+        </ReactAriaText>
       )}
-    </TextField>
+    </ReactAriaTextField>
   );
 };
 

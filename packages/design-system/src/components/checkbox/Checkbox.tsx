@@ -1,23 +1,14 @@
 "use client";
 
-import * as React from "react";
-import {
-  Checkbox as ReactAriaCheckbox,
-  type CheckboxProps as ReactAriaCheckboxProps,
-} from "react-aria-components";
+import type { FC } from "react";
+import { CheckIcon, MinusIcon } from "@phosphor-icons/react";
+import { Icon } from "@components/icon";
+import { Checkbox as ReactAriaCheckbox } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { checkboxStyles } from "./Checkbox.styles";
+import type { CheckboxProps } from "./Checkbox.types";
 
-export type CheckboxProps = Omit<ReactAriaCheckboxProps, "children"> & {
-  label?: string;
-  description?: string;
-  children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
-  size?: "sm" | "md" | "lg";
-  hasError?: boolean;
-};
-
-export const Checkbox = ({
+export const Checkbox: FC<CheckboxProps> = ({
   label,
   description,
   size = "md",
@@ -40,23 +31,8 @@ export const Checkbox = ({
   return (
     <ReactAriaCheckbox className={classNames.wrapper} {...props}>
       <div className={classNames.box}>
-        <svg className={classNames.checkmark} viewBox="0 0 12 12" fill="none">
-          <path
-            d="M2 6L5 9L10 3"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        <svg className={classNames.indeterminateMark} viewBox="0 0 12 12" fill="none">
-          <path
-            d="M3 6H9"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
+        <Icon icon={CheckIcon} classNameOverrides={{ component: [classNames.checkmark] }} />
+        <Icon icon={MinusIcon} classNameOverrides={{ component: [classNames.indeterminateMark] }} />
       </div>
       {(label || children || description) && (
         <div className="flex flex-col">

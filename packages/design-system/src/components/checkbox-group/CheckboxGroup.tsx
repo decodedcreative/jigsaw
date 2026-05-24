@@ -1,24 +1,16 @@
 "use client";
 
-import * as React from "react";
+import type { FC } from "react";
 import {
   CheckboxGroup as ReactAriaCheckboxGroup,
-  Label,
-  Text,
-  type CheckboxGroupProps as ReactAriaCheckboxGroupProps,
+  Label as ReactAriaLabel,
+  Text as ReactAriaText,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { checkboxGroupStyles } from "./CheckboxGroup.styles";
+import type { CheckboxGroupProps } from "./CheckboxGroup.types";
 
-export type CheckboxGroupProps = Omit<ReactAriaCheckboxGroupProps, "children"> & {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
-};
-
-export const CheckboxGroup = ({
+export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   label,
   description,
   errorMessage,
@@ -45,17 +37,17 @@ export const CheckboxGroup = ({
       isInvalid={isInvalid || !!errorMessage}
       {...props}
     >
-      {label && <Label className={classNames.label}>{label}</Label>}
+      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       {description && (
-        <Text slot="description" className={classNames.description}>
+        <ReactAriaText slot="description" className={classNames.description}>
           {description}
-        </Text>
+        </ReactAriaText>
       )}
       <div className={classNames.options}>{children}</div>
       {errorMessage && (
-        <Text slot="errorMessage" className={classNames.errorMessage}>
+        <ReactAriaText slot="errorMessage" className={classNames.errorMessage}>
           {errorMessage}
-        </Text>
+        </ReactAriaText>
       )}
     </ReactAriaCheckboxGroup>
   );

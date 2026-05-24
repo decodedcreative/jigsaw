@@ -6,6 +6,7 @@ import {
   Card,
   Checkbox,
   Form,
+  H1,
   Input,
 } from "@jigsaw/design-system";
 import NextLink from "next/link";
@@ -31,8 +32,8 @@ export default function SignUpPage() {
               <path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-text-primary">Create your account</h1>
-          <p className="text-sm text-text-secondary mt-1">
+          <H1 size="h2">Create your account</H1>
+          <p className="text-sm text-foreground-secondary mt-1">
             Already have an account?{" "}
             <NextLink href="/sign-in" className="text-interactive-accent hover:underline font-medium">
               Sign in
@@ -41,7 +42,7 @@ export default function SignUpPage() {
         </div>
 
         {/* Form card */}
-        <Card className="shadow-lg p-8">
+        <Card variant="elevated" classNameOverrides={{ component: ["p-8"] }}>
           <Form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-2 gap-3">
@@ -72,7 +73,7 @@ export default function SignUpPage() {
                   Privacy Policy
                 </NextLink>
               </Checkbox>
-              <Button type="submit" className="w-full mt-2" isPending={loading}>
+              <Button type="submit" variant="primary" fullWidth classNameOverrides={{ component: ["mt-2"] }} isPending={loading}>
                 {loading ? "Creating account…" : "Create account"}
               </Button>
             </div>

@@ -9,7 +9,6 @@ import {
   Checkbox,
   Disclosure,
   Form,
-  FormActions,
   FormFieldset,
   Input,
   Modal,
@@ -22,6 +21,7 @@ import {
   TabList,
   TabPanel,
   Tabs,
+  H1,
   Text,
   Textarea,
   ToastProvider,
@@ -35,7 +35,7 @@ function SaveButton() {
   const { addToast } = useToast();
   return (
     <Button
-      type="submit"
+      type="submit" variant="primary"
       onPress={() =>
         addToast({ title: "Settings saved", description: "Your changes have been applied.", variant: "success" })
       }
@@ -51,14 +51,14 @@ function SaveButton() {
 function ProfileTab() {
   return (
     <Form onSubmit={(e) => e.preventDefault()}>
-      <FormFieldset legend="Public profile">
+      <FormFieldset label="Public profile">
         <div className="flex items-center gap-4 mb-2">
           <Avatar size="xl">
             <AvatarFallback>JH</AvatarFallback>
             <AvatarStatusIndicator status="online" />
           </Avatar>
           <div className="flex gap-2">
-            <Button variant="secondary" size="sm">Upload photo</Button>
+            <Button size="sm">Upload photo</Button>
             <Button variant="ghost" size="sm">Remove</Button>
           </div>
         </div>
@@ -70,10 +70,10 @@ function ProfileTab() {
         <Input label="Email address" type="email" defaultValue="james@example.com" />
         <Textarea label="Bio" defaultValue="Building design systems." rows={3} />
       </FormFieldset>
-      <FormActions>
-        <Button variant="secondary">Cancel</Button>
+      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
+        <Button>Cancel</Button>
         <SaveButton />
-      </FormActions>
+      </div>
     </Form>
   );
 }
@@ -88,36 +88,37 @@ function NotificationsTab() {
 
   return (
     <Form onSubmit={(e) => e.preventDefault()}>
-      <FormFieldset legend="Email notifications">
+      <FormFieldset label="Email notifications">
         <div className="flex flex-col gap-3">
           <Checkbox isSelected={emailDigest} onChange={setEmailDigest}>
             <span className="font-medium">Weekly digest</span>
-            <span className="block text-xs text-text-secondary">A summary of activity from the past week.</span>
+            <span className="block text-xs text-foreground-secondary">A summary of activity from the past week.</span>
           </Checkbox>
           <Checkbox isSelected={productUpdates} onChange={setProductUpdates}>
             <span className="font-medium">Product updates</span>
-            <span className="block text-xs text-text-secondary">New features and improvements.</span>
+            <span className="block text-xs text-foreground-secondary">New features and improvements.</span>
           </Checkbox>
           <Checkbox isSelected={securityAlerts} onChange={setSecurityAlerts}>
             <span className="font-medium">Security alerts</span>
-            <span className="block text-xs text-text-secondary">Unusual sign-in activity and account changes.</span>
+            <span className="block text-xs text-foreground-secondary">Unusual sign-in activity and account changes.</span>
           </Checkbox>
           <Checkbox isSelected={teamActivity} onChange={setTeamActivity}>
             <span className="font-medium">Team activity</span>
-            <span className="block text-xs text-text-secondary">Comments, mentions, and assignments.</span>
+            <span className="block text-xs text-foreground-secondary">Comments, mentions, and assignments.</span>
           </Checkbox>
         </div>
       </FormFieldset>
-      <FormActions>
-        <Button variant="secondary">Cancel</Button>
+      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
+        <Button>Cancel</Button>
         <Button
+          variant="primary"
           onPress={() =>
             addToast({ title: "Preferences saved", variant: "success" })
           }
         >
           Save changes
         </Button>
-      </FormActions>
+      </div>
     </Form>
   );
 }
@@ -125,8 +126,8 @@ function NotificationsTab() {
 function AppearanceTab() {
   return (
     <Form onSubmit={(e) => e.preventDefault()}>
-      <FormFieldset legend="Display preferences">
-        <Select label="Timezone" defaultSelectedKey="utc">
+      <FormFieldset label="Display preferences">
+        <Select label="Timezone" defaultValue="utc">
           <SelectItem id="utc">UTC — Coordinated Universal Time</SelectItem>
           <SelectItem id="london">Europe/London (GMT+0)</SelectItem>
           <SelectItem id="paris">Europe/Paris (GMT+1)</SelectItem>
@@ -134,22 +135,22 @@ function AppearanceTab() {
           <SelectItem id="la">America/Los_Angeles (GMT-8)</SelectItem>
           <SelectItem id="sydney">Australia/Sydney (GMT+11)</SelectItem>
         </Select>
-        <Select label="Date format" defaultSelectedKey="dmy">
+        <Select label="Date format" defaultValue="dmy">
           <SelectItem id="dmy">DD/MM/YYYY</SelectItem>
           <SelectItem id="mdy">MM/DD/YYYY</SelectItem>
           <SelectItem id="ymd">YYYY-MM-DD</SelectItem>
         </Select>
-        <Select label="Language" defaultSelectedKey="en">
+        <Select label="Language" defaultValue="en">
           <SelectItem id="en">English</SelectItem>
           <SelectItem id="fr">Français</SelectItem>
           <SelectItem id="de">Deutsch</SelectItem>
           <SelectItem id="es">Español</SelectItem>
         </Select>
       </FormFieldset>
-      <FormActions>
-        <Button variant="secondary">Cancel</Button>
+      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
+        <Button>Cancel</Button>
         <SaveButton />
-      </FormActions>
+      </div>
     </Form>
   );
 }
@@ -163,25 +164,25 @@ function DangerZoneTab() {
       <div className="flex items-center justify-between p-4 rounded-lg border border-border-default">
         <div>
           <Text variant="body-sm" className="font-medium">Transfer ownership</Text>
-          <Text variant="caption" className="text-text-secondary">Transfer this workspace to another member.</Text>
+          <Text variant="caption" className="text-foreground-secondary">Transfer this workspace to another member.</Text>
         </div>
-        <Button variant="secondary" size="sm">Transfer</Button>
+        <Button size="sm">Transfer</Button>
       </div>
 
       {/* Archive */}
       <div className="flex items-center justify-between p-4 rounded-lg border border-border-default">
         <div>
           <Text variant="body-sm" className="font-medium">Archive workspace</Text>
-          <Text variant="caption" className="text-text-secondary">Make this workspace read-only and hide it from navigation.</Text>
+          <Text variant="caption" className="text-foreground-secondary">Make this workspace read-only and hide it from navigation.</Text>
         </div>
-        <Button variant="secondary" size="sm">Archive</Button>
+        <Button size="sm">Archive</Button>
       </div>
 
       {/* Delete */}
       <div className="flex items-center justify-between p-4 rounded-lg border border-feedback-error bg-feedback-error-subtle">
         <div>
           <Text variant="body-sm" className="font-medium text-feedback-error">Delete account</Text>
-          <Text variant="caption" className="text-text-secondary">Permanently delete your account and all data. This cannot be undone.</Text>
+          <Text variant="caption" className="text-foreground-secondary">Permanently delete your account and all data. This cannot be undone.</Text>
         </div>
         <ModalTrigger>
           <Button variant="destructive" size="sm">Delete account</Button>
@@ -189,13 +190,13 @@ function DangerZoneTab() {
             <ModalContent title="Delete account">
               {({ close }) => (
                 <>
-                  <Text variant="body-sm" className="text-text-secondary mb-4">
+                  <Text variant="body-sm" className="text-foreground-secondary mb-4">
                     This will permanently delete your account, all workspaces, and all associated data.
-                    This action <strong className="text-text-primary">cannot be undone</strong>.
+                    This action <strong className="text-foreground-primary">cannot be undone</strong>.
                   </Text>
                   <Input label='Type "delete" to confirm' placeholder="delete" />
                   <ModalFooter>
-                    <Button variant="secondary" onPress={close}>Cancel</Button>
+                    <Button onPress={close}>Cancel</Button>
                     <Button
                       variant="destructive"
                       onPress={() => {
@@ -226,8 +227,8 @@ function AccountSettingsPage() {
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <Text variant="heading-lg" as="h1">Account settings</Text>
-            <Text variant="body-sm" className="text-text-secondary mt-1">
+            <H1>Account settings</H1>
+            <Text variant="body-sm" className="text-foreground-secondary mt-1">
               Manage your profile, notifications, and workspace preferences.
             </Text>
           </div>

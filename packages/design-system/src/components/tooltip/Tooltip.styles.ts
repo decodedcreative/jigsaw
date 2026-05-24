@@ -1,11 +1,10 @@
 import { cva } from "class-variance-authority";
 
 export const tooltipStyles = {
-  trigger: cva("outline-none"),
   content: cva(
     [
       "z-50 px-3 py-1.5 text-sm rounded-md shadow-md",
-      "bg-surface-inverse text-text-inverse",
+      "bg-surface-inverse text-foreground-inverse",
       "animate-in fade-in-0 zoom-in-95",
       "data-[exiting]:animate-out data-[exiting]:fade-out-0 data-[exiting]:zoom-out-95",
     ],

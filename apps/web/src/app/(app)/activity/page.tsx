@@ -6,90 +6,23 @@ import {
   AvatarFallback,
   Badge,
   Button,
+  H1,
   Card,
   CardContent,
+  Detail,
+  Icon,
+  Notice,
+  SectionLabel,
   SearchField,
   Select,
   SelectItem,
+  Subheading,
   Tooltip,
   TooltipTrigger,
-  type BadgeVariant,
 } from "@jigsaw/design-system";
+import { EVENTS, KIND_ICONS, KIND_LABELS } from "./activity.constants";
+import type { ActivityEvent, EventKind } from "./activity.types";
 
-// ---------------------------------------------------------------------------
-// Data
-// ---------------------------------------------------------------------------
-type EventKind = "deploy" | "pr" | "token" | "component" | "member" | "settings";
-
-type ActivityEvent = {
-  id: string;
-  kind: EventKind;
-  actor: string;
-  initials: string;
-  action: string;
-  target: string;
-  meta?: string;
-  time: string;
-  date: string;
-  badge: BadgeVariant;
-};
-
-const EVENTS: ActivityEvent[] = [
-  { id: "1",  kind: "deploy",    actor: "James Howell",   initials: "JH", action: "deployed",       target: "main → Chromatic",              meta: "47 stories",        time: "09:14",  date: "Today",      badge: "success"   },
-  { id: "2",  kind: "pr",        actor: "Amara Osei",     initials: "AO", action: "merged",         target: "feat/account-settings-page",    meta: "+312 −18",          time: "08:51",  date: "Today",      badge: "primary"   },
-  { id: "3",  kind: "component", actor: "James Howell",   initials: "JH", action: "added",          target: "Tooltip component",             meta: "packages/design-system", time: "08:30", date: "Today",  badge: "secondary" },
-  { id: "4",  kind: "token",     actor: "Amara Osei",     initials: "AO", action: "updated",        target: "grey palette → neutral",        meta: "18 semantic tokens", time: "Yesterday, 16:42", date: "Yesterday", badge: "warning" },
-  { id: "5",  kind: "pr",        actor: "Lena Fischer",   initials: "LF", action: "opened",         target: "fix/disclosure-collapsed-space",meta: "+8 −2",             time: "Yesterday, 14:10", date: "Yesterday", badge: "default"  },
-  { id: "6",  kind: "member",    actor: "James Howell",   initials: "JH", action: "invited",        target: "sofia@example.com",             meta: "Viewer",            time: "Yesterday, 11:05", date: "Yesterday", badge: "default"  },
-  { id: "7",  kind: "deploy",    actor: "Carlos Rivera",  initials: "CR", action: "failed deploy",  target: "main → Chromatic",              meta: "3 regressions",     time: "Yesterday, 09:22", date: "Yesterday", badge: "error"    },
-  { id: "8",  kind: "component", actor: "Lena Fischer",   initials: "LF", action: "added",          target: "Skeleton component",            meta: "packages/design-system", time: "2 days ago", date: "2 days ago", badge: "secondary" },
-  { id: "9",  kind: "settings",  actor: "James Howell",   initials: "JH", action: "changed",        target: "workspace timezone",            meta: "UTC → Europe/London", time: "2 days ago", date: "2 days ago", badge: "default"   },
-  { id: "10", kind: "token",     actor: "Amara Osei",     initials: "AO", action: "added",          target: "feedback-warning tokens",       meta: "6 new values",      time: "3 days ago", date: "3 days ago", badge: "warning" },
-  { id: "11", kind: "member",    actor: "James Howell",   initials: "JH", action: "removed",        target: "Dan Yates",                     meta: "Editor",            time: "3 days ago", date: "3 days ago", badge: "error"    },
-  { id: "12", kind: "pr",        actor: "Carlos Rivera",  initials: "CR", action: "merged",         target: "feat/mobile-nav-fullscreen",    meta: "+58 −46",           time: "4 days ago", date: "4 days ago", badge: "primary"  },
-];
-
-const KIND_LABELS: Record<EventKind, string> = {
-  deploy: "Deploy", pr: "Pull request", token: "Tokens", component: "Component", member: "Team", settings: "Settings",
-};
-
-const KIND_ICON: Record<EventKind, React.ReactNode> = {
-  deploy: (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" />
-      <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3" />
-    </svg>
-  ),
-  pr: (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 012 2v7" /><line x1="6" y1="9" x2="6" y2="21" />
-    </svg>
-  ),
-  token: (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <circle cx="12" cy="12" r="3" /><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
-    </svg>
-  ),
-  component: (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
-    </svg>
-  ),
-  member: (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
-    </svg>
-  ),
-  settings: (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
-    </svg>
-  ),
-};
-
-// ---------------------------------------------------------------------------
-// Page
-// ---------------------------------------------------------------------------
 export default function ActivityPage() {
   const [query, setQuery] = useState("");
   const [kindFilter, setKindFilter] = useState("all");
@@ -106,7 +39,6 @@ export default function ActivityPage() {
     );
   });
 
-  // Group by date
   const grouped = filtered.reduce<Record<string, ActivityEvent[]>>((acc, e) => {
     (acc[e.date] ??= []).push(e);
     return acc;
@@ -114,24 +46,22 @@ export default function ActivityPage() {
 
   return (
     <div className="p-6 md:p-8 max-w-4xl mx-auto">
-      {/* Header */}
       <div className="flex items-start justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-text-primary">Activity</h1>
-          <p className="text-sm text-text-secondary mt-1">Audit log of all workspace events.</p>
+        <div className="flex flex-col gap-1">
+          <H1>Activity</H1>
+          <Subheading>Audit log of all workspace events.</Subheading>
         </div>
-        <Button variant="secondary" size="sm">
+        <Button size="sm">
           Export CSV
         </Button>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-wrap gap-3 mb-6">
         <div className="flex-1 min-w-48">
           <SearchField label="Search" placeholder="Search events…" value={query} onChange={setQuery} />
         </div>
         <div className="w-40">
-          <Select label="Category" selectedKey={kindFilter} onSelectionChange={(k) => setKindFilter(k as string)}>
+          <Select label="Category" value={kindFilter} onChange={(k) => setKindFilter(k as string)}>
             <SelectItem id="all">All categories</SelectItem>
             {(Object.entries(KIND_LABELS) as [EventKind, string][]).map(([k, label]) => (
               <SelectItem key={k} id={k}>{label}</SelectItem>
@@ -139,7 +69,7 @@ export default function ActivityPage() {
           </Select>
         </div>
         <div className="w-44">
-          <Select label="Member" selectedKey={actorFilter} onSelectionChange={(k) => setActorFilter(k as string)}>
+          <Select label="Member" value={actorFilter} onChange={(k) => setActorFilter(k as string)}>
             <SelectItem id="all">All members</SelectItem>
             {actors.map((a) => (
               <SelectItem key={a} id={a}>{a}</SelectItem>
@@ -148,55 +78,61 @@ export default function ActivityPage() {
         </div>
       </div>
 
-      {/* Timeline */}
       {Object.keys(grouped).length === 0 ? (
         <Card>
-          <CardContent className="flex flex-col items-center justify-center py-20 text-center p-8">
-            <p className="text-base font-medium text-text-primary mb-1">No events found</p>
-            <p className="text-sm text-text-secondary">Try adjusting your filters.</p>
+          <CardContent
+            padding="lg"
+            classNameOverrides={{ content: ["flex", "flex-col", "items-center", "justify-center", "gap-1", "py-20", "text-center"] }}
+          >
+            <Notice>No events found</Notice>
+            <Subheading>Try adjusting your filters.</Subheading>
           </CardContent>
         </Card>
       ) : (
         <div className="flex flex-col gap-6">
           {Object.entries(grouped).map(([date, events]) => (
             <div key={date}>
-              <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">{date}</p>
+              <SectionLabel classNameOverrides={{ component: ["mb-3"] }}>{date}</SectionLabel>
               <Card>
-                <CardContent className="p-0">
+                <CardContent padding="none">
                   <div className="divide-y divide-border-subtle">
                     {events.map((e) => (
                       <div key={e.id} className="flex items-center gap-3 px-4 py-3">
-                        {/* Actor avatar */}
                         <TooltipTrigger delay={300}>
-                          <button className="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent rounded-full">
-                            <Avatar size="sm">
-                              <AvatarFallback>{e.initials}</AvatarFallback>
-                            </Avatar>
-                          </button>
+                          <Button
+                            variant="ghost"
+                            mediaOnly
+                            aria-label={e.actor}
+                            media={
+                              <Avatar size="sm">
+                                <AvatarFallback>{e.initials}</AvatarFallback>
+                              </Avatar>
+                            }
+                          />
                           <Tooltip>{e.actor}</Tooltip>
                         </TooltipTrigger>
 
-                        {/* Event description */}
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-text-primary">
+                          <p className="text-sm text-foreground-primary">
                             <span className="font-medium">{e.actor}</span>{" "}
-                            <span className="text-text-secondary">{e.action}</span>{" "}
+                            <span className="text-foreground-secondary">{e.action}</span>{" "}
                             <span className="font-mono text-xs bg-surface-muted px-1.5 py-0.5 rounded">{e.target}</span>
                           </p>
                           {e.meta && (
-                            <p className="text-xs text-text-muted mt-0.5">{e.meta}</p>
+                            <Detail classNameOverrides={{ component: ["mt-0.5"] }}>{e.meta}</Detail>
                           )}
                         </div>
 
-                        {/* Kind badge */}
                         <div className="flex items-center gap-2 shrink-0">
                           <Badge variant={e.badge} size="sm">
                             <span className="flex items-center gap-1">
-                              {KIND_ICON[e.kind]}
+                              <Icon icon={KIND_ICONS[e.kind]} size="sm" />
                               {KIND_LABELS[e.kind]}
                             </span>
                           </Badge>
-                          <span className="text-xs text-text-muted w-16 text-right">{e.time.replace(/.*,\s*/, "")}</span>
+                          <Detail as="span" classNameOverrides={{ component: ["w-16", "text-right"] }}>
+                            {e.time.replace(/.*,\s*/, "")}
+                          </Detail>
                         </div>
                       </div>
                     ))}

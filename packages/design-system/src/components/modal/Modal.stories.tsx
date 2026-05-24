@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Modal, ModalContent, ModalTrigger, ModalFooter } from "./Modal";
+import { Modal, ModalContent, ModalTrigger, ModalFooter } from "./index";
 import { Button } from "../button/Button";
 
 const meta = {
@@ -20,11 +20,11 @@ export const Default: Story = {
         <ModalContent title="Confirm action">
           {({ close }) => (
             <>
-              <p className="text-sm text-text-secondary">
+              <p className="text-sm text-foreground-secondary">
                 Are you sure you want to continue? This action cannot be undone.
               </p>
               <ModalFooter>
-                <Button variant="secondary" onPress={close}>Cancel</Button>
+                <Button onPress={close}>Cancel</Button>
                 <Button variant="destructive" onPress={close}>Confirm</Button>
               </ModalFooter>
             </>

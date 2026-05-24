@@ -1,2 +1,3 @@
-export { Modal, ModalContent, ModalTrigger, ModalFooter } from "./Modal";
-export type { ModalProps, ModalContentProps, ModalFooterProps } from "./Modal";
+export { Modal } from "./Modal";
+export type { ModalProps } from "./Modal.types";
+export * from "./sub-components";

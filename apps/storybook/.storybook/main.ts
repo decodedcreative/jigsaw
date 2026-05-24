@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
+  staticDirs: ["../public"],
   stories: [
     "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../../../packages/design-system/src/components/**/*.stories.@(js|jsx|mjs|ts|tsx)",

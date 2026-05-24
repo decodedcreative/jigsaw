@@ -1,143 +1,97 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import { render, screen, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import {
-  Navigation,
-  NavigationBrand,
-  NavigationInner,
-  NavigationLinks,
-  NavigationLink,
-  NavigationActions,
-  MobileNavigation,
-} from './Navigation';
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { Navigation } from "./Navigation";
+import { NavigationLink } from "./sub-components/NavigationLink";
 
 afterEach(() => {
   cleanup();
 });
 
-describe('Navigation', () => {
-  it('renders a nav element', () => {
+describe("Navigation", () => {
+  it("renders a nav element", () => {
     render(<Navigation />);
-    expect(screen.getByRole('navigation')).toBeInTheDocument();
+    expect(screen.getByRole("navigation")).toBeInTheDocument();
   });
 
-  it('renders children', () => {
-    render(<Navigation><span>Nav content</span></Navigation>);
-    expect(screen.getByText('Nav content')).toBeInTheDocument();
-  });
-
-  it('passes additional HTML attributes', () => {
-    render(<Navigation aria-label="Main navigation" />);
-    expect(screen.getByRole('navigation', { name: 'Main navigation' })).toBeInTheDocument();
-  });
-});
-
-describe('NavigationBrand', () => {
-  it('renders a link', () => {
-    render(<NavigationBrand>Brand</NavigationBrand>);
-    expect(screen.getByRole('link', { name: 'Brand' })).toBeInTheDocument();
-  });
-
-  it('defaults to href="/"', () => {
-    render(<NavigationBrand>Brand</NavigationBrand>);
-    expect(screen.getByRole('link')).toHaveAttribute('href', '/');
-  });
-
-  it('renders with custom href', () => {
-    render(<NavigationBrand href="/home">Brand</NavigationBrand>);
-    expect(screen.getByRole('link')).toHaveAttribute('href', '/home');
-  });
-
-  it('renders children', () => {
-    render(<NavigationBrand>My Brand</NavigationBrand>);
-    expect(screen.getByText('My Brand')).toBeInTheDocument();
-  });
-});
-
-describe('NavigationLinks', () => {
-  it('renders children', () => {
+  it("renders brand, links, and actions slots", () => {
     render(
-      <NavigationLinks>
-        <NavigationLink href="/home">Home</NavigationLink>
-      </NavigationLinks>
+      <Navigation
+        brand={<span>Brand</span>}
+        links={<NavigationLink href="/home">Home</NavigationLink>}
+        actions={<button type="button">Sign in</button>}
+      />
     );
-    expect(screen.getByText('Home')).toBeInTheDocument();
-  });
-});
-
-describe('NavigationLink', () => {
-  it('renders a link', () => {
-    render(<NavigationLink href="/about">About</NavigationLink>);
-    expect(screen.getByRole('link', { name: 'About' })).toBeInTheDocument();
+    expect(screen.getByText("Brand")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
   });
 
-  it('renders with correct href', () => {
-    render(<NavigationLink href="/about">About</NavigationLink>);
-    expect(screen.getByRole('link')).toHaveAttribute('href', '/about');
+  it("passes additional HTML attributes", () => {
+    render(<Navigation aria-label="Main navigation" />);
+    expect(screen.getByRole("navigation", { name: "Main navigation" })).toBeInTheDocument();
   });
 
-  it('sets aria-current="page" when isCurrent is true', () => {
-    render(<NavigationLink href="/about" isCurrent>About</NavigationLink>);
-    expect(screen.getByRole('link')).toHaveAttribute('aria-current', 'page');
+  it("keeps the links panel closed until the menu is toggled", () => {
+    render(
+      <Navigation
+        links={
+          <>
+            <NavigationLink href="/home">Home</NavigationLink>
+            <NavigationLink href="/about">About</NavigationLink>
+          </>
+        }
+      />
+    );
+    expect(screen.getByTestId("navigation-links")).not.toHaveAttribute("data-open");
   });
 
-  it('does not set aria-current when isCurrent is false', () => {
-    render(<NavigationLink href="/about">About</NavigationLink>);
-    expect(screen.getByRole('link')).not.toHaveAttribute('aria-current');
-  });
-});
-
-describe('NavigationActions', () => {
-  it('renders children', () => {
-    render(<NavigationActions><button>Sign In</button></NavigationActions>);
-    expect(screen.getByRole('button', { name: 'Sign In' })).toBeInTheDocument();
-  });
-});
-
-describe('NavigationInner', () => {
-  it('renders children', () => {
-    render(<NavigationInner>Inner content</NavigationInner>);
-    expect(screen.getByText('Inner content')).toBeInTheDocument();
-  });
-});
-
-describe('MobileNavigation', () => {
-  const links = [
-    { href: '/home', label: 'Home' },
-    { href: '/about', label: 'About', isCurrent: true },
-  ];
-
-  it('renders a toggle button', () => {
-    render(<MobileNavigation isOpen={false} onOpenChange={vi.fn()} links={links} />);
-    expect(screen.getByRole('button', { name: 'Toggle menu' })).toBeInTheDocument();
-  });
-
-  it('does not show mobile menu when isOpen is false', () => {
-    render(<MobileNavigation isOpen={false} onOpenChange={vi.fn()} links={links} />);
-    expect(screen.queryByText('Home')).not.toBeInTheDocument();
-  });
-
-  it('shows mobile menu when isOpen is true', () => {
-    render(<MobileNavigation isOpen onOpenChange={vi.fn()} links={links} />);
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('About')).toBeInTheDocument();
-  });
-
-  it('calls onOpenChange when toggle button is clicked', async () => {
+  it("opens the links panel when the mobile menu is toggled", async () => {
     const user = userEvent.setup();
-    const onOpenChange = vi.fn();
-    render(<MobileNavigation isOpen={false} onOpenChange={onOpenChange} links={links} />);
-    await user.click(screen.getByRole('button', { name: 'Toggle menu' }));
-    expect(onOpenChange).toHaveBeenCalledWith(true);
+    render(
+      <Navigation
+        links={
+          <>
+            <NavigationLink href="/home">Home</NavigationLink>
+            <NavigationLink href="/about" isCurrent>
+              About
+            </NavigationLink>
+          </>
+        }
+      />
+    );
+
+    await user.click(screen.getByRole("button", { name: "Toggle menu" }));
+    expect(screen.getByTestId("navigation-links")).toHaveAttribute("data-open");
+    expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "About" })).toHaveAttribute("aria-current", "page");
   });
 
-  it('has aria-expanded on the toggle button', () => {
-    render(<MobileNavigation isOpen={false} onOpenChange={vi.fn()} links={links} />);
-    expect(screen.getByRole('button', { name: 'Toggle menu' })).toHaveAttribute('aria-expanded', 'false');
+  it("calls onMobileOpenChange when the toggle is clicked", async () => {
+    const user = userEvent.setup();
+    const onMobileOpenChange = vi.fn();
+    render(
+      <Navigation links={<NavigationLink href="/home">Home</NavigationLink>} onMobileOpenChange={onMobileOpenChange} />
+    );
+
+    await user.click(screen.getByRole("button", { name: "Toggle menu" }));
+    expect(onMobileOpenChange).toHaveBeenCalledWith(true);
   });
 
-  it('sets aria-current="page" on the current link', () => {
-    render(<MobileNavigation isOpen onOpenChange={vi.fn()} links={links} />);
-    expect(screen.getByRole('link', { name: 'About' })).toHaveAttribute('aria-current', 'page');
+  it("closes the links panel when a link is pressed", async () => {
+    const user = userEvent.setup();
+    render(
+      <Navigation
+        links={
+          <>
+            <NavigationLink href="/home">Home</NavigationLink>
+            <NavigationLink href="/about">About</NavigationLink>
+          </>
+        }
+      />
+    );
+
+    await user.click(screen.getByRole("button", { name: "Toggle menu" }));
+    await user.click(screen.getByRole("link", { name: "Home" }));
+    expect(screen.getByTestId("navigation-links")).not.toHaveAttribute("data-open");
   });
 });

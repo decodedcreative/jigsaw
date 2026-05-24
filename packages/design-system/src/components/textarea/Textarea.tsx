@@ -1,27 +1,17 @@
 "use client";
 
-import * as React from "react";
+import type { FC } from "react";
 import {
-  TextField,
-  Label,
+  TextField as ReactAriaTextField,
+  Label as ReactAriaLabel,
   TextArea as ReactAriaTextArea,
-  Text,
-  type TextFieldProps,
+  Text as ReactAriaText,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { textareaStyles } from "./Textarea.styles";
+import type { TextareaProps } from "./Textarea.types";
 
-export type TextareaProps = Omit<TextFieldProps, "children"> & {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  placeholder?: string;
-  rows?: number;
-  classNameOverrides?: Record<string, string[]>;
-  size?: "sm" | "md" | "lg";
-};
-
-export const Textarea = ({
+export const Textarea: FC<TextareaProps> = ({
   label,
   description,
   errorMessage,
@@ -43,23 +33,23 @@ export const Textarea = ({
   });
 
   return (
-    <TextField
+    <ReactAriaTextField
       className={classNames.wrapper}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
     >
-      {label && <Label className={classNames.label}>{label}</Label>}
+      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <ReactAriaTextArea className={classNames.textarea} placeholder={placeholder} rows={rows} />
       {(description || errorMessage) && (
-        <Text
+        <ReactAriaText
           slot={errorMessage ? "errorMessage" : "description"}
           className={classNames.description}
         >
           {errorMessage || description}
-        </Text>
+        </ReactAriaText>
       )}
-    </TextField>
+    </ReactAriaTextField>
   );
 };
 

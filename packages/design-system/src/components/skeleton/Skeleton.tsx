@@ -1,17 +1,11 @@
 "use client";
 
-import { type HTMLAttributes, type CSSProperties } from "react";
+import { type FC,  type CSSProperties } from "react";
 import { useGetClassNames } from "@hooks";
-import { skeletonStyles, type SkeletonVariant } from "./Skeleton.styles";
+import { skeletonStyles } from "./Skeleton.styles";
+import type { SkeletonProps } from "./Skeleton.types";
 
-export type SkeletonProps = HTMLAttributes<HTMLDivElement> & {
-  variant?: SkeletonVariant;
-  width?: string | number;
-  height?: string | number;
-  classNameOverrides?: Record<string, string[]>;
-};
-
-export const Skeleton = ({
+export const Skeleton: FC<SkeletonProps> = ({
   variant = "default",
   width,
   height,
@@ -20,7 +14,7 @@ export const Skeleton = ({
   ...props
 }: SkeletonProps) => {
   const classNames = useGetClassNames(skeletonStyles, classNameOverrides, {
-    root: { variant },
+    component: { variant },
   });
 
   const inlineStyle: CSSProperties = {
@@ -29,33 +23,7 @@ export const Skeleton = ({
     ...style,
   };
 
-  return <div className={classNames.root} style={inlineStyle} {...props} />;
+  return <div className={classNames.component} style={inlineStyle} {...props} />;
 };
 
 Skeleton.displayName = "DS_Skeleton";
-
-export const SkeletonText = (props: Omit<SkeletonProps, "variant">) => (
-  <Skeleton variant="text" height={16} {...props} />
-);
-
-SkeletonText.displayName = "DS_SkeletonText";
-
-export const SkeletonCircle = ({
-  width = 40,
-  height = 40,
-  ...props
-}: Omit<SkeletonProps, "variant">) => (
-  <Skeleton variant="circular" width={width} height={height} {...props} />
-);
-
-SkeletonCircle.displayName = "DS_SkeletonCircle";
-
-export const SkeletonCard = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={`space-y-3 ${className || ""}`} {...props}>
-    <Skeleton width="100%" height={200} />
-    <SkeletonText width="80%" />
-    <SkeletonText width="60%" />
-  </div>
-);
-
-SkeletonCard.displayName = "DS_SkeletonCard";

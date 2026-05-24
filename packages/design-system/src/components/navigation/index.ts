@@ -1,18 +1,3 @@
-export {
-  Navigation,
-  NavigationInner,
-  NavigationBrand,
-  NavigationLinks,
-  NavigationLink,
-  NavigationActions,
-  MobileNavigation,
-} from "./Navigation";
-export type {
-  NavigationProps,
-  NavigationInnerProps,
-  NavigationBrandProps,
-  NavigationLinksProps,
-  NavigationLinkProps,
-  NavigationActionsProps,
-  MobileNavigationProps,
-} from "./Navigation";
+export { Navigation } from "./Navigation";
+export type { NavigationProps } from "./Navigation.types";
+export * from "./sub-components";

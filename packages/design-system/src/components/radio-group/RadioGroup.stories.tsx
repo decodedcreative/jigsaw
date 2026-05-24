@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { RadioGroup, Radio } from "./RadioGroup";
+import React from "react";
+import { RadioGroup, Radio } from "./index";
 
 const meta = {
   title: "Design System/RadioGroup",
@@ -13,7 +14,7 @@ const meta = {
 } satisfies Meta<typeof RadioGroup>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof RadioGroup>;
 
 const items = (
   <>

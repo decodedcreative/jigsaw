@@ -8,6 +8,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "browser": "./dist/index.mjs",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     }
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "@jigsaw/tokens": "*",
+    "@phosphor-icons/react": "^2.1.10",
     "class-variance-authority": "^0.7.1",
     "react-aria-components": "^1.17.0",
     "tailwind-merge": "^2.5.5"

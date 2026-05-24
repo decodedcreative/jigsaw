@@ -23,22 +23,22 @@ const semanticGroups: { title: string; description: string; swatches: SemanticSw
       { label: "muted", className: "bg-surface-muted" },
       { label: "subtle", className: "bg-surface-subtle" },
       { label: "hover", className: "bg-surface-hover" },
-      { label: "inverse", className: "bg-surface-inverse", sampleTextClass: "text-text-inverse" },
+      { label: "inverse", className: "bg-surface-inverse", sampleTextClass: "text-foreground-inverse" },
     ],
   },
   {
-    title: "Text",
+    title: "Foreground",
     description: "Foreground colours for typography and icons",
     swatches: [
-      { label: "primary", className: "bg-text-primary" },
-      { label: "secondary", className: "bg-text-secondary" },
-      { label: "tertiary", className: "bg-text-tertiary" },
-      { label: "muted", className: "bg-text-muted" },
-      { label: "disabled", className: "bg-text-disabled" },
-      { label: "placeholder", className: "bg-text-placeholder" },
-      { label: "inverse", className: "bg-text-inverse" },
-      { label: "on-primary", className: "bg-text-on-primary" },
-      { label: "on-accent", className: "bg-text-on-accent" },
+      { label: "primary", className: "bg-foreground-primary" },
+      { label: "secondary", className: "bg-foreground-secondary" },
+      { label: "tertiary", className: "bg-foreground-tertiary" },
+      { label: "muted", className: "bg-foreground-muted" },
+      { label: "disabled", className: "bg-foreground-disabled" },
+      { label: "placeholder", className: "bg-foreground-placeholder" },
+      { label: "inverse", className: "bg-foreground-inverse" },
+      { label: "on-primary", className: "bg-foreground-on-primary" },
+      { label: "on-accent", className: "bg-foreground-on-accent" },
     ],
   },
   {
@@ -109,7 +109,7 @@ function SemanticColorsContent({ themeMode }: { themeMode: "light" | "dark" }) {
     <div data-theme={themeMode} className="min-h-screen">
       <TokenPage>
         <h1 className="text-3xl font-bold mb-2">Semantic colours</h1>
-        <p className="text-text-secondary mb-8 max-w-2xl">
+        <p className="text-foreground-secondary mb-8 max-w-2xl">
           Theme-aware tokens from{" "}
           <code className="font-mono text-sm">semantic-light.css</code> /{" "}
           <code className="font-mono text-sm">semantic-dark.css</code>. Toggle the theme control to
@@ -125,7 +125,7 @@ function SemanticColorsContent({ themeMode }: { themeMode: "light" | "dark" }) {
                   label={swatch.label}
                   value={swatch.className}
                   className={swatch.className}
-                  textClassName={swatch.sampleTextClass ?? "text-text-primary"}
+                  textClassName={swatch.sampleTextClass ?? "text-foreground-primary"}
                 />
               ))}
             </TokenRow>
@@ -142,7 +142,7 @@ function SemanticColorsWithToggle() {
   return (
     <div>
       <div className="sticky top-0 z-10 flex gap-2 p-4 bg-surface-raised border-b border-border-default font-sans">
-        <span className="text-sm text-text-secondary self-center mr-2">Preview theme:</span>
+        <span className="text-sm text-foreground-secondary self-center mr-2">Preview theme:</span>
         {(["light", "dark"] as const).map((mode) => (
           <button
             key={mode}
@@ -150,8 +150,8 @@ function SemanticColorsWithToggle() {
             onClick={() => setThemeMode(mode)}
             className={`px-3 py-1.5 text-sm rounded-default border transition-colors ${
               themeMode === mode
-                ? "bg-interactive-primary text-text-on-primary border-transparent"
-                : "bg-surface-default text-text-primary border-border-default hover:bg-surface-hover"
+                ? "bg-interactive-primary text-foreground-on-primary border-transparent"
+                : "bg-surface-default text-foreground-primary border-border-default hover:bg-surface-hover"
             }`}
           >
             {mode}
