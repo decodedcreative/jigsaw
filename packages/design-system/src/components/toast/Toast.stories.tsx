@@ -7,6 +7,7 @@ const meta = {
   component: ToastProvider,
   parameters: { layout: "centered" },
   tags: ["autodocs"],
+  args: { children: null },
 } satisfies Meta<typeof ToastProvider>;
 
 export default meta;
