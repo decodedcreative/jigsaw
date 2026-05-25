@@ -1,10 +1,9 @@
-/* Use relative paths so Vite can resolve tokens CSS without package resolution issues */
-@import "../../packages/tokens/dist/css/shared/base.css";
-@import "../../packages/tokens/dist/css/themes/default/base.css";
-@import "../../packages/tokens/dist/css/themes/default/semantic-light.css";
-@import "../../packages/tokens/dist/css/themes/default/semantic-dark.css";
-@import "../../packages/tokens/dist/css/themes/portfolio/base.css";
-@import "../../packages/tokens/dist/css/themes/portfolio/semantic.css";
+@import "@jigsaw/tokens/shared/base.css";
+@import "@jigsaw/tokens/themes/default/base.css";
+@import "@jigsaw/tokens/themes/default/semantic-light.css";
+@import "@jigsaw/tokens/themes/default/semantic-dark.css";
+@import "@jigsaw/tokens/themes/portfolio/base.css";
+@import "@jigsaw/tokens/themes/portfolio/semantic.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
