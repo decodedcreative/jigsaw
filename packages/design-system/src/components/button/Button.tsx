@@ -26,13 +26,15 @@ export const Button = ({
     component: { variant, size },
   });
 
-  const mergedClassName =
+  // className merges into the root slot (Mantine-style: consumers can pass
+  // className for root-level overrides; classNameOverrides targets named slots)
+  const rootClassName =
     typeof className === "function"
       ? className
       : twMerge(classNames.component, className);
 
   return (
-    <ReactAriaButton className={mergedClassName} {...props}>
+    <ReactAriaButton className={rootClassName} {...props}>
       {children}
     </ReactAriaButton>
   );
