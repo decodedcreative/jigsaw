@@ -57,7 +57,7 @@ function tailwindTheme({ dictionary }) {
 export default ${JSON.stringify(theme, null, 2)};\n`;
 }
 
-// ─── Shared config (spacing, typography, motion, radius, shadows) ───────────
+// ─── Shared config (spacing, typography, motion, radius, shadows → CSS only) ─
 const sharedConfig = {
   source: ["src/tokens/shared/**/*.json"],
   platforms: {
@@ -72,6 +72,19 @@ const sharedConfig = {
         },
       ],
     },
+  },
+  hooks: { formats: { "css/themed-variables": cssThemedVariables } },
+};
+
+// ─── Tailwind theme (shared tokens + default palette → theme.mjs) ────────────
+// Combines shared non-colour tokens with the default theme's base palette so
+// that Tailwind utilities like bg-navy-500 and spacing-4 both resolve correctly.
+const tailwindThemeConfig = {
+  source: [
+    "src/tokens/shared/**/*.json",
+    "src/tokens/themes/default/base/**/*.json",
+  ],
+  platforms: {
     js: {
       transformGroup: "js",
       buildPath: "dist/",
@@ -84,7 +97,7 @@ const sharedConfig = {
       ],
     },
   },
-  hooks: { formats: { "css/themed-variables": cssThemedVariables, "tailwind/theme": tailwindTheme } },
+  hooks: { formats: { "tailwind/theme": tailwindTheme } },
 };
 
 // ─── Default theme (neutral palette + light/dark semantic) ──────────────────
@@ -186,4 +199,4 @@ const portfolioThemeConfig = {
 };
 
 // Style Dictionary supports exporting an array of configs
-export default [sharedConfig, defaultThemeConfig, portfolioThemeConfig];
+export default [sharedConfig, tailwindThemeConfig, defaultThemeConfig, portfolioThemeConfig];
