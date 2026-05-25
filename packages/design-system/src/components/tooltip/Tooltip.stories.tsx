@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { placement: "top", showArrow: true },
+  args: { children: "Helpful info", placement: "top", showArrow: true },
   render: (args) => (
     <TooltipTrigger>
       <Button>Hover me</Button>

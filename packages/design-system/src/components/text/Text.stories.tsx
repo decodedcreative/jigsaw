@@ -23,6 +23,7 @@ const meta = {
     },
     muted: { control: "boolean" },
   },
+  args: { children: "Text preview" },
 } satisfies Meta<typeof Text>;
 
 export default meta;
@@ -47,7 +48,6 @@ export const Sizes: Story = {
 };
 
 export const Weights: Story = {
-  args: {},
   render: () => (
     <div className="flex flex-col gap-2">
       <Text weight="normal">Normal weight</Text>
