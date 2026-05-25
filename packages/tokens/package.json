@@ -11,9 +11,12 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
-    "./base.css": "./dist/css/base.css",
-    "./semantic-light.css": "./dist/css/semantic-light.css",
-    "./semantic-dark.css": "./dist/css/semantic-dark.css",
+    "./shared/base.css": "./dist/css/shared/base.css",
+    "./themes/default/base.css": "./dist/css/themes/default/base.css",
+    "./themes/default/semantic-light.css": "./dist/css/themes/default/semantic-light.css",
+    "./themes/default/semantic-dark.css": "./dist/css/themes/default/semantic-dark.css",
+    "./themes/portfolio/base.css": "./dist/css/themes/portfolio/base.css",
+    "./themes/portfolio/semantic.css": "./dist/css/themes/portfolio/semantic.css",
     "./theme": "./dist/theme.mjs",
     "./semantic-colors": {
       "types": "./dist/semantic-colors.d.ts",
@@ -23,7 +26,7 @@
   },
   "scripts": {
     "build": "npm run build:tokens && tsup",
-    "build:tokens": "style-dictionary build --config sd.config.mjs",
+    "build:tokens": "node scripts/build-tokens.mjs",
     "dev": "npm run build:tokens && tsup --watch",
     "lint": "eslint .",
     "clean": "rm -rf dist"
