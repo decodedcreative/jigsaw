@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import "@jigsaw/tokens/base.css";
-import "@jigsaw/tokens/semantic-light.css";
-import "@jigsaw/tokens/semantic-dark.css";
+import "@jigsaw/tokens/shared/base.css";
+import "@jigsaw/tokens/themes/default/base.css";
+import "@jigsaw/tokens/themes/default/semantic-light.css";
+import "@jigsaw/tokens/themes/default/semantic-dark.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased font-sans text-text-primary bg-surface-primary">
+      <body className="antialiased font-sans text-foreground-primary bg-surface-primary">
         {children}
       </body>
     </html>

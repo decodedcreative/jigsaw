@@ -4,7 +4,7 @@
  * These wrap each CSS variable in `rgb(var(--…) / <alpha-value>)` so Tailwind's
  * opacity modifiers work correctly (e.g. `bg-state-error/20`,
  * `ring-interactive-accent/20`). Requires the variables in
- * `@jigsaw/tokens/semantic-light.css` / `semantic-dark.css` to be stored as
+ * `@jigsaw/tokens/themes/default/semantic-light.css` / `semantic-dark.css` to be stored as
  * space-separated RGB tuples (the Style Dictionary build does this).
  */
 const sc = (name: string) => `rgb(var(--color-${name}) / <alpha-value>)`;
@@ -23,16 +23,16 @@ export const semanticColors = {
     hover: sc("surface-hover"),
     inverse: sc("surface-inverse"),
   },
-  text: {
-    primary: sc("text-primary"),
-    secondary: sc("text-secondary"),
-    tertiary: sc("text-tertiary"),
-    muted: sc("text-muted"),
-    disabled: sc("text-disabled"),
-    placeholder: sc("text-placeholder"),
-    inverse: sc("text-inverse"),
-    "on-primary": sc("text-on-primary"),
-    "on-accent": sc("text-on-accent"),
+  foreground: {
+    primary: sc("foreground-primary"),
+    secondary: sc("foreground-secondary"),
+    tertiary: sc("foreground-tertiary"),
+    muted: sc("foreground-muted"),
+    disabled: sc("foreground-disabled"),
+    placeholder: sc("foreground-placeholder"),
+    inverse: sc("foreground-inverse"),
+    "on-primary": sc("foreground-on-primary"),
+    "on-accent": sc("foreground-on-accent"),
   },
   border: {
     DEFAULT: sc("border-default"),

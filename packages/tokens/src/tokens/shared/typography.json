@@ -8,6 +8,14 @@
       "mono": {
         "value": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace",
         "type": "fontFamily"
+      },
+      "heading": {
+        "value": "'Space Grotesk', system-ui, sans-serif",
+        "type": "fontFamily"
+      },
+      "body": {
+        "value": "'Inter', system-ui, sans-serif",
+        "type": "fontFamily"
       }
     },
     "size": {
