@@ -80,7 +80,7 @@ describe('Text', () => {
 
   it('applies custom className via classNameOverrides', () => {
     const { container } = render(
-      <Text classNameOverrides={{ component: ['custom-class'] }}>Text</Text>
+      <Text classNameOverrides={{ component: "custom-class" }}>Text</Text>
     );
     expect(container.firstChild).toHaveClass('custom-class');
   });

@@ -84,7 +84,7 @@ describe('Badge', () => {
 
   it('applies custom classNameOverrides', () => {
     const { container } = render(
-      <Badge classNameOverrides={{ root: ['custom-badge'] }}>Badge</Badge>
+      <Badge classNameOverrides={{ component: "custom-badge" }}>Badge</Badge>
     );
     expect(container.firstChild).toHaveClass('custom-badge');
   });

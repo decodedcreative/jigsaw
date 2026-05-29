@@ -10,13 +10,14 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { inputStyles } from "./Input.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type InputProps = Omit<TextFieldProps, "children"> & {
   label?: string;
   description?: string;
   errorMessage?: string;
   placeholder?: string;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof inputStyles>;
   size?: "sm" | "md" | "lg";
 };
 

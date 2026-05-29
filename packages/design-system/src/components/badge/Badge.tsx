@@ -3,11 +3,12 @@
 import { type HTMLAttributes } from "react";
 import { useGetClassNames } from "@hooks";
 import { badgeStyles, type BadgeVariant, type BadgeSize } from "./Badge.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
   variant?: BadgeVariant;
   size?: BadgeSize;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof badgeStyles>;
 };
 
 export const Badge = ({
@@ -18,11 +19,11 @@ export const Badge = ({
   ...props
 }: BadgeProps) => {
   const classNames = useGetClassNames(badgeStyles, classNameOverrides, {
-    root: { variant, size },
+    component: { variant, size },
   });
 
   return (
-    <span className={classNames.root} {...props}>
+    <span className={classNames.component} {...props}>
       {children}
     </span>
   );

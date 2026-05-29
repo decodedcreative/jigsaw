@@ -17,7 +17,7 @@ export const toastStyles = {
       defaultVariants: { position: "bottom-right" },
     }
   ),
-  root: cva(
+  component: cva(
     [
       "flex items-start gap-3 w-full p-4 rounded-lg shadow-lg",
       "border border-border-primary bg-surface-primary",

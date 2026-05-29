@@ -41,7 +41,7 @@ export default function SignUpPage() {
         </div>
 
         {/* Form card */}
-        <Card className="shadow-lg p-8">
+        <Card classNameOverrides={{ component: "shadow-lg", content: "p-8" }}>
           <Form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4">
               <div className="grid grid-cols-2 gap-3">
@@ -72,7 +72,7 @@ export default function SignUpPage() {
                   Privacy Policy
                 </NextLink>
               </Checkbox>
-              <Button type="submit" className="w-full mt-2" isPending={loading}>
+              <Button type="submit" classNameOverrides={{ component: "w-full mt-2" }} isPending={loading}>
                 {loading ? "Creating account…" : "Create account"}
               </Button>
             </div>

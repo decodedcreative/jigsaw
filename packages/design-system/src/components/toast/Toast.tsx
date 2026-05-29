@@ -10,6 +10,7 @@ import {
 } from "react";
 import { useGetClassNames } from "@hooks";
 import { toastStyles, type ToastVariant, type ToastPosition } from "./Toast.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export interface ToastData {
   id: string;
@@ -42,7 +43,7 @@ export function useToast() {
 export type ToastProviderProps = {
   children: ReactNode;
   position?: ToastPosition;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof toastStyles>;
 };
 
 export function ToastProvider({
@@ -89,7 +90,7 @@ export function ToastProvider({
 
 export type ToastItemProps = ToastData & {
   onClose: () => void;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof toastStyles>;
 };
 
 export function ToastItem({
@@ -101,7 +102,7 @@ export function ToastItem({
   classNameOverrides,
 }: ToastItemProps) {
   const classNames = useGetClassNames(toastStyles, classNameOverrides, {
-    root: { variant },
+    component: { variant },
     icon: { variant },
     content: {},
     title: {},
@@ -111,7 +112,7 @@ export function ToastItem({
   });
 
   return (
-    <div className={classNames.root} role="alert">
+    <div className={classNames.component} role="alert">
       <span className={classNames.icon}>
         <ToastIcon variant={variant} />
       </span>

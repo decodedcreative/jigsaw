@@ -3,10 +3,10 @@
 import type { ReactNode } from "react";
 import { useGetClassNames } from "@hooks";
 import { cardStyles } from "./Card.styles";
-import type { CardClassNameOverrides } from "./Card.types";
+import type { ClassNameOverrides } from "../../types/component-props";
 
 type CardHeaderProps = {
-  classNameOverrides?: CardClassNameOverrides;
+  classNameOverrides?: ClassNameOverrides<typeof cardStyles>;
   title?: string;
   description?: string;
   actions?: ReactNode;

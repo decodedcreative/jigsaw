@@ -15,6 +15,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { selectStyles } from "./Select.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type SelectProps<T extends object> = Omit<ReactAriaSelectProps<T>, "children"> & {
   label?: string;
@@ -23,7 +24,7 @@ export type SelectProps<T extends object> = Omit<ReactAriaSelectProps<T>, "child
   placeholder?: string;
   items?: Iterable<T>;
   children?: React.ReactNode | ((item: T) => React.ReactNode);
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof selectStyles>;
   size?: "sm" | "md" | "lg";
 };
 

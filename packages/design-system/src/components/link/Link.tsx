@@ -7,9 +7,10 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { linkStyles, linkButtonStyles } from "./Link.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type LinkProps = ReactAriaLinkProps & {
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof linkStyles>;
   size?: "sm" | "md" | "lg";
   variant?: "default" | "accent" | "subtle" | "muted";
 };
@@ -35,7 +36,7 @@ export const Link = ({
 Link.displayName = "DS_Link";
 
 export type LinkButtonProps = ReactAriaLinkProps & {
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof linkStyles>;
   size?: "sm" | "md" | "lg";
   variant?: "primary" | "secondary" | "accent" | "outline" | "ghost";
 };

@@ -7,7 +7,6 @@ import {
   Badge,
   Button,
   Card,
-  CardContent,
   SearchField,
   Select,
   SelectItem,
@@ -150,20 +149,17 @@ export default function ActivityPage() {
 
       {/* Timeline */}
       {Object.keys(grouped).length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-20 text-center p-8">
-            <p className="text-base font-medium text-text-primary mb-1">No events found</p>
-            <p className="text-sm text-text-secondary">Try adjusting your filters.</p>
-          </CardContent>
+        <Card classNameOverrides={{ content: "flex flex-col items-center justify-center py-20 text-center p-8" }}>
+          <p className="text-base font-medium text-text-primary mb-1">No events found</p>
+          <p className="text-sm text-text-secondary">Try adjusting your filters.</p>
         </Card>
       ) : (
         <div className="flex flex-col gap-6">
           {Object.entries(grouped).map(([date, events]) => (
             <div key={date}>
               <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">{date}</p>
-              <Card>
-                <CardContent className="p-0">
-                  <div className="divide-y divide-border-subtle">
+              <Card classNameOverrides={{ content: "p-0" }}>
+                <div className="divide-y divide-border-subtle">
                     {events.map((e) => (
                       <div key={e.id} className="flex items-center gap-3 px-4 py-3">
                         {/* Actor avatar */}
@@ -200,8 +196,7 @@ export default function ActivityPage() {
                         </div>
                       </div>
                     ))}
-                  </div>
-                </CardContent>
+                </div>
               </Card>
             </div>
           ))}

@@ -1,9 +1,8 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 import type { CardVariant, cardStyles } from "./Card.styles";
 
 export type CardElement = "div" | "a" | "button";
-
-export type CardClassNameOverrides = Partial<Record<keyof typeof cardStyles, string[]>>;
 
 type CardBaseProps = {
   variant?: CardVariant;
@@ -13,11 +12,11 @@ type CardBaseProps = {
   header?: ReactNode;
   image?: ReactNode;
   footer?: ReactNode;
-  classNameOverrides?: CardClassNameOverrides;
+  classNameOverrides?: ClassNameOverrides<typeof cardStyles>;
 };
 
 type CardPropsFor<T extends CardElement> = CardBaseProps &
   (T extends "div" ? { as?: "div" } : { as: T }) &
-  ComponentPropsWithoutRef<T>;
+  WithoutClassName<ComponentPropsWithoutRef<T>>;
 
 export type CardProps = CardPropsFor<CardElement>;

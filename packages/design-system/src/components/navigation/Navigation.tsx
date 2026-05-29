@@ -4,19 +4,20 @@ import { type ReactNode, type HTMLAttributes } from "react";
 import { Link as ReactAriaLink } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { navigationStyles } from "./Navigation.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type NavigationProps = HTMLAttributes<HTMLElement> & {
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
 };
 
 export const Navigation = ({ classNameOverrides, children, ...props }: NavigationProps) => {
   const classNames = useGetClassNames(navigationStyles, classNameOverrides, {
-    root: {},
+    component: {},
     container: {},
   });
 
   return (
-    <nav className={classNames.root} {...props}>
+    <nav className={classNames.component} {...props}>
       <div className={classNames.container}>{children}</div>
     </nav>
   );
@@ -25,7 +26,7 @@ export const Navigation = ({ classNameOverrides, children, ...props }: Navigatio
 Navigation.displayName = "DS_Navigation";
 
 export type NavigationInnerProps = HTMLAttributes<HTMLDivElement> & {
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
 };
 
 export const NavigationInner = ({ classNameOverrides, children, ...props }: NavigationInnerProps) => {
@@ -42,7 +43,7 @@ NavigationInner.displayName = "DS_NavigationInner";
 export type NavigationBrandProps = {
   href?: string;
   children?: ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
 };
 
 export const NavigationBrand = ({
@@ -61,7 +62,7 @@ export const NavigationBrand = ({
 NavigationBrand.displayName = "DS_NavigationBrand";
 
 export type NavigationLinksProps = HTMLAttributes<HTMLDivElement> & {
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
 };
 
 export const NavigationLinks = ({ classNameOverrides, children, ...props }: NavigationLinksProps) => {
@@ -79,7 +80,7 @@ export type NavigationLinkProps = {
   href: string;
   isCurrent?: boolean;
   children: ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
 };
 
 export const NavigationLink = ({
@@ -104,7 +105,7 @@ export const NavigationLink = ({
 NavigationLink.displayName = "DS_NavigationLink";
 
 export type NavigationActionsProps = HTMLAttributes<HTMLDivElement> & {
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
 };
 
 export const NavigationActions = ({ classNameOverrides, children, ...props }: NavigationActionsProps) => {
@@ -122,7 +123,7 @@ export type MobileNavigationProps = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   links: Array<{ href: string; label: string; isCurrent?: boolean }>;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
 };
 
 const HamburgerIcon = () => (

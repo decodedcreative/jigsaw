@@ -7,12 +7,13 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { checkboxStyles } from "./Checkbox.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type CheckboxProps = Omit<ReactAriaCheckboxProps, "children"> & {
   label?: string;
   description?: string;
   children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof checkboxStyles>;
   size?: "sm" | "md" | "lg";
   hasError?: boolean;
 };

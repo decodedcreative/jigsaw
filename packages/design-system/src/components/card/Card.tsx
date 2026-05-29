@@ -4,7 +4,6 @@ import {
   type ComponentPropsWithoutRef,
   type ElementType,
 } from "react";
-import { twMerge } from "tailwind-merge";
 import { useGetClassNames } from "@hooks";
 import { isClickable } from "@utils";
 import { cardStyles } from "./Card.styles";
@@ -22,7 +21,6 @@ export const Card = (props: CardProps) => {
     image,
     footer,
     classNameOverrides,
-    className,
     children,
     ...elementProps
   } = props;
@@ -55,7 +53,7 @@ export const Card = (props: CardProps) => {
 
   return (
     <Component
-      className={twMerge(classNames.component, className)}
+      className={classNames.component}
       {...(element === "button" ? { type: "button" } : undefined)}
       {...(elementProps as ComponentPropsWithoutRef<typeof element>)}
     >

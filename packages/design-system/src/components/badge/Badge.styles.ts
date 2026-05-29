@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const badgeStyles = {
-  root: cva(
+  component: cva(
     ["inline-flex items-center justify-center font-medium rounded-full transition-colors"],
     {
       variants: {

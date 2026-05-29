@@ -10,6 +10,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { tooltipStyles, type TooltipPlacement } from "./Tooltip.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type TooltipTriggerProps = TooltipTriggerComponentProps & {
   children: ReactNode;
@@ -24,7 +25,7 @@ TooltipTrigger.displayName = "DS_TooltipTrigger";
 export type TooltipProps = Omit<ReactAriaTooltipProps, "children"> & {
   children: ReactNode;
   showArrow?: boolean;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof tooltipStyles>;
 };
 
 export function Tooltip({

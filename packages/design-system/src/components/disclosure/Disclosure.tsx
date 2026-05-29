@@ -11,11 +11,12 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { disclosureStyles, disclosureGroupStyles } from "./Disclosure.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type DisclosureProps = ReactAriaDisclosureProps & {
   title: string;
   children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof disclosureStyles>;
 };
 
 export const Disclosure = ({
@@ -54,7 +55,7 @@ Disclosure.displayName = "DS_Disclosure";
 
 export type DisclosureGroupProps = Omit<ReactAriaDisclosureGroupProps, "children"> & {
   children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof disclosureStyles>;
 };
 
 export const DisclosureGroup = ({

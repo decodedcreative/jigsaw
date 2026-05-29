@@ -3,12 +3,13 @@
 import { type HTMLAttributes, type CSSProperties } from "react";
 import { useGetClassNames } from "@hooks";
 import { skeletonStyles, type SkeletonVariant } from "./Skeleton.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type SkeletonProps = HTMLAttributes<HTMLDivElement> & {
   variant?: SkeletonVariant;
   width?: string | number;
   height?: string | number;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof skeletonStyles>;
 };
 
 export const Skeleton = ({
@@ -20,7 +21,7 @@ export const Skeleton = ({
   ...props
 }: SkeletonProps) => {
   const classNames = useGetClassNames(skeletonStyles, classNameOverrides, {
-    root: { variant },
+    component: { variant },
   });
 
   const inlineStyle: CSSProperties = {
@@ -29,7 +30,7 @@ export const Skeleton = ({
     ...style,
   };
 
-  return <div className={classNames.root} style={inlineStyle} {...props} />;
+  return <div className={classNames.component} style={inlineStyle} {...props} />;
 };
 
 Skeleton.displayName = "DS_Skeleton";
