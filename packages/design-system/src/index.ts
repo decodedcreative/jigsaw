@@ -22,9 +22,8 @@ export type { BadgeProps } from "@components/badge/Badge";
 export type { BadgeVariant, BadgeSize } from "@components/badge/Badge.styles";
 
 // Card
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardImage } from "@components/card/Card";
-export type { CardProps, CardHeaderProps, CardTitleProps, CardDescriptionProps, CardContentProps, CardFooterProps, CardImageProps } from "@components/card/Card";
-export type { CardVariant, CardPadding } from "@components/card/Card.styles";
+export { Card } from "@components/card";
+export type { CardComponent, CardProps, CardVariant } from "@components/card";
 
 // Checkbox
 export { Checkbox } from "@components/checkbox/Checkbox";
