@@ -10,7 +10,7 @@ export const NotificationFeed = () => {
   const markRead = (id: string) => setItems((prev) => prev.map((n) => n.id === id ? { ...n, read: true } : n));
 
   return (
-    <Card classNameOverrides={{ content: ["p-6"] }}>
+    <Card classNameOverrides={{ content: "p-6" }}>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Text size="base" weight="semibold">Notifications</Text>

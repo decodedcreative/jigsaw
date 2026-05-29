@@ -9,13 +9,14 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { checkboxGroupStyles } from "./CheckboxGroup.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type CheckboxGroupProps = Omit<ReactAriaCheckboxGroupProps, "children"> & {
   label?: string;
   description?: string;
   errorMessage?: string;
   children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof checkboxGroupStyles>;
 };
 
 export const CheckboxGroup = ({

@@ -10,6 +10,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { textareaStyles } from "./Textarea.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type TextareaProps = Omit<TextFieldProps, "children"> & {
   label?: string;
@@ -17,7 +18,7 @@ export type TextareaProps = Omit<TextFieldProps, "children"> & {
   errorMessage?: string;
   placeholder?: string;
   rows?: number;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof textareaStyles>;
   size?: "sm" | "md" | "lg";
 };
 

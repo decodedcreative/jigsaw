@@ -22,8 +22,7 @@ export const MemberCard = ({ member }: { member: Member }) => {
 
   return (
     <Card
-      className="flex flex-col gap-0 overflow-hidden"
-      classNameOverrides={{ content: ["pt-0", "pb-5", "px-5"] }}
+      classNameOverrides={{ component: "flex flex-col gap-0 overflow-hidden", content: "pt-0 pb-5 px-5" }}
     >
       {/* Top strip */}
       <div className="h-12 bg-gradient-to-r from-navy-800 to-navy-700" />

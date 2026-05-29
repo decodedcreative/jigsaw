@@ -13,10 +13,11 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { modalStyles } from "./Modal.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type ModalProps = ModalOverlayProps & {
   children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof modalStyles>;
 };
 
 export const Modal = ({ children, classNameOverrides, ...props }: ModalProps) => {
@@ -43,7 +44,7 @@ export type ModalContentProps = Omit<DialogProps, "children"> & {
   title?: string;
   showCloseButton?: boolean;
   children?: React.ReactNode | ((args: { close: () => void }) => React.ReactNode);
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof modalStyles>;
 };
 
 export const ModalContent = ({
@@ -103,7 +104,7 @@ export const ModalTrigger = DialogTrigger;
 
 export type ModalFooterProps = {
   children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof modalStyles>;
 };
 
 export const ModalFooter = ({ children, classNameOverrides }: ModalFooterProps) => {

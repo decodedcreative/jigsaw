@@ -14,7 +14,7 @@ export const ToastPanel = () => {
   const [position, setPosition] = useState<string>("bottom-right");
 
   return (
-    <Card classNameOverrides={{ content: ["p-6"] }}>
+    <Card classNameOverrides={{ content: "p-6" }}>
         <div className="flex items-center justify-between mb-4">
           <Text size="base" weight="semibold">Toast notifications</Text>
           <div className="w-48">

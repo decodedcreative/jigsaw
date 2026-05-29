@@ -3,22 +3,23 @@
 import { useState, type HTMLAttributes, type ImgHTMLAttributes } from "react";
 import { useGetClassNames } from "@hooks";
 import { avatarStyles, type AvatarSize, type AvatarStatus } from "./Avatar.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type AvatarProps = HTMLAttributes<HTMLDivElement> & {
   size?: AvatarSize;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof avatarStyles>;
 };
 
 export const Avatar = ({ size = "md", classNameOverrides, children, ...props }: AvatarProps) => {
   const classNames = useGetClassNames(avatarStyles, classNameOverrides, {
-    root: { size },
+    component: { size },
     image: {},
     fallback: {},
     status: { size },
   });
 
   return (
-    <div className={classNames.root} {...props}>
+    <div className={classNames.component} {...props}>
       {children}
     </div>
   );
@@ -27,7 +28,7 @@ export const Avatar = ({ size = "md", classNameOverrides, children, ...props }: 
 Avatar.displayName = "DS_Avatar";
 
 export type AvatarImageProps = ImgHTMLAttributes<HTMLImageElement> & {
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof avatarStyles>;
   onLoadingStatusChange?: (status: "loading" | "loaded" | "error") => void;
 };
 
@@ -61,7 +62,7 @@ export const AvatarImage = ({
 AvatarImage.displayName = "DS_AvatarImage";
 
 export type AvatarFallbackProps = HTMLAttributes<HTMLSpanElement> & {
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof avatarStyles>;
 };
 
 export const AvatarFallback = ({ classNameOverrides, children, ...props }: AvatarFallbackProps) => {
@@ -79,7 +80,7 @@ AvatarFallback.displayName = "DS_AvatarFallback";
 export type AvatarStatusIndicatorProps = HTMLAttributes<HTMLSpanElement> & {
   status?: AvatarStatus;
   size?: AvatarSize;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof avatarStyles>;
 };
 
 export const AvatarStatusIndicator = ({

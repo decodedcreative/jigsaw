@@ -91,7 +91,7 @@ describe('Button', () => {
 
   it('applies custom className via classNameOverrides', () => {
     const { container } = render(
-      <Button classNameOverrides={{ component: ['custom-class'] }}>Button</Button>
+      <Button classNameOverrides={{ component: "custom-class" }}>Button</Button>
     );
     expect(container.firstChild).toHaveClass('custom-class');
   });

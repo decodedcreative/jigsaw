@@ -12,12 +12,13 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { numberFieldStyles } from "./NumberField.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type NumberFieldProps = Omit<ReactAriaNumberFieldProps, "children"> & {
   label?: string;
   description?: string;
   errorMessage?: string;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof numberFieldStyles>;
   size?: "sm" | "md" | "lg";
 };
 

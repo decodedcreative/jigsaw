@@ -3,7 +3,6 @@ import { useState } from "react";
 import {
   Button,
   Card,
-  CardContent,
   Checkbox,
   Form,
   Input,
@@ -26,7 +25,7 @@ const SignInPage = () => {
   if (submitted) {
     return (
       <div className="min-h-screen bg-surface-default flex items-center justify-center p-6">
-        <Card className="w-full max-w-sm p-8 text-center shadow-lg">
+        <Card classNameOverrides={{ component: "w-full max-w-sm shadow-lg", content: "p-8 text-center" }}>
           <SuccessCheck />
           <Text size="lg" weight="semibold" className="mb-2">Signed in!</Text>
           <Text size="sm" className="text-text-secondary mb-6">Welcome back to Jigsaw.</Text>
@@ -50,7 +49,7 @@ const SignInPage = () => {
         </div>
 
         {/* Card */}
-        <Card className="shadow-lg p-8">
+        <Card classNameOverrides={{ component: "shadow-lg", content: "p-8" }}>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -78,7 +77,7 @@ const SignInPage = () => {
                 </div>
               </div>
               <Checkbox>Remember me for 30 days</Checkbox>
-              <Button type="submit" className="w-full mt-2">Sign in</Button>
+              <Button type="submit" classNameOverrides={{ component: "w-full mt-2" }}>Sign in</Button>
             </div>
           </Form>
         </Card>
@@ -92,11 +91,11 @@ const SignInPage = () => {
 
         {/* OAuth buttons */}
         <div className="flex flex-col gap-3">
-          <Button variant="secondary" className="w-full gap-2">
+          <Button variant="secondary" classNameOverrides={{ component: "w-full gap-2" }}>
             <GoogleIcon />
             Continue with Google
           </Button>
-          <Button variant="secondary" className="w-full gap-2">
+          <Button variant="secondary" classNameOverrides={{ component: "w-full gap-2" }}>
             <GitHubIcon />
             Continue with GitHub
           </Button>

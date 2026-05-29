@@ -1,14 +1,14 @@
 import * as React from "react";
 import { useGetClassNames } from "@hooks";
 import { textStyles } from "./Text.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
-export type TextProps = Omit<
-  React.HTMLAttributes<HTMLParagraphElement>,
-  "children"
+export type TextProps = WithoutClassName<
+  Omit<React.HTMLAttributes<HTMLParagraphElement>, "children">
 > & {
   as?: "p" | "span";
   children: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof textStyles>;
   muted?: boolean;
   size?: "xs" | "sm" | "base" | "lg";
   weight?: "normal" | "medium" | "semibold" | "bold";

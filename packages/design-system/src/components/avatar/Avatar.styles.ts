@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const avatarStyles = {
-  root: cva(
+  component: cva(
     [
       "relative inline-flex items-center justify-center",
       "rounded-full overflow-hidden bg-surface-secondary",

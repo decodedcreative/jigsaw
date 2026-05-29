@@ -11,13 +11,14 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { radioGroupStyles, radioStyles } from "./RadioGroup.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type RadioGroupProps = Omit<ReactAriaRadioGroupProps, "children"> & {
   label?: string;
   description?: string;
   errorMessage?: string;
   children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof radioGroupStyles>;
 };
 
 export const RadioGroup = ({
@@ -69,7 +70,7 @@ export type RadioProps = Omit<ReactAriaRadioProps, "children"> & {
   label?: string;
   description?: string;
   children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof radioGroupStyles>;
   size?: "sm" | "md" | "lg";
   hasError?: boolean;
 };

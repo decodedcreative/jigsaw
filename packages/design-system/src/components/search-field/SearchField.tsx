@@ -11,12 +11,13 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { searchFieldStyles } from "./SearchField.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type SearchFieldProps = Omit<ReactAriaSearchFieldProps, "children"> & {
   label?: string;
   description?: string;
   placeholder?: string;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof searchFieldStyles>;
   size?: "sm" | "md" | "lg";
 };
 

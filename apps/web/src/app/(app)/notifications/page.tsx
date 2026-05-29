@@ -5,7 +5,6 @@ import {
   Badge,
   Button,
   Card,
-  CardContent,
   Checkbox,
   Disclosure,
   DisclosureGroup,
@@ -104,9 +103,8 @@ function Preferences() {
   const toggle = (key: PrefKey) => (v: boolean) => setPrefs((p) => ({ ...p, [key]: v }));
 
   return (
-    <Card>
-      <CardContent className="p-5">
-        <DisclosureGroup>
+    <Card classNameOverrides={{ content: "p-5" }}>
+      <DisclosureGroup>
           <Disclosure title="Email preferences">
             <div className="flex flex-col gap-3 mt-2">
               {([
@@ -129,7 +127,6 @@ function Preferences() {
             </div>
           </Disclosure>
         </DisclosureGroup>
-      </CardContent>
     </Card>
   );
 }
@@ -179,8 +176,7 @@ function NotificationsInner() {
         <p className="text-xs text-text-muted">{filtered.length} notification{filtered.length !== 1 ? "s" : ""}</p>
       </div>
 
-      <Card className="mb-6">
-        <CardContent className="p-0">
+      <Card classNameOverrides={{ component: "mb-6", content: "p-0" }}>
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <p className="text-base font-medium text-text-primary mb-1">All caught up</p>
@@ -232,7 +228,6 @@ function NotificationsInner() {
               })}
             </div>
           )}
-        </CardContent>
       </Card>
 
       {/* Preferences */}

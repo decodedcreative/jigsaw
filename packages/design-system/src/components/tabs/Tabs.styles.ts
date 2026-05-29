@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const tabsStyles = {
-  root: cva("w-full"),
+  component: cva("w-full"),
   list: cva(["flex border-b border-border-primary"], {
     variants: {
       variant: {

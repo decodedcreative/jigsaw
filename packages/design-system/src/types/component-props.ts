@@ -1,12 +1,13 @@
 /**
- * Strips `className` from a props type.
- *
- * Convention (Mantine-style):
- *   - Root element  → accept `className` directly (standard React prop, merged
- *                     with the component's computed root class via `twMerge`)
- *   - Internal slots → NOT exposed via `className`; use `classNameOverrides`
- *
- * Use this type when building internal slot prop types to ensure only the root
- * of a component exposes `className` to consumers.
+ * Extra Tailwind classes per style slot, merged with that slot's CVA defaults via `twMerge`.
+ * Keys match `*Styles` export names; the outermost element uses `component`.
+ */
+export type ClassNameOverrides<TStyles extends Record<string, unknown>> = Partial<
+  Record<keyof TStyles, string>
+>;
+
+/**
+ * Strips `className` from a props type so consumers style components only via
+ * `classNameOverrides` (including `component` for the root element).
  */
 export type WithoutClassName<T> = Omit<T, "className">;

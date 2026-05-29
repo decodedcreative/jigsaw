@@ -8,7 +8,6 @@ import {
   Badge,
   Button,
   Card,
-  CardContent,
   Input,
   Modal,
   ModalContent,
@@ -163,9 +162,11 @@ function TeamInner() {
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {filtered.map((m) => (
-            <Card key={m.id} className="flex flex-col overflow-hidden">
+            <Card
+              key={m.id}
+              classNameOverrides={{ component: "flex flex-col overflow-hidden", content: "pt-0 pb-5 px-5" }}
+            >
               <div className="h-10 bg-gradient-to-r from-navy-800 to-navy-700" />
-              <CardContent className="pt-0 pb-5 px-5">
                 <div className="-mt-5 mb-3">
                   <Avatar size="lg">
                     <AvatarFallback>{m.initials}</AvatarFallback>
@@ -216,7 +217,7 @@ function TeamInner() {
 
                     {/* Remove */}
                     <ModalTrigger>
-                      <Button variant="ghost" size="sm" className="text-feedback-error hover:bg-feedback-error-subtle">Remove</Button>
+                      <Button variant="ghost" size="sm" classNameOverrides={{ component: "text-feedback-error hover:bg-feedback-error-subtle" }}>Remove</Button>
                       <Modal>
                         <ModalContent title="Remove member">
                           {({ close }) => (
@@ -235,7 +236,6 @@ function TeamInner() {
                     </ModalTrigger>
                   </div>
                 )}
-              </CardContent>
             </Card>
           ))}
         </div>

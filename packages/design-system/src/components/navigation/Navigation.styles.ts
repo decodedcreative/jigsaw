@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const navigationStyles = {
-  root: cva(["w-full border-b border-border-primary bg-surface-primary"]),
+  component: cva(["w-full border-b border-border-primary bg-surface-primary"]),
   container: cva("max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"),
   inner: cva("flex items-center justify-between h-16"),
   brand: cva([

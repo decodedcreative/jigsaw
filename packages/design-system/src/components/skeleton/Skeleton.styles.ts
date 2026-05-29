@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const skeletonStyles = {
-  root: cva(["animate-pulse bg-surface-secondary rounded"], {
+  component: cva(["animate-pulse bg-surface-secondary rounded"], {
     variants: {
       variant: {
         default: "",

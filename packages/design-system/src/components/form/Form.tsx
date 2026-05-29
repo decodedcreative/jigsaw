@@ -7,9 +7,10 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { formStyles } from "./Form.styles";
+import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
 export type FormProps = ReactAriaFormProps & {
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof formStyles>;
 };
 
 export const Form = ({ children, classNameOverrides, ...props }: FormProps) => {
@@ -26,7 +27,7 @@ Form.displayName = "DS_Form";
 export type FormFieldsetProps = {
   legend?: string;
   children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof formStyles>;
 };
 
 export const FormFieldset = ({ legend, children, classNameOverrides }: FormFieldsetProps) => {
@@ -48,7 +49,7 @@ FormFieldset.displayName = "DS_FormFieldset";
 
 export type FormActionsProps = {
   children?: React.ReactNode;
-  classNameOverrides?: Record<string, string[]>;
+  classNameOverrides?: ClassNameOverrides<typeof formStyles>;
 };
 
 export const FormActions = ({ children, classNameOverrides }: FormActionsProps) => {

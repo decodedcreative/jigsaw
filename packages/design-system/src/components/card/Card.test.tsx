@@ -27,7 +27,7 @@ describe("Card", () => {
     const { container } = render(
       <Card
         image={<img alt="Cover" src="/cover.jpg" />}
-        classNameOverrides={{ image: ["aspect-video"] }}
+        classNameOverrides={{ image: "aspect-video" }}
       >
         Content
       </Card>
@@ -38,7 +38,7 @@ describe("Card", () => {
 
   it("applies content classNameOverrides from Card", () => {
     const { container } = render(
-      <Card classNameOverrides={{ content: ["p-2"] }}>Main content</Card>
+      <Card classNameOverrides={{ content: "p-2" }}>Main content</Card>
     );
     expect(screen.getByText("Main content")).toBeInTheDocument();
     expect(container.querySelector(".p-2")).toBeInTheDocument();
