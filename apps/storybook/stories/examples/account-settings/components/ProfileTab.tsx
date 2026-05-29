@@ -1,0 +1,40 @@
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarStatusIndicator,
+  Button,
+  Form,
+  FormActions,
+  FormFieldset,
+  Input,
+  Textarea,
+} from "@jigsaw/design-system";
+import { SaveButton } from "./SaveButton";
+
+export const ProfileTab = () => (
+    <Form onSubmit={(e) => e.preventDefault()}>
+      <FormFieldset legend="Public profile">
+        <div className="flex items-center gap-4 mb-2">
+          <Avatar size="xl">
+            <AvatarFallback>JH</AvatarFallback>
+            <AvatarStatusIndicator status="online" />
+          </Avatar>
+          <div className="flex gap-2">
+            <Button variant="secondary" size="sm">Upload photo</Button>
+            <Button variant="ghost" size="sm">Remove</Button>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <Input label="First name" defaultValue="James" />
+          <Input label="Last name" defaultValue="Howell" />
+        </div>
+        <Input label="Username" defaultValue="jameshowell" />
+        <Input label="Email address" type="email" defaultValue="james@example.com" />
+        <Textarea label="Bio" defaultValue="Building design systems." rows={3} />
+      </FormFieldset>
+      <FormActions>
+        <Button variant="secondary">Cancel</Button>
+        <SaveButton />
+      </FormActions>
+    </Form>
+);
