@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const cardStyles = {
-  root: cva(
+  component: cva(
     [
       "rounded-lg border border-border-primary bg-surface-primary",
       "overflow-hidden transition-shadow duration-200",
@@ -11,29 +11,41 @@ export const cardStyles = {
         variant: {
           default: "",
           elevated: "shadow-md",
-          interactive: "hover:shadow-lg hover:border-border-hover cursor-pointer",
+          interactive: "",
           outline: "border-2",
         },
-        padding: {
-          none: "",
-          sm: "p-3",
-          md: "p-4",
-          lg: "p-6",
+        interactiveState: {
+          true: [
+            "cursor-pointer",
+            "hover:shadow-lg hover:border-border-hover",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface-primary",
+          ],
+          false: "",
         },
       },
       defaultVariants: {
         variant: "default",
-        padding: "none",
+        interactiveState: false,
       },
     }
   ),
-  header: cva("px-4 py-3 border-b border-border-primary"),
-  title: cva("text-lg font-semibold text-text-primary"),
-  description: cva("text-sm text-text-secondary mt-1"),
+  header: cva("px-4 py-3 border-b border-border-primary", {
+    variants: {
+      hasActions: {
+        true: "flex items-start justify-between gap-3",
+        false: "",
+      },
+    },
+    defaultVariants: {
+      hasActions: false,
+    },
+  }),
+  headerContent: cva("min-w-0 flex-1"),
+  title: cva("text-lg font-semibold text-foreground-primary"),
+  description: cva("text-sm text-foreground-secondary mt-1"),
   content: cva("p-4"),
   footer: cva("px-4 py-3 border-t border-border-primary bg-surface-secondary"),
   image: cva("w-full h-auto object-cover"),
 };
 
 export type CardVariant = "default" | "elevated" | "interactive" | "outline";
-export type CardPadding = "none" | "sm" | "md" | "lg";
