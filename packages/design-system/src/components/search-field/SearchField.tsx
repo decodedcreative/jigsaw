@@ -11,9 +11,9 @@ import {
 } from "react-aria-components";
 import { MagnifyingGlassIcon, XIcon } from "@phosphor-icons/react";
 import { useGetClassNames } from "@hooks";
-import { Icon } from "../icon";
+import { Icon } from "@components/icon";
 import { searchFieldStyles } from "./SearchField.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 export type SearchFieldProps = Omit<ReactAriaSearchFieldProps, "children"> & {
   label?: string;
@@ -48,6 +48,7 @@ export const SearchField = ({
     <ReactAriaSearchField className={classNames.wrapper} isDisabled={isDisabled} {...props}>
       {label && <Label className={classNames.label}>{label}</Label>}
       <div className={classNames.inputWrapper}>
+        {/* Layout classes (absolute positioning) live on the searchIcon slot; size comes from Icon. */}
         <Icon
           icon={MagnifyingGlassIcon}
           size={size}

@@ -15,9 +15,9 @@ import {
 } from "react-aria-components";
 import { CaretDownIcon } from "@phosphor-icons/react";
 import { useGetClassNames } from "@hooks";
-import { Icon } from "../icon";
+import { Icon } from "@components/icon";
 import { selectStyles } from "./Select.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 export type SelectProps<T extends object> = Omit<ReactAriaSelectProps<T>, "children"> & {
   label?: string;

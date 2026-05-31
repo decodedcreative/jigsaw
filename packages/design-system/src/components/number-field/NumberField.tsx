@@ -12,9 +12,9 @@ import {
 } from "react-aria-components";
 import { MinusIcon, PlusIcon } from "@phosphor-icons/react";
 import { useGetClassNames } from "@hooks";
-import { Icon } from "../icon";
+import { Icon } from "@components/icon";
 import { numberFieldStyles } from "./NumberField.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 export type NumberFieldProps = Omit<ReactAriaNumberFieldProps, "children"> & {
   label?: string;
