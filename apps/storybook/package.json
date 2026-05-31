@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "npx storybook dev -p 6006",
     "build": "npx storybook build",
+    "build-storybook": "npm run build",
     "lint": "eslint .",
     "clean": "rm -rf storybook-static",
     "chromatic": "chromatic --build-script-name=build",
