@@ -12,16 +12,7 @@ export const searchFieldStyles = {
     defaultVariants: { state: "default" },
   }),
   inputWrapper: cva(["relative flex items-center"]),
-  searchIcon: cva(["absolute left-3 text-foreground-muted pointer-events-none"], {
-    variants: {
-      size: {
-        sm: "h-3.5 w-3.5",
-        md: "h-4 w-4",
-        lg: "h-5 w-5",
-      },
-    },
-    defaultVariants: { size: "md" },
-  }),
+  searchIcon: cva(["absolute left-3 text-foreground-muted pointer-events-none"]),
   input: cva(
     [
       "w-full rounded-default border bg-surface-default text-foreground-primary transition-colors",

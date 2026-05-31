@@ -36,16 +36,7 @@ export const selectStyles = {
       defaultVariants: { size: "md", state: "default" },
     }
   ),
-  chevron: cva(["text-foreground-muted transition-transform data-[open]:rotate-180"], {
-    variants: {
-      size: {
-        sm: "h-3 w-3",
-        md: "h-4 w-4",
-        lg: "h-5 w-5",
-      },
-    },
-    defaultVariants: { size: "md" },
-  }),
+  chevron: cva(["text-foreground-muted transition-transform data-[open]:rotate-180"]),
   popover: cva([
     "w-[--trigger-width] bg-surface-default border border-border-default rounded-md shadow-lg",
     "entering:animate-in entering:fade-in entering:slide-in-from-top-2",
