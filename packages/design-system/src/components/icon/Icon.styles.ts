@@ -17,6 +17,7 @@ export const iconStyles = {
         success: "text-state-success-text",
         warning: "text-state-warning-text",
         error: "text-state-error-text",
+        info: "text-state-info",
       },
     },
     defaultVariants: {

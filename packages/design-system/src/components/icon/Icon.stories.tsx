@@ -37,6 +37,7 @@ export const Tones: Story = {
       <Icon icon={GearIcon} tone="success" />
       <Icon icon={GearIcon} tone="warning" />
       <Icon icon={GearIcon} tone="error" />
+      <Icon icon={GearIcon} tone="info" />
     </div>
   ),
 };

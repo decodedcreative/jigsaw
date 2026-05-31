@@ -1,11 +1,10 @@
 "use client";
 
-import type { FC } from "react";
 import { useGetClassNames } from "@hooks";
 import { iconStyles } from "./Icon.styles";
 import type { IconProps } from "./Icon.types";
 
-export const Icon: FC<IconProps> = ({
+export function Icon({
   icon: PhosphorIcon,
   size = "md",
   tone,
@@ -13,7 +12,7 @@ export const Icon: FC<IconProps> = ({
   classNameOverrides,
   "aria-hidden": ariaHidden = true,
   ...props
-}) => {
+}: IconProps) {
   const classNames = useGetClassNames(iconStyles, classNameOverrides, {
     component: { size, tone },
   });
@@ -26,6 +25,6 @@ export const Icon: FC<IconProps> = ({
       {...props}
     />
   );
-};
+}
 
 Icon.displayName = "DS_Icon";

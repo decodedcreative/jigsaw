@@ -2,7 +2,14 @@ import type { Icon as PhosphorIcon, IconProps as PhosphorIconProps } from "@phos
 import { iconStyles, type IconSize, type IconTone } from "./Icon.styles";
 import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
 
-export type IconProps = WithoutClassName<Omit<PhosphorIconProps, "size">> & {
+/**
+ * Props for the design-system Icon wrapper.
+ *
+ * Phosphor's `color` prop is intentionally omitted — it sets an inline SVG fill and
+ * bypasses semantic tokens / dark mode. Use `tone` for token-aligned colour, omit `tone`
+ * to inherit `currentColor` from the parent, or `classNameOverrides` for one-off exceptions.
+ */
+export type IconProps = WithoutClassName<Omit<PhosphorIconProps, "size" | "color">> & {
   icon: PhosphorIcon;
   size?: IconSize;
   /** Semantic foreground tone. Omit to inherit `currentColor` from the parent. */
