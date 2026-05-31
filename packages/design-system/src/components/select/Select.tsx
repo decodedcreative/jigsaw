@@ -13,9 +13,11 @@ import {
   type SelectProps as ReactAriaSelectProps,
   type ListBoxItemProps,
 } from "react-aria-components";
+import { CaretDownIcon } from "@phosphor-icons/react";
 import { useGetClassNames } from "@hooks";
+import { Icon } from "@components/icon";
 import { selectStyles } from "./Select.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 export type SelectProps<T extends object> = Omit<ReactAriaSelectProps<T>, "children"> & {
   label?: string;
@@ -47,7 +49,7 @@ export function Select<T extends object>({
     wrapper: {},
     label: { state },
     trigger: { size, state },
-    chevron: { size },
+    chevron: {},
     popover: {},
     listbox: {},
     item: {},
@@ -66,15 +68,11 @@ export function Select<T extends object>({
         <SelectValue className="flex-1 text-left truncate">
           {({ selectedText }) => selectedText || placeholder}
         </SelectValue>
-        <svg className={classNames.chevron} viewBox="0 0 16 16" fill="none">
-          <path
-            d="M4 6L8 10L12 6"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <Icon
+          icon={CaretDownIcon}
+          size={size}
+          classNameOverrides={{ component: classNames.chevron }}
+        />
       </Button>
       {(description || errorMessage) && (
         <Text

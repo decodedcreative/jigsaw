@@ -9,9 +9,11 @@ import {
   Text,
   type SearchFieldProps as ReactAriaSearchFieldProps,
 } from "react-aria-components";
+import { MagnifyingGlassIcon, XIcon } from "@phosphor-icons/react";
 import { useGetClassNames } from "@hooks";
+import { Icon } from "@components/icon";
 import { searchFieldStyles } from "./SearchField.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 export type SearchFieldProps = Omit<ReactAriaSearchFieldProps, "children"> & {
   label?: string;
@@ -36,7 +38,7 @@ export const SearchField = ({
     wrapper: {},
     label: { state },
     inputWrapper: {},
-    searchIcon: { size },
+    searchIcon: {},
     input: { size, state },
     clearButton: { size },
     description: {},
@@ -46,32 +48,15 @@ export const SearchField = ({
     <ReactAriaSearchField className={classNames.wrapper} isDisabled={isDisabled} {...props}>
       {label && <Label className={classNames.label}>{label}</Label>}
       <div className={classNames.inputWrapper}>
-        <svg className={classNames.searchIcon} viewBox="0 0 16 16" fill="none">
-          <path
-            d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M14 14L10.5 10.5"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        {/* Layout classes (absolute positioning) live on the searchIcon slot; size comes from Icon. */}
+        <Icon
+          icon={MagnifyingGlassIcon}
+          size={size}
+          classNameOverrides={{ component: classNames.searchIcon }}
+        />
         <Input className={classNames.input} placeholder={placeholder} />
         <Button className={classNames.clearButton}>
-          <svg className="h-3.5 w-3.5" viewBox="0 0 14 14" fill="none">
-            <path
-              d="M11 3L3 11M3 3L11 11"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
+          <Icon icon={XIcon} size="sm" />
         </Button>
       </div>
       {description && (

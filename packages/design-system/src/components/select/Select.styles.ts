@@ -14,7 +14,7 @@ export const selectStyles = {
   }),
   trigger: cva(
     [
-      "inline-flex items-center justify-between w-full rounded-default border bg-surface-default text-foreground-primary transition-colors",
+      "group inline-flex items-center justify-between w-full rounded-default border bg-surface-default text-foreground-primary transition-colors",
       "focus:outline-none focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
       "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted",
       "data-[placeholder]:text-foreground-muted",
@@ -36,16 +36,7 @@ export const selectStyles = {
       defaultVariants: { size: "md", state: "default" },
     }
   ),
-  chevron: cva(["text-foreground-muted transition-transform data-[open]:rotate-180"], {
-    variants: {
-      size: {
-        sm: "h-3 w-3",
-        md: "h-4 w-4",
-        lg: "h-5 w-5",
-      },
-    },
-    defaultVariants: { size: "md" },
-  }),
+  chevron: cva(["text-foreground-muted transition-transform group-data-[open]:rotate-180"]),
   popover: cva([
     "w-[--trigger-width] bg-surface-default border border-border-default rounded-md shadow-lg",
     "entering:animate-in entering:fade-in entering:slide-in-from-top-2",

@@ -10,9 +10,11 @@ import {
   Text,
   type NumberFieldProps as ReactAriaNumberFieldProps,
 } from "react-aria-components";
+import { MinusIcon, PlusIcon } from "@phosphor-icons/react";
 import { useGetClassNames } from "@hooks";
+import { Icon } from "@components/icon";
 import { numberFieldStyles } from "./NumberField.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 export type NumberFieldProps = Omit<ReactAriaNumberFieldProps, "children"> & {
   label?: string;
@@ -56,20 +58,11 @@ export const NumberField = ({
       {label && <Label className={classNames.label}>{label}</Label>}
       <Group className={classNames.group}>
         <Button slot="decrement" className={decrementClasses}>
-          <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+          <Icon icon={MinusIcon} size={size} />
         </Button>
         <Input className={classNames.input} />
         <Button slot="increment" className={incrementClasses}>
-          <svg className="h-4 w-4" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M8 3V13M3 8H13"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
+          <Icon icon={PlusIcon} size={size} />
         </Button>
       </Group>
       {(description || errorMessage) && (
