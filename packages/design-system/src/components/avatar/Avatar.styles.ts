@@ -5,7 +5,7 @@ export const avatarStyles = {
     [
       "relative inline-flex items-center justify-center",
       "rounded-full overflow-hidden bg-surface-secondary",
-      "text-text-secondary font-medium uppercase",
+      "text-foreground-secondary font-medium uppercase",
     ],
     {
       variants: {
@@ -25,7 +25,7 @@ export const avatarStyles = {
   ),
   image: cva("w-full h-full object-cover"),
   fallback: cva(
-    "flex items-center justify-center w-full h-full bg-brand-primary text-text-inverse"
+    "flex items-center justify-center w-full h-full bg-brand-primary text-foreground-inverse"
   ),
   status: cva(
     ["absolute bottom-0 right-0 rounded-full border-2 border-surface-primary"],
@@ -41,7 +41,7 @@ export const avatarStyles = {
         },
         status: {
           online: "bg-state-success-text",
-          offline: "bg-text-tertiary",
+          offline: "bg-foreground-tertiary",
           busy: "bg-state-error-text",
           away: "bg-state-warning-text",
         },

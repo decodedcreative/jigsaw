@@ -31,8 +31,8 @@ export default function SignUpPage() {
               <path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-text-primary">Create your account</h1>
-          <p className="text-sm text-text-secondary mt-1">
+          <h1 className="text-2xl font-bold text-foreground-primary">Create your account</h1>
+          <p className="text-sm text-foreground-secondary mt-1">
             Already have an account?{" "}
             <NextLink href="/sign-in" className="text-interactive-accent hover:underline font-medium">
               Sign in

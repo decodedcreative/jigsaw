@@ -22,19 +22,19 @@ export const NotificationsTab = () => {
         <div className="flex flex-col gap-3">
           <Checkbox isSelected={emailDigest} onChange={setEmailDigest}>
             <span className="font-medium">Weekly digest</span>
-            <span className="block text-xs text-text-secondary">A summary of activity from the past week.</span>
+            <span className="block text-xs text-foreground-secondary">A summary of activity from the past week.</span>
           </Checkbox>
           <Checkbox isSelected={productUpdates} onChange={setProductUpdates}>
             <span className="font-medium">Product updates</span>
-            <span className="block text-xs text-text-secondary">New features and improvements.</span>
+            <span className="block text-xs text-foreground-secondary">New features and improvements.</span>
           </Checkbox>
           <Checkbox isSelected={securityAlerts} onChange={setSecurityAlerts}>
             <span className="font-medium">Security alerts</span>
-            <span className="block text-xs text-text-secondary">Unusual sign-in activity and account changes.</span>
+            <span className="block text-xs text-foreground-secondary">Unusual sign-in activity and account changes.</span>
           </Checkbox>
           <Checkbox isSelected={teamActivity} onChange={setTeamActivity}>
             <span className="font-medium">Team activity</span>
-            <span className="block text-xs text-text-secondary">Comments, mentions, and assignments.</span>
+            <span className="block text-xs text-foreground-secondary">Comments, mentions, and assignments.</span>
           </Checkbox>
         </div>
       </FormFieldset>

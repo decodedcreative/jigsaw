@@ -16,10 +16,10 @@ export const ComponentCard = ({ href, title, description, preview }: ComponentCa
     )}
     {/* Label */}
     <div className="px-4 py-3 border-t border-border-subtle">
-      <span className="text-sm font-semibold text-text-primary group-hover:text-interactive-accent transition-colors block">
+      <span className="text-sm font-semibold text-foreground-primary group-hover:text-interactive-accent transition-colors block">
         {title}
       </span>
-      <span className="text-xs text-text-secondary leading-relaxed">{description}</span>
+      <span className="text-xs text-foreground-secondary leading-relaxed">{description}</span>
     </div>
   </a>
 );

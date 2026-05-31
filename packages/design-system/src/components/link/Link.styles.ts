@@ -15,9 +15,9 @@ export const linkStyles = {
           accent:
             "text-interactive-accent hover:text-interactive-accent-hover underline underline-offset-2",
           subtle:
-            "text-text-secondary hover:text-text-primary no-underline hover:underline underline-offset-2",
+            "text-foreground-secondary hover:text-foreground-primary no-underline hover:underline underline-offset-2",
           muted:
-            "text-text-muted hover:text-text-secondary no-underline hover:underline underline-offset-2",
+            "text-foreground-muted hover:text-foreground-secondary no-underline hover:underline underline-offset-2",
         },
         size: {
           sm: "text-xs",
@@ -42,14 +42,14 @@ export const linkButtonStyles = {
       variants: {
         variant: {
           primary:
-            "bg-interactive-primary text-text-inverse hover:bg-interactive-primary-hover border-transparent",
+            "bg-interactive-primary text-foreground-inverse hover:bg-interactive-primary-hover border-transparent",
           secondary:
-            "bg-surface-muted text-text-primary hover:bg-surface-subtle border-transparent",
+            "bg-surface-muted text-foreground-primary hover:bg-surface-subtle border-transparent",
           accent:
-            "bg-interactive-accent text-text-inverse hover:bg-interactive-accent-hover border-transparent",
+            "bg-interactive-accent text-foreground-inverse hover:bg-interactive-accent-hover border-transparent",
           outline:
             "bg-transparent text-interactive-primary border-border-strong hover:bg-surface-subtle",
-          ghost: "bg-transparent text-text-secondary border-transparent hover:bg-surface-muted",
+          ghost: "bg-transparent text-foreground-secondary border-transparent hover:bg-surface-muted",
         },
         size: {
           sm: "px-3 py-1.5 text-xs gap-1.5",

@@ -65,12 +65,12 @@ describe('Text', () => {
 
   it('applies muted styles when muted is true', () => {
     const { container } = render(<Text muted>Muted text</Text>);
-    expect(container.firstChild).toHaveClass('text-text-muted');
+    expect(container.firstChild).toHaveClass('text-foreground-muted');
   });
 
   it('does not apply muted styles when muted is false', () => {
     const { container } = render(<Text muted={false}>Normal text</Text>);
-    expect(container.firstChild).not.toHaveClass('text-text-muted');
+    expect(container.firstChild).not.toHaveClass('text-foreground-muted');
   });
 
   it('passes additional HTML attributes', () => {

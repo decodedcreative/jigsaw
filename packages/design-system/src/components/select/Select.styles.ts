@@ -5,19 +5,19 @@ export const selectStyles = {
   label: cva(["block text-sm font-medium mb-1.5 transition-colors"], {
     variants: {
       state: {
-        default: "text-text-primary",
+        default: "text-foreground-primary",
         error: "text-state-error",
-        disabled: "text-text-muted",
+        disabled: "text-foreground-muted",
       },
     },
     defaultVariants: { state: "default" },
   }),
   trigger: cva(
     [
-      "inline-flex items-center justify-between w-full rounded-default border bg-surface-default text-text-primary transition-colors",
+      "inline-flex items-center justify-between w-full rounded-default border bg-surface-default text-foreground-primary transition-colors",
       "focus:outline-none focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
-      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-text-muted",
-      "data-[placeholder]:text-text-muted",
+      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted",
+      "data-[placeholder]:text-foreground-muted",
     ],
     {
       variants: {
@@ -36,7 +36,7 @@ export const selectStyles = {
       defaultVariants: { size: "md", state: "default" },
     }
   ),
-  chevron: cva(["text-text-muted transition-transform data-[open]:rotate-180"], {
+  chevron: cva(["text-foreground-muted transition-transform data-[open]:rotate-180"], {
     variants: {
       size: {
         sm: "h-3 w-3",
@@ -54,17 +54,17 @@ export const selectStyles = {
   ]),
   listbox: cva(["outline-none p-1 max-h-60 overflow-auto"]),
   item: cva([
-    "relative flex items-center px-3 py-2 text-sm text-text-primary rounded cursor-pointer outline-none",
+    "relative flex items-center px-3 py-2 text-sm text-foreground-primary rounded cursor-pointer outline-none",
     "data-[focused]:bg-surface-muted",
-    "data-[selected]:bg-interactive-primary data-[selected]:text-text-inverse",
-    "data-[disabled]:text-text-muted data-[disabled]:cursor-not-allowed",
+    "data-[selected]:bg-interactive-primary data-[selected]:text-foreground-inverse",
+    "data-[disabled]:text-foreground-muted data-[disabled]:cursor-not-allowed",
   ]),
   description: cva(["mt-1.5 text-xs"], {
     variants: {
       state: {
-        default: "text-text-muted",
+        default: "text-foreground-muted",
         error: "text-state-error",
-        disabled: "text-text-muted",
+        disabled: "text-foreground-muted",
       },
     },
     defaultVariants: { state: "default" },

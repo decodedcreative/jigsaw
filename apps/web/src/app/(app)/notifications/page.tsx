@@ -50,28 +50,28 @@ const TYPE_CONFIG: Record<NotifType, { icon: React.ReactNode; bg: string; dot: s
     ),
   },
   invite: {
-    bg: "bg-feedback-success-subtle",
-    dot: "bg-feedback-success",
+    bg: "bg-state-success-bg",
+    dot: "bg-state-success",
     icon: (
-      <svg className="w-4 h-4 text-feedback-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <svg className="w-4 h-4 text-state-success-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
         <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><line x1="19" y1="8" x2="19" y2="14" /><line x1="22" y1="11" x2="16" y2="11" />
       </svg>
     ),
   },
   update: {
     bg: "bg-surface-muted",
-    dot: "bg-text-muted",
+    dot: "bg-foreground-muted",
     icon: (
-      <svg className="w-4 h-4 text-text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <svg className="w-4 h-4 text-foreground-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
         <polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
       </svg>
     ),
   },
   alert: {
-    bg: "bg-feedback-warning-subtle",
-    dot: "bg-feedback-warning",
+    bg: "bg-state-warning-bg",
+    dot: "bg-state-warning",
     icon: (
-      <svg className="w-4 h-4 text-feedback-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <svg className="w-4 h-4 text-state-warning-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
         <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
         <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
       </svg>
@@ -81,7 +81,7 @@ const TYPE_CONFIG: Record<NotifType, { icon: React.ReactNode; bg: string; dot: s
     bg: "bg-surface-muted",
     dot: "bg-interactive-accent",
     icon: (
-      <svg className="w-4 h-4 text-text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <svg className="w-4 h-4 text-foreground-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
         <polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" />
         <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3" />
       </svg>
@@ -116,7 +116,7 @@ function Preferences() {
               ] as { key: PrefKey; label: string; desc: string }[]).map(({ key, label, desc }) => (
                 <Checkbox key={key} isSelected={prefs[key]} onChange={toggle(key)}>
                   <span className="font-medium">{label}</span>
-                  <span className="block text-xs text-text-secondary">{desc}</span>
+                  <span className="block text-xs text-foreground-secondary">{desc}</span>
                 </Checkbox>
               ))}
               <div className="pt-2">
@@ -156,7 +156,7 @@ function NotificationsInner() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold text-text-primary">Notifications</h1>
+          <h1 className="text-3xl font-bold text-foreground-primary">Notifications</h1>
           {unread > 0 && <Badge variant="primary">{unread}</Badge>}
         </div>
         <Button variant="secondary" size="sm" isDisabled={unread === 0} onPress={markAllRead}>
@@ -173,14 +173,14 @@ function NotificationsInner() {
             <SelectItem id="read">Read</SelectItem>
           </Select>
         </div>
-        <p className="text-xs text-text-muted">{filtered.length} notification{filtered.length !== 1 ? "s" : ""}</p>
+        <p className="text-xs text-foreground-muted">{filtered.length} notification{filtered.length !== 1 ? "s" : ""}</p>
       </div>
 
       <Card classNameOverrides={{ component: "mb-6", content: "p-0" }}>
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <p className="text-base font-medium text-text-primary mb-1">All caught up</p>
-              <p className="text-sm text-text-secondary">No notifications to show.</p>
+              <p className="text-base font-medium text-foreground-primary mb-1">All caught up</p>
+              <p className="text-sm text-foreground-secondary">No notifications to show.</p>
             </div>
           ) : (
             <div className="divide-y divide-border-subtle">
@@ -204,15 +204,15 @@ function NotificationsInner() {
                       className="flex-1 min-w-0 text-left"
                       onClick={() => markRead(n.id)}
                     >
-                      <p className={`text-sm leading-snug ${n.read ? "text-text-secondary" : "font-medium text-text-primary"}`}>
+                      <p className={`text-sm leading-snug ${n.read ? "text-foreground-secondary" : "font-medium text-foreground-primary"}`}>
                         {n.title}
                       </p>
-                      <p className="text-xs text-text-secondary mt-0.5 leading-relaxed">{n.body}</p>
-                      <p className="text-xs text-text-muted mt-1">{n.time}</p>
+                      <p className="text-xs text-foreground-secondary mt-0.5 leading-relaxed">{n.body}</p>
+                      <p className="text-xs text-foreground-muted mt-1">{n.time}</p>
                     </button>
                     {/* Dismiss */}
                     <button
-                      className="shrink-0 p-1 rounded text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors"
+                      className="shrink-0 p-1 rounded text-foreground-muted hover:text-foreground-primary hover:bg-surface-hover transition-colors"
                       onClick={() => {
                         dismiss(n.id);
                         addToast({ title: "Notification dismissed", variant: "default" });

@@ -9,6 +9,18 @@
  */
 const sc = (name: string) => `rgb(var(--color-${name}) / <alpha-value>)`;
 
+const foreground = {
+  primary: sc("foreground-primary"),
+  secondary: sc("foreground-secondary"),
+  tertiary: sc("foreground-tertiary"),
+  muted: sc("foreground-muted"),
+  disabled: sc("foreground-disabled"),
+  placeholder: sc("foreground-placeholder"),
+  inverse: sc("foreground-inverse"),
+  "on-primary": sc("foreground-on-primary"),
+  "on-accent": sc("foreground-on-accent"),
+};
+
 export const semanticColors = {
   surface: {
     primary: sc("surface-primary"),
@@ -23,17 +35,7 @@ export const semanticColors = {
     hover: sc("surface-hover"),
     inverse: sc("surface-inverse"),
   },
-  foreground: {
-    primary: sc("foreground-primary"),
-    secondary: sc("foreground-secondary"),
-    tertiary: sc("foreground-tertiary"),
-    muted: sc("foreground-muted"),
-    disabled: sc("foreground-disabled"),
-    placeholder: sc("foreground-placeholder"),
-    inverse: sc("foreground-inverse"),
-    "on-primary": sc("foreground-on-primary"),
-    "on-accent": sc("foreground-on-accent"),
-  },
+  foreground,
   border: {
     DEFAULT: sc("border-default"),
     default: sc("border-default"),

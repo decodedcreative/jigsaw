@@ -5,14 +5,14 @@ export const radioGroupStyles = {
   label: cva(["block text-sm font-medium mb-2 transition-colors"], {
     variants: {
       state: {
-        default: "text-text-primary",
+        default: "text-foreground-primary",
         error: "text-state-error",
-        disabled: "text-text-muted",
+        disabled: "text-foreground-muted",
       },
     },
     defaultVariants: { state: "default" },
   }),
-  description: cva(["text-xs text-text-muted mb-3"]),
+  description: cva(["text-xs text-foreground-muted mb-3"]),
   errorMessage: cva(["text-xs text-state-error mt-2"]),
   options: cva(["flex flex-col gap-2"]),
 };
@@ -59,7 +59,7 @@ export const radioStyles = {
       defaultVariants: { size: "md", state: "default" },
     }
   ),
-  label: cva(["select-none transition-colors group-data-[disabled]:text-text-muted"], {
+  label: cva(["select-none transition-colors group-data-[disabled]:text-foreground-muted"], {
     variants: {
       size: {
         sm: "text-xs",
@@ -69,7 +69,7 @@ export const radioStyles = {
     },
     defaultVariants: { size: "md" },
   }),
-  itemDescription: cva(["text-text-muted mt-0.5"], {
+  itemDescription: cva(["text-foreground-muted mt-0.5"], {
     variants: {
       size: {
         sm: "text-xs",

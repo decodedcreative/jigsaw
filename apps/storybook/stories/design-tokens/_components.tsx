@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 export function TokenPage({ children }: { children: ReactNode }) {
   return (
-    <div className="font-sans text-text-primary bg-surface-default p-8 max-w-5xl">
+    <div className="font-sans text-foreground-primary bg-surface-default p-8 max-w-5xl">
       {children}
     </div>
   );
@@ -19,9 +19,9 @@ export function TokenSection({
 }) {
   return (
     <section className="mb-10">
-      <h2 className="text-xl font-semibold text-text-primary mb-1">{title}</h2>
+      <h2 className="text-xl font-semibold text-foreground-primary mb-1">{title}</h2>
       {description ? (
-        <p className="text-sm text-text-secondary mb-4">{description}</p>
+        <p className="text-sm text-foreground-secondary mb-4">{description}</p>
       ) : null}
       {children}
     </section>
@@ -32,7 +32,7 @@ export function ColorSwatch({
   label,
   value,
   className,
-  textClassName = "text-text-primary",
+  textClassName = "text-foreground-primary",
 }: {
   label: string;
   value: string;
@@ -47,7 +47,7 @@ export function ColorSwatch({
         title={value}
       />
       <span className={`mt-2 text-xs font-medium ${textClassName}`}>{label}</span>
-      <span className="text-[10px] text-text-muted font-mono break-all">{value}</span>
+      <span className="text-[10px] text-foreground-muted font-mono break-all">{value}</span>
     </div>
   );
 }
@@ -69,10 +69,10 @@ export function TypeSample({
 }) {
   return (
     <div className="py-3 border-b border-border-subtle last:border-0">
-      <p className={`${className} text-text-primary`}>
+      <p className={`${className} text-foreground-primary`}>
         {children ?? "The quick brown fox jumps over the lazy dog"}
       </p>
-      <p className="mt-1 text-xs text-text-muted font-mono">
+      <p className="mt-1 text-xs text-foreground-muted font-mono">
         {label} · {token}
       </p>
     </div>
@@ -88,8 +88,8 @@ export function SpacingSample({
 }) {
   return (
     <div className="flex items-center gap-4 py-2 border-b border-border-subtle last:border-0">
-      <span className="w-12 text-xs font-mono text-text-muted shrink-0">{label}</span>
-      <span className="w-20 text-xs font-mono text-text-muted shrink-0">{value}</span>
+      <span className="w-12 text-xs font-mono text-foreground-muted shrink-0">{label}</span>
+      <span className="w-20 text-xs font-mono text-foreground-muted shrink-0">{value}</span>
       <div className="flex-1 flex items-center">
         <div className="h-4 bg-interactive-accent" style={{ width: value }} />
       </div>
@@ -110,8 +110,8 @@ export function RadiusSample({
         className="h-20 w-20 bg-surface-muted border border-border-default"
         style={{ borderRadius: value }}
       />
-      <span className="mt-2 text-xs font-medium text-text-primary">{label}</span>
-      <span className="text-[10px] text-text-muted font-mono">{value}</span>
+      <span className="mt-2 text-xs font-medium text-foreground-primary">{label}</span>
+      <span className="text-[10px] text-foreground-muted font-mono">{value}</span>
     </div>
   );
 }
@@ -129,8 +129,8 @@ export function ShadowSample({
         className="h-24 bg-surface-default border border-border-subtle rounded-md"
         style={{ boxShadow: value === "none" ? undefined : value }}
       />
-      <span className="mt-3 text-xs font-medium text-text-primary">{label}</span>
-      <span className="text-[10px] text-text-muted font-mono break-all">{value}</span>
+      <span className="mt-3 text-xs font-medium text-foreground-primary">{label}</span>
+      <span className="text-[10px] text-foreground-muted font-mono break-all">{value}</span>
     </div>
   );
 }

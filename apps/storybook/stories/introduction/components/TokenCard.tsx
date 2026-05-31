@@ -15,9 +15,9 @@ export const TokenCard = ({ href, icon, title, description }: TokenCardProps) =>
         {icon}
       </span>
     )}
-    <span className="text-sm font-semibold text-text-primary group-hover:text-interactive-accent transition-colors">
+    <span className="text-sm font-semibold text-foreground-primary group-hover:text-interactive-accent transition-colors">
       {title}
     </span>
-    <span className="text-xs text-text-secondary leading-relaxed">{description}</span>
+    <span className="text-xs text-foreground-secondary leading-relaxed">{description}</span>
   </a>
 );

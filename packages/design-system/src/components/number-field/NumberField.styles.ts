@@ -5,9 +5,9 @@ export const numberFieldStyles = {
   label: cva(["block text-sm font-medium mb-1.5 transition-colors"], {
     variants: {
       state: {
-        default: "text-text-primary",
+        default: "text-foreground-primary",
         error: "text-state-error",
-        disabled: "text-text-muted",
+        disabled: "text-foreground-muted",
       },
     },
     defaultVariants: { state: "default" },
@@ -15,10 +15,10 @@ export const numberFieldStyles = {
   group: cva(["relative flex items-stretch"]),
   input: cva(
     [
-      "flex-1 rounded-default border bg-surface-default text-text-primary text-center transition-colors",
-      "placeholder:text-text-muted",
+      "flex-1 rounded-default border bg-surface-default text-foreground-primary text-center transition-colors",
+      "placeholder:text-foreground-muted",
       "focus:outline-none focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent focus:z-10",
-      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-text-muted data-[disabled]:border-border-default",
+      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted data-[disabled]:border-border-default",
       "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
     ],
     {
@@ -40,10 +40,10 @@ export const numberFieldStyles = {
   ),
   stepButton: cva(
     [
-      "absolute top-0 bottom-0 flex items-center justify-center bg-surface-muted text-text-secondary border transition-colors",
-      "hover:bg-surface-subtle hover:text-text-primary",
+      "absolute top-0 bottom-0 flex items-center justify-center bg-surface-muted text-foreground-secondary border transition-colors",
+      "hover:bg-surface-subtle hover:text-foreground-primary",
       "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:z-10",
-      "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-surface-muted data-[disabled]:hover:text-text-secondary",
+      "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-surface-muted data-[disabled]:hover:text-foreground-secondary",
     ],
     {
       variants: {
@@ -68,9 +68,9 @@ export const numberFieldStyles = {
   description: cva(["mt-1.5 text-xs"], {
     variants: {
       state: {
-        default: "text-text-muted",
+        default: "text-foreground-muted",
         error: "text-state-error",
-        disabled: "text-text-muted",
+        disabled: "text-foreground-muted",
       },
     },
     defaultVariants: { state: "default" },

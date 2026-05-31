@@ -173,7 +173,7 @@ export const MobileNavigation = ({
         <div className={classNames.mobileMenu} role="dialog" aria-modal="true" aria-label="Navigation menu">
           {/* Header row mirrors the nav bar */}
           <div className={classNames.mobileMenuHeader}>
-            <span className="text-lg font-semibold text-text-primary">Menu</span>
+            <span className="text-lg font-semibold text-foreground-primary">Menu</span>
             <button
               type="button"
               className={classNames.mobileMenuButton}

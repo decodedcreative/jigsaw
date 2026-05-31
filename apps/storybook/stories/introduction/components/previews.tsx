@@ -63,7 +63,7 @@ export const previews: PreviewMap = {
     <Preview>
       <div className="scale-75 origin-center">
         <Card title="Card title">
-          <p className="text-sm text-text-secondary">A short description.</p>
+          <p className="text-sm text-foreground-secondary">A short description.</p>
         </Card>
       </div>
     </Preview>
@@ -92,7 +92,7 @@ export const previews: PreviewMap = {
     <Preview>
       <div className="w-40">
         <Disclosure defaultExpanded title="FAQ item">
-          <p className="text-[10px] text-text-secondary">Answer content goes here.</p>
+          <p className="text-[10px] text-foreground-secondary">Answer content goes here.</p>
         </Disclosure>
       </div>
     </Preview>
@@ -128,8 +128,8 @@ export const previews: PreviewMap = {
   Modal: (
     <Preview>
       <div className="w-36 border border-border-default rounded-lg bg-surface-default shadow-lg p-3">
-        <p className="text-[10px] font-semibold text-text-primary mb-1">Dialog title</p>
-        <p className="text-[9px] text-text-secondary leading-tight mb-2">Are you sure you want to continue?</p>
+        <p className="text-[10px] font-semibold text-foreground-primary mb-1">Dialog title</p>
+        <p className="text-[9px] text-foreground-secondary leading-tight mb-2">Are you sure you want to continue?</p>
         <div className="flex gap-1 justify-end">
           <div className="h-4 w-10 rounded bg-border-default" />
           <div className="h-4 w-10 rounded bg-interactive-accent" />
@@ -214,7 +214,7 @@ export const previews: PreviewMap = {
     <Preview>
       <div className="flex flex-col items-start gap-0.5">
         <Text size="base" weight="semibold">Heading</Text>
-        <Text size="sm" className="text-text-secondary">Body text</Text>
+        <Text size="sm" className="text-foreground-secondary">Body text</Text>
         <Text size="xs" muted>Caption</Text>
       </div>
     </Preview>
@@ -231,18 +231,18 @@ export const previews: PreviewMap = {
   Toast: (
     <Preview>
       <div className="flex flex-col gap-1.5 w-36">
-        <div className="flex items-start gap-1.5 bg-feedback-success-subtle border border-feedback-success rounded-md p-2">
-          <div className="w-2 h-2 mt-0.5 rounded-full bg-feedback-success shrink-0" />
+        <div className="flex items-start gap-1.5 bg-state-success-bg border border-state-success-border rounded-md p-2">
+          <div className="w-2 h-2 mt-0.5 rounded-full bg-state-success shrink-0" />
           <div>
-            <p className="text-[9px] font-semibold text-text-primary">Saved!</p>
-            <p className="text-[8px] text-text-secondary">Your changes were saved.</p>
+            <p className="text-[9px] font-semibold text-foreground-primary">Saved!</p>
+            <p className="text-[8px] text-foreground-secondary">Your changes were saved.</p>
           </div>
         </div>
-        <div className="flex items-start gap-1.5 bg-feedback-error-subtle border border-feedback-error rounded-md p-2">
-          <div className="w-2 h-2 mt-0.5 rounded-full bg-feedback-error shrink-0" />
+        <div className="flex items-start gap-1.5 bg-state-error-bg border border-state-error-border rounded-md p-2">
+          <div className="w-2 h-2 mt-0.5 rounded-full bg-state-error shrink-0" />
           <div>
-            <p className="text-[9px] font-semibold text-text-primary">Error</p>
-            <p className="text-[8px] text-text-secondary">Something went wrong.</p>
+            <p className="text-[9px] font-semibold text-foreground-primary">Error</p>
+            <p className="text-[8px] text-foreground-secondary">Something went wrong.</p>
           </div>
         </div>
       </div>

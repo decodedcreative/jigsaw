@@ -93,8 +93,8 @@ function TeamInner() {
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-text-primary">Team</h1>
-          <p className="text-sm text-text-secondary mt-1">
+          <h1 className="text-3xl font-bold text-foreground-primary">Team</h1>
+          <p className="text-sm text-foreground-secondary mt-1">
             {members.length} members across Engineering, Design, Product, and Marketing.
           </p>
         </div>
@@ -106,7 +106,7 @@ function TeamInner() {
             <ModalContent title="Invite a teammate">
               {({ close }) => (
                 <>
-                  <p className="text-sm text-text-secondary mb-4">
+                  <p className="text-sm text-foreground-secondary mb-4">
                     They'll receive an email and be added as a Viewer by default.
                   </p>
                   <Input
@@ -174,11 +174,11 @@ function TeamInner() {
                   </Avatar>
                 </div>
                 <div className="flex items-start justify-between gap-2 mb-0.5">
-                  <p className="text-sm font-semibold text-text-primary leading-snug">{m.name}</p>
+                  <p className="text-sm font-semibold text-foreground-primary leading-snug">{m.name}</p>
                   <Badge variant={ROLE_BADGE[m.role]} size="sm">{m.role}</Badge>
                 </div>
-                <p className="text-xs text-text-secondary mb-0.5">{m.email}</p>
-                <p className="text-xs text-text-muted mb-4">{m.department} · Joined {m.joined}</p>
+                <p className="text-xs text-foreground-secondary mb-0.5">{m.email}</p>
+                <p className="text-xs text-foreground-muted mb-4">{m.department} · Joined {m.joined}</p>
 
                 {m.role !== "Owner" && (
                   <div className="flex gap-2">
@@ -189,7 +189,7 @@ function TeamInner() {
                         <ModalContent title={`Edit role — ${m.name}`}>
                           {({ close }) => (
                             <>
-                              <p className="text-sm text-text-secondary mb-4">Changes take effect immediately.</p>
+                              <p className="text-sm text-foreground-secondary mb-4">Changes take effect immediately.</p>
                               <RadioGroup
                                 label="Role"
                                 value={pendingRole[m.id] ?? m.role.toLowerCase()}
@@ -217,13 +217,13 @@ function TeamInner() {
 
                     {/* Remove */}
                     <ModalTrigger>
-                      <Button variant="ghost" size="sm" classNameOverrides={{ component: "text-feedback-error hover:bg-feedback-error-subtle" }}>Remove</Button>
+                      <Button variant="ghost" size="sm" classNameOverrides={{ component: "text-state-error-text hover:bg-state-error-bg" }}>Remove</Button>
                       <Modal>
                         <ModalContent title="Remove member">
                           {({ close }) => (
                             <>
-                              <p className="text-sm text-text-secondary mb-4">
-                                Remove <strong className="text-text-primary">{m.name}</strong> from this workspace? They'll lose access immediately.
+                              <p className="text-sm text-foreground-secondary mb-4">
+                                Remove <strong className="text-foreground-primary">{m.name}</strong> from this workspace? They'll lose access immediately.
                               </p>
                               <ModalFooter>
                                 <Button variant="secondary" onPress={close}>Cancel</Button>
@@ -241,8 +241,8 @@ function TeamInner() {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <p className="text-base font-medium text-text-primary mb-1">No members found</p>
-          <p className="text-sm text-text-secondary">Try adjusting your search or filters.</p>
+          <p className="text-base font-medium text-foreground-primary mb-1">No members found</p>
+          <p className="text-sm text-foreground-secondary">Try adjusting your search or filters.</p>
         </div>
       )}
     </div>

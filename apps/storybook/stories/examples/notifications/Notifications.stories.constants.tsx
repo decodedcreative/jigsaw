@@ -48,7 +48,7 @@ export const TYPE_ICON: Record<Notification["type"], React.ReactNode> = {
 
 export const TYPE_COLOR: Record<Notification["type"], string> = {
   mention: "bg-interactive-accent/10 text-interactive-accent",
-  invite:  "bg-feedback-success-subtle text-feedback-success",
-  update:  "bg-surface-muted text-text-secondary",
-  alert:   "bg-feedback-warning-subtle text-feedback-warning",
+  invite:  "bg-state-success-bg text-state-success-text",
+  update:  "bg-surface-muted text-foreground-secondary",
+  alert:   "bg-state-warning-bg text-state-warning-text",
 };

@@ -40,7 +40,7 @@ export const toastStyles = {
   icon: cva("flex-shrink-0 w-5 h-5", {
     variants: {
       variant: {
-        default: "text-text-secondary",
+        default: "text-foreground-secondary",
         success: "text-state-success-text",
         warning: "text-state-warning-text",
         error: "text-state-error-text",
@@ -50,11 +50,11 @@ export const toastStyles = {
     defaultVariants: { variant: "default" },
   }),
   content: cva("flex-1 min-w-0"),
-  title: cva("text-sm font-medium text-text-primary"),
-  description: cva("text-sm text-text-secondary mt-1"),
+  title: cva("text-sm font-medium text-foreground-primary"),
+  description: cva("text-sm text-foreground-secondary mt-1"),
   close: cva([
     "flex-shrink-0 p-1 rounded-md",
-    "text-text-tertiary hover:text-text-primary hover:bg-surface-hover",
+    "text-foreground-tertiary hover:text-foreground-primary hover:bg-surface-hover",
     "transition-colors outline-none",
     "focus-visible:ring-2 focus-visible:ring-interactive-focus",
   ]),

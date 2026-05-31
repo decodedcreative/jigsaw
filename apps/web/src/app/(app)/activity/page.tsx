@@ -116,8 +116,8 @@ export default function ActivityPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-text-primary">Activity</h1>
-          <p className="text-sm text-text-secondary mt-1">Audit log of all workspace events.</p>
+          <h1 className="text-3xl font-bold text-foreground-primary">Activity</h1>
+          <p className="text-sm text-foreground-secondary mt-1">Audit log of all workspace events.</p>
         </div>
         <Button variant="secondary" size="sm">
           Export CSV
@@ -150,14 +150,14 @@ export default function ActivityPage() {
       {/* Timeline */}
       {Object.keys(grouped).length === 0 ? (
         <Card classNameOverrides={{ content: "flex flex-col items-center justify-center py-20 text-center p-8" }}>
-          <p className="text-base font-medium text-text-primary mb-1">No events found</p>
-          <p className="text-sm text-text-secondary">Try adjusting your filters.</p>
+          <p className="text-base font-medium text-foreground-primary mb-1">No events found</p>
+          <p className="text-sm text-foreground-secondary">Try adjusting your filters.</p>
         </Card>
       ) : (
         <div className="flex flex-col gap-6">
           {Object.entries(grouped).map(([date, events]) => (
             <div key={date}>
-              <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">{date}</p>
+              <p className="text-xs font-semibold text-foreground-muted uppercase tracking-wider mb-3">{date}</p>
               <Card classNameOverrides={{ content: "p-0" }}>
                 <div className="divide-y divide-border-subtle">
                     {events.map((e) => (
@@ -174,13 +174,13 @@ export default function ActivityPage() {
 
                         {/* Event description */}
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-text-primary">
+                          <p className="text-sm text-foreground-primary">
                             <span className="font-medium">{e.actor}</span>{" "}
-                            <span className="text-text-secondary">{e.action}</span>{" "}
+                            <span className="text-foreground-secondary">{e.action}</span>{" "}
                             <span className="font-mono text-xs bg-surface-muted px-1.5 py-0.5 rounded">{e.target}</span>
                           </p>
                           {e.meta && (
-                            <p className="text-xs text-text-muted mt-0.5">{e.meta}</p>
+                            <p className="text-xs text-foreground-muted mt-0.5">{e.meta}</p>
                           )}
                         </div>
 
@@ -192,7 +192,7 @@ export default function ActivityPage() {
                               {KIND_LABELS[e.kind]}
                             </span>
                           </Badge>
-                          <span className="text-xs text-text-muted w-16 text-right">{e.time.replace(/.*,\s*/, "")}</span>
+                          <span className="text-xs text-foreground-muted w-16 text-right">{e.time.replace(/.*,\s*/, "")}</span>
                         </div>
                       </div>
                     ))}

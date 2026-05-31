@@ -8,7 +8,7 @@ function BorderRadiusContent() {
   return (
     <TokenPage>
       <h1 className="text-3xl font-bold mb-2">Border radius</h1>
-      <p className="text-text-secondary mb-8 max-w-2xl">
+      <p className="text-foreground-secondary mb-8 max-w-2xl">
         Corner-radius tokens from <code className="font-mono text-sm">@jigsaw/tokens</code>.
         Use Tailwind utilities like <code className="font-mono text-sm">rounded-md</code>,{" "}
         <code className="font-mono text-sm">rounded-xl</code>,{" "}
