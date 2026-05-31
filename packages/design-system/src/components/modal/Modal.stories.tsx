@@ -1,8 +1,30 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Heading } from "react-aria-components";
 import { Modal } from "./Modal";
+import type { ModalProps } from "./Modal.types";
 import { Button } from "../button/Button";
+
+/** Docs stories open by default with controlled open state wired for Storybook. */
+function ModalStory(props: ModalProps) {
+  const { isOpen: isOpenArg = true, onOpenChange, ...rest } = props;
+  const [isOpen, setIsOpen] = useState(isOpenArg);
+
+  useEffect(() => {
+    setIsOpen(isOpenArg);
+  }, [isOpenArg]);
+
+  return (
+    <Modal
+      {...rest}
+      isOpen={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open);
+        onOpenChange?.(open);
+      }}
+    />
+  );
+}
 
 const meta = {
   title: "Design System/Modal",
@@ -68,7 +90,7 @@ export const Default: Story = {
     title: "Confirm action",
   },
   render: (args) => (
-    <Modal
+    <ModalStory
       {...args}
       footer={
         <Button variant="destructive" slot="close">
@@ -79,7 +101,7 @@ export const Default: Story = {
       <p className="text-sm text-foreground-secondary">
         Are you sure you want to continue? This action cannot be undone.
       </p>
-    </Modal>
+    </ModalStory>
   ),
 };
 
@@ -97,7 +119,7 @@ export const WithConfirmDismiss: Story = {
     showCloseButton: false,
   },
   render: (args) => (
-    <Modal
+    <ModalStory
       {...args}
       footer={
         <Button variant="destructive" slot="close">
@@ -108,7 +130,7 @@ export const WithConfirmDismiss: Story = {
       <p className="text-sm text-foreground-secondary">
         Are you sure you want to continue? This action cannot be undone.
       </p>
-    </Modal>
+    </ModalStory>
   ),
 };
 
@@ -126,12 +148,12 @@ export const WithFooterCancel: Story = {
     showCancelButton: true,
   },
   render: (args) => (
-    <Modal {...args}>
+    <ModalStory {...args}>
       <p className="text-sm text-foreground-secondary">
         We have updated our terms of service. Review the changes on the settings page when you are
         ready.
       </p>
-    </Modal>
+    </ModalStory>
   ),
 };
 
@@ -149,11 +171,11 @@ export const WithHeaderClose: Story = {
     showCancelButton: false,
   },
   render: (args) => (
-    <Modal {...args}>
+    <ModalStory {...args}>
       <p className="text-sm text-foreground-secondary">
         Use keyboard shortcuts from the command palette to navigate faster.
       </p>
-    </Modal>
+    </ModalStory>
   ),
 };
 
@@ -169,7 +191,7 @@ export const WithScrollableContent: Story = {
     title: "Release notes",
   },
   render: (args) => (
-    <Modal {...args} footer={<Button slot="close">Got it</Button>}>
+    <ModalStory {...args} footer={<Button slot="close">Got it</Button>}>
       <div className="flex flex-col gap-4 text-sm text-foreground-secondary">
         {Array.from({ length: 12 }, (_, index) => (
           <p key={index}>
@@ -179,11 +201,15 @@ export const WithScrollableContent: Story = {
           </p>
         ))}
       </div>
-    </Modal>
+    </ModalStory>
   ),
 };
 
 export const Controlled: Story = {
+  args: {
+    title: "Controlled modal",
+    isOpen: false,
+  },
   parameters: {
     docs: {
       description: {
@@ -223,11 +249,14 @@ export const WithCustomHeader: Story = {
     },
   },
   args: {
+    title: "Custom header",
     showCancelButton: false,
   },
   render: (args) => (
-    <Modal
-      {...args}
+    <ModalStory
+      showCancelButton={args.showCancelButton}
+      showCloseButton={args.showCloseButton}
+      isOpen={args.isOpen}
       header={
         <div className="flex w-full items-center justify-between">
           <Heading slot="title" className="text-lg font-semibold text-foreground-primary">
@@ -240,6 +269,6 @@ export const WithCustomHeader: Story = {
       <p className="text-sm text-foreground-secondary">
         The header region is fully owned by the consumer here.
       </p>
-    </Modal>
+    </ModalStory>
   ),
 };
