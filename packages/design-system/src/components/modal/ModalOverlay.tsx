@@ -9,6 +9,7 @@ import {
   ModalOverlay as ReactAriaModalOverlay,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
+import { Icon } from "@components/icon";
 import { Button } from "../button/Button";
 import { modalStyles } from "./Modal.styles";
 import type { ModalProps } from "./Modal.types";
@@ -59,7 +60,7 @@ export const ModalOverlay = ({
                       onPress={close}
                       className={classNames.closeButton}
                     >
-                      <XIcon className="h-5 w-5" weight="bold" aria-hidden />
+                      <Icon icon={XIcon} size="lg" />
                     </ReactAriaButton>
                   ) : null}
                 </div>

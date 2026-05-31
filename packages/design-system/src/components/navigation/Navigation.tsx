@@ -1,10 +1,12 @@
 "use client";
 
 import { type ReactNode, type HTMLAttributes } from "react";
+import { ListIcon, XIcon } from "@phosphor-icons/react";
 import { Link as ReactAriaLink } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
+import { Icon } from "@components/icon";
 import { navigationStyles } from "./Navigation.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 export type NavigationProps = HTMLAttributes<HTMLElement> & {
   classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
@@ -126,21 +128,6 @@ export type MobileNavigationProps = {
   classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
 };
 
-const HamburgerIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="4" x2="20" y1="6" y2="6" />
-    <line x1="4" x2="20" y1="12" y2="12" />
-    <line x1="4" x2="20" y1="18" y2="18" />
-  </svg>
-);
-
-const CloseIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 6 6 18" />
-    <path d="m6 6 12 12" />
-  </svg>
-);
-
 export const MobileNavigation = ({
   isOpen,
   onOpenChange,
@@ -165,7 +152,7 @@ export const MobileNavigation = ({
         aria-expanded={isOpen}
         aria-label="Toggle menu"
       >
-        <HamburgerIcon />
+        <Icon icon={ListIcon} size="xl" />
       </button>
 
       {/* Full-screen overlay */}
@@ -180,7 +167,7 @@ export const MobileNavigation = ({
               onClick={() => onOpenChange(false)}
               aria-label="Close menu"
             >
-              <CloseIcon />
+              <Icon icon={XIcon} size="xl" />
             </button>
           </div>
 

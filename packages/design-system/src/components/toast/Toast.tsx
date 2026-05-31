@@ -8,9 +8,18 @@ import {
   type ReactNode,
   type HTMLAttributes,
 } from "react";
+import {
+  CheckCircleIcon,
+  InfoIcon,
+  WarningIcon,
+  XCircleIcon,
+  XIcon,
+  type Icon as PhosphorIcon,
+} from "@phosphor-icons/react";
 import { useGetClassNames } from "@hooks";
+import { Icon } from "@components/icon";
 import { toastStyles, type ToastVariant, type ToastPosition } from "./Toast.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 export interface ToastData {
   id: string;
@@ -126,53 +135,20 @@ export function ToastItem({
         )}
       </div>
       <button className={classNames.close} onClick={onClose} aria-label="Close">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M18 6 6 18" />
-          <path d="m6 6 12 12" />
-        </svg>
+        <Icon icon={XIcon} size="md" />
       </button>
     </div>
   );
 }
 
+const toastVariantIcons: Record<ToastVariant, PhosphorIcon> = {
+  default: InfoIcon,
+  success: CheckCircleIcon,
+  warning: WarningIcon,
+  error: XCircleIcon,
+  info: InfoIcon,
+};
+
 function ToastIcon({ variant }: { variant: ToastVariant }) {
-  const icons: Record<ToastVariant, ReactNode> = {
-    default: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" />
-      </svg>
-    ),
-    success: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" />
-      </svg>
-    ),
-    warning: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-        <path d="M12 9v4" /><path d="M12 17h.01" />
-      </svg>
-    ),
-    error: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" />
-      </svg>
-    ),
-    info: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" />
-      </svg>
-    ),
-  };
-  return <>{icons[variant]}</>;
+  return <Icon icon={toastVariantIcons[variant]} size="lg" />;
 }
