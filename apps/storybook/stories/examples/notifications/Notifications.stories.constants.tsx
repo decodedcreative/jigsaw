@@ -1,12 +1,3 @@
-import {
-  ArrowClockwiseIcon,
-  AtIcon,
-  UserPlusIcon,
-  WarningIcon,
-  type Icon as PhosphorIcon,
-} from "@phosphor-icons/react";
-import { Icon } from "@jigsaw/design-system";
-import type { ReactNode } from "react";
 import type { Notification, ToastExample } from "./Notifications.stories.types";
 
 export const TOAST_EXAMPLES: ToastExample[] = [
@@ -31,20 +22,6 @@ export const FEED: Notification[] = [
   { id: "5", type: "mention", title: "Carlos mentioned you",      body: "\"@james the button link variant looks great!\"",           time: "Yesterday",  read: true  },
   { id: "6", type: "update",  title: "Chromatic build passed",    body: "All 42 stories captured with no visual regressions.",       time: "Yesterday",  read: true  },
 ];
-
-const notificationTypeIcons: Record<Notification["type"], PhosphorIcon> = {
-  mention: AtIcon,
-  invite: UserPlusIcon,
-  update: ArrowClockwiseIcon,
-  alert: WarningIcon,
-};
-
-export const TYPE_ICON: Record<Notification["type"], ReactNode> = {
-  mention: <Icon icon={notificationTypeIcons.mention} size="md" />,
-  invite: <Icon icon={notificationTypeIcons.invite} size="md" />,
-  update: <Icon icon={notificationTypeIcons.update} size="md" />,
-  alert: <Icon icon={notificationTypeIcons.alert} size="md" />,
-};
 
 export const TYPE_COLOR: Record<Notification["type"], string> = {
   mention: "bg-interactive-accent/10 text-interactive-accent",
