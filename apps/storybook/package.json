@@ -1,5 +1,5 @@
 {
-  "name": "storybook",
+  "name": "@jigsaw/storybook",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -20,9 +20,9 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^5.2.1",
     "@eslint/js": "^9.16.0",
-    "@storybook/addon-a11y": "^10.2.0",
-    "@storybook/addon-docs": "^10.2.0",
-    "@storybook/addon-vitest": "^10.2.0",
+    "@storybook/addon-a11y": "10.2.0",
+    "@storybook/addon-docs": "10.2.0",
+    "@storybook/addon-vitest": "10.2.0",
     "@storybook/react": "10.2.0",
     "@storybook/react-vite": "10.2.0",
     "@types/react": "^19.0.1",
