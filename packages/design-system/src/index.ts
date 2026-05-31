@@ -41,6 +41,10 @@ export type { DisclosureProps, DisclosureGroupProps } from "@components/disclosu
 export { Form, FormFieldset, FormActions } from "@components/form/Form";
 export type { FormProps, FormFieldsetProps, FormActionsProps } from "@components/form/Form";
 
+// Icon
+export { Icon } from "@components/icon";
+export type { IconProps, IconTone, IconSize } from "@components/icon";
+
 // Input
 export { Input } from "@components/input/Input";
 export type { InputProps } from "@components/input/Input";
