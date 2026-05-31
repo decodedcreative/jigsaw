@@ -6,9 +6,6 @@ import {
   Button,
   Card,
   Modal,
-  ModalContent,
-  ModalFooter,
-  ModalTrigger,
   Select,
   SelectItem,
   Text,
@@ -47,65 +44,71 @@ export const MemberCard = ({ member }: { member: Member }) => {
 
         {/* Actions */}
         <div className="flex gap-2">
-          <ModalTrigger>
-            <Button variant="secondary" size="sm" className="flex-1">Edit role</Button>
-            <Modal>
-              <ModalContent title={`Edit role — ${member.name}`}>
-                {({ close }) => (
-                  <>
-                    <Text size="sm" className="text-foreground-secondary mb-4">
-                      Choose a new role for <strong className="text-foreground-primary">{member.name}</strong>.
-                      This will update their permissions immediately.
-                    </Text>
-                    <Select label="Role" defaultSelectedKey={member.role.toLowerCase()}>
-                      <SelectItem id="viewer">Viewer — read-only access</SelectItem>
-                      <SelectItem id="editor">Editor — can create and edit</SelectItem>
-                      <SelectItem id="admin">Admin — full workspace access</SelectItem>
-                    </Select>
-                    <ModalFooter>
-                      <Button variant="secondary" onPress={close}>Cancel</Button>
-                      <Button
-                        onPress={() => {
-                          close();
-                          addToast({ title: "Role updated", description: `${member.name}'s role has been changed.`, variant: "success" });
-                        }}
-                      >
-                        Save
-                      </Button>
-                    </ModalFooter>
-                  </>
-                )}
-              </ModalContent>
-            </Modal>
-          </ModalTrigger>
+          <Modal
+            title={`Edit role — ${member.name}`}
+            trigger={
+              <Button variant="secondary" size="sm" classNameOverrides={{ component: "flex-1" }}>
+                Edit role
+              </Button>
+            }
+            footer={
+              <Button
+                slot="close"
+                onPress={() =>
+                  addToast({
+                    title: "Role updated",
+                    description: `${member.name}'s role has been changed.`,
+                    variant: "success",
+                  })
+                }
+              >
+                Save
+              </Button>
+            }
+          >
+            <Text size="sm" className="text-foreground-secondary mb-4">
+              Choose a new role for <strong className="text-foreground-primary">{member.name}</strong>.
+              This will update their permissions immediately.
+            </Text>
+            <Select label="Role" defaultSelectedKey={member.role.toLowerCase()}>
+              <SelectItem id="viewer">Viewer — read-only access</SelectItem>
+              <SelectItem id="editor">Editor — can create and edit</SelectItem>
+              <SelectItem id="admin">Admin — full workspace access</SelectItem>
+            </Select>
+          </Modal>
 
-          <ModalTrigger>
-            <Button variant="ghost" size="sm" className="flex-1 text-state-error-text hover:text-state-error-text">Remove</Button>
-            <Modal>
-              <ModalContent title="Remove member">
-                {({ close }) => (
-                  <>
-                    <Text size="sm" className="text-foreground-secondary mb-4">
-                      Remove <strong className="text-foreground-primary">{member.name}</strong> from this workspace?
-                      They will lose access immediately.
-                    </Text>
-                    <ModalFooter>
-                      <Button variant="secondary" onPress={close}>Cancel</Button>
-                      <Button
-                        variant="destructive"
-                        onPress={() => {
-                          close();
-                          addToast({ title: "Member removed", description: `${member.name} has been removed.`, variant: "error" });
-                        }}
-                      >
-                        Remove
-                      </Button>
-                    </ModalFooter>
-                  </>
-                )}
-              </ModalContent>
-            </Modal>
-          </ModalTrigger>
+          <Modal
+            title="Remove member"
+            trigger={
+              <Button
+                variant="ghost"
+                size="sm"
+                classNameOverrides={{ component: "flex-1 text-state-error-text hover:text-state-error-text" }}
+              >
+                Remove
+              </Button>
+            }
+            footer={
+              <Button
+                slot="close"
+                variant="destructive"
+                onPress={() =>
+                  addToast({
+                    title: "Member removed",
+                    description: `${member.name} has been removed.`,
+                    variant: "error",
+                  })
+                }
+              >
+                Remove
+              </Button>
+            }
+          >
+            <Text size="sm" className="text-foreground-secondary mb-4">
+              Remove <strong className="text-foreground-primary">{member.name}</strong> from this workspace?
+              They will lose access immediately.
+            </Text>
+          </Modal>
         </div>
     </Card>
   );

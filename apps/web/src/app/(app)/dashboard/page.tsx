@@ -8,9 +8,6 @@ import {
   Button,
   Card,
   Modal,
-  ModalContent,
-  ModalFooter,
-  ModalTrigger,
   Text,
   ToastProvider,
   useToast,
@@ -102,31 +99,24 @@ const TEAM: Member[] = [
 function InviteButton() {
   const { addToast } = useToast();
   return (
-    <ModalTrigger>
-      <Button size="sm">Invite</Button>
-      <Modal>
-        <ModalContent title="Invite a teammate">
-          {({ close }) => (
-            <>
-              <p className="text-sm text-foreground-secondary mb-4">
-                Send an invite link to a new team member. They'll be added as a Viewer by default.
-              </p>
-              <input
-                type="email"
-                placeholder="colleague@example.com"
-                className="w-full text-sm px-3 py-2 rounded-md border border-border-default bg-surface-default text-foreground-primary placeholder:text-foreground-placeholder focus:outline-none focus:ring-2 focus:ring-interactive-accent/40 focus:border-interactive-accent"
-              />
-              <ModalFooter>
-                <Button variant="secondary" onPress={close}>Cancel</Button>
-                <Button onPress={() => { close(); addToast({ title: "Invite sent!", variant: "success" }); }}>
-                  Send invite
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    </ModalTrigger>
+    <Modal
+      title="Invite a teammate"
+      trigger={<Button size="sm">Invite</Button>}
+      footer={
+        <Button slot="close" onPress={() => addToast({ title: "Invite sent!", variant: "success" })}>
+          Send invite
+        </Button>
+      }
+    >
+      <p className="text-sm text-foreground-secondary mb-4">
+        Send an invite link to a new team member. They'll be added as a Viewer by default.
+      </p>
+      <input
+        type="email"
+        placeholder="colleague@example.com"
+        className="w-full text-sm px-3 py-2 rounded-md border border-border-default bg-surface-default text-foreground-primary placeholder:text-foreground-placeholder focus:outline-none focus:ring-2 focus:ring-interactive-accent/40 focus:border-interactive-accent"
+      />
+    </Modal>
   );
 }
 

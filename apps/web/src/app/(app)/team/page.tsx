@@ -10,9 +10,6 @@ import {
   Card,
   Input,
   Modal,
-  ModalContent,
-  ModalFooter,
-  ModalTrigger,
   Radio,
   RadioGroup,
   SearchField,
@@ -100,37 +97,29 @@ function TeamInner() {
         </div>
 
         {/* Invite modal */}
-        <ModalTrigger>
-          <Button>Invite member</Button>
-          <Modal>
-            <ModalContent title="Invite a teammate">
-              {({ close }) => (
-                <>
-                  <p className="text-sm text-foreground-secondary mb-4">
-                    They'll receive an email and be added as a Viewer by default.
-                  </p>
-                  <Input
-                    label="Email address"
-                    type="email"
-                    placeholder="colleague@example.com"
-                    value={inviteEmail}
-                    onChange={setInviteEmail}
-                  />
-                  <ModalFooter>
-                    <Button variant="secondary" onPress={close}>Cancel</Button>
-                    <Button onPress={() => {
-                      close();
-                      addToast({ title: "Invite sent", description: `Invitation sent to ${inviteEmail || "your teammate"}.`, variant: "success" });
-                      setInviteEmail("");
-                    }}>
-                      Send invite
-                    </Button>
-                  </ModalFooter>
-                </>
-              )}
-            </ModalContent>
-          </Modal>
-        </ModalTrigger>
+        <Modal
+          title="Invite a teammate"
+          trigger={<Button>Invite member</Button>}
+          footer={
+            <Button slot="close" onPress={() => {
+              addToast({ title: "Invite sent", description: `Invitation sent to ${inviteEmail || "your teammate"}.`, variant: "success" });
+              setInviteEmail("");
+            }}>
+              Send invite
+            </Button>
+          }
+        >
+          <p className="text-sm text-foreground-secondary mb-4">
+            They'll receive an email and be added as a Viewer by default.
+          </p>
+          <Input
+            label="Email address"
+            type="email"
+            placeholder="colleague@example.com"
+            value={inviteEmail}
+            onChange={setInviteEmail}
+          />
+        </Modal>
       </div>
 
       {/* Filters */}
@@ -183,57 +172,46 @@ function TeamInner() {
                 {m.role !== "Owner" && (
                   <div className="flex gap-2">
                     {/* Edit role */}
-                    <ModalTrigger>
-                      <Button variant="secondary" size="sm">Edit role</Button>
-                      <Modal>
-                        <ModalContent title={`Edit role — ${m.name}`}>
-                          {({ close }) => (
-                            <>
-                              <p className="text-sm text-foreground-secondary mb-4">Changes take effect immediately.</p>
-                              <RadioGroup
-                                label="Role"
-                                value={pendingRole[m.id] ?? m.role.toLowerCase()}
-                                onChange={(v) => setPendingRole((p) => ({ ...p, [m.id]: v }))}
-                              >
-                                <Radio value="viewer">Viewer — read-only</Radio>
-                                <Radio value="editor">Editor — can create and edit</Radio>
-                                <Radio value="admin">Admin — full access</Radio>
-                              </RadioGroup>
-                              <ModalFooter>
-                                <Button variant="secondary" onPress={close}>Cancel</Button>
-                                <Button onPress={() => {
-                                  const r = pendingRole[m.id] ?? m.role.toLowerCase();
-                                  handleRoleChange(m.id, (r.charAt(0).toUpperCase() + r.slice(1)) as Role);
-                                  close();
-                                }}>
-                                  Save
-                                </Button>
-                              </ModalFooter>
-                            </>
-                          )}
-                        </ModalContent>
-                      </Modal>
-                    </ModalTrigger>
+                    <Modal
+                      title={`Edit role — ${m.name}`}
+                      trigger={<Button variant="secondary" size="sm">Edit role</Button>}
+                      footer={
+                        <Button slot="close" onPress={() => {
+                          const r = pendingRole[m.id] ?? m.role.toLowerCase();
+                          handleRoleChange(m.id, (r.charAt(0).toUpperCase() + r.slice(1)) as Role);
+                        }}>
+                          Save
+                        </Button>
+                      }
+                    >
+                      <p className="text-sm text-foreground-secondary mb-4">Changes take effect immediately.</p>
+                      <RadioGroup
+                        label="Role"
+                        value={pendingRole[m.id] ?? m.role.toLowerCase()}
+                        onChange={(v) => setPendingRole((p) => ({ ...p, [m.id]: v }))}
+                      >
+                        <Radio value="viewer">Viewer — read-only</Radio>
+                        <Radio value="editor">Editor — can create and edit</Radio>
+                        <Radio value="admin">Admin — full access</Radio>
+                      </RadioGroup>
+                    </Modal>
 
                     {/* Remove */}
-                    <ModalTrigger>
-                      <Button variant="ghost" size="sm" classNameOverrides={{ component: "text-state-error-text hover:bg-state-error-bg" }}>Remove</Button>
-                      <Modal>
-                        <ModalContent title="Remove member">
-                          {({ close }) => (
-                            <>
-                              <p className="text-sm text-foreground-secondary mb-4">
-                                Remove <strong className="text-foreground-primary">{m.name}</strong> from this workspace? They'll lose access immediately.
-                              </p>
-                              <ModalFooter>
-                                <Button variant="secondary" onPress={close}>Cancel</Button>
-                                <Button variant="destructive" onPress={() => { handleRemove(m.id); close(); }}>Remove</Button>
-                              </ModalFooter>
-                            </>
-                          )}
-                        </ModalContent>
-                      </Modal>
-                    </ModalTrigger>
+                    <Modal
+                      title="Remove member"
+                      trigger={
+                        <Button variant="ghost" size="sm" classNameOverrides={{ component: "text-state-error-text hover:bg-state-error-bg" }}>
+                          Remove
+                        </Button>
+                      }
+                      footer={
+                        <Button slot="close" variant="destructive" onPress={() => handleRemove(m.id)}>Remove</Button>
+                      }
+                    >
+                      <p className="text-sm text-foreground-secondary mb-4">
+                        Remove <strong className="text-foreground-primary">{m.name}</strong> from this workspace? They'll lose access immediately.
+                      </p>
+                    </Modal>
                   </div>
                 )}
             </Card>

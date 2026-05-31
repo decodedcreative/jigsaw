@@ -50,8 +50,8 @@ export { Link, LinkButton, ButtonLink } from "@components/link/Link";
 export type { LinkProps, LinkButtonProps } from "@components/link/Link";
 
 // Modal
-export { Modal, ModalContent, ModalTrigger, ModalFooter } from "@components/modal/Modal";
-export type { ModalProps, ModalContentProps, ModalFooterProps } from "@components/modal/Modal";
+export { Modal } from "@components/modal";
+export type { ModalProps, ModalTriggerElement } from "@components/modal";
 
 // Navigation
 export { Navigation, NavigationInner, NavigationBrand, NavigationLinks, NavigationLink, NavigationActions, MobileNavigation } from "@components/navigation/Navigation";

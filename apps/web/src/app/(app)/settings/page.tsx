@@ -12,9 +12,6 @@ import {
   FormFieldset,
   Input,
   Modal,
-  ModalContent,
-  ModalFooter,
-  ModalTrigger,
   Select,
   SelectItem,
   Tab,
@@ -162,31 +159,25 @@ function DangerZoneTab() {
           <p className="text-sm font-medium text-state-error-text">Delete account</p>
           <p className="text-xs text-foreground-secondary">Permanently delete your account and all data.</p>
         </div>
-        <ModalTrigger>
-          <Button variant="destructive" size="sm">Delete account</Button>
-          <Modal>
-            <ModalContent title="Delete account">
-              {({ close }) => (
-                <>
-                  <p className="text-sm text-foreground-secondary mb-4">
-                    This will permanently delete your account and all associated data.
-                    This action <strong className="text-foreground-primary">cannot be undone</strong>.
-                  </p>
-                  <Input label='Type "delete" to confirm' placeholder="delete" />
-                  <ModalFooter>
-                    <Button variant="secondary" onPress={close}>Cancel</Button>
-                    <Button
-                      variant="destructive"
-                      onPress={() => { close(); addToast({ title: "Account scheduled for deletion", variant: "error" }); }}
-                    >
-                      Delete account
-                    </Button>
-                  </ModalFooter>
-                </>
-              )}
-            </ModalContent>
-          </Modal>
-        </ModalTrigger>
+        <Modal
+          title="Delete account"
+          trigger={<Button variant="destructive" size="sm">Delete account</Button>}
+          footer={
+            <Button
+              slot="close"
+              variant="destructive"
+              onPress={() => addToast({ title: "Account scheduled for deletion", variant: "error" })}
+            >
+              Delete account
+            </Button>
+          }
+        >
+          <p className="text-sm text-foreground-secondary mb-4">
+            This will permanently delete your account and all associated data.
+            This action <strong className="text-foreground-primary">cannot be undone</strong>.
+          </p>
+          <Input label='Type "delete" to confirm' placeholder="delete" />
+        </Modal>
       </div>
     </div>
   );
