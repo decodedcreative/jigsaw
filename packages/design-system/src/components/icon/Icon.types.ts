@@ -1,6 +1,6 @@
 import type { Icon as PhosphorIcon, IconProps as PhosphorIconProps } from "@phosphor-icons/react";
 import { iconStyles, type IconSize, type IconTone } from "./Icon.styles";
-import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@ds-types/component-props";
 
 /**
  * Props for the design-system Icon wrapper.

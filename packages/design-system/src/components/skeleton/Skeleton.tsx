@@ -3,7 +3,7 @@
 import { type HTMLAttributes, type CSSProperties } from "react";
 import { useGetClassNames } from "@hooks";
 import { skeletonStyles, type SkeletonVariant } from "./Skeleton.styles";
-import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@ds-types/component-props";
 
 export type SkeletonProps = HTMLAttributes<HTMLDivElement> & {
   variant?: SkeletonVariant;

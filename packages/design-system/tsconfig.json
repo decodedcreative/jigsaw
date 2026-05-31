@@ -21,7 +21,10 @@
       "@providers/theme": ["src/providers/theme/index.ts"],
       "@providers/*": ["src/providers/*"],
       "@utils": ["src/utils"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      // Not "@types" — that prefix is reserved for DefinitelyTyped and breaks DTS emit.
+      "@ds-types": ["src/types"],
+      "@ds-types/*": ["src/types/*"]
     }
   },
   "include": ["src/**/*"],

@@ -3,7 +3,7 @@
 import { useState, type HTMLAttributes, type ImgHTMLAttributes } from "react";
 import { useGetClassNames } from "@hooks";
 import { avatarStyles, type AvatarSize, type AvatarStatus } from "./Avatar.styles";
-import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@ds-types/component-props";
 
 export type AvatarProps = HTMLAttributes<HTMLDivElement> & {
   size?: AvatarSize;

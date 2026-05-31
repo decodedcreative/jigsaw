@@ -5,7 +5,7 @@ import {
   type ButtonProps as ReactAriaButtonProps,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
-import type { ClassNameOverrides } from "../../types/component-props";
+import type { ClassNameOverrides } from "@ds-types/component-props";
 import { buttonStyles } from "./Button.styles";
 
 export type ButtonProps = Omit<ReactAriaButtonProps, "className"> & {

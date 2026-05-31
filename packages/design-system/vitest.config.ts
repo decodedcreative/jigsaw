@@ -30,6 +30,10 @@ export default defineConfig({
         find: '@utils',
         replacement: resolve(__dirname, './src/utils'),
       },
+      {
+        find: '@ds-types',
+        replacement: resolve(__dirname, './src/types'),
+      },
     ],
   },
 });

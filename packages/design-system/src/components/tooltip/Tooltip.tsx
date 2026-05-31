@@ -10,7 +10,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { tooltipStyles, type TooltipPlacement } from "./Tooltip.styles";
-import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@ds-types/component-props";
 
 export type TooltipTriggerProps = TooltipTriggerComponentProps & {
   children: ReactNode;
