@@ -47,7 +47,7 @@ describe("Icon", () => {
 
   it("merges classNameOverrides for jailbreak styling", () => {
     const { container } = render(
-      <Icon icon={GearIcon} size="md" classNameOverrides={{ component: ["h-6", "w-6", "text-foreground-primary"] }} />
+      <Icon icon={GearIcon} size="md" classNameOverrides={{ component: "h-6 w-6 text-foreground-primary" }} />
     );
     const svg = container.querySelector("svg");
     expect(svg).toHaveClass("h-6", "w-6", "text-foreground-primary");

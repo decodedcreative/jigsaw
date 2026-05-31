@@ -1,3 +1,3 @@
 export { Icon } from "./Icon";
-export type { IconProps, IconTone } from "./Icon.types";
-export type { IconSize } from "./Icon.styles";
+export type { IconProps } from "./Icon.types";
+export type { IconSize, IconTone } from "./Icon.styles";

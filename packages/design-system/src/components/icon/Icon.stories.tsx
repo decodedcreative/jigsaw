@@ -60,7 +60,7 @@ export const Override: Story = {
   render: () => (
     <Icon
       icon={GearIcon}
-      classNameOverrides={{ component: ["text-purple-500"] }}
+      classNameOverrides={{ component: "text-purple-500" }}
     />
   ),
 };

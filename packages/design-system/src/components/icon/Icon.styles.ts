@@ -1,4 +1,4 @@
-import { cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 
 export const iconStyles = {
   component: cva(["shrink-0"], {
@@ -25,4 +25,7 @@ export const iconStyles = {
   }),
 };
 
-export type IconSize = "xs" | "sm" | "md" | "lg" | "xl";
+type IconVariants = VariantProps<typeof iconStyles.component>;
+
+export type IconSize = NonNullable<IconVariants["size"]>;
+export type IconTone = NonNullable<IconVariants["tone"]>;
