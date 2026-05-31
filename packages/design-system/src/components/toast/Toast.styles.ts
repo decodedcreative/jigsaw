@@ -37,7 +37,7 @@ export const toastStyles = {
       defaultVariants: { variant: "default" },
     }
   ),
-  icon: cva("flex-shrink-0 w-5 h-5", {
+  icon: cva("flex-shrink-0", {
     variants: {
       variant: {
         default: "text-foreground-secondary",
