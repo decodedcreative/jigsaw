@@ -8,8 +8,8 @@
     "build-storybook": "npm run build",
     "lint": "eslint .",
     "clean": "rm -rf storybook-static",
-    "chromatic": "chromatic --build-script-name=build",
-    "chromatic:ci": "chromatic --build-script-name=build --exit-zero-on-changes --only-changed"
+    "chromatic": "chromatic",
+    "chromatic:ci": "chromatic --exit-zero-on-changes --only-changed"
   },
   "dependencies": {
     "@jigsaw/design-system": "*",
