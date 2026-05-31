@@ -1,7 +1,7 @@
 import { getClassNames } from "@utils";
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
-import type { ClassNameOverrides } from "../types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 import { useThemeProvider } from "./useThemeProvider";
 
 /**

@@ -10,7 +10,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { inputStyles } from "./Input.styles";
-import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
 export type InputProps = Omit<TextFieldProps, "children"> & {
   label?: string;

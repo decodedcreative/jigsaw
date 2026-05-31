@@ -4,7 +4,7 @@ import { type ReactNode, type HTMLAttributes } from "react";
 import { Link as ReactAriaLink } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { navigationStyles } from "./Navigation.styles";
-import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
 export type NavigationProps = HTMLAttributes<HTMLElement> & {
   classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;

@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { useGetClassNames } from "@hooks";
 import { cardStyles } from "./Card.styles";
-import type { ClassNameOverrides } from "../../types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 type CardHeaderProps = {
   classNameOverrides?: ClassNameOverrides<typeof cardStyles>;

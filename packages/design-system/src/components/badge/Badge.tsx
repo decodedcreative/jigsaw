@@ -3,7 +3,7 @@
 import { type HTMLAttributes } from "react";
 import { useGetClassNames } from "@hooks";
 import { badgeStyles, type BadgeVariant, type BadgeSize } from "./Badge.styles";
-import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
   variant?: BadgeVariant;

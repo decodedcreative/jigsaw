@@ -12,7 +12,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { tabsStyles, type TabsVariant } from "./Tabs.styles";
-import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
 export type TabsProps = ReactAriaTabsProps & {
   classNameOverrides?: ClassNameOverrides<typeof tabsStyles>;

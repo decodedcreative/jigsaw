@@ -30,6 +30,10 @@ export default defineConfig({
         find: '@utils',
         replacement: resolve(__dirname, './src/utils'),
       },
+      {
+        find: '@jsw-types',
+        replacement: resolve(__dirname, './src/types'),
+      },
     ],
   },
 });

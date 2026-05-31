@@ -7,7 +7,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { checkboxStyles } from "./Checkbox.styles";
-import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
 export type CheckboxProps = Omit<ReactAriaCheckboxProps, "children"> & {
   label?: string;

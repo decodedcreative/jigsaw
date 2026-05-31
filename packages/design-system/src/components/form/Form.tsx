@@ -7,7 +7,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { formStyles } from "./Form.styles";
-import type { ClassNameOverrides, WithoutClassName } from "../../types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
 export type FormProps = ReactAriaFormProps & {
   classNameOverrides?: ClassNameOverrides<typeof formStyles>;

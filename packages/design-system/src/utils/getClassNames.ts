@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import type { ClassNameOverrides } from "../types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 /**
  * Merges default class names from CVA with any user-provided `classNameOverrides`.
