@@ -21,6 +21,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
     "@jigsaw/tokens": "*",
     "class-variance-authority": "^0.7.1",
     "react-aria-components": "^1.17.0",

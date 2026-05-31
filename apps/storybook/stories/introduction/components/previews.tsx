@@ -9,7 +9,6 @@ import {
   Form,
   FormActions,
   Input,
-  Link,
   NumberField,
   Radio,
   RadioGroup,
@@ -23,8 +22,6 @@ import {
   Tabs,
   Text,
   Textarea,
-  Tooltip,
-  TooltipTrigger,
 } from "@jigsaw/design-system";
 import { Preview } from "./Preview";
 import type { PreviewMap } from "../Introduction.stories.types";
@@ -121,7 +118,9 @@ export const previews: PreviewMap = {
 
   Link: (
     <Preview>
-      <Link href="#">Learn more →</Link>
+      <span className="text-sm font-medium text-interactive-primary underline underline-offset-2">
+        Learn more →
+      </span>
     </Preview>
   ),
 
@@ -251,10 +250,7 @@ export const previews: PreviewMap = {
 
   Tooltip: (
     <Preview>
-      <TooltipTrigger defaultOpen delay={0}>
-        <Button size="sm" variant="secondary">Hover me</Button>
-        <Tooltip>Helpful context</Tooltip>
-      </TooltipTrigger>
+      <Button size="sm" variant="secondary">Hover me</Button>
     </Preview>
   ),
 };
