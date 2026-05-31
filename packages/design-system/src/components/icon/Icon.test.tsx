@@ -28,7 +28,24 @@ describe("Icon", () => {
     expect(container.querySelector("svg")).toHaveClass("text-interactive-accent");
   });
 
-  it("merges classNameOverrides over size", () => {
+  it("does not apply a tone class by default", () => {
+    const { container } = render(<Icon icon={GearIcon} />);
+    const svg = container.querySelector("svg");
+    expect(svg).not.toHaveClass("text-foreground-primary");
+    expect(svg).not.toHaveClass("text-interactive-accent");
+  });
+
+  it("inherits currentColor from the parent", () => {
+    const { container } = render(
+      <span className="text-interactive-accent">
+        <Icon icon={GearIcon} />
+      </span>
+    );
+    expect(container.querySelector("span")).toHaveClass("text-interactive-accent");
+    expect(container.querySelector("svg")).not.toHaveClass("text-interactive-accent");
+  });
+
+  it("merges classNameOverrides for jailbreak styling", () => {
     const { container } = render(
       <Icon icon={GearIcon} size="md" classNameOverrides={{ component: ["h-6", "w-6", "text-foreground-primary"] }} />
     );

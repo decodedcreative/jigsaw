@@ -41,6 +41,30 @@ export const Tones: Story = {
   ),
 };
 
+export const Inherit: Story = {
+  render: () => (
+    <div className="flex items-center gap-6">
+      <span className="flex items-center gap-2 text-interactive-accent">
+        <Icon icon={PlayIcon} size="sm" weight="fill" />
+        Inherits accent
+      </span>
+      <span className="flex items-center gap-2 text-state-error-text">
+        <Icon icon={WarningIcon} size="sm" weight="fill" />
+        Inherits error
+      </span>
+    </div>
+  ),
+};
+
+export const Override: Story = {
+  render: () => (
+    <Icon
+      icon={GearIcon}
+      classNameOverrides={{ component: ["text-purple-500"] }}
+    />
+  ),
+};
+
 export const Weights: Story = {
   render: () => (
     <div className="flex items-center gap-4 text-foreground-primary">

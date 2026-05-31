@@ -13,6 +13,7 @@ export type IconTone =
 export type IconProps = WithoutClassName<Omit<PhosphorIconProps, "size">> & {
   icon: PhosphorIcon;
   size?: IconSize;
+  /** Semantic foreground tone. Omit to inherit `currentColor` from the parent. */
   tone?: IconTone;
   classNameOverrides?: Record<string, string[]>;
 };

@@ -14,9 +14,9 @@ export const iconStyles = {
         primary: "text-foreground-primary",
         secondary: "text-foreground-secondary",
         accent: "text-interactive-accent",
-        success: "text-feedback-success",
-        warning: "text-feedback-warning",
-        error: "text-feedback-error",
+        success: "text-state-success-text",
+        warning: "text-state-warning-text",
+        error: "text-state-error-text",
       },
     },
     defaultVariants: {
