@@ -6,6 +6,7 @@ import { Modal } from "./Modal";
 
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
 });
 
 describe("Modal", () => {
@@ -65,7 +66,7 @@ describe("Modal", () => {
     expect(screen.getByRole("button", { name: "Confirm" })).toBeInTheDocument();
   });
 
-  it("renders a close button by default", async () => {
+  it("renders an accessible close button by default", async () => {
     const user = userEvent.setup();
     render(
       <Modal title="Dialog" trigger={<Button>Open</Button>}>
@@ -73,8 +74,7 @@ describe("Modal", () => {
       </Modal>
     );
     await user.click(screen.getByRole("button", { name: "Open" }));
-    const dialog = screen.getByRole("dialog");
-    expect(dialog.querySelectorAll("button").length).toBeGreaterThan(0);
+    expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
   });
 
   it("closes when header close button is clicked", async () => {
@@ -85,11 +85,7 @@ describe("Modal", () => {
       </Modal>
     );
     await user.click(screen.getByRole("button", { name: "Open" }));
-    const dialog = screen.getByRole("dialog");
-    const closeButton = dialog.querySelector("button");
-    if (closeButton) {
-      await user.click(closeButton);
-    }
+    await user.click(screen.getByRole("button", { name: "Close" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
@@ -101,8 +97,7 @@ describe("Modal", () => {
       </Modal>
     );
     await user.click(screen.getByRole("button", { name: "Open" }));
-    const dialog = screen.getByRole("dialog");
-    expect(dialog.querySelectorAll("button")).toHaveLength(0);
+    expect(screen.queryByRole("button", { name: "Close" })).not.toBeInTheDocument();
   });
 
   it("closes when footer cancel button is pressed", async () => {
@@ -180,16 +175,69 @@ describe("Modal", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  it("closes when Escape is pressed", async () => {
+    const user = userEvent.setup();
+    render(
+      <Modal title="Dialog" trigger={<Button>Open</Button>}>
+        Content
+      </Modal>
+    );
+    await user.click(screen.getByRole("button", { name: "Open" }));
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("renders when controlled with isOpen true", () => {
+    render(
+      <Modal title="Controlled dialog" isOpen onOpenChange={vi.fn()}>
+        Content
+      </Modal>
+    );
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("does not render when controlled with isOpen false", () => {
+    render(
+      <Modal title="Controlled dialog" isOpen={false} onOpenChange={vi.fn()}>
+        Content
+      </Modal>
+    );
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("calls onOpenChange when dismissed in controlled mode", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    render(
+      <Modal title="Controlled dialog" isOpen onOpenChange={onOpenChange}>
+        Content
+      </Modal>
+    );
+    await user.click(screen.getByRole("button", { name: "Close" }));
+    expect(onOpenChange).toHaveBeenCalledWith(false);
+  });
+
+  it("warns in development when isOpen is set without onOpenChange", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    render(
+      <Modal title="Controlled dialog" isOpen>
+        Content
+      </Modal>
+    );
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("isOpen"),
+    );
+  });
+
   it("renders custom header when provided", async () => {
     const user = userEvent.setup();
     render(
-      <Modal title="Ignored" trigger={<Button>Open</Button>} header={<span>Custom header</span>}>
+      <Modal trigger={<Button>Open</Button>} header={<span>Custom header</span>}>
         Content
       </Modal>
     );
     await user.click(screen.getByRole("button", { name: "Open" }));
     expect(screen.getByText("Custom header")).toBeInTheDocument();
-    expect(screen.queryByText("Ignored")).not.toBeInTheDocument();
   });
 
   it("modal is not shown initially", () => {

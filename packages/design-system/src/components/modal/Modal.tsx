@@ -9,6 +9,13 @@ export const Modal = ({ trigger, ...props }: ModalProps) => {
   const isControlled = props.isOpen !== undefined;
   const triggerElement = trigger ?? <Button>Open</Button>;
 
+  if (process.env.NODE_ENV !== "production" && isControlled && props.onOpenChange === undefined) {
+    console.warn(
+      "Modal: `isOpen` was provided without `onOpenChange`. " +
+        "Controlled modals need `onOpenChange` to dismiss."
+    );
+  }
+
   if (isControlled) {
     return <ModalOverlay {...props} />;
   }

@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
+import { Heading } from "react-aria-components";
 import { Modal } from "./Modal";
 import { Button } from "../button/Button";
 
@@ -26,7 +28,12 @@ const meta = {
           "- Pass `trigger` for the default uncontrolled open button, or set `isOpen` for controlled usage.",
           "",
           "**Dismissal:** Footer action buttons use `slot=\"close\"` to close after press.",
+          "When `footer` is set, `showCancelButton` defaults to `true` so confirmation dialogs get a wired cancel.",
           "Toggle `showCloseButton` and `showCancelButton` to control header and footer cancel affordances.",
+          "",
+          "**Controlled usage:** Pass both `isOpen` and `onOpenChange`. Setting `isOpen` alone will warn in development.",
+          "",
+          "**Custom header:** Use the `header` prop instead of `title`. Include a React Aria `Heading` with `slot=\"title\"` so the dialog has an accessible name.",
         ].join("\n"),
       },
     },
@@ -172,6 +179,67 @@ export const WithScrollableContent: Story = {
           </p>
         ))}
       </div>
+    </Modal>
+  ),
+};
+
+export const Controlled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Controlled modals require both `isOpen` and `onOpenChange`. Omit `trigger` — open state is owned by the parent.",
+      },
+    },
+  },
+  render: () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <>
+        <Button onPress={() => setIsOpen(true)}>Open controlled modal</Button>
+        <Modal
+          title="Controlled modal"
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+          footer={<Button slot="close">Done</Button>}
+        >
+          <p className="text-sm text-foreground-secondary">
+            Parent state drives visibility via `isOpen` and `onOpenChange`.
+          </p>
+        </Modal>
+      </>
+    );
+  },
+};
+
+export const WithCustomHeader: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Replace the default header with `header`. Include `Heading slot=\"title\"` so assistive tech gets a dialog label.",
+      },
+    },
+  },
+  args: {
+    showCancelButton: false,
+  },
+  render: (args) => (
+    <Modal
+      {...args}
+      header={
+        <div className="flex w-full items-center justify-between">
+          <Heading slot="title" className="text-lg font-semibold text-foreground-primary">
+            Custom header
+          </Heading>
+          <span className="text-xs text-foreground-muted">Optional metadata</span>
+        </div>
+      }
+    >
+      <p className="text-sm text-foreground-secondary">
+        The header region is fully owned by the consumer here.
+      </p>
     </Modal>
   ),
 };

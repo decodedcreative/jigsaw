@@ -19,6 +19,7 @@ export const ModalOverlay = ({
   cancelLabel = "Cancel",
   children,
   classNameOverrides,
+  closeLabel = "Close",
   footer,
   header,
   showCancelButton,
@@ -53,7 +54,11 @@ export const ModalOverlay = ({
                     {title}
                   </ReactAriaHeading>
                   {showCloseButton ? (
-                    <ReactAriaButton onPress={close} className={classNames.closeButton}>
+                    <ReactAriaButton
+                      aria-label={closeLabel}
+                      onPress={close}
+                      className={classNames.closeButton}
+                    >
                       <XIcon className="h-5 w-5" weight="bold" aria-hidden />
                     </ReactAriaButton>
                   ) : null}
