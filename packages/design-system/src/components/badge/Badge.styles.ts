@@ -6,11 +6,11 @@ export const badgeStyles = {
     {
       variants: {
         variant: {
-          default: "bg-surface-secondary text-text-primary",
-          primary: "bg-brand-primary text-text-inverse",
-          secondary: "bg-brand-secondary text-text-inverse",
-          accent: "bg-brand-accent text-text-primary",
-          outline: "border border-border-primary text-text-primary bg-transparent",
+          default: "bg-surface-secondary text-foreground-primary",
+          primary: "bg-brand-primary text-foreground-inverse",
+          secondary: "bg-brand-secondary text-foreground-inverse",
+          accent: "bg-brand-accent text-foreground-primary",
+          outline: "border border-border-primary text-foreground-primary bg-transparent",
           success: "bg-state-success-bg text-state-success-text",
           warning: "bg-state-warning-bg text-state-warning-text",
           error: "bg-state-error-bg text-state-error-text",

@@ -77,7 +77,7 @@ export const Link: Story = {
 
 export const LinkInSentence: Story = {
   render: () => (
-    <p className="text-sm text-text-secondary">
+    <p className="text-sm text-foreground-secondary">
       Don't have an account yet?{" "}
       <Button variant="link">Sign up for free</Button>.
     </p>

@@ -12,17 +12,17 @@ export const buttonStyles = {
       variants: {
         variant: {
           primary:
-            "bg-interactive-primary text-text-inverse hover:bg-interactive-primary-hover border-transparent",
+            "bg-interactive-primary text-foreground-inverse hover:bg-interactive-primary-hover border-transparent",
           secondary:
-            "bg-surface-muted text-text-primary hover:bg-surface-subtle border-transparent",
+            "bg-surface-muted text-foreground-primary hover:bg-surface-subtle border-transparent",
           accent:
-            "bg-interactive-accent text-text-inverse hover:bg-interactive-accent-hover border-transparent",
+            "bg-interactive-accent text-foreground-inverse hover:bg-interactive-accent-hover border-transparent",
           outline:
             "bg-transparent text-interactive-primary border-border-strong hover:bg-surface-subtle",
           ghost:
-            "bg-transparent text-text-secondary border-transparent hover:bg-surface-muted",
+            "bg-transparent text-foreground-secondary border-transparent hover:bg-surface-muted",
           destructive:
-            "bg-interactive-destructive text-text-inverse hover:bg-interactive-destructive-hover border-transparent",
+            "bg-interactive-destructive text-foreground-inverse hover:bg-interactive-destructive-hover border-transparent",
           // Visually a link, rendered as a <button>. Use for non-navigation
           // actions that should read as inline text (e.g. "Forgot password?",
           // "Cancel", "Show more").

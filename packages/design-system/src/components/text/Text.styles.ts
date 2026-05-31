@@ -16,8 +16,8 @@ export const textStyles = {
         bold: "font-bold",
       },
       muted: {
-        true: "text-text-muted",
-        false: "text-text-primary",
+        true: "text-foreground-muted",
+        false: "text-foreground-primary",
       },
     },
     defaultVariants: {

@@ -23,8 +23,8 @@ const AccountSettingsPage = () => (
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-text-primary">Account settings</h1>
-            <Text size="sm" className="text-text-secondary mt-1">
+            <h1 className="text-3xl font-bold text-foreground-primary">Account settings</h1>
+            <Text size="sm" className="text-foreground-secondary mt-1">
               Manage your profile, notifications, and workspace preferences.
             </Text>
           </div>

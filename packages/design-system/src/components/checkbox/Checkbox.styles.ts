@@ -32,7 +32,7 @@ export const checkboxStyles = {
   ),
   checkmark: cva(
     [
-      "absolute text-text-inverse opacity-0 transition-opacity",
+      "absolute text-foreground-inverse opacity-0 transition-opacity",
       "group-data-[selected]:opacity-100",
       // Hide checkmark when indeterminate (indeterminate takes precedence)
       "group-data-[indeterminate]:opacity-0",
@@ -50,7 +50,7 @@ export const checkboxStyles = {
   ),
   indeterminateMark: cva(
     [
-      "absolute text-text-inverse opacity-0 transition-opacity",
+      "absolute text-foreground-inverse opacity-0 transition-opacity",
       "group-data-[indeterminate]:opacity-100",
     ],
     {
@@ -64,7 +64,7 @@ export const checkboxStyles = {
       defaultVariants: { size: "md" },
     }
   ),
-  label: cva(["select-none transition-colors group-data-[disabled]:text-text-muted"], {
+  label: cva(["select-none transition-colors group-data-[disabled]:text-foreground-muted"], {
     variants: {
       size: {
         sm: "text-xs",
@@ -74,7 +74,7 @@ export const checkboxStyles = {
     },
     defaultVariants: { size: "md" },
   }),
-  description: cva(["text-text-muted mt-0.5"], {
+  description: cva(["text-foreground-muted mt-0.5"], {
     variants: {
       size: {
         sm: "text-xs",

@@ -84,7 +84,7 @@ function NotificationsTab() {
               onChange={(v) => setPrefs((p) => ({ ...p, [key]: v }))}
             >
               <span className="font-medium">{label}</span>
-              <span className="block text-xs text-text-secondary">{desc}</span>
+              <span className="block text-xs text-foreground-secondary">{desc}</span>
             </Checkbox>
           ))}
         </div>
@@ -143,24 +143,24 @@ function DangerZoneTab() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between p-4 rounded-lg border border-border-default">
         <div>
-          <p className="text-sm font-medium text-text-primary">Transfer ownership</p>
-          <p className="text-xs text-text-secondary">Transfer this workspace to another member.</p>
+          <p className="text-sm font-medium text-foreground-primary">Transfer ownership</p>
+          <p className="text-xs text-foreground-secondary">Transfer this workspace to another member.</p>
         </div>
         <Button variant="secondary" size="sm">Transfer</Button>
       </div>
 
       <div className="flex items-center justify-between p-4 rounded-lg border border-border-default">
         <div>
-          <p className="text-sm font-medium text-text-primary">Archive workspace</p>
-          <p className="text-xs text-text-secondary">Make this workspace read-only.</p>
+          <p className="text-sm font-medium text-foreground-primary">Archive workspace</p>
+          <p className="text-xs text-foreground-secondary">Make this workspace read-only.</p>
         </div>
         <Button variant="secondary" size="sm">Archive</Button>
       </div>
 
-      <div className="flex items-center justify-between p-4 rounded-lg border border-feedback-error bg-feedback-error-subtle">
+      <div className="flex items-center justify-between p-4 rounded-lg border border-state-error-border bg-state-error-bg">
         <div>
-          <p className="text-sm font-medium text-feedback-error">Delete account</p>
-          <p className="text-xs text-text-secondary">Permanently delete your account and all data.</p>
+          <p className="text-sm font-medium text-state-error-text">Delete account</p>
+          <p className="text-xs text-foreground-secondary">Permanently delete your account and all data.</p>
         </div>
         <ModalTrigger>
           <Button variant="destructive" size="sm">Delete account</Button>
@@ -168,9 +168,9 @@ function DangerZoneTab() {
             <ModalContent title="Delete account">
               {({ close }) => (
                 <>
-                  <p className="text-sm text-text-secondary mb-4">
+                  <p className="text-sm text-foreground-secondary mb-4">
                     This will permanently delete your account and all associated data.
-                    This action <strong className="text-text-primary">cannot be undone</strong>.
+                    This action <strong className="text-foreground-primary">cannot be undone</strong>.
                   </p>
                   <Input label='Type "delete" to confirm' placeholder="delete" />
                   <ModalFooter>
@@ -200,8 +200,8 @@ export default function SettingsPage() {
     <ToastProvider position="bottom-right">
       <div className="p-6 md:p-8 max-w-2xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-text-primary">Settings</h1>
-          <p className="text-sm text-text-secondary mt-1">
+          <h1 className="text-3xl font-bold text-foreground-primary">Settings</h1>
+          <p className="text-sm text-foreground-secondary mt-1">
             Manage your profile, notifications, and workspace preferences.
           </p>
         </div>

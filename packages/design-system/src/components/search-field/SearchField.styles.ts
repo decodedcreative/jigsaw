@@ -5,14 +5,14 @@ export const searchFieldStyles = {
   label: cva(["block text-sm font-medium mb-1.5"], {
     variants: {
       state: {
-        default: "text-text-primary",
-        disabled: "text-text-muted",
+        default: "text-foreground-primary",
+        disabled: "text-foreground-muted",
       },
     },
     defaultVariants: { state: "default" },
   }),
   inputWrapper: cva(["relative flex items-center"]),
-  searchIcon: cva(["absolute left-3 text-text-muted pointer-events-none"], {
+  searchIcon: cva(["absolute left-3 text-foreground-muted pointer-events-none"], {
     variants: {
       size: {
         sm: "h-3.5 w-3.5",
@@ -24,10 +24,10 @@ export const searchFieldStyles = {
   }),
   input: cva(
     [
-      "w-full rounded-default border bg-surface-default text-text-primary transition-colors",
-      "placeholder:text-text-muted",
+      "w-full rounded-default border bg-surface-default text-foreground-primary transition-colors",
+      "placeholder:text-foreground-muted",
       "focus:outline-none focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
-      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-text-muted data-[disabled]:border-border-default",
+      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted data-[disabled]:border-border-default",
     ],
     {
       variants: {
@@ -46,7 +46,7 @@ export const searchFieldStyles = {
   ),
   clearButton: cva(
     [
-      "absolute right-2 p-1 rounded text-text-muted hover:text-text-primary hover:bg-surface-muted transition-colors",
+      "absolute right-2 p-1 rounded text-foreground-muted hover:text-foreground-primary hover:bg-surface-muted transition-colors",
       "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent",
       "data-[empty]:hidden",
     ],
@@ -61,5 +61,5 @@ export const searchFieldStyles = {
       defaultVariants: { size: "md" },
     }
   ),
-  description: cva(["mt-1.5 text-xs text-text-muted"]),
+  description: cva(["mt-1.5 text-xs text-foreground-muted"]),
 };

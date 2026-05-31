@@ -40,7 +40,7 @@ export const MemberCard = ({ member }: { member: Member }) => {
           <Badge variant={ROLE_VARIANT[member.role]} size="sm">{member.role}</Badge>
         </div>
 
-        <Text size="xs" className="text-text-secondary block mb-1">{member.email}</Text>
+        <Text size="xs" className="text-foreground-secondary block mb-1">{member.email}</Text>
         <Text size="xs" muted className="block mb-4">
           {member.department} · Joined {member.joined}
         </Text>
@@ -53,8 +53,8 @@ export const MemberCard = ({ member }: { member: Member }) => {
               <ModalContent title={`Edit role — ${member.name}`}>
                 {({ close }) => (
                   <>
-                    <Text size="sm" className="text-text-secondary mb-4">
-                      Choose a new role for <strong className="text-text-primary">{member.name}</strong>.
+                    <Text size="sm" className="text-foreground-secondary mb-4">
+                      Choose a new role for <strong className="text-foreground-primary">{member.name}</strong>.
                       This will update their permissions immediately.
                     </Text>
                     <Select label="Role" defaultSelectedKey={member.role.toLowerCase()}>
@@ -80,13 +80,13 @@ export const MemberCard = ({ member }: { member: Member }) => {
           </ModalTrigger>
 
           <ModalTrigger>
-            <Button variant="ghost" size="sm" className="flex-1 text-feedback-error hover:text-feedback-error">Remove</Button>
+            <Button variant="ghost" size="sm" className="flex-1 text-state-error-text hover:text-state-error-text">Remove</Button>
             <Modal>
               <ModalContent title="Remove member">
                 {({ close }) => (
                   <>
-                    <Text size="sm" className="text-text-secondary mb-4">
-                      Remove <strong className="text-text-primary">{member.name}</strong> from this workspace?
+                    <Text size="sm" className="text-foreground-secondary mb-4">
+                      Remove <strong className="text-foreground-primary">{member.name}</strong> from this workspace?
                       They will lose access immediately.
                     </Text>
                     <ModalFooter>

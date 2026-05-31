@@ -33,8 +33,8 @@ function StatCard({
   return (
     <Card classNameOverrides={{ content: "p-5" }}>
       <Text size="xs" muted classNameOverrides={{ component: "block mb-1" }}>{label}</Text>
-      <p className="text-2xl font-bold text-text-primary mb-2">{value}</p>
-      <span className={`inline-flex items-center gap-1 text-xs font-medium ${positive ? "text-feedback-success" : "text-feedback-error"}`}>
+      <p className="text-2xl font-bold text-foreground-primary mb-2">{value}</p>
+      <span className={`inline-flex items-center gap-1 text-xs font-medium ${positive ? "text-state-success-text" : "text-state-error-text"}`}>
         {positive ? "↑" : "↓"} {delta} vs last month
       </span>
     </Card>
@@ -70,12 +70,12 @@ function ActivityFeed() {
                 <AvatarFallback>{a.initials}</AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-text-primary">
+                <p className="text-sm text-foreground-primary">
                   <span className="font-medium">{a.user}</span>{" "}
-                  <span className="text-text-secondary">{a.action}</span>{" "}
+                  <span className="text-foreground-secondary">{a.action}</span>{" "}
                   <span className="font-mono text-xs bg-surface-muted px-1.5 py-0.5 rounded">{a.target}</span>
                 </p>
-                <p className="text-xs text-text-muted mt-0.5">{a.time}</p>
+                <p className="text-xs text-foreground-muted mt-0.5">{a.time}</p>
               </div>
               {a.badge && (
                 <Badge variant={BADGE_VARIANT[a.badge]} size="sm">{a.badge}</Badge>
@@ -108,13 +108,13 @@ function InviteButton() {
         <ModalContent title="Invite a teammate">
           {({ close }) => (
             <>
-              <p className="text-sm text-text-secondary mb-4">
+              <p className="text-sm text-foreground-secondary mb-4">
                 Send an invite link to a new team member. They'll be added as a Viewer by default.
               </p>
               <input
                 type="email"
                 placeholder="colleague@example.com"
-                className="w-full text-sm px-3 py-2 rounded-md border border-border-default bg-surface-default text-text-primary placeholder:text-text-placeholder focus:outline-none focus:ring-2 focus:ring-interactive-accent/40 focus:border-interactive-accent"
+                className="w-full text-sm px-3 py-2 rounded-md border border-border-default bg-surface-default text-foreground-primary placeholder:text-foreground-placeholder focus:outline-none focus:ring-2 focus:ring-interactive-accent/40 focus:border-interactive-accent"
               />
               <ModalFooter>
                 <Button variant="secondary" onPress={close}>Cancel</Button>
@@ -141,8 +141,8 @@ function TeamSnapshot() {
                 <AvatarStatusIndicator status={m.status} />
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-text-primary leading-tight">{m.name}</p>
-                <p className="text-xs text-text-secondary">{m.role}</p>
+                <p className="text-sm font-medium text-foreground-primary leading-tight">{m.name}</p>
+                <p className="text-xs text-foreground-secondary">{m.role}</p>
               </div>
             </div>
           ))}
@@ -193,8 +193,8 @@ export default function DashboardPage() {
     <ToastProvider position="bottom-right">
       <div className="p-6 md:p-8 max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-text-primary">Good morning, James 👋</h1>
-          <p className="text-sm text-text-secondary mt-1">Here's what's happening with Jigsaw today.</p>
+          <h1 className="text-3xl font-bold text-foreground-primary">Good morning, James 👋</h1>
+          <p className="text-sm text-foreground-secondary mt-1">Here's what's happening with Jigsaw today.</p>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

@@ -5,19 +5,19 @@ export const inputStyles = {
   label: cva(["block text-sm font-medium mb-1.5 transition-colors"], {
     variants: {
       state: {
-        default: "text-text-primary",
+        default: "text-foreground-primary",
         error: "text-state-error",
-        disabled: "text-text-muted",
+        disabled: "text-foreground-muted",
       },
     },
     defaultVariants: { state: "default" },
   }),
   input: cva(
     [
-      "w-full rounded-default border bg-surface-default text-text-primary transition-colors",
-      "placeholder:text-text-muted",
+      "w-full rounded-default border bg-surface-default text-foreground-primary transition-colors",
+      "placeholder:text-foreground-muted",
       "focus:outline-none focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
-      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-text-muted data-[disabled]:border-border-default",
+      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted data-[disabled]:border-border-default",
     ],
     {
       variants: {
@@ -39,9 +39,9 @@ export const inputStyles = {
   description: cva(["mt-1.5 text-xs"], {
     variants: {
       state: {
-        default: "text-text-muted",
+        default: "text-foreground-muted",
         error: "text-state-error",
-        disabled: "text-text-muted",
+        disabled: "text-foreground-muted",
       },
     },
     defaultVariants: { state: "default" },

@@ -22,13 +22,13 @@ export const tabsStyles = {
         variant: {
           default: [
             "border-b-2 border-transparent -mb-px",
-            "text-text-secondary hover:text-text-primary",
+            "text-foreground-secondary hover:text-foreground-primary",
             "data-[selected]:border-interactive-primary data-[selected]:text-interactive-primary",
           ],
           pills: [
             "rounded-md",
-            "text-text-secondary hover:text-text-primary hover:bg-surface-hover",
-            "data-[selected]:bg-surface-primary data-[selected]:text-text-primary data-[selected]:shadow-sm",
+            "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",
+            "data-[selected]:bg-surface-primary data-[selected]:text-foreground-primary data-[selected]:shadow-sm",
           ],
         },
       },

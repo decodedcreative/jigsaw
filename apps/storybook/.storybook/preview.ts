@@ -16,9 +16,11 @@ const preview: Preview = {
       },
     },
     docs: {
-      source: {
-        // Always show the code snippet under each story example
-        state: "open",
+      // Storybook 10: code snippets on individual story views (bottom panel)
+      codePanel: true,
+      // Autodocs: keep source blocks expanded under each story preview
+      canvas: {
+        sourceState: "shown",
       },
     },
   },

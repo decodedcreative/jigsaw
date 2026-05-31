@@ -6,20 +6,20 @@ export const navigationStyles = {
   inner: cva("flex items-center justify-between h-16"),
   brand: cva([
     "flex items-center gap-2",
-    "text-lg font-semibold text-text-primary",
+    "text-lg font-semibold text-foreground-primary",
     "outline-none focus-visible:ring-2 focus-visible:ring-interactive-focus rounded",
   ]),
   nav: cva("hidden md:flex items-center gap-1"),
   navItem: cva([
     "px-3 py-2 text-sm font-medium rounded-md transition-colors",
-    "text-text-secondary hover:text-text-primary hover:bg-surface-hover",
+    "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",
     "outline-none focus-visible:ring-2 focus-visible:ring-interactive-focus",
     "data-[current]:text-interactive-primary data-[current]:bg-interactive-secondary",
   ]),
   actions: cva("flex items-center gap-2"),
   mobileMenuButton: cva([
     "md:hidden p-2 rounded-md",
-    "text-text-secondary hover:text-text-primary hover:bg-surface-hover",
+    "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",
     "outline-none focus-visible:ring-2 focus-visible:ring-interactive-focus",
   ]),
   mobileMenu: cva([
@@ -34,7 +34,7 @@ export const navigationStyles = {
   ]),
   mobileNavItem: cva([
     "flex items-center px-4 py-3 text-lg font-medium rounded-lg transition-colors",
-    "text-text-secondary hover:text-text-primary hover:bg-surface-hover",
+    "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",
     "data-[current]:text-interactive-primary data-[current]:bg-interactive-secondary",
   ]),
 };

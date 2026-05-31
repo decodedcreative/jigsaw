@@ -10,14 +10,14 @@ import { TokenCard } from "./TokenCard";
 import { previews } from "./previews";
 
 export const WelcomeContent = () => (
-    <div data-theme="dark" className="font-sans text-text-primary bg-surface-default min-h-screen p-8 md:p-12">
+    <div data-theme="dark" className="font-sans text-foreground-primary bg-surface-default min-h-screen p-8 md:p-12">
       {/* Hero */}
       <div className="max-w-2xl mb-12">
-        <div className="inline-flex items-center gap-2 bg-surface-muted text-text-secondary text-xs font-mono px-3 py-1 rounded-full mb-4">
+        <div className="inline-flex items-center gap-2 bg-surface-muted text-foreground-secondary text-xs font-mono px-3 py-1 rounded-full mb-4">
           @jigsaw/design-system
         </div>
-        <h1 className="text-4xl font-bold text-text-primary mb-3">Jigsaw</h1>
-        <p className="text-lg text-text-secondary leading-relaxed">
+        <h1 className="text-4xl font-bold text-foreground-primary mb-3">Jigsaw</h1>
+        <p className="text-lg text-foreground-secondary leading-relaxed">
           The design system and component library for this monorepo. Built on a two-layer token
           architecture — a base colour palette and semantic intent tokens — with accessible
           components powered by React Aria.
@@ -26,8 +26,8 @@ export const WelcomeContent = () => (
 
       {/* Tokens */}
       <section className="max-w-5xl mb-12">
-        <h2 className="text-xl font-semibold text-text-primary mb-1">Design Tokens</h2>
-        <p className="text-sm text-text-secondary max-w-2xl">
+        <h2 className="text-xl font-semibold text-foreground-primary mb-1">Design Tokens</h2>
+        <p className="text-sm text-foreground-secondary max-w-2xl">
           Tokens are the single source of truth for colour, spacing, typography, and elevation.
           Generated from{" "}
           <code className="font-mono text-xs bg-surface-muted px-1 py-0.5 rounded">
@@ -44,8 +44,8 @@ export const WelcomeContent = () => (
 
       {/* Components */}
       <section className="max-w-5xl mb-12">
-        <h2 className="text-xl font-semibold text-text-primary mb-1">Components</h2>
-        <p className="text-sm text-text-secondary max-w-2xl">
+        <h2 className="text-xl font-semibold text-foreground-primary mb-1">Components</h2>
+        <p className="text-sm text-foreground-secondary max-w-2xl">
           {componentSections.length} production-ready components. Each story documents variants,
           states, accessibility props, and Tailwind integration.
         </p>
@@ -64,8 +64,8 @@ export const WelcomeContent = () => (
 
       {/* Examples */}
       <section className="max-w-5xl mb-12">
-        <h2 className="text-xl font-semibold text-text-primary mb-1">Examples</h2>
-        <p className="text-sm text-text-secondary max-w-2xl">
+        <h2 className="text-xl font-semibold text-foreground-primary mb-1">Examples</h2>
+        <p className="text-sm text-foreground-secondary max-w-2xl">
           Full-page compositions showing how components work together in realistic product scenarios.
         </p>
         <CardGrid>
@@ -76,7 +76,7 @@ export const WelcomeContent = () => (
       </section>
 
       {/* Footer */}
-      <footer className="max-w-5xl border-t border-border-subtle pt-6 text-xs text-text-muted">
+      <footer className="max-w-5xl border-t border-border-subtle pt-6 text-xs text-foreground-muted">
         <p>
           Tokens and components are versioned together in the monorepo under{" "}
           <code className="font-mono">packages/tokens</code> and{" "}

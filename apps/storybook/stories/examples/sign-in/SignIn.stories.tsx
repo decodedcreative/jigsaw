@@ -28,7 +28,7 @@ const SignInPage = () => {
         <Card classNameOverrides={{ component: "w-full max-w-sm shadow-lg", content: "p-8 text-center" }}>
           <SuccessCheck />
           <Text size="lg" weight="semibold" className="mb-2">Signed in!</Text>
-          <Text size="sm" className="text-text-secondary mb-6">Welcome back to Jigsaw.</Text>
+          <Text size="sm" className="text-foreground-secondary mb-6">Welcome back to Jigsaw.</Text>
           <Button variant="secondary" onPress={() => setSubmitted(false)}>Sign out</Button>
         </Card>
       </div>
@@ -41,8 +41,8 @@ const SignInPage = () => {
         {/* Brand */}
         <div className="text-center mb-8">
           <BrandMark />
-          <h1 className="text-2xl font-bold text-text-primary">Sign in to Jigsaw</h1>
-          <Text size="sm" className="text-text-secondary mt-1">
+          <h1 className="text-2xl font-bold text-foreground-primary">Sign in to Jigsaw</h1>
+          <Text size="sm" className="text-foreground-secondary mt-1">
             Don't have an account?{" "}
             <Link href="#">Sign up free</Link>
           </Text>

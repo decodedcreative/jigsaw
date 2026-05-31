@@ -33,8 +33,8 @@ export default function SignInPage() {
               <path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-text-primary">Sign in to Jigsaw</h1>
-          <p className="text-sm text-text-secondary mt-1">
+          <h1 className="text-2xl font-bold text-foreground-primary">Sign in to Jigsaw</h1>
+          <p className="text-sm text-foreground-secondary mt-1">
             Don't have an account?{" "}
             <NextLink href="/sign-up" className="text-interactive-accent hover:underline font-medium">
               Sign up free
@@ -76,7 +76,7 @@ export default function SignInPage() {
         {/* OAuth */}
         <div className="flex items-center gap-3 my-6">
           <div className="flex-1 h-px bg-border-subtle" />
-          <span className="text-xs text-text-muted">or continue with</span>
+          <span className="text-xs text-foreground-muted">or continue with</span>
           <div className="flex-1 h-px bg-border-subtle" />
         </div>
         <div className="flex flex-col gap-3">
