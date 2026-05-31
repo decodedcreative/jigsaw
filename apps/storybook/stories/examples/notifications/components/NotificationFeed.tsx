@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Badge, Button, Card, Text } from "@jigsaw/design-system";
-import { FEED, TYPE_COLOR, TYPE_ICON } from "../Notifications.stories.constants";
+import { FEED, TYPE_COLOR } from "../Notifications.stories.constants";
+import { NotificationTypeIcon } from "./NotificationTypeIcon";
 
 export const NotificationFeed = () => {
   const [items, setItems] = useState(FEED);
@@ -34,7 +35,7 @@ export const NotificationFeed = () => {
               </div>
               {/* Icon */}
               <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${TYPE_COLOR[n.type]}`}>
-                {TYPE_ICON[n.type]}
+                <NotificationTypeIcon type={n.type} />
               </div>
               {/* Content */}
               <div className="flex-1 min-w-0">

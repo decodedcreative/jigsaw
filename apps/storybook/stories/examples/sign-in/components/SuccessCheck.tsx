@@ -1,7 +1,8 @@
+import { Icon } from "@jigsaw/design-system";
+import { CheckIcon } from "@phosphor-icons/react";
+
 export const SuccessCheck = () => (
   <div className="w-12 h-12 rounded-full bg-state-success-bg flex items-center justify-center mx-auto mb-4">
-    <svg className="w-6 h-6 text-state-success-text" viewBox="0 0 24 24" fill="none">
-      <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+    <Icon icon={CheckIcon} size="lg" tone="success" />
   </div>
 );
