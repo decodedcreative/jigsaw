@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-import type { ClassNameOverrides, WithoutClassName } from "@ds-types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 import type { CardVariant, cardStyles } from "./Card.styles";
 
 export type CardElement = "div" | "a" | "button";

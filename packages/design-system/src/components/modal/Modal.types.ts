@@ -1,7 +1,7 @@
 import type { ReactElement, ReactNode } from "react";
 import type { ModalOverlayProps } from "react-aria-components";
 import type { ButtonProps } from "../button/Button";
-import type { ClassNameOverrides, WithoutClassName } from "@ds-types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 import type { modalStyles } from "./Modal.styles";
 
 export type ModalTriggerElement = ReactElement<ButtonProps>;

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useGetClassNames } from "@hooks";
 import { textStyles } from "./Text.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@ds-types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
 export type TextProps = WithoutClassName<
   Omit<React.HTMLAttributes<HTMLParagraphElement>, "children">

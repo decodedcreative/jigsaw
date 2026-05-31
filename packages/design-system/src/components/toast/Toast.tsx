@@ -10,7 +10,7 @@ import {
 } from "react";
 import { useGetClassNames } from "@hooks";
 import { toastStyles, type ToastVariant, type ToastPosition } from "./Toast.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@ds-types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
 export interface ToastData {
   id: string;

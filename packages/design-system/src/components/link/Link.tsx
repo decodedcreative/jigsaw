@@ -7,7 +7,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { linkStyles, linkButtonStyles } from "./Link.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@ds-types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
 export type LinkProps = ReactAriaLinkProps & {
   classNameOverrides?: ClassNameOverrides<typeof linkStyles>;

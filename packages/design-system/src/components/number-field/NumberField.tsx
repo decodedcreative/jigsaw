@@ -12,7 +12,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { numberFieldStyles } from "./NumberField.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@ds-types/component-props";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
 export type NumberFieldProps = Omit<ReactAriaNumberFieldProps, "children"> & {
   label?: string;

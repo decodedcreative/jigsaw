@@ -31,7 +31,7 @@ export default defineConfig({
         replacement: resolve(__dirname, './src/utils'),
       },
       {
-        find: '@ds-types',
+        find: '@jsw-types',
         replacement: resolve(__dirname, './src/types'),
       },
     ],

@@ -13,7 +13,7 @@ export default tseslint.config(
           patterns: [
             {
               group: ["../types/*", "../*/types/*", "../../types/*", "../../../types/*", "./types/*"],
-              message: "Use @ds-types/* path alias for shared types under src/types.",
+              message: "Use @jsw-types/* path alias for shared types under src/types.",
             },
           ],
         },
