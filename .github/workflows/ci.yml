@@ -18,5 +18,8 @@ jobs:
 
       - run: npm ci
 
+      - name: Verify Icon adoption (JSW-43)
+        run: npm run verify:icons
+
       - name: Test design-system
         run: npm run test --workspace=@jigsaw/design-system

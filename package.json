@@ -6,7 +6,8 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "verify:icons": "node scripts/verify-icon-adoption.mjs"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

@@ -1,16 +1,10 @@
 /**
- * Inline SVG exceptions for the Adopt Icon epic (JSW-43).
- *
- * Storybook examples:
- * - sign-in/GoogleIcon — multi-color Google trademark
- * - sign-in/GitHubIcon — GitHub trademark
- *
- * Design system (tracked in JSW-43):
- * - Checkbox checkmark / indeterminate marks
- * - Disclosure chevron
- * - Tooltip arrow
+ * @deprecated Import from repo root `icon-svg-exceptions.ts` instead.
+ * Re-exported for backwards compatibility with existing `@see` comments.
  */
-export const STORYBOOK_ICON_SVG_EXCEPTIONS = [
-  "sign-in/GoogleIcon",
-  "sign-in/GitHubIcon",
-] as const;
+export {
+  DESIGN_SYSTEM_ICON_SVG_EXCEPTIONS,
+  STORYBOOK_ICON_SVG_EXCEPTIONS,
+  WEB_ICON_SVG_EXCEPTIONS,
+  ICON_SVG_EXCEPTIONS,
+} from "../../../../icon-svg-exceptions";
