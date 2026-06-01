@@ -33,6 +33,11 @@ describe("Icon", () => {
     expect(container.querySelector("svg")).toHaveClass("text-state-info");
   });
 
+  it("applies on-accent tone class", () => {
+    const { container } = render(<Icon icon={GearIcon} tone="on-accent" />);
+    expect(container.querySelector("svg")).toHaveClass("text-foreground-on-accent");
+  });
+
   it("does not apply a tone class by default", () => {
     const { container } = render(<Icon icon={GearIcon} />);
     const svg = container.querySelector("svg");
