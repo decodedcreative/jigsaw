@@ -1,5 +1,4 @@
 export { Icon } from "./Icon";
-export { iconFillStyle } from "./iconFillStyle";
 export type {
   IconProps,
   CustomIconStyle,

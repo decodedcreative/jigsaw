@@ -4,7 +4,7 @@
  * These are not Phosphor icon glyphs — they are structural chrome or third-party
  * brand marks that must not go through the design-system `Icon` wrapper.
  *
- * Used by `scripts/verify-icon-adoption.mjs` and referenced via `@see` in source files.
+ * Reference list for inline SVGs not yet routed through `Icon`. See `@see` in source files.
  */
 
 /** Design-system component paths (structural SVG, not icon glyphs). */
