@@ -72,4 +72,39 @@ describe("Icon", () => {
     render(<Icon icon={GearIcon} aria-hidden={false} aria-label="Settings" />);
     expect(screen.getByLabelText("Settings")).toBeInTheDocument();
   });
+
+  describe("custom SVG", () => {
+    it("renders children in an svg with viewBox", () => {
+      const { container } = render(
+        <Icon
+          viewBox="0 0 10 10"
+          style={{ "--icon-fill-primary": "#000" }}
+          aria-hidden
+        >
+          <path data-fill="primary" d="M0 0h10v10H0z" />
+        </Icon>
+      );
+      const svg = container.querySelector("svg");
+      expect(svg).toHaveAttribute("viewBox", "0 0 10 10");
+      expect(svg?.querySelector('[data-fill="primary"]')).toBeInTheDocument();
+    });
+
+    it("forwards style with CSS custom properties on the svg", () => {
+      const { container } = render(
+        <Icon
+          viewBox="0 0 10 10"
+          style={{ "--icon-fill-primary": "#111", "--icon-fill-secondary": "#222" }}
+          aria-hidden
+        >
+          <path data-fill="primary" d="M0 0h5v5H0z" />
+          <path data-fill="secondary" d="M5 5h5v5H5z" />
+        </Icon>
+      );
+      const svg = container.querySelector("svg");
+      expect(svg).toHaveStyle({
+        "--icon-fill-primary": "#111",
+        "--icon-fill-secondary": "#222",
+      });
+    });
+  });
 });

@@ -43,7 +43,8 @@ export type { FormProps, FormFieldsetProps, FormActionsProps } from "@components
 
 // Icon
 export { Icon } from "@components/icon";
-export type { IconProps, IconTone, IconSize } from "@components/icon";
+export type { IconProps, CustomIconStyle, IconTone, IconSize } from "@components/icon";
+export { iconFillStyle } from "@components/icon";
 
 // Input
 export { Input } from "@components/input/Input";
