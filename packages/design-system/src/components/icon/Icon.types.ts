@@ -64,5 +64,5 @@ export type CustomIconComponentProps = IconSharedProps &
 export type IconProps = PhosphorIconComponentProps | CustomIconComponentProps;
 
 export function isCustomIconProps(props: IconProps): props is CustomIconComponentProps {
-  return "children" in props && props.children != null;
+  return "viewBox" in props && typeof props.viewBox === "string";
 }

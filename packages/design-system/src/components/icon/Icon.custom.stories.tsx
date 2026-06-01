@@ -57,7 +57,7 @@ export const Duotone: Story = {
   ),
 };
 
-/** Three or more fills — e.g. OAuth / trademark SVGs. */
+/** Three or more fills — e.g. brand marks with fixed palette slots. */
 export const Multipath: Story = {
   render: () => (
     <Icon
