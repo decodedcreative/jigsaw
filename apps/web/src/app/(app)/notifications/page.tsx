@@ -8,11 +8,22 @@ import {
   Checkbox,
   Disclosure,
   DisclosureGroup,
+  Icon,
   Select,
   SelectItem,
   ToastProvider,
   useToast,
+  type IconTone,
 } from "@jigsaw/design-system";
+import {
+  ArrowClockwiseIcon,
+  AtIcon,
+  CloudArrowUpIcon,
+  UserPlusIcon,
+  WarningIcon,
+  XIcon,
+  type Icon as PhosphorIcon,
+} from "@phosphor-icons/react";
 
 // ---------------------------------------------------------------------------
 // Data
@@ -39,53 +50,39 @@ const INITIAL: Notification[] = [
   { id: "8", type: "invite",  title: "New member joined",          body: "Tom Nakamura joined the Design workspace.",                 time: "3 days ago", read: true  },
 ];
 
-const TYPE_CONFIG: Record<NotifType, { icon: React.ReactNode; bg: string; dot: string }> = {
+const TYPE_CONFIG: Record<
+  NotifType,
+  { icon: PhosphorIcon; tone: IconTone; bg: string; dot: string }
+> = {
   mention: {
+    icon: AtIcon,
+    tone: "accent",
     bg: "bg-interactive-accent/10",
     dot: "bg-interactive-accent",
-    icon: (
-      <svg className="w-4 h-4 text-interactive-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <circle cx="12" cy="12" r="4" /><path d="M16 8v5a3 3 0 006 0v-1a10 10 0 10-3.92 7.94" />
-      </svg>
-    ),
   },
   invite: {
+    icon: UserPlusIcon,
+    tone: "success",
     bg: "bg-state-success-bg",
     dot: "bg-state-success",
-    icon: (
-      <svg className="w-4 h-4 text-state-success-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><line x1="19" y1="8" x2="19" y2="14" /><line x1="22" y1="11" x2="16" y2="11" />
-      </svg>
-    ),
   },
   update: {
+    icon: ArrowClockwiseIcon,
+    tone: "secondary",
     bg: "bg-surface-muted",
     dot: "bg-foreground-muted",
-    icon: (
-      <svg className="w-4 h-4 text-foreground-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
-      </svg>
-    ),
   },
   alert: {
+    icon: WarningIcon,
+    tone: "warning",
     bg: "bg-state-warning-bg",
     dot: "bg-state-warning",
-    icon: (
-      <svg className="w-4 h-4 text-state-warning-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-        <line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" />
-      </svg>
-    ),
   },
   deploy: {
+    icon: CloudArrowUpIcon,
+    tone: "secondary",
     bg: "bg-surface-muted",
     dot: "bg-interactive-accent",
-    icon: (
-      <svg className="w-4 h-4 text-foreground-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" />
-        <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3" />
-      </svg>
-    ),
   },
 };
 
@@ -197,7 +194,7 @@ function NotificationsInner() {
                     </div>
                     {/* Icon */}
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${cfg.bg}`}>
-                      {cfg.icon}
+                      <Icon icon={cfg.icon} size="md" tone={cfg.tone} />
                     </div>
                     {/* Content */}
                     <button
@@ -219,9 +216,7 @@ function NotificationsInner() {
                       }}
                       aria-label="Dismiss"
                     >
-                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                        <path d="M18 6 6 18M6 6l12 12" />
-                      </svg>
+                      <Icon icon={XIcon} size="sm" />
                     </button>
                   </div>
                 );

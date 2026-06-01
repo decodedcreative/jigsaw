@@ -7,11 +7,17 @@ import {
   Badge,
   Button,
   Card,
+  Icon,
   Modal,
   Text,
   ToastProvider,
   useToast,
 } from "@jigsaw/design-system";
+import {
+  ArrowClockwiseIcon,
+  ArrowSquareOutIcon,
+  PlayIcon,
+} from "@phosphor-icons/react";
 
 // ---------------------------------------------------------------------------
 // Stat card
@@ -155,7 +161,7 @@ function QuickActions() {
           classNameOverrides={{ component: "w-full justify-start" }}
             onPress={() => addToast({ title: "Build triggered", description: "Storybook deploying to Chromatic.", variant: "info" })}
           >
-            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <Icon icon={PlayIcon} size="md" weight="fill" />
             Trigger Storybook build
           </Button>
         <Button
@@ -163,11 +169,11 @@ function QuickActions() {
           classNameOverrides={{ component: "w-full justify-start" }}
           onPress={() => addToast({ title: "Tokens rebuilt", variant: "success" })}
         >
-            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            <Icon icon={ArrowClockwiseIcon} size="md" />
             Rebuild design tokens
           </Button>
         <Button variant="secondary" classNameOverrides={{ component: "w-full justify-start" }}>
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <Icon icon={ArrowSquareOutIcon} size="md" />
             Open Storybook
           </Button>
       </div>

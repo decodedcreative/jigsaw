@@ -10,6 +10,7 @@ import {
   Link,
 } from "@jigsaw/design-system";
 import NextLink from "next/link";
+import { BrandMark } from "@/components/BrandMark";
 
 export default function SignInPage() {
   const [loading, setLoading] = useState(false);
@@ -28,11 +29,7 @@ export default function SignInPage() {
       <div className="w-full max-w-sm">
         {/* Brand */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-interactive-accent mb-4">
-            <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
-            </svg>
-          </div>
+          <BrandMark />
           <h1 className="text-2xl font-bold text-foreground-primary">Sign in to Jigsaw</h1>
           <p className="text-sm text-foreground-secondary mt-1">
             Don't have an account?{" "}
