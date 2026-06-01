@@ -10,11 +10,10 @@ export function Icon(props: IconProps) {
     tone,
     classNameOverrides,
     "aria-hidden": ariaHidden = true,
-    ...rest
   } = props;
 
   if (isCustomIconProps(props)) {
-    const { viewBox, children, ...svgProps } = rest;
+    const { viewBox, children, ...svgProps } = props;
 
     const classNames = useGetClassNames(customIconStyles, classNameOverrides, {
       component: { size, tone },
@@ -34,7 +33,7 @@ export function Icon(props: IconProps) {
     );
   }
 
-  const { icon: PhosphorIcon, weight = "bold", ...phosphorProps } = rest;
+  const { icon: PhosphorIcon, weight = "bold", ...phosphorProps } = props;
 
   const classNames = useGetClassNames(iconStyles, classNameOverrides, {
     component: { size, tone },
