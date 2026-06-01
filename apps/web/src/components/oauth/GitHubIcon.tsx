@@ -1,5 +1,6 @@
 import { Icon } from "@jigsaw/design-system";
 
+/** GitHub sign-in mark — app-specific asset using generic `Icon` custom SVG API. */
 export function GitHubIcon() {
   return (
     <Icon viewBox="0 0 24 24" tone="primary" aria-hidden>

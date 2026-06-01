@@ -1,5 +1,6 @@
 import { Icon } from "@jigsaw/design-system";
 
+/** Google sign-in mark — app-specific asset using generic `Icon` custom SVG API. */
 export function GoogleIcon() {
   return (
     <Icon
