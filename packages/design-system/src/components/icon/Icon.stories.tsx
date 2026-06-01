@@ -38,6 +38,9 @@ export const Tones: Story = {
       <Icon icon={GearIcon} tone="warning" />
       <Icon icon={GearIcon} tone="error" />
       <Icon icon={GearIcon} tone="info" />
+      <span className="inline-flex rounded bg-interactive-accent p-1">
+        <Icon icon={GearIcon} tone="on-accent" />
+      </span>
     </div>
   ),
 };

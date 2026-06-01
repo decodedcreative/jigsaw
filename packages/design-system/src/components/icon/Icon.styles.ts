@@ -18,6 +18,7 @@ export const iconStyles = {
         warning: "text-state-warning-text",
         error: "text-state-error-text",
         info: "text-state-info",
+        "on-accent": "text-foreground-on-accent",
       },
     },
     defaultVariants: {

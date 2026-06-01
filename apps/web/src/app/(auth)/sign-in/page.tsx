@@ -29,7 +29,9 @@ export default function SignInPage() {
       <div className="w-full max-w-sm">
         {/* Brand */}
         <div className="text-center mb-8">
-          <BrandMark />
+          <div className="mb-4">
+            <BrandMark />
+          </div>
           <h1 className="text-2xl font-bold text-foreground-primary">Sign in to Jigsaw</h1>
           <p className="text-sm text-foreground-secondary mt-1">
             Don't have an account?{" "}

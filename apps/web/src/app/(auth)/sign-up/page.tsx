@@ -27,7 +27,9 @@ export default function SignUpPage() {
       <div className="w-full max-w-sm">
         {/* Brand */}
         <div className="text-center mb-8">
-          <BrandMark />
+          <div className="mb-4">
+            <BrandMark />
+          </div>
           <h1 className="text-2xl font-bold text-foreground-primary">Create your account</h1>
           <p className="text-sm text-foreground-secondary mt-1">
             Already have an account?{" "}

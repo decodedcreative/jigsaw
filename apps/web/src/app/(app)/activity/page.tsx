@@ -18,9 +18,9 @@ import {
 import {
   CloudArrowUpIcon,
   GearIcon,
-  GitBranchIcon,
+  GitPullRequestIcon,
+  PaletteIcon,
   SquaresFourIcon,
-  SunIcon,
   UsersIcon,
   type Icon as PhosphorIcon,
 } from "@phosphor-icons/react";
@@ -64,8 +64,8 @@ const KIND_LABELS: Record<EventKind, string> = {
 
 const KIND_ICONS: Record<EventKind, PhosphorIcon> = {
   deploy: CloudArrowUpIcon,
-  pr: GitBranchIcon,
-  token: SunIcon,
+  pr: GitPullRequestIcon,
+  token: PaletteIcon,
   component: SquaresFourIcon,
   member: UsersIcon,
   settings: GearIcon,
