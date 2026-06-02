@@ -1,4 +1,2 @@
 export { Avatar } from "./Avatar";
-export type { AvatarProps } from "./Avatar.types";
-export type { AvatarSize, AvatarStatus } from "./Avatar.types";
-export * from "./sub-components";
+export type { AvatarProps, AvatarSize, AvatarStatus } from "./Avatar.types";

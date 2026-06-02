@@ -12,20 +12,8 @@ export { Text } from "@components/text/Text";
 export type { TextProps } from "@components/text/Text";
 
 // Avatar
-export {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-  AvatarStatusIndicator,
-} from "@components/avatar";
-export type {
-  AvatarProps,
-  AvatarImageProps,
-  AvatarFallbackProps,
-  AvatarStatusIndicatorProps,
-  AvatarSize,
-  AvatarStatus,
-} from "@components/avatar";
+export { Avatar } from "@components/avatar";
+export type { AvatarProps, AvatarSize, AvatarStatus } from "@components/avatar";
 
 // Badge
 export { Badge } from "@components/badge/Badge";

@@ -1,7 +1,5 @@
 import {
   Avatar,
-  AvatarFallback,
-  AvatarStatusIndicator,
   Button,
   Form,
   FormActions,
@@ -15,10 +13,7 @@ export const ProfileTab = () => (
     <Form onSubmit={(e) => e.preventDefault()}>
       <FormFieldset legend="Public profile">
         <div className="flex items-center gap-4 mb-2">
-          <Avatar size="xl">
-            <AvatarFallback>JH</AvatarFallback>
-            <AvatarStatusIndicator status="online" />
-          </Avatar>
+          <Avatar size="xl" initials="JH" status="online" />
           <div className="flex gap-2">
             <Button variant="secondary" size="sm">Upload photo</Button>
             <Button variant="ghost" size="sm">Remove</Button>

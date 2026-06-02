@@ -3,7 +3,6 @@
 import { useState } from "react";
 import {
   Avatar,
-  AvatarFallback,
   Badge,
   Button,
   Card,
@@ -150,9 +149,7 @@ export default function ActivityPage() {
                         {/* Actor avatar */}
                         <TooltipTrigger delay={300}>
                           <button className="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent rounded-full">
-                            <Avatar size="sm">
-                              <AvatarFallback>{e.initials}</AvatarFallback>
-                            </Avatar>
+                            <Avatar size="sm" initials={e.initials} />
                           </button>
                           <Tooltip>{e.actor}</Tooltip>
                         </TooltipTrigger>

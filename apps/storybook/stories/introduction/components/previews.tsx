@@ -1,6 +1,5 @@
 import {
   Avatar,
-  AvatarFallback,
   Badge,
   Button,
   Card,
@@ -29,15 +28,9 @@ import type { PreviewMap } from "../Introduction.stories.types";
 export const previews: PreviewMap = {
   Avatar: (
     <Preview>
-      <Avatar size="md">
-        <AvatarFallback>JH</AvatarFallback>
-      </Avatar>
-      <Avatar size="sm">
-        <AvatarFallback>AB</AvatarFallback>
-      </Avatar>
-      <Avatar size="xs">
-        <AvatarFallback>CD</AvatarFallback>
-      </Avatar>
+      <Avatar size="md" initials="JH" />
+      <Avatar size="sm" initials="AB" />
+      <Avatar size="xs" initials="CD" />
     </Preview>
   ),
 

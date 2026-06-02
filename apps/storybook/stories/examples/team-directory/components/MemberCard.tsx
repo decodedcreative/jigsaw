@@ -1,7 +1,5 @@
 import {
   Avatar,
-  AvatarFallback,
-  AvatarStatusIndicator,
   Badge,
   Button,
   Card,
@@ -26,10 +24,7 @@ export const MemberCard = ({ member }: { member: Member }) => {
 
         {/* Avatar overlapping the strip */}
         <div className="-mt-6 mb-3">
-          <Avatar size="lg">
-            <AvatarFallback>{member.initials}</AvatarFallback>
-            <AvatarStatusIndicator status={member.status} />
-          </Avatar>
+          <Avatar size="lg" initials={member.initials} status={member.status} />
         </div>
 
         <div className="flex items-start justify-between gap-2 mb-1">

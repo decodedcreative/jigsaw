@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Avatar, AvatarImage, AvatarFallback, AvatarStatusIndicator } from "./index";
+import { Avatar } from "./Avatar";
 
 const meta = {
   title: "Design System/Avatar",
@@ -9,13 +9,14 @@ const meta = {
     docs: {
       description: {
         component:
-          "Compound avatar: wrap `AvatarImage`, `AvatarFallback`, and/or `AvatarStatusIndicator` as children. `AvatarStatusIndicator` inherits the parent `size` unless you pass an explicit `size` override.",
+          "Prop-driven avatar: pass `initials`, optional `src`/`alt`, and optional `status`. Initials are shown when there is no image or when the image fails to load.",
       },
     },
   },
   tags: ["autodocs"],
   argTypes: {
     size: { control: "select", options: ["xs", "sm", "md", "lg", "xl", "2xl"] },
+    status: { control: "select", options: ["online", "offline", "busy", "away"] },
   },
 } satisfies Meta<typeof Avatar>;
 
@@ -23,47 +24,29 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Initials: Story = {
-  render: (args) => (
-    <Avatar {...args}>
-      <AvatarFallback>JH</AvatarFallback>
-    </Avatar>
-  ),
+  args: { initials: "JH" },
 };
 
 export const WithImage: Story = {
-  render: (args) => (
-    <Avatar {...args}>
-      <AvatarImage src="https://i.pravatar.cc/100" alt="User" />
-      <AvatarFallback>JH</AvatarFallback>
-    </Avatar>
-  ),
+  args: {
+    src: "https://i.pravatar.cc/100",
+    alt: "User",
+    initials: "JH",
+  },
 };
 
 export const WithStatus: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Status dot size follows the parent Avatar `size` automatically. Pass `size` on `AvatarStatusIndicator` only when you need a different scale.",
-      },
-    },
+  args: {
+    initials: "JH",
+    status: "online",
   },
-  render: (args) => (
-    <Avatar {...args}>
-      <AvatarFallback>JH</AvatarFallback>
-      <AvatarStatusIndicator status="online" />
-    </Avatar>
-  ),
 };
 
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-end gap-3">
       {(["xs", "sm", "md", "lg", "xl", "2xl"] as const).map((size) => (
-        <Avatar key={size} size={size}>
-          <AvatarFallback>JH</AvatarFallback>
-          <AvatarStatusIndicator status="online" />
-        </Avatar>
+        <Avatar key={size} size={size} initials="JH" status="online" />
       ))}
     </div>
   ),
