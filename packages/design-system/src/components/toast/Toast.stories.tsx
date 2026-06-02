@@ -1,26 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect, useRef } from "react";
 import { BellIcon } from "@phosphor-icons/react";
-import { ToastProvider, useToast } from "./index";
-import type { ToastPosition, ToastVariant } from "./Toast.styles";
+import { ToastProvider, toastPositions, toastVariants, useToast } from "./index";
+import type { ToastPosition } from "./Toast.types";
 import { Button } from "../button/Button";
-
-const toastVariants: ToastVariant[] = [
-  "default",
-  "success",
-  "warning",
-  "error",
-  "info",
-];
-
-const toastPositions: ToastPosition[] = [
-  "top-left",
-  "top-center",
-  "top-right",
-  "bottom-left",
-  "bottom-center",
-  "bottom-right",
-];
 
 const meta = {
   title: "Design System/Toast",
@@ -37,6 +20,8 @@ const meta = {
   tags: ["autodocs"],
   args: {
     position: "bottom-right",
+    // Supplied in each story's render; null satisfies Storybook's required `children` arg.
+    children: null,
   },
   argTypes: {
     position: {
@@ -123,6 +108,7 @@ const VariantTrigger = () => {
 };
 
 export const Variants: Story = {
+  args: {},
   parameters: {
     docs: {
       description: {
@@ -172,6 +158,7 @@ function PositionPreview({ position }: { position: ToastPosition }) {
 }
 
 export const Position: Story = {
+  args: {},
   parameters: {
     layout: "fullscreen",
     docs: {

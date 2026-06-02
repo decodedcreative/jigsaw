@@ -1,9 +1,15 @@
 import type { ReactNode } from "react";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import type { ClassNameOverrides } from "@jsw-types/component-props";
-import type { ToastPosition, ToastVariant } from "./Toast.styles";
+import type { ToastVariant } from "./sub-components/ToastItem/ToastItem.styles";
+import type { ToastPosition } from "./sub-components/ToastProvider/ToastProvider.styles";
 import type { toastProviderStyles } from "./sub-components/ToastProvider/ToastProvider.styles";
 import type { toastItemStyles } from "./sub-components/ToastItem/ToastItem.styles";
+
+export type { ToastVariant } from "./sub-components/ToastItem/ToastItem.styles";
+export { toastVariants } from "./sub-components/ToastItem/ToastItem.styles";
+export type { ToastPosition } from "./sub-components/ToastProvider/ToastProvider.styles";
+export { toastPositions } from "./sub-components/ToastProvider/ToastProvider.styles";
 
 export interface ToastData {
   id: string;

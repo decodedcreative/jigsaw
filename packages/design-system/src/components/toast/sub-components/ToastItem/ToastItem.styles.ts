@@ -1,5 +1,27 @@
 import { cva } from "class-variance-authority";
 
+/** CVA variant keys — source of truth for `ToastVariant` and `toastVariants`. */
+export const toastVariantClasses = {
+  component: {
+    default: "bg-surface-primary",
+    success: "border-state-success-text bg-state-success-bg",
+    warning: "border-state-warning-text bg-state-warning-bg",
+    error: "border-state-error-text bg-state-error-bg",
+    info: "border-state-info-border bg-state-info-bg",
+  },
+  icon: {
+    default: "text-foreground-secondary",
+    success: "text-state-success-text",
+    warning: "text-state-warning-text",
+    error: "text-state-error-text",
+    info: "text-state-info",
+  },
+} as const;
+
+export type ToastVariant = keyof typeof toastVariantClasses.component;
+
+export const toastVariants = Object.keys(toastVariantClasses.component) as ToastVariant[];
+
 export const toastItemStyles = {
   component: cva(
     [
@@ -10,26 +32,14 @@ export const toastItemStyles = {
     ],
     {
       variants: {
-        variant: {
-          default: "bg-surface-primary",
-          success: "border-state-success-text bg-state-success-bg",
-          warning: "border-state-warning-text bg-state-warning-bg",
-          error: "border-state-error-text bg-state-error-bg",
-          info: "border-state-info-border bg-state-info-bg",
-        },
+        variant: toastVariantClasses.component,
       },
       defaultVariants: { variant: "default" },
     }
   ),
   icon: cva("flex-shrink-0 w-5 h-5", {
     variants: {
-      variant: {
-        default: "text-foreground-secondary",
-        success: "text-state-success-text",
-        warning: "text-state-warning-text",
-        error: "text-state-error-text",
-        info: "text-state-info",
-      },
+      variant: toastVariantClasses.icon,
     },
     defaultVariants: { variant: "default" },
   }),

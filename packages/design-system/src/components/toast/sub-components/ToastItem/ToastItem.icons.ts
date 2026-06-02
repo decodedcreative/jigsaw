@@ -5,7 +5,7 @@ import {
   XCircleIcon,
   type Icon as PhosphorIcon,
 } from "@phosphor-icons/react";
-import type { ToastVariant } from "../../Toast.styles";
+import type { ToastVariant } from "./ToastItem.styles";
 
 /** Default Phosphor icons per toast variant (overridable via the `icon` prop). */
 export const toastVariantIcons: Record<ToastVariant, PhosphorIcon> = {
