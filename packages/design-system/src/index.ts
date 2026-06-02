@@ -91,8 +91,8 @@ export { Textarea } from "@components/textarea/Textarea";
 export type { TextareaProps } from "@components/textarea/Textarea";
 
 // Toast
-export { ToastProvider, ToastItem, useToast } from "@components/toast/Toast";
-export type { ToastData, ToastProviderProps, ToastItemProps } from "@components/toast/Toast";
+export { ToastProvider, ToastItem, useToast } from "@components/toast";
+export type { ToastData, ToastProviderProps, ToastItemProps } from "@components/toast";
 export type { ToastVariant, ToastPosition } from "@components/toast/Toast.styles";
 
 // Tooltip
