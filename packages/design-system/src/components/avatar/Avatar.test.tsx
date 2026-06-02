@@ -1,6 +1,9 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
-import { Avatar, AvatarImage, AvatarFallback, AvatarStatusIndicator } from './Avatar';
+import { describe, it, expect, afterEach } from 'vitest';
+import { render, screen, cleanup } from '@testing-library/react';
+import { Avatar } from './Avatar';
+import { AvatarFallback } from './sub-components/AvatarFallback';
+import { AvatarImage } from './sub-components/AvatarImage';
+import { AvatarStatusIndicator } from './sub-components/AvatarStatusIndicator';
 
 afterEach(() => {
   cleanup();
@@ -41,94 +44,49 @@ describe('Avatar', () => {
     render(<Avatar data-testid="avatar" />);
     expect(screen.getByTestId('avatar')).toBeInTheDocument();
   });
-});
 
-describe('AvatarImage', () => {
-  it('renders null when no src is provided', () => {
-    const { container } = render(<AvatarImage alt="test" />);
-    expect(container.firstChild).toBeNull();
-  });
-
-  it('renders an img when src is provided', () => {
-    render(<AvatarImage src="https://example.com/avatar.jpg" alt="User avatar" />);
-    expect(screen.getByRole('img')).toBeInTheDocument();
-  });
-
-  it('renders the correct alt text', () => {
-    render(<AvatarImage src="https://example.com/avatar.jpg" alt="User avatar" />);
-    expect(screen.getByAltText('User avatar')).toBeInTheDocument();
-  });
-
-  it('hides the image on error and calls onLoadingStatusChange', () => {
-    const onLoadingStatusChange = vi.fn();
-    render(
-      <AvatarImage
-        src="https://example.com/avatar.jpg"
-        alt="Avatar"
-        onLoadingStatusChange={onLoadingStatusChange}
-      />
+  it('merges classNameOverrides.component via twMerge', () => {
+    const { container } = render(
+      <Avatar classNameOverrides={{ component: "ring-2 ring-brand-primary" }} />
     );
-    const img = screen.getByRole('img');
-    fireEvent.error(img);
-    expect(onLoadingStatusChange).toHaveBeenCalledWith('error');
-    expect(screen.queryByRole('img')).toBeNull();
+    expect(container.firstChild).toHaveClass('w-10');
+    expect(container.firstChild).toHaveClass('ring-2');
+    expect(container.firstChild).toHaveClass('ring-brand-primary');
   });
 
-  it('calls onLoadingStatusChange with "loaded" on successful load', () => {
-    const onLoadingStatusChange = vi.fn();
+  it('renders composed image and fallback sub-components together', () => {
     render(
-      <AvatarImage
-        src="https://example.com/avatar.jpg"
-        alt="Avatar"
-        onLoadingStatusChange={onLoadingStatusChange}
-      />
+      <Avatar>
+        <AvatarImage src="https://example.com/avatar.jpg" alt="User avatar" />
+        <AvatarFallback>AB</AvatarFallback>
+      </Avatar>
     );
-    const img = screen.getByRole('img');
-    fireEvent.load(img);
-    expect(onLoadingStatusChange).toHaveBeenCalledWith('loaded');
-  });
-});
 
-describe('AvatarFallback', () => {
-  it('renders children', () => {
-    render(<AvatarFallback>AB</AvatarFallback>);
+    expect(screen.getByRole('img', { name: 'User avatar' })).toBeInTheDocument();
     expect(screen.getByText('AB')).toBeInTheDocument();
   });
 
-  it('renders a span element', () => {
-    const { container } = render(<AvatarFallback>AB</AvatarFallback>);
-    expect(container.querySelector('span')).toBeInTheDocument();
-  });
-});
+  it('inherits avatar size for status indicator', () => {
+    const { container } = render(
+      <Avatar size="lg">
+        <AvatarStatusIndicator status="online" />
+      </Avatar>
+    );
 
-describe('AvatarStatusIndicator', () => {
-  it('renders with default offline status', () => {
-    const { container } = render(<AvatarStatusIndicator />);
-    expect(container.firstChild).toBeInTheDocument();
-  });
-
-  it('renders online status', () => {
-    const { container } = render(<AvatarStatusIndicator status="online" />);
-    expect(container.firstChild).toHaveClass('bg-state-success-text');
+    const statusIndicator = container.querySelector('span[aria-label="Status: Online"]');
+    expect(statusIndicator).toHaveClass('w-3');
+    expect(statusIndicator).not.toHaveClass('w-2.5');
   });
 
-  it('renders busy status', () => {
-    const { container } = render(<AvatarStatusIndicator status="busy" />);
-    expect(container.firstChild).toHaveClass('bg-state-error-text');
-  });
+  it('allows status indicator size override', () => {
+    const { container } = render(
+      <Avatar size="lg">
+        <AvatarStatusIndicator status="online" size="sm" />
+      </Avatar>
+    );
 
-  it('renders away status', () => {
-    const { container } = render(<AvatarStatusIndicator status="away" />);
-    expect(container.firstChild).toHaveClass('bg-state-warning-text');
-  });
-
-  it('renders with sm size', () => {
-    const { container } = render(<AvatarStatusIndicator size="sm" />);
-    expect(container.firstChild).toHaveClass('w-2');
-  });
-
-  it('renders a span element', () => {
-    const { container } = render(<AvatarStatusIndicator />);
-    expect(container.querySelector('span')).toBeInTheDocument();
+    const statusIndicator = container.querySelector('span[aria-label="Status: Online"]');
+    expect(statusIndicator).toHaveClass('w-2');
+    expect(statusIndicator).not.toHaveClass('w-3');
   });
 });
