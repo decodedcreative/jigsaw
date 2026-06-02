@@ -1,3 +1,3 @@
-export { Tabs, TabList, Tab, TabPanel } from "./Tabs";
-export type { TabsProps, TabListProps, TabProps, TabPanelProps } from "./Tabs";
-export type { TabsVariant } from "./Tabs.styles";
+export { Tabs } from "./Tabs";
+export type { TabsProps } from "./Tabs.types";
+export * from "./sub-components";

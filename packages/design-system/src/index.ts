@@ -83,9 +83,9 @@ export type { SkeletonProps } from "@components/skeleton/Skeleton";
 export type { SkeletonVariant } from "@components/skeleton/Skeleton.styles";
 
 // Tabs
-export { Tabs, TabList, Tab, TabPanel } from "@components/tabs/Tabs";
-export type { TabsProps, TabListProps, TabProps, TabPanelProps } from "@components/tabs/Tabs";
-export type { TabsVariant } from "@components/tabs/Tabs.styles";
+export { Tabs, TabList, Tab, TabPanel } from "@components/tabs";
+export type { TabsProps, TabListProps, TabProps, TabPanelProps } from "@components/tabs";
+export type { TabsVariant } from "@components/tabs";
 
 // Textarea
 export { Textarea } from "@components/textarea/Textarea";
