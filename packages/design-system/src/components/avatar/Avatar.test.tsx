@@ -78,4 +78,27 @@ describe('Avatar', () => {
     const statusIndicator = container.querySelector('span[aria-label="Status: Online"]');
     expect(statusIndicator).toHaveClass('w-3');
   });
+
+  it('renders offline status styling', () => {
+    const { container } = render(<Avatar initials="JH" status="offline" />);
+    const statusIndicator = container.querySelector('span[aria-label="Status: Offline"]');
+    expect(statusIndicator).toHaveClass('bg-foreground-tertiary');
+  });
+
+  it('hides initials while image is loaded', () => {
+    render(
+      <Avatar src="https://example.com/avatar.jpg" alt="User avatar" initials="AB" />
+    );
+    expect(screen.getByRole('img', { name: 'User avatar' })).toBeInTheDocument();
+    expect(screen.queryByText('AB')).not.toBeInTheDocument();
+  });
+
+  it('shows empty placeholder when image fails and no initials', () => {
+    const { container } = render(
+      <Avatar src="https://example.com/avatar.jpg" alt="User" />
+    );
+    fireEvent.error(screen.getByRole('img', { name: 'User' }));
+    expect(screen.queryByRole('img')).toBeNull();
+    expect(container.querySelector('span')).toBeNull();
+  });
 });

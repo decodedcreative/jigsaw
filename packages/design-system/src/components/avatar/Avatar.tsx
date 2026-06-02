@@ -43,7 +43,7 @@ export const Avatar = ({
       {showImage && (
         <img
           src={src}
-          alt={alt ?? initials ?? ""}
+          alt={alt}
           className={classNames.image}
           onError={() => setHasError(true)}
         />
@@ -51,6 +51,7 @@ export const Avatar = ({
       {showFallback && <span className={classNames.fallback}>{initials}</span>}
       {status && (
         <span
+          role="img"
           className={classNames.status}
           aria-label={statusLabel ?? `Status: ${statusLabels[status]}`}
         />
