@@ -83,7 +83,7 @@ export const exampleSections: SectionLink[] = [
 ];
 
 export const componentSections: ComponentSection[] = [
-  { title: "Avatar", description: "User identity display with image or initials fallback." },
+  { title: "Avatar", description: "User identity display with initials, optional image, and status." },
   { title: "Badge", description: "Small label for status, counts, or categories." },
   { title: "Button", description: "Primary action trigger with multiple variants and sizes." },
   { title: "Card", description: "Surface container for grouped content." },

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import {
   Avatar,
-  AvatarFallback,
   MobileNavigation,
   Navigation,
   NavigationActions,
@@ -41,9 +40,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </NavigationLinks>
 
           <NavigationActions>
-            <Avatar size="sm">
-              <AvatarFallback>JH</AvatarFallback>
-            </Avatar>
+            <Avatar size="sm" initials="JH" />
             <MobileNavigation
               isOpen={mobileOpen}
               onOpenChange={setMobileOpen}

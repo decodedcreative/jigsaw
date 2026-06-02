@@ -1,3 +1,2 @@
-export { Avatar, AvatarImage, AvatarFallback, AvatarStatusIndicator } from "./Avatar";
-export type { AvatarProps, AvatarImageProps, AvatarFallbackProps, AvatarStatusIndicatorProps } from "./Avatar";
-export type { AvatarSize, AvatarStatus } from "./Avatar.styles";
+export { Avatar } from "./Avatar";
+export type { AvatarProps, AvatarSize, AvatarStatus } from "./Avatar.types";

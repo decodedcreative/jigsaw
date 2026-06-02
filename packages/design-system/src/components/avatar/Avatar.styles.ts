@@ -23,9 +23,9 @@ export const avatarStyles = {
       },
     }
   ),
-  image: cva("w-full h-full object-cover"),
+  image: cva("absolute inset-0 w-full h-full object-cover"),
   fallback: cva(
-    "flex items-center justify-center w-full h-full bg-brand-primary text-foreground-inverse"
+    "absolute inset-0 flex items-center justify-center w-full h-full bg-brand-primary text-foreground-inverse"
   ),
   status: cva(
     ["absolute bottom-0 right-0 rounded-full border-2 border-surface-primary"],
@@ -53,6 +53,3 @@ export const avatarStyles = {
     }
   ),
 };
-
-export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
-export type AvatarStatus = "online" | "offline" | "busy" | "away";

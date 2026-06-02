@@ -2,8 +2,6 @@
 
 import {
   Avatar,
-  AvatarFallback,
-  AvatarStatusIndicator,
   Badge,
   Button,
   Card,
@@ -69,9 +67,7 @@ function ActivityFeed() {
       <div className="divide-y divide-border-subtle">
           {ACTIVITY.map((a) => (
             <div key={a.id} className="flex items-center gap-3 py-3">
-              <Avatar size="sm">
-                <AvatarFallback>{a.initials}</AvatarFallback>
-              </Avatar>
+              <Avatar size="sm" initials={a.initials} />
               <div className="flex-1 min-w-0">
                 <p className="text-sm text-foreground-primary">
                   <span className="font-medium">{a.user}</span>{" "}
@@ -132,10 +128,7 @@ function TeamSnapshot() {
       <div className="flex flex-col gap-3">
           {TEAM.map((m) => (
             <div key={m.name} className="flex items-center gap-3">
-              <Avatar size="sm">
-                <AvatarFallback>{m.initials}</AvatarFallback>
-                <AvatarStatusIndicator status={m.status} />
-              </Avatar>
+              <Avatar size="sm" initials={m.initials} status={m.status} />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-foreground-primary leading-tight">{m.name}</p>
                 <p className="text-xs text-foreground-secondary">{m.role}</p>

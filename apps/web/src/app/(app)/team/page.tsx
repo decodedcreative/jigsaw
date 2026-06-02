@@ -3,8 +3,6 @@
 import { useState } from "react";
 import {
   Avatar,
-  AvatarFallback,
-  AvatarStatusIndicator,
   Badge,
   Button,
   Card,
@@ -157,10 +155,7 @@ function TeamInner() {
             >
               <div className="h-10 bg-gradient-to-r from-navy-800 to-navy-700" />
                 <div className="-mt-5 mb-3">
-                  <Avatar size="lg">
-                    <AvatarFallback>{m.initials}</AvatarFallback>
-                    <AvatarStatusIndicator status={m.status} />
-                  </Avatar>
+                  <Avatar size="lg" initials={m.initials} status={m.status} />
                 </div>
                 <div className="flex items-start justify-between gap-2 mb-0.5">
                   <p className="text-sm font-semibold text-foreground-primary leading-snug">{m.name}</p>
