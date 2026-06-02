@@ -19,4 +19,7 @@ type CardPropsFor<T extends CardElement> = CardBaseProps &
   (T extends "div" ? { as?: "div" } : { as: T }) &
   WithoutClassName<ComponentPropsWithoutRef<T>>;
 
-export type CardProps = CardPropsFor<CardElement>;
+export type CardProps =
+  | CardPropsFor<"div">
+  | CardPropsFor<"a">
+  | CardPropsFor<"button">;
