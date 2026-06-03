@@ -3,10 +3,10 @@
 import {
   UNSTABLE_Toast as ReactAriaToast,
   UNSTABLE_ToastContent as ReactAriaToastContent,
-  Button as ReactAriaButton,
   Text as ReactAriaText,
 } from "react-aria-components/Toast";
 import { XIcon } from "@phosphor-icons/react";
+import { Button } from "@components/button/Button";
 import { Icon } from "@components/icon";
 import { twMerge } from "tailwind-merge";
 import { useGetClassNames, useThemeProvider } from "@hooks";
@@ -50,14 +50,25 @@ export const ToastItem = ({ toast, classNameOverrides }: ToastItemProps) => {
           </ReactAriaText>
         )}
         {action && (
-          <button type="button" className={classNames.action} onClick={action.onClick}>
+          <Button
+            variant="link"
+            size="sm"
+            onPress={action.onClick}
+            classNameOverrides={{ component: classNames.action }}
+          >
             {action.label}
-          </button>
+          </Button>
         )}
       </ReactAriaToastContent>
-      <ReactAriaButton slot="close" className={classNames.close}>
+      <Button
+        slot="close"
+        variant="ghost"
+        size="sm"
+        aria-label="Close"
+        classNameOverrides={{ component: classNames.close }}
+      >
         <Icon icon={XIcon} size="md" />
-      </ReactAriaButton>
+      </Button>
     </ReactAriaToast>
   );
 };

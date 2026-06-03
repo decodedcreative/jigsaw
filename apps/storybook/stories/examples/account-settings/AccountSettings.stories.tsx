@@ -19,7 +19,10 @@ const AccountSettingsPage = () => (
     <div className="max-w-2xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground-primary">Account settings</h1>
-        <Text size="sm" className="text-foreground-secondary mt-1">
+        <Text
+          size="sm"
+          classNameOverrides={{ component: "text-foreground-secondary mt-1" }}
+        >
           Manage your profile, notifications, and workspace preferences.
         </Text>
       </div>

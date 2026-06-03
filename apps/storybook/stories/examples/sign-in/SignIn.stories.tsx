@@ -27,8 +27,12 @@ const SignInPage = () => {
       <div className="min-h-screen bg-surface-default flex items-center justify-center p-6">
         <Card classNameOverrides={{ component: "w-full max-w-sm shadow-lg", content: "p-8 text-center" }}>
           <SuccessCheck />
-          <Text size="lg" weight="semibold" className="mb-2">Signed in!</Text>
-          <Text size="sm" className="text-foreground-secondary mb-6">Welcome back to Jigsaw.</Text>
+          <Text size="lg" weight="semibold" classNameOverrides={{ component: "mb-2" }}>
+            Signed in!
+          </Text>
+          <Text size="sm" classNameOverrides={{ component: "text-foreground-secondary mb-6" }}>
+            Welcome back to Jigsaw.
+          </Text>
           <Button variant="secondary" onPress={() => setSubmitted(false)}>Sign out</Button>
         </Card>
       </div>
@@ -44,7 +48,7 @@ const SignInPage = () => {
             <BrandMark />
           </div>
           <h1 className="text-2xl font-bold text-foreground-primary">Sign in to Jigsaw</h1>
-          <Text size="sm" className="text-foreground-secondary mt-1">
+          <Text size="sm" classNameOverrides={{ component: "text-foreground-secondary mt-1" }}>
             Don't have an account?{" "}
             <Link href="#">Sign up free</Link>
           </Text>

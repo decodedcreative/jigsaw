@@ -36,7 +36,10 @@ const TeamDirectoryPage = () => {
           <div className="flex items-start justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold text-foreground-primary">Team</h1>
-              <Text size="sm" className="text-foreground-secondary mt-1">
+              <Text
+                size="sm"
+                classNameOverrides={{ component: "text-foreground-secondary mt-1" }}
+              >
                 {MEMBERS.length} members across Engineering, Design, Product, and Marketing.
               </Text>
             </div>
@@ -90,8 +93,12 @@ const TeamDirectoryPage = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <Text size="base" weight="medium" className="mb-1">No members found</Text>
-              <Text size="sm" className="text-foreground-secondary">Try adjusting your search or filters.</Text>
+              <Text size="base" weight="medium" classNameOverrides={{ component: "mb-1" }}>
+                No members found
+              </Text>
+              <Text size="sm" classNameOverrides={{ component: "text-foreground-secondary" }}>
+                Try adjusting your search or filters.
+              </Text>
             </div>
           )}
         </div>

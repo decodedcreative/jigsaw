@@ -26,12 +26,19 @@ export const MemberCard = ({ member }: { member: Member }) => {
         </div>
 
         <div className="flex items-start justify-between gap-2 mb-1">
-          <Text size="base" weight="semibold" className="leading-tight">{member.name}</Text>
+          <Text size="base" weight="semibold" classNameOverrides={{ component: "leading-tight" }}>
+            {member.name}
+          </Text>
           <Badge variant={ROLE_VARIANT[member.role]} size="sm">{member.role}</Badge>
         </div>
 
-        <Text size="xs" className="text-foreground-secondary block mb-1">{member.email}</Text>
-        <Text size="xs" muted className="block mb-4">
+        <Text
+          size="xs"
+          classNameOverrides={{ component: "text-foreground-secondary block mb-1" }}
+        >
+          {member.email}
+        </Text>
+        <Text size="xs" muted classNameOverrides={{ component: "block mb-4" }}>
           {member.department} · Joined {member.joined}
         </Text>
 
@@ -59,7 +66,7 @@ export const MemberCard = ({ member }: { member: Member }) => {
               </Button>
             }
           >
-            <Text size="sm" className="text-foreground-secondary mb-4">
+            <Text size="sm" classNameOverrides={{ component: "text-foreground-secondary mb-4" }}>
               Choose a new role for <strong className="text-foreground-primary">{member.name}</strong>.
               This will update their permissions immediately.
             </Text>
@@ -97,7 +104,7 @@ export const MemberCard = ({ member }: { member: Member }) => {
               </Button>
             }
           >
-            <Text size="sm" className="text-foreground-secondary mb-4">
+            <Text size="sm" classNameOverrides={{ component: "text-foreground-secondary mb-4" }}>
               Remove <strong className="text-foreground-primary">{member.name}</strong> from this workspace?
               They will lose access immediately.
             </Text>

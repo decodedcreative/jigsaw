@@ -11,6 +11,7 @@ import type { ToastContent } from "./Toast.types";
 /** Default {@link ToastRegion} / {@link toast} queue id. */
 export const DEFAULT_TOAST_REGION = "default";
 
+/** Queues persist for the app lifetime; use fixed {@link ToastRegionId} values only. */
 const queues = new Map<string, ToastQueue<ToastContent>>();
 const mountCounts = new Map<string, number>();
 

@@ -21,7 +21,13 @@ export interface ToastContent {
   };
 }
 
-/** Identifies a {@link ToastRegion} queue. Use any string — queues are created on demand. */
+/**
+ * Identifies a {@link ToastRegion} queue.
+ *
+ * Use a small, fixed set of ids (e.g. `"default"`, `"top"`). Queues are created on
+ * first use and persist for the app lifetime — dynamic ids (e.g. per-modal UUIDs)
+ * will accumulate module-level state.
+ */
 export type ToastRegionId = string;
 
 /** Routing / timing options for the two-argument {@link toast} call form. */

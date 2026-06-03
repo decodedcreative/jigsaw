@@ -1,19 +1,9 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, cleanup, within, waitFor, fireEvent, act } from "@testing-library/react";
+import { render, screen, cleanup, waitFor, fireEvent, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { BellIcon } from "@phosphor-icons/react";
 import { ToastRegion } from "./ToastRegion";
 import { toast } from "../../toast";
 import { clearAllToastQueues, resetToastRegionMounts } from "../../toast.queue";
-
-function renderWithRegion(ui: React.ReactNode, position?: "bottom-right" | "top-left") {
-  return render(
-    <>
-      {ui}
-      <ToastRegion position={position} />
-    </>
-  );
-}
 
 afterEach(() => {
   clearAllToastQueues();
@@ -23,7 +13,7 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-describe("toast()", () => {
+describe("toast() — region integration", () => {
   it("warns in development when no ToastRegion is mounted", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     toast({ title: "Hello!", duration: 0 });
@@ -32,109 +22,28 @@ describe("toast()", () => {
     );
   });
 
-  it('renders a toast with role="alert" when region is mounted', async () => {
-    renderWithRegion(
-      <button type="button" onClick={() => toast({ title: "Hello!", duration: 0 })}>
-        Show Toast
-      </button>
-    );
-
-    await userEvent.setup().click(screen.getByRole("button", { name: "Show Toast" }));
-    expect(screen.getByRole("alert")).toBeInTheDocument();
-    expect(screen.getByText("Hello!")).toBeInTheDocument();
+  it("warns when posting to an unmounted region id", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    render(<ToastRegion region="default" />);
+    toast({ title: "Hi", duration: 0 }, { region: "top" });
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('region "top"'));
   });
 
-  it("renders toast with description", async () => {
-    renderWithRegion(
-      <button
-        type="button"
-        onClick={() => toast({ title: "Title", description: "Details here", duration: 0 })}
-      >
-        Add
-      </button>
-    );
-
-    await userEvent.setup().click(screen.getByRole("button", { name: "Add" }));
-    expect(screen.getByText("Details here")).toBeInTheDocument();
-  });
-
-  it("closes only the toast whose close button was clicked when multiple are stacked", async () => {
+  it("toast.close removes a toast from the default region", async () => {
     const user = userEvent.setup();
-    renderWithRegion(
+    render(
       <>
-        <button type="button" onClick={() => toast({ title: "Toast A", duration: 0 })}>
-          Add A
+        <button
+          type="button"
+          onClick={() => {
+            const key = toast({ title: "Removable", duration: 0 });
+            (window as Window & { __toastKey?: string }).__toastKey = key;
+          }}
+        >
+          Add
         </button>
-        <button type="button" onClick={() => toast({ title: "Toast B", duration: 0 })}>
-          Add B
-        </button>
-        <button type="button" onClick={() => toast({ title: "Toast C", duration: 0 })}>
-          Add C
-        </button>
+        <ToastRegion />
       </>
-    );
-
-    await user.click(screen.getByRole("button", { name: "Add A" }));
-    await user.click(screen.getByRole("button", { name: "Add B" }));
-    await user.click(screen.getByRole("button", { name: "Add C" }));
-
-    const toastA = screen.getByText("Toast A").closest('[role="alertdialog"]');
-    expect(toastA).not.toBeNull();
-    await user.click(within(toastA as HTMLElement).getByRole("button", { name: "Close" }));
-
-    expect(screen.queryByText("Toast A")).not.toBeInTheDocument();
-    expect(screen.getByText("Toast B")).toBeInTheDocument();
-    expect(screen.getByText("Toast C")).toBeInTheDocument();
-  });
-
-  it("passes a custom icon through to the toast", async () => {
-    renderWithRegion(
-      <button
-        type="button"
-        onClick={() =>
-          toast({ title: "Reminder", variant: "success", icon: BellIcon, duration: 0 })
-        }
-      >
-        Add custom icon
-      </button>
-    );
-
-    await userEvent.setup().click(screen.getByRole("button", { name: "Add custom icon" }));
-    expect(screen.getByTestId("toast-status-icon").querySelector("svg")).toBeInTheDocument();
-    expect(screen.getByText("Reminder")).toBeInTheDocument();
-  });
-
-  it("passes className through to the toast root", async () => {
-    renderWithRegion(
-      <button
-        type="button"
-        onClick={() =>
-          toast({ title: "Styled", duration: 0, className: "ring-2 ring-brand-primary" })
-        }
-      >
-        Add styled
-      </button>
-    );
-
-    await userEvent.setup().click(screen.getByRole("button", { name: "Add styled" }));
-
-    const shell = screen.getByRole("alertdialog");
-    expect(shell).toHaveClass("ring-2");
-    expect(shell).toHaveClass("ring-brand-primary");
-  });
-
-  it("toast.close removes a toast", async () => {
-    const user = userEvent.setup();
-    renderWithRegion(
-      <button
-        type="button"
-        onClick={() => {
-          const key = toast({ title: "Removable", duration: 0 });
-          (window as Window & { __toastKey?: string }).__toastKey = key;
-        }}
-      >
-        Add
-      </button>
     );
 
     await user.click(screen.getByRole("button", { name: "Add" }));
@@ -150,10 +59,13 @@ describe("toast()", () => {
   it("auto-dismisses after the default timeout", () => {
     vi.useFakeTimers();
     try {
-      renderWithRegion(
-        <button type="button" onClick={() => toast({ title: "Temporary" })}>
-          Add
-        </button>
+      render(
+        <>
+          <button type="button" onClick={() => toast({ title: "Temporary" })}>
+            Add
+          </button>
+          <ToastRegion />
+        </>
       );
 
       fireEvent.click(screen.getByRole("button", { name: "Add" }));
@@ -167,21 +79,17 @@ describe("toast()", () => {
       vi.useRealTimers();
     }
   });
-
-  it("warns when posting to an unmounted region id", () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    render(<ToastRegion region="default" />);
-    toast({ title: "Hi", duration: 0 }, { region: "top" });
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('region "top"'));
-  });
 });
 
 describe("ToastRegion", () => {
   it("renders a notifications landmark region when toasts are visible", async () => {
-    renderWithRegion(
-      <button type="button" onClick={() => toast({ title: "Hello!", duration: 0 })}>
-        Show
-      </button>
+    render(
+      <>
+        <button type="button" onClick={() => toast({ title: "Hello!", duration: 0 })}>
+          Show
+        </button>
+        <ToastRegion />
+      </>
     );
 
     await userEvent.setup().click(screen.getByRole("button", { name: "Show" }));

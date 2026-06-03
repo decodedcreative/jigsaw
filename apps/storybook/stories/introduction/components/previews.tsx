@@ -206,7 +206,9 @@ export const previews: PreviewMap = {
     <Preview>
       <div className="flex flex-col items-start gap-0.5">
         <Text size="base" weight="semibold">Heading</Text>
-        <Text size="sm" className="text-foreground-secondary">Body text</Text>
+        <Text size="sm" classNameOverrides={{ component: "text-foreground-secondary" }}>
+          Body text
+        </Text>
         <Text size="xs" muted>Caption</Text>
       </div>
     </Preview>

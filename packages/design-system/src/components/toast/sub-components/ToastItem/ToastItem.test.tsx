@@ -75,6 +75,35 @@ describe("ToastItem", () => {
     expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
   });
 
+  it("closes only the toast whose close button was clicked when multiple are stacked", async () => {
+    const user = userEvent.setup();
+    renderWithRegion(
+      <>
+        <button type="button" onClick={() => toast({ title: "Toast A", duration: 0 })}>
+          Add A
+        </button>
+        <button type="button" onClick={() => toast({ title: "Toast B", duration: 0 })}>
+          Add B
+        </button>
+        <button type="button" onClick={() => toast({ title: "Toast C", duration: 0 })}>
+          Add C
+        </button>
+      </>
+    );
+
+    await user.click(screen.getByRole("button", { name: "Add A" }));
+    await user.click(screen.getByRole("button", { name: "Add B" }));
+    await user.click(screen.getByRole("button", { name: "Add C" }));
+
+    const toastA = screen.getByText("Toast A").closest('[role="alertdialog"]');
+    expect(toastA).not.toBeNull();
+    await user.click(within(toastA as HTMLElement).getByRole("button", { name: "Close" }));
+
+    expect(screen.queryByText("Toast A")).not.toBeInTheDocument();
+    expect(screen.getByText("Toast B")).toBeInTheDocument();
+    expect(screen.getByText("Toast C")).toBeInTheDocument();
+  });
+
   it("renders action button when action is provided", async () => {
     const onClick = vi.fn();
     renderWithRegion(

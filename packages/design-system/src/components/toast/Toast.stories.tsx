@@ -14,7 +14,9 @@ const meta = {
       description: {
         component:
           "Mount one or more `<ToastRegion region=\"…\" />` at your app root, then call `toast()` from anywhere. " +
-          "Each region id gets its own queue — use matching `region` values on both the component and `toast()` calls.",
+          "Each region id gets its own queue — use matching `region` values on both the component and `toast()` calls. " +
+          "Prefer a fixed set of region ids (see `ToastRegionId`); queues are not garbage-collected. " +
+          "Built on React Aria `UNSTABLE_*` Toast primitives — upgrade imports in `toast.queue.ts` when Adobe stabilises the API.",
       },
     },
   },
