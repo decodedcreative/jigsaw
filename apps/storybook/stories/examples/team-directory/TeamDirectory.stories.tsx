@@ -6,7 +6,7 @@ import {
   Select,
   SelectItem,
   Text,
-  ToastProvider,
+  ToastRegion,
 } from "@jigsaw/design-system";
 import { MEMBERS } from "./TeamDirectory.stories.constants";
 import { MemberCard } from "./components";
@@ -30,14 +30,16 @@ const TeamDirectoryPage = () => {
   });
 
   return (
-    <ToastProvider position="bottom-right">
       <div className="min-h-screen bg-surface-default p-8">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="flex items-start justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold text-foreground-primary">Team</h1>
-              <Text size="sm" className="text-foreground-secondary mt-1">
+              <Text
+                size="sm"
+                classNameOverrides={{ component: "text-foreground-secondary mt-1" }}
+              >
                 {MEMBERS.length} members across Engineering, Design, Product, and Marketing.
               </Text>
             </div>
@@ -91,13 +93,16 @@ const TeamDirectoryPage = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <Text size="base" weight="medium" className="mb-1">No members found</Text>
-              <Text size="sm" className="text-foreground-secondary">Try adjusting your search or filters.</Text>
+              <Text size="base" weight="medium" classNameOverrides={{ component: "mb-1" }}>
+                No members found
+              </Text>
+              <Text size="sm" classNameOverrides={{ component: "text-foreground-secondary" }}>
+                Try adjusting your search or filters.
+              </Text>
             </div>
           )}
         </div>
       </div>
-    </ToastProvider>
   );
 };
 
@@ -110,5 +115,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => <TeamDirectoryPage />,
+  render: () => (
+    <>
+      <TeamDirectoryPage />
+      <ToastRegion position="bottom-right" />
+    </>
+  ),
 };

@@ -18,17 +18,15 @@ import {
   Tabs,
   Text,
   Textarea,
-  ToastProvider,
-  useToast,
+  toast,
 } from "@jigsaw/design-system";
 
 // ---------------------------------------------------------------------------
 // Profile tab
 // ---------------------------------------------------------------------------
 function ProfileTab() {
-  const { addToast } = useToast();
   return (
-    <Form onSubmit={(e) => { e.preventDefault(); addToast({ title: "Profile saved", variant: "success" }); }}>
+    <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Profile saved", variant: "success" }); }}>
       <FormFieldset legend="Public profile">
         <div className="flex items-center gap-4 mb-2">
           <Avatar size="xl" initials="JH" status="online" />
@@ -57,11 +55,10 @@ function ProfileTab() {
 // Notifications tab
 // ---------------------------------------------------------------------------
 function NotificationsTab() {
-  const { addToast } = useToast();
   const [prefs, setPrefs] = useState({ digest: true, product: true, security: true, activity: false });
 
   return (
-    <Form onSubmit={(e) => { e.preventDefault(); addToast({ title: "Preferences saved", variant: "success" }); }}>
+    <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Preferences saved", variant: "success" }); }}>
       <FormFieldset legend="Email notifications">
         <div className="flex flex-col gap-4">
           {([
@@ -93,9 +90,8 @@ function NotificationsTab() {
 // Appearance tab
 // ---------------------------------------------------------------------------
 function AppearanceTab() {
-  const { addToast } = useToast();
   return (
-    <Form onSubmit={(e) => { e.preventDefault(); addToast({ title: "Preferences saved", variant: "success" }); }}>
+    <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Preferences saved", variant: "success" }); }}>
       <FormFieldset legend="Display preferences">
         <Select label="Timezone" defaultSelectedKey="utc">
           <SelectItem id="utc">UTC — Coordinated Universal Time</SelectItem>
@@ -129,7 +125,6 @@ function AppearanceTab() {
 // Danger zone tab
 // ---------------------------------------------------------------------------
 function DangerZoneTab() {
-  const { addToast } = useToast();
 
   return (
     <div className="flex flex-col gap-4">
@@ -161,7 +156,7 @@ function DangerZoneTab() {
             <Button
               slot="close"
               variant="destructive"
-              onPress={() => addToast({ title: "Account scheduled for deletion", variant: "error" })}
+              onPress={() => toast({ title: "Account scheduled for deletion", variant: "error" })}
             >
               Delete account
             </Button>
@@ -183,7 +178,6 @@ function DangerZoneTab() {
 // ---------------------------------------------------------------------------
 export default function SettingsPage() {
   return (
-    <ToastProvider position="bottom-right">
       <div className="p-6 md:p-8 max-w-2xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground-primary">Settings</h1>
@@ -208,6 +202,5 @@ export default function SettingsPage() {
           </div>
         </Tabs>
       </div>
-    </ToastProvider>
   );
 }

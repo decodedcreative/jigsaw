@@ -24,10 +24,14 @@ export const NotificationFeed = () => {
 
         <div className="divide-y divide-border-subtle">
           {items.map((n) => (
-            <button
+            <Button
               key={n.id}
-              className="w-full flex items-start gap-3 py-3 text-left hover:bg-surface-hover rounded-md px-2 -mx-2 transition-colors"
-              onClick={() => markRead(n.id)}
+              variant="ghost"
+              classNameOverrides={{
+                component:
+                  "w-full h-auto justify-start items-start gap-3 py-3 px-2 -mx-2 rounded-md text-left",
+              }}
+              onPress={() => markRead(n.id)}
             >
               {/* Dot */}
               <div className="mt-1 w-2 shrink-0">
@@ -39,11 +43,23 @@ export const NotificationFeed = () => {
               </div>
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <Text size="sm" weight={n.read ? "normal" : "medium"} className={n.read ? "text-foreground-secondary" : undefined}>{n.title}</Text>
-                <Text size="xs" className="text-foreground-secondary truncate block">{n.body}</Text>
-                <Text size="xs" muted className="mt-0.5">{n.time}</Text>
+                <Text
+                  size="sm"
+                  weight={n.read ? "normal" : "medium"}
+                  classNameOverrides={
+                    n.read ? { component: "text-foreground-secondary" } : undefined
+                  }
+                >
+                  {n.title}
+                </Text>
+                <Text size="xs" classNameOverrides={{ component: "text-foreground-secondary truncate block" }}>
+                  {n.body}
+                </Text>
+                <Text size="xs" muted classNameOverrides={{ component: "mt-0.5" }}>
+                  {n.time}
+                </Text>
               </div>
-            </button>
+            </Button>
           ))}
         </div>
     </Card>

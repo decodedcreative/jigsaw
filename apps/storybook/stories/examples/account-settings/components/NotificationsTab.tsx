@@ -5,7 +5,7 @@ import {
   Form,
   FormActions,
   FormFieldset,
-  useToast,
+  toast,
 } from "@jigsaw/design-system";
 
 export const NotificationsTab = () => {
@@ -13,8 +13,6 @@ export const NotificationsTab = () => {
   const [productUpdates, setProductUpdates] = useState(true);
   const [securityAlerts, setSecurityAlerts] = useState(true);
   const [teamActivity, setTeamActivity] = useState(false);
-
-  const { addToast } = useToast();
 
   return (
     <Form onSubmit={(e) => e.preventDefault()}>
@@ -40,11 +38,7 @@ export const NotificationsTab = () => {
       </FormFieldset>
       <FormActions>
         <Button variant="secondary">Cancel</Button>
-        <Button
-          onPress={() =>
-            addToast({ title: "Preferences saved", variant: "success" })
-          }
-        >
+        <Button onPress={() => toast({ title: "Preferences saved", variant: "success" })}>
           Save changes
         </Button>
       </FormActions>

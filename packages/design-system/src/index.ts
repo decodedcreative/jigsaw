@@ -91,11 +91,13 @@ export { Textarea } from "@components/textarea/Textarea";
 export type { TextareaProps } from "@components/textarea/Textarea";
 
 // Toast
-export { ToastProvider, ToastItem, useToast } from "@components/toast";
+export { toast, ToastRegion, DEFAULT_TOAST_REGION } from "@components/toast";
 export type {
-  ToastData,
-  ToastProviderProps,
-  ToastItemProps,
+  ToastOptions,
+  ToastCallOptions,
+  ToastContent,
+  ToastRegionId,
+  ToastRegionProps,
   ToastVariant,
   ToastPosition,
 } from "@components/toast";

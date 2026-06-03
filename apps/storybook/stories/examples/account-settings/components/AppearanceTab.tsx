@@ -5,9 +5,9 @@ import {
   FormFieldset,
   Select,
   SelectItem,
+  toast,
 } from "@jigsaw/design-system";
 import { DATE_FORMATS, LANGUAGES, TIMEZONES } from "../AccountSettings.stories.constants";
-import { SaveButton } from "./SaveButton";
 
 export const AppearanceTab = () => (
     <Form onSubmit={(e) => e.preventDefault()}>
@@ -30,7 +30,17 @@ export const AppearanceTab = () => (
       </FormFieldset>
       <FormActions>
         <Button variant="secondary">Cancel</Button>
-        <SaveButton />
+        <Button
+          onPress={() =>
+            toast({
+              title: "Settings saved",
+              description: "Your changes have been applied.",
+              variant: "success",
+            })
+          }
+        >
+          Save changes
+        </Button>
       </FormActions>
     </Form>
 );
