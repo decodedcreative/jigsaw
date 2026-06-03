@@ -18,7 +18,7 @@ export type { AvatarProps, AvatarSize, AvatarStatus } from "@components/avatar";
 // Badge
 export { Badge } from "@components/badge/Badge";
 export type { BadgeProps } from "@components/badge/Badge";
-export type { BadgeVariant, BadgeSize } from "@components/badge/Badge.styles";
+export type { BadgeVariant, BadgeSize } from "@components/badge/Badge.types";
 
 // Card
 export { Card } from "@components/card";
@@ -79,7 +79,7 @@ export type { SelectProps, SelectItemProps } from "@components/select/Select";
 // Skeleton
 export { Skeleton, SkeletonText, SkeletonCircle, SkeletonCard } from "@components/skeleton/Skeleton";
 export type { SkeletonProps } from "@components/skeleton/Skeleton";
-export type { SkeletonVariant } from "@components/skeleton/Skeleton.styles";
+export type { SkeletonVariant } from "@components/skeleton/Skeleton.types";
 
 // Tabs
 export { Tabs, TabList, Tab, TabPanel } from "@components/tabs";
@@ -106,4 +106,4 @@ export { toastVariants, toastPositions } from "@components/toast";
 // Tooltip
 export { Tooltip, TooltipTrigger } from "@components/tooltip/Tooltip";
 export type { TooltipProps, TooltipTriggerProps } from "@components/tooltip/Tooltip";
-export type { TooltipPlacement } from "@components/tooltip/Tooltip.styles";
+export type { TooltipPlacement } from "@components/tooltip/Tooltip.types";

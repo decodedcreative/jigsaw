@@ -13,4 +13,3 @@ export const skeletonStyles = {
   }),
 };
 
-export type SkeletonVariant = "default" | "circular" | "text";

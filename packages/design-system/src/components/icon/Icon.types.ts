@@ -1,7 +1,12 @@
+import type { VariantProps } from "class-variance-authority";
 import type { CSSProperties, SVGAttributes } from "react";
 import type { Icon as PhosphorIcon, IconProps as PhosphorIconProps } from "@phosphor-icons/react";
-import { customIconStyles, iconStyles, type IconSize, type IconTone } from "./Icon.styles";
+import { customIconStyles, iconStyles } from "./Icon.styles";
 import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+
+type IconVariants = VariantProps<typeof iconStyles.component>;
+export type IconSize = NonNullable<IconVariants["size"]>;
+export type IconTone = NonNullable<IconVariants["tone"]>;
 
 /** Allowed `--icon-fill-*` variables for custom SVG icons (use on `style`). */
 type IconFillVars = {

@@ -1,6 +1,9 @@
+import type { VariantProps } from "class-variance-authority";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
-import type { CardVariant, cardStyles } from "./Card.styles";
+import type { cardStyles } from "./Card.styles";
+
+export type CardVariant = NonNullable<VariantProps<typeof cardStyles.component>["variant"]>;
 
 export type CardElement = "div" | "a" | "button";
 
