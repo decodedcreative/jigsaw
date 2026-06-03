@@ -7,14 +7,12 @@ import {
   Select,
   SelectItem,
   Text,
-  useToast,
+  toast,
 } from "@jigsaw/design-system";
 import { ROLE_VARIANT } from "../TeamDirectory.stories.constants";
 import type { Member } from "../TeamDirectory.stories.types";
 
 export const MemberCard = ({ member }: { member: Member }) => {
-  const { addToast } = useToast();
-
   return (
     <Card
       classNameOverrides={{ component: "flex flex-col gap-0 overflow-hidden", content: "pt-0 pb-5 px-5" }}
@@ -50,7 +48,7 @@ export const MemberCard = ({ member }: { member: Member }) => {
               <Button
                 slot="close"
                 onPress={() =>
-                  addToast({
+                  toast({
                     title: "Role updated",
                     description: `${member.name}'s role has been changed.`,
                     variant: "success",
@@ -88,7 +86,7 @@ export const MemberCard = ({ member }: { member: Member }) => {
                 slot="close"
                 variant="destructive"
                 onPress={() =>
-                  addToast({
+                  toast({
                     title: "Member removed",
                     description: `${member.name} has been removed.`,
                     variant: "error",

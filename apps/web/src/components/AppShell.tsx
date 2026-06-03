@@ -11,6 +11,7 @@ import {
   NavigationInner,
   NavigationLink,
   NavigationLinks,
+  ToastRegion,
 } from "@jigsaw/design-system";
 
 const NAV_LINKS = [
@@ -51,6 +52,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </Navigation>
 
       <main className="flex-1">{children}</main>
+      <ToastRegion position="bottom-right" />
     </div>
   );
 }

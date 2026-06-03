@@ -1,7 +1,22 @@
 import type { Preview } from "@storybook/react";
+import { ToastRegion } from "@jigsaw/design-system";
 import "../style.css";
 
 const preview: Preview = {
+  decorators: [
+    (Story, context) => {
+      // Design System Toast stories mount their own region (incl. position controls).
+      if (context.title?.startsWith("Design System/Toast")) {
+        return <Story />;
+      }
+      return (
+        <>
+          <Story />
+          <ToastRegion position="bottom-right" />
+        </>
+      );
+    },
+  ],
   parameters: {
     controls: {
       matchers: {
@@ -16,9 +31,7 @@ const preview: Preview = {
       },
     },
     docs: {
-      // Storybook 10: code snippets on individual story views (bottom panel)
       codePanel: true,
-      // Autodocs: keep source blocks expanded under each story preview
       canvas: {
         sourceState: "shown",
       },

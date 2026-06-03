@@ -1,6 +1,11 @@
 "use client";
 
-import type { FC } from "react";
+import {
+  UNSTABLE_Toast as ReactAriaToast,
+  UNSTABLE_ToastContent as ReactAriaToastContent,
+  Button as ReactAriaButton,
+  Text as ReactAriaText,
+} from "react-aria-components/Toast";
 import { XIcon } from "@phosphor-icons/react";
 import { Icon } from "@components/icon";
 import { twMerge } from "tailwind-merge";
@@ -9,17 +14,8 @@ import type { ToastItemProps } from "./ToastItem.types";
 import { toastItemStyles } from "./ToastItem.styles";
 import { toastVariantIcons } from "./ToastItem.icons";
 
-export const ToastItem: FC<ToastItemProps> = ({
-  id,
-  title,
-  description,
-  variant = "default",
-  icon,
-  action,
-  onClose,
-  className,
-  classNameOverrides,
-}) => {
+export const ToastItem = ({ toast, classNameOverrides }: ToastItemProps) => {
+  const { title, description, variant = "default", icon, action, className } = toast.content;
   const theme = useThemeProvider();
   const twMergeFn = theme?.twMerge ?? twMerge;
 
@@ -38,23 +34,31 @@ export const ToastItem: FC<ToastItemProps> = ({
   const statusIcon = icon ?? toastVariantIcons[variant];
 
   return (
-    <div className={classNames.component} role="alert" data-toast-id={id}>
+    <ReactAriaToast toast={toast} className={classNames.component} data-toast-id={toast.key}>
       <span className={classNames.icon} data-testid="toast-status-icon">
         <Icon icon={statusIcon} size="lg" weight="fill" />
       </span>
-      <div className={classNames.content}>
-        {title && <div className={classNames.title}>{title}</div>}
-        {description && <div className={classNames.description}>{description}</div>}
+      <ReactAriaToastContent className={classNames.content}>
+        {title && (
+          <ReactAriaText slot="title" className={classNames.title}>
+            {title}
+          </ReactAriaText>
+        )}
+        {description && (
+          <ReactAriaText slot="description" className={classNames.description}>
+            {description}
+          </ReactAriaText>
+        )}
         {action && (
           <button type="button" className={classNames.action} onClick={action.onClick}>
             {action.label}
           </button>
         )}
-      </div>
-      <button type="button" className={classNames.close} onClick={onClose} aria-label="Close">
+      </ReactAriaToastContent>
+      <ReactAriaButton slot="close" className={classNames.close}>
         <Icon icon={XIcon} size="md" />
-      </button>
-    </div>
+      </ReactAriaButton>
+    </ReactAriaToast>
   );
 };
 

@@ -1,2 +1,2 @@
-export * from "./ToastProvider";
+export * from "./ToastRegion";
 export * from "./ToastItem";

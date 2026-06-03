@@ -6,7 +6,6 @@ import {
   Select,
   SelectItem,
   Text,
-  ToastProvider,
 } from "@jigsaw/design-system";
 import { MEMBERS } from "./TeamDirectory.stories.constants";
 import { MemberCard } from "./components";
@@ -30,7 +29,6 @@ const TeamDirectoryPage = () => {
   });
 
   return (
-    <ToastProvider position="bottom-right">
       <div className="min-h-screen bg-surface-default p-8">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
@@ -97,7 +95,6 @@ const TeamDirectoryPage = () => {
           )}
         </div>
       </div>
-    </ToastProvider>
   );
 };
 

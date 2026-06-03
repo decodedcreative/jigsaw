@@ -3,15 +3,11 @@ import {
   Input,
   Modal,
   Text,
-  useToast,
+  toast,
 } from "@jigsaw/design-system";
 
-export const DangerZoneTab = () => {
-  const { addToast } = useToast();
-
-  return (
+export const DangerZoneTab = () => (
     <div className="flex flex-col gap-4">
-      {/* Transfer */}
       <div className="flex items-center justify-between p-4 rounded-lg border border-border-default">
         <div>
           <Text size="sm" weight="medium">Transfer ownership</Text>
@@ -20,7 +16,6 @@ export const DangerZoneTab = () => {
         <Button variant="secondary" size="sm">Transfer</Button>
       </div>
 
-      {/* Archive */}
       <div className="flex items-center justify-between p-4 rounded-lg border border-border-default">
         <div>
           <Text size="sm" weight="medium">Archive workspace</Text>
@@ -29,7 +24,6 @@ export const DangerZoneTab = () => {
         <Button variant="secondary" size="sm">Archive</Button>
       </div>
 
-      {/* Delete */}
       <div className="flex items-center justify-between p-4 rounded-lg border border-state-error-border bg-state-error-bg">
         <div>
           <Text size="sm" weight="medium" className="text-state-error-text">Delete account</Text>
@@ -42,7 +36,7 @@ export const DangerZoneTab = () => {
             <Button
               slot="close"
               variant="destructive"
-              onPress={() => addToast({ title: "Account scheduled for deletion", variant: "error" })}
+              onPress={() => toast({ title: "Account scheduled for deletion", variant: "error" })}
             >
               Delete account
             </Button>
@@ -56,5 +50,4 @@ export const DangerZoneTab = () => {
         </Modal>
       </div>
     </div>
-  );
-};
+);

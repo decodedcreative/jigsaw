@@ -11,8 +11,7 @@ import {
   Icon,
   Select,
   SelectItem,
-  ToastProvider,
-  useToast,
+  toast,
   type IconTone,
 } from "@jigsaw/design-system";
 import {
@@ -92,7 +91,6 @@ const TYPE_CONFIG: Record<
 type PrefKey = "mentions" | "deploys" | "invites" | "updates" | "alerts";
 
 function Preferences() {
-  const { addToast } = useToast();
   const [prefs, setPrefs] = useState<Record<PrefKey, boolean>>({
     mentions: true, deploys: true, invites: true, updates: false, alerts: true,
   });
@@ -117,7 +115,7 @@ function Preferences() {
                 </Checkbox>
               ))}
               <div className="pt-2">
-                <Button size="sm" onPress={() => addToast({ title: "Preferences saved", variant: "success" })}>
+                <Button size="sm" onPress={() => toast({ title: "Preferences saved", variant: "success" })}>
                   Save preferences
                 </Button>
               </div>
@@ -132,7 +130,6 @@ function Preferences() {
 // Inner page
 // ---------------------------------------------------------------------------
 function NotificationsInner() {
-  const { addToast } = useToast();
   const [items, setItems] = useState(INITIAL);
   const [filter, setFilter] = useState("all");
 
@@ -212,7 +209,7 @@ function NotificationsInner() {
                       className="shrink-0 p-1 rounded text-foreground-muted hover:text-foreground-primary hover:bg-surface-hover transition-colors"
                       onClick={() => {
                         dismiss(n.id);
-                        addToast({ title: "Notification dismissed", variant: "default" });
+                        toast({ title: "Notification dismissed", variant: "default" });
                       }}
                       aria-label="Dismiss"
                     >
@@ -232,9 +229,5 @@ function NotificationsInner() {
 }
 
 export default function NotificationsPage() {
-  return (
-    <ToastProvider position="bottom-right">
-      <NotificationsInner />
-    </ToastProvider>
-  );
+  return <NotificationsInner />;
 }

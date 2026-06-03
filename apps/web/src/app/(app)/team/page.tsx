@@ -13,8 +13,7 @@ import {
   SearchField,
   Select,
   SelectItem,
-  ToastProvider,
-  useToast,
+  toast,
   type AvatarStatus,
   type BadgeVariant,
 } from "@jigsaw/design-system";
@@ -51,10 +50,9 @@ const ROLE_BADGE: Record<Role, BadgeVariant> = {
 };
 
 // ---------------------------------------------------------------------------
-// Inner page (needs ToastProvider in tree)
+// Inner page
 // ---------------------------------------------------------------------------
 function TeamInner() {
-  const { addToast } = useToast();
   const [members, setMembers] = useState(INITIAL_MEMBERS);
   const [query, setQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
@@ -74,13 +72,13 @@ function TeamInner() {
   function handleRoleChange(id: string, role: Role) {
     setMembers((prev) => prev.map((m) => m.id === id ? { ...m, role } : m));
     const member = members.find((m) => m.id === id);
-    addToast({ title: "Role updated", description: `${member?.name} is now ${role}.`, variant: "success" });
+    toast({ title: "Role updated", description: `${member?.name} is now ${role}.`, variant: "success" });
   }
 
   function handleRemove(id: string) {
     const member = members.find((m) => m.id === id);
     setMembers((prev) => prev.filter((m) => m.id !== id));
-    addToast({ title: "Member removed", description: `${member?.name} has been removed.`, variant: "error" });
+    toast({ title: "Member removed", description: `${member?.name} has been removed.`, variant: "error" });
   }
 
   return (
@@ -100,7 +98,7 @@ function TeamInner() {
           trigger={<Button>Invite member</Button>}
           footer={
             <Button slot="close" onPress={() => {
-              addToast({ title: "Invite sent", description: `Invitation sent to ${inviteEmail || "your teammate"}.`, variant: "success" });
+              toast({ title: "Invite sent", description: `Invitation sent to ${inviteEmail || "your teammate"}.`, variant: "success" });
               setInviteEmail("");
             }}>
               Send invite
@@ -223,9 +221,5 @@ function TeamInner() {
 }
 
 export default function TeamPage() {
-  return (
-    <ToastProvider position="bottom-right">
-      <TeamInner />
-    </ToastProvider>
-  );
+  return <TeamInner />;
 }

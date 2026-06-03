@@ -8,8 +8,7 @@ import {
   Icon,
   Modal,
   Text,
-  ToastProvider,
-  useToast,
+  toast,
 } from "@jigsaw/design-system";
 import {
   ArrowClockwiseIcon,
@@ -99,13 +98,12 @@ const TEAM: Member[] = [
 ];
 
 function InviteButton() {
-  const { addToast } = useToast();
   return (
     <Modal
       title="Invite a teammate"
       trigger={<Button size="sm">Invite</Button>}
       footer={
-        <Button slot="close" onPress={() => addToast({ title: "Invite sent!", variant: "success" })}>
+        <Button slot="close" onPress={() => toast({ title: "Invite sent!", variant: "success" })}>
           Send invite
         </Button>
       }
@@ -144,7 +142,6 @@ function TeamSnapshot() {
 // Quick actions
 // ---------------------------------------------------------------------------
 function QuickActions() {
-  const { addToast } = useToast();
 
   return (
     <Card title="Quick actions" classNameOverrides={{ content: "p-5" }}>
@@ -152,7 +149,7 @@ function QuickActions() {
         <Button
           variant="secondary"
           classNameOverrides={{ component: "w-full justify-start" }}
-            onPress={() => addToast({ title: "Build triggered", description: "Storybook deploying to Chromatic.", variant: "info" })}
+            onPress={() => toast({ title: "Build triggered", description: "Storybook deploying to Chromatic.", variant: "info" })}
           >
             <Icon icon={PlayIcon} size="md" weight="fill" />
             Trigger Storybook build
@@ -160,7 +157,7 @@ function QuickActions() {
         <Button
           variant="secondary"
           classNameOverrides={{ component: "w-full justify-start" }}
-          onPress={() => addToast({ title: "Tokens rebuilt", variant: "success" })}
+          onPress={() => toast({ title: "Tokens rebuilt", variant: "success" })}
         >
             <Icon icon={ArrowClockwiseIcon} size="md" />
             Rebuild design tokens
@@ -179,7 +176,6 @@ function QuickActions() {
 // ---------------------------------------------------------------------------
 export default function DashboardPage() {
   return (
-    <ToastProvider position="bottom-right">
       <div className="p-6 md:p-8 max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground-primary">Good morning, James 👋</h1>
@@ -203,6 +199,5 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-    </ToastProvider>
   );
 }
