@@ -31,6 +31,10 @@ export default defineConfig({
         replacement: resolve(__dirname, './src/utils'),
       },
       {
+        find: /^@jsw-types\/(.*)$/,
+        replacement: resolve(__dirname, './src/types/$1'),
+      },
+      {
         find: '@jsw-types',
         replacement: resolve(__dirname, './src/types'),
       },
