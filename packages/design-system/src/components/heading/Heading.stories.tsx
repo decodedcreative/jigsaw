@@ -34,13 +34,6 @@ export const Default: Story = {
   },
 };
 
-export const PageTitle: Story = {
-  args: {
-    as: "h1",
-    children: "Page title",
-  },
-};
-
 export const Sizes: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
