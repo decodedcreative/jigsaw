@@ -11,6 +11,15 @@ export type { ButtonProps } from "@components/button/Button";
 export { Text } from "@components/text/Text";
 export type { TextProps } from "@components/text/Text";
 
+// Heading
+export { Heading, H1, H2, H3, H4, H5, H6 } from "@components/heading";
+export type {
+  HeadingProps,
+  HeadingAliasProps,
+  HeadingLevel,
+  HeadingSize,
+} from "@components/heading";
+
 // Avatar
 export { Avatar } from "@components/avatar";
 export type { AvatarProps, AvatarSize, AvatarStatus } from "@components/avatar";
