@@ -26,5 +26,3 @@ export const Heading = ({
 };
 
 Heading.displayName = "DS_Heading";
-
-export type { HeadingLevel, HeadingProps, HeadingSize } from "./Heading.types";

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import React from "react";
 import { H1, H2, H3 } from "./Heading.aliases";
 import { Heading } from "./Heading";
 
@@ -21,18 +20,17 @@ const meta = {
     },
     muted: { control: "boolean" },
   },
-} satisfies Meta<typeof Heading>;
-
-export default meta;
-
-type Story = StoryObj<typeof Heading>;
-
-export const Default: Story = {
   args: {
     as: "h2",
     children: "Section heading",
   },
-};
+} satisfies Meta<typeof Heading>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};
 
 export const Sizes: Story = {
   render: () => (
@@ -60,14 +58,6 @@ export const SemanticVsVisual: Story = {
       </Heading>
     </div>
   ),
-};
-
-export const Muted: Story = {
-  args: {
-    as: "h3",
-    muted: true,
-    children: "Muted subsection heading",
-  },
 };
 
 export const Aliases: Story = {
