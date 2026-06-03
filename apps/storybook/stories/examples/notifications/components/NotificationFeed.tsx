@@ -39,9 +39,21 @@ export const NotificationFeed = () => {
               </div>
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <Text size="sm" weight={n.read ? "normal" : "medium"} className={n.read ? "text-foreground-secondary" : undefined}>{n.title}</Text>
-                <Text size="xs" className="text-foreground-secondary truncate block">{n.body}</Text>
-                <Text size="xs" muted className="mt-0.5">{n.time}</Text>
+                <Text
+                  size="sm"
+                  weight={n.read ? "normal" : "medium"}
+                  classNameOverrides={
+                    n.read ? { component: "text-foreground-secondary" } : undefined
+                  }
+                >
+                  {n.title}
+                </Text>
+                <Text size="xs" classNameOverrides={{ component: "text-foreground-secondary truncate block" }}>
+                  {n.body}
+                </Text>
+                <Text size="xs" muted classNameOverrides={{ component: "mt-0.5" }}>
+                  {n.time}
+                </Text>
               </div>
             </button>
           ))}

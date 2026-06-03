@@ -2,7 +2,9 @@ import { Card, Disclosure, DisclosureGroup, Text } from "@jigsaw/design-system";
 
 export const NotificationFAQ = () => (
     <Card classNameOverrides={{ content: "p-6" }}>
-        <Text size="base" weight="semibold" className="mb-4">Frequently asked questions</Text>
+        <Text size="base" weight="semibold" classNameOverrides={{ component: "mb-4" }}>
+          Frequently asked questions
+        </Text>
         <DisclosureGroup>
           <Disclosure title="How do I mute a specific channel?">
             Open the channel settings, click the bell icon, and select <strong>Mute</strong>. You can set a duration or mute indefinitely.

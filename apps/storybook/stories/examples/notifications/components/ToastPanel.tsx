@@ -12,7 +12,7 @@ export const ToastPanel = () => (
       <Text size="base" weight="semibold">
         Toast notifications
       </Text>
-      <Text size="sm" className="text-foreground-secondary mt-1">
+      <Text size="sm" classNameOverrides={{ component: "text-foreground-secondary mt-1" }}>
         Posted to the default region (bottom-right). See Design System / Toast → Multiple regions
         for independent viewports.
       </Text>

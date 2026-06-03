@@ -6,6 +6,7 @@ import {
   Select,
   SelectItem,
   Text,
+  ToastRegion,
 } from "@jigsaw/design-system";
 import { MEMBERS } from "./TeamDirectory.stories.constants";
 import { MemberCard } from "./components";
@@ -107,5 +108,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => <TeamDirectoryPage />,
+  render: () => (
+    <>
+      <TeamDirectoryPage />
+      <ToastRegion position="bottom-right" />
+    </>
+  ),
 };

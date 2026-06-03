@@ -5,6 +5,7 @@ import {
   TabPanel,
   Tabs,
   Text,
+  ToastRegion,
 } from "@jigsaw/design-system";
 import {
   AppearanceTab,
@@ -51,5 +52,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => <AccountSettingsPage />,
+  render: () => (
+    <>
+      <AccountSettingsPage />
+      <ToastRegion position="bottom-right" />
+    </>
+  ),
 };

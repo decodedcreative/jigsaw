@@ -6,8 +6,8 @@ import {
   FormFieldset,
   Input,
   Textarea,
+  toast,
 } from "@jigsaw/design-system";
-import { SaveButton } from "./SaveButton";
 
 export const ProfileTab = () => (
     <Form onSubmit={(e) => e.preventDefault()}>
@@ -29,7 +29,17 @@ export const ProfileTab = () => (
       </FormFieldset>
       <FormActions>
         <Button variant="secondary">Cancel</Button>
-        <SaveButton />
+        <Button
+          onPress={() =>
+            toast({
+              title: "Settings saved",
+              description: "Your changes have been applied.",
+              variant: "success",
+            })
+          }
+        >
+          Save changes
+        </Button>
       </FormActions>
     </Form>
 );
