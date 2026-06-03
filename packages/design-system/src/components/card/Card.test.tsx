@@ -18,9 +18,12 @@ describe("Card", () => {
     expect(screen.getByText("0")).toBeInTheDocument();
   });
 
-  it("renders title when provided", () => {
+  it("renders title as h3 with h4 visual scale via Heading", () => {
     render(<Card title="My card">Content</Card>);
-    expect(screen.getByRole("heading", { name: "My card" })).toBeInTheDocument();
+    const title = screen.getByRole("heading", { name: "My card", level: 3 });
+    expect(title.tagName).toBe("H3");
+    expect(title).toHaveClass("text-lg", "font-semibold", "font-heading");
+    expect(title).not.toHaveClass("text-xl");
   });
 
   it("wraps image in the image slot with classNameOverrides", () => {

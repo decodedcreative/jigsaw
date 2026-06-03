@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useGetClassNames } from "@hooks";
+import { H3 } from "../heading/Heading.aliases";
 import { cardStyles } from "./Card.styles";
 import type { ClassNameOverrides } from "@jsw-types/component-props";
 
@@ -35,7 +36,10 @@ const CardHeader = ({
   return (
     <div className={classNames.header}>
       <div className={classNames.headerContent}>
-        {title ? <h3 className={classNames.title}>{title}</h3> : null}
+        {title ? (
+          // h3 semantics with h4 visual scale — card titles sit below page/section headings.
+          <H3 size="h4">{title}</H3>
+        ) : null}
         {description ? <p className={classNames.description}>{description}</p> : null}
       </div>
       {actions}

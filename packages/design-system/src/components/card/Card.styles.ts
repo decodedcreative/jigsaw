@@ -41,7 +41,6 @@ export const cardStyles = {
     },
   }),
   headerContent: cva("min-w-0 flex-1"),
-  title: cva("text-lg font-semibold text-foreground-primary"),
   description: cva("text-sm text-foreground-secondary mt-1"),
   content: cva("p-4"),
   footer: cva("px-4 py-3 border-t border-border-primary bg-surface-secondary"),
