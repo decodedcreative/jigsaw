@@ -1,0 +1,22 @@
+import type { VariantProps } from "class-variance-authority";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
+import type { ToastData } from "../../Toast.types";
+import type { toastItemStyles } from "./ToastItem.styles";
+
+type ToastItemComponentVariants = VariantProps<typeof toastItemStyles.component>;
+
+export type ToastVariant = NonNullable<ToastItemComponentVariants["variant"]>;
+
+/** All variant values supported by `toastItemStyles` — kept in sync via `satisfies`. */
+export const toastVariants = [
+  "default",
+  "success",
+  "warning",
+  "error",
+  "info",
+] as const satisfies readonly ToastVariant[];
+
+export type ToastItemProps = ToastData & {
+  onClose: () => void;
+  classNameOverrides?: ClassNameOverrides<typeof toastItemStyles>;
+};

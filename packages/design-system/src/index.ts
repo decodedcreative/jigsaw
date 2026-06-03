@@ -91,9 +91,15 @@ export { Textarea } from "@components/textarea/Textarea";
 export type { TextareaProps } from "@components/textarea/Textarea";
 
 // Toast
-export { ToastProvider, ToastItem, useToast } from "@components/toast/Toast";
-export type { ToastData, ToastProviderProps, ToastItemProps } from "@components/toast/Toast";
-export type { ToastVariant, ToastPosition } from "@components/toast/Toast.styles";
+export { ToastProvider, ToastItem, useToast } from "@components/toast";
+export type {
+  ToastData,
+  ToastProviderProps,
+  ToastItemProps,
+  ToastVariant,
+  ToastPosition,
+} from "@components/toast";
+export { toastVariants, toastPositions } from "@components/toast";
 
 // Tooltip
 export { Tooltip, TooltipTrigger } from "@components/tooltip/Tooltip";
