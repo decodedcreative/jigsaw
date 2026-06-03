@@ -24,4 +24,3 @@ export const tooltipStyles = {
   arrow: cva("fill-surface-inverse"),
 };
 
-export type TooltipPlacement = "top" | "bottom" | "left" | "right";

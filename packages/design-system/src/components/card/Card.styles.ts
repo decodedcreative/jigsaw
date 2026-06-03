@@ -48,4 +48,3 @@ export const cardStyles = {
   image: cva("w-full h-auto object-cover"),
 };
 
-export type CardVariant = "default" | "elevated" | "interactive" | "outline";

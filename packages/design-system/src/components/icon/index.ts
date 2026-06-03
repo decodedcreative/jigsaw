@@ -5,4 +5,4 @@ export type {
   CustomIconComponentProps,
   PhosphorIconComponentProps,
 } from "./Icon.types";
-export type { IconSize, IconTone } from "./Icon.styles";
+export type { IconSize, IconTone } from "./Icon.types";

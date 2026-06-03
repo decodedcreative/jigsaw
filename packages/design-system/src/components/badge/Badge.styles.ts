@@ -29,13 +29,3 @@ export const badgeStyles = {
   ),
 };
 
-export type BadgeVariant =
-  | "default"
-  | "primary"
-  | "secondary"
-  | "accent"
-  | "outline"
-  | "success"
-  | "warning"
-  | "error";
-export type BadgeSize = "sm" | "md" | "lg";

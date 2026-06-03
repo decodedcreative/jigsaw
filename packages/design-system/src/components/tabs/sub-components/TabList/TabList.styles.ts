@@ -12,4 +12,3 @@ export const tabListStyles = {
   }),
 };
 
-export type TabsVariant = "default" | "pills";
