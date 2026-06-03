@@ -5,7 +5,7 @@ import { XIcon } from "@phosphor-icons/react";
 import { Icon } from "@components/icon";
 import { twMerge } from "tailwind-merge";
 import { useGetClassNames, useThemeProvider } from "@hooks";
-import type { ToastItemProps } from "../../Toast.types";
+import type { ToastItemProps } from "./ToastItem.types";
 import { toastItemStyles } from "./ToastItem.styles";
 import { toastVariantIcons } from "./ToastItem.icons";
 
@@ -23,19 +23,22 @@ export const ToastItem: FC<ToastItemProps> = ({
   const theme = useThemeProvider();
   const twMergeFn = theme?.twMerge ?? twMerge;
 
-  const classNames = useGetClassNames(toastItemStyles, classNameOverrides, {
-    component: { variant },
-    icon: { variant },
-  });
+  const classNames = useGetClassNames(
+    toastItemStyles,
+    {
+      ...classNameOverrides,
+      component: twMergeFn(classNameOverrides?.component, className),
+    },
+    {
+      component: { variant },
+      icon: { variant },
+    }
+  );
 
   const statusIcon = icon ?? toastVariantIcons[variant];
 
   return (
-    <div
-      className={twMergeFn(classNames.component, className)}
-      role="alert"
-      data-toast-id={id}
-    >
+    <div className={classNames.component} role="alert" data-toast-id={id}>
       <span className={classNames.icon} data-testid="toast-status-icon">
         <Icon icon={statusIcon} size="lg" weight="fill" />
       </span>

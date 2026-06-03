@@ -3,7 +3,8 @@
 import { useState, useCallback, type FC } from "react";
 import { useGetClassNames } from "@hooks";
 import { ToastContext } from "../../Toast.context";
-import type { ToastData, ToastProviderProps } from "../../Toast.types";
+import type { ToastData } from "../../Toast.types";
+import type { ToastProviderProps } from "./ToastProvider.types";
 import { ToastItem } from "../ToastItem";
 import { toastProviderStyles } from "./ToastProvider.styles";
 

@@ -1,15 +1,10 @@
-import type { ReactNode } from "react";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
-import type { ClassNameOverrides } from "@jsw-types/component-props";
-import type { ToastVariant } from "./sub-components/ToastItem/ToastItem.styles";
-import type { ToastPosition } from "./sub-components/ToastProvider/ToastProvider.styles";
-import type { toastProviderStyles } from "./sub-components/ToastProvider/ToastProvider.styles";
-import type { toastItemStyles } from "./sub-components/ToastItem/ToastItem.styles";
+import type { ToastVariant } from "./sub-components/ToastItem/ToastItem.types";
 
-export type { ToastVariant } from "./sub-components/ToastItem/ToastItem.styles";
-export { toastVariants } from "./sub-components/ToastItem/ToastItem.styles";
-export type { ToastPosition } from "./sub-components/ToastProvider/ToastProvider.styles";
-export { toastPositions } from "./sub-components/ToastProvider/ToastProvider.styles";
+export type { ToastVariant, ToastItemProps } from "./sub-components/ToastItem/ToastItem.types";
+export { toastVariants } from "./sub-components/ToastItem/ToastItem.types";
+export type { ToastPosition, ToastProviderProps } from "./sub-components/ToastProvider/ToastProvider.types";
+export { toastPositions } from "./sub-components/ToastProvider/ToastProvider.types";
 
 export interface ToastData {
   id: string;
@@ -19,24 +14,13 @@ export interface ToastData {
   duration?: number;
   /** Overrides the default icon for this variant. */
   icon?: PhosphorIcon;
-  /** Merged onto the root element with CVA classes via `twMerge`. */
+  /** Merged onto the root `component` slot via `classNameOverrides` / `twMerge`. */
   className?: string;
   action?: {
     label: string;
     onClick: () => void;
   };
 }
-
-export type ToastProviderProps = {
-  children: ReactNode;
-  position?: ToastPosition;
-  classNameOverrides?: ClassNameOverrides<typeof toastProviderStyles>;
-};
-
-export type ToastItemProps = ToastData & {
-  onClose: () => void;
-  classNameOverrides?: ClassNameOverrides<typeof toastItemStyles>;
-};
 
 export type ToastContextValue = {
   toasts: ToastData[];
