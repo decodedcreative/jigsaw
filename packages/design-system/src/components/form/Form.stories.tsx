@@ -13,10 +13,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Example footer layout — use Tailwind at the app layer; ButtonGroup may replace this later. */
+/** App-layer footer layout (see Account Settings `FormFooter` example). */
 const formFooterClassName =
   "flex items-center gap-3 mt-6 pt-6 border-t border-border-default";
 
+/**
+ * - **FormGroup** — titled section for stacking related fields (layout only).
+ * - **CheckboxGroup / RadioGroup** — use their own `label` when the section is a single field group; skip FormGroup.
+ */
 export const Default: Story = {
   render: () => (
     <div style={{ width: 360 }}>

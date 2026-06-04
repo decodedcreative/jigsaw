@@ -8,7 +8,6 @@ import {
   CheckboxGroup,
   Form,
   FormGroup,
-  H3,
   Input,
   Modal,
   Select,
@@ -21,6 +20,7 @@ import {
   Textarea,
   toast,
 } from "@jigsaw/design-system";
+import { formFooterClassName } from "./settings.constants";
 
 // ---------------------------------------------------------------------------
 // Profile tab
@@ -29,8 +29,7 @@ function ProfileTab() {
   return (
     <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Profile saved", variant: "success" }); }}>
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-4">
-          <H3 size="h4">Public profile</H3>
+        <FormGroup title="Public profile">
           <div className="flex items-center gap-4">
             <Avatar size="xl" initials="JH" status="online" />
             <div className="flex gap-2">
@@ -38,7 +37,7 @@ function ProfileTab() {
               <Button variant="ghost" size="sm">Remove</Button>
             </div>
           </div>
-        </div>
+        </FormGroup>
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
             <Input label="First name" defaultValue="James" />
@@ -49,7 +48,7 @@ function ProfileTab() {
           <Textarea label="Bio" defaultValue="Building design systems." rows={3} />
         </div>
       </div>
-      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
+      <div className={formFooterClassName}>
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>
       </div>
@@ -65,31 +64,29 @@ function NotificationsTab() {
 
   return (
     <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Preferences saved", variant: "success" }); }}>
-      <FormGroup title="Email notifications">
-        <CheckboxGroup value={selected} onChange={setSelected}>
-          <Checkbox
-            value="digest"
-            label="Weekly digest"
-            description="A summary of activity from the past week."
-          />
-          <Checkbox
-            value="product"
-            label="Product updates"
-            description="New features and improvements to Jigsaw."
-          />
-          <Checkbox
-            value="security"
-            label="Security alerts"
-            description="Unusual sign-in activity and account changes."
-          />
-          <Checkbox
-            value="activity"
-            label="Team activity"
-            description="Comments, mentions, and assignments."
-          />
-        </CheckboxGroup>
-      </FormGroup>
-      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
+      <CheckboxGroup label="Email notifications" value={selected} onChange={setSelected}>
+        <Checkbox
+          value="digest"
+          label="Weekly digest"
+          description="A summary of activity from the past week."
+        />
+        <Checkbox
+          value="product"
+          label="Product updates"
+          description="New features and improvements to Jigsaw."
+        />
+        <Checkbox
+          value="security"
+          label="Security alerts"
+          description="Unusual sign-in activity and account changes."
+        />
+        <Checkbox
+          value="activity"
+          label="Team activity"
+          description="Comments, mentions, and assignments."
+        />
+      </CheckboxGroup>
+      <div className={formFooterClassName}>
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>
       </div>
@@ -124,7 +121,7 @@ function AppearanceTab() {
           <SelectItem id="es">Español</SelectItem>
         </Select>
       </FormGroup>
-      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
+      <div className={formFooterClassName}>
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>
       </div>

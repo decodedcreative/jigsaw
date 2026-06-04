@@ -2,17 +2,26 @@ import {
   Avatar,
   Button,
   Form,
-  H3,
+  FormGroup,
   Input,
   Textarea,
   toast,
 } from "@jigsaw/design-system";
+import { FormFooter } from "./FormFooter";
 
 export const ProfileTab = () => (
-  <Form onSubmit={(e) => e.preventDefault()}>
+  <Form
+    onSubmit={(e) => {
+      e.preventDefault();
+      toast({
+        title: "Settings saved",
+        description: "Your changes have been applied.",
+        variant: "success",
+      });
+    }}
+  >
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-4">
-        <H3 size="h4">Public profile</H3>
+      <FormGroup title="Public profile">
         <div className="flex items-center gap-4">
           <Avatar size="xl" initials="JH" status="online" />
           <div className="flex gap-2">
@@ -24,7 +33,8 @@ export const ProfileTab = () => (
             </Button>
           </div>
         </div>
-      </div>
+      </FormGroup>
+      {/* RAC fields own their labels — separate stack, no section wrapper */}
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-4">
           <Input label="First name" defaultValue="James" />
@@ -35,19 +45,9 @@ export const ProfileTab = () => (
         <Textarea label="Bio" defaultValue="Building design systems." rows={3} />
       </div>
     </div>
-    <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
+    <FormFooter>
       <Button variant="secondary">Cancel</Button>
-      <Button
-        onPress={() =>
-          toast({
-            title: "Settings saved",
-            description: "Your changes have been applied.",
-            variant: "success",
-          })
-        }
-      >
-        Save changes
-      </Button>
-    </div>
+      <Button type="submit">Save changes</Button>
+    </FormFooter>
   </Form>
 );
