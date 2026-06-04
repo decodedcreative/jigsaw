@@ -1,12 +1,12 @@
 "use client";
 
-import { useId, type FC } from "react";
+import { useId } from "react";
 import { Heading } from "@components/heading";
 import { useGetClassNames } from "@hooks";
 import { formGroupStyles } from "./FormGroup.styles";
 import type { FormGroupProps } from "./FormGroup.types";
 
-export const FormGroup: FC<FormGroupProps> = ({
+export const FormGroup = ({
   title,
   children,
   classNameOverrides,
