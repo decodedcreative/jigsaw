@@ -7,7 +7,6 @@ import {
   Checkbox,
   CheckboxGroup,
   Form,
-  FormGroup,
   Input,
   Modal,
   Select,
@@ -29,7 +28,7 @@ function ProfileTab() {
   return (
     <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Profile saved", variant: "success" }); }}>
       <div className="flex flex-col gap-6">
-        <FormGroup title="Public profile">
+        <Form.Group title="Public profile">
           <div className="flex items-center gap-4">
             <Avatar size="xl" initials="JH" status="online" />
             <div className="flex gap-2">
@@ -37,7 +36,7 @@ function ProfileTab() {
               <Button variant="ghost" size="sm">Remove</Button>
             </div>
           </div>
-        </FormGroup>
+        </Form.Group>
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
             <Input label="First name" defaultValue="James" />
@@ -100,7 +99,7 @@ function NotificationsTab() {
 function AppearanceTab() {
   return (
     <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Preferences saved", variant: "success" }); }}>
-      <FormGroup title="Display preferences">
+      <Form.Group title="Display preferences">
         <Select label="Timezone" defaultSelectedKey="utc">
           <SelectItem id="utc">UTC — Coordinated Universal Time</SelectItem>
           <SelectItem id="london">Europe/London (GMT+0)</SelectItem>
@@ -120,7 +119,7 @@ function AppearanceTab() {
           <SelectItem id="de">Deutsch</SelectItem>
           <SelectItem id="es">Español</SelectItem>
         </Select>
-      </FormGroup>
+      </Form.Group>
       <div className={formFooterClassName}>
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>

@@ -1,7 +1,6 @@
 import {
   Button,
   Form,
-  FormGroup,
   Select,
   SelectItem,
   toast,
@@ -20,7 +19,7 @@ export const AppearanceTab = () => (
       });
     }}
   >
-    <FormGroup title="Display preferences">
+    <Form.Group title="Display preferences">
       <Select label="Timezone" defaultSelectedKey="utc">
         {TIMEZONES.map((tz) => (
           <SelectItem key={tz.id} id={tz.id}>{tz.label}</SelectItem>
@@ -36,7 +35,7 @@ export const AppearanceTab = () => (
           <SelectItem key={lang.id} id={lang.id}>{lang.label}</SelectItem>
         ))}
       </Select>
-    </FormGroup>
+    </Form.Group>
     <FormFooter>
       <Button variant="secondary">Cancel</Button>
       <Button type="submit">Save changes</Button>

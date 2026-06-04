@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Form, FormGroup } from "./index";
+import { Form } from "./index";
 import { Input } from "../input/Input";
 import { Button } from "../button/Button";
 
@@ -18,17 +18,17 @@ const formFooterClassName =
   "flex items-center gap-3 mt-6 pt-6 border-t border-border-default";
 
 /**
- * - **FormGroup** — titled section for stacking related fields (layout only).
- * - **CheckboxGroup / RadioGroup** — use their own `label` when the section is a single field group; skip FormGroup.
+ * - **Form.Group** — titled section for stacking related fields (layout only).
+ * - **CheckboxGroup / RadioGroup** — use their own `label` when the section is a single field group; skip Form.Group.
  */
 export const Default: Story = {
   render: () => (
     <div style={{ width: 360 }}>
       <Form>
-        <FormGroup title="Account details">
+        <Form.Group title="Account details">
           <Input label="Name" />
           <Input label="Email" type="email" />
-        </FormGroup>
+        </Form.Group>
         <div className={formFooterClassName}>
           <Button variant="secondary">Cancel</Button>
           <Button type="submit">Save</Button>

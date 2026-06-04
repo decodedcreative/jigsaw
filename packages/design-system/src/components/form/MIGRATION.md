@@ -4,14 +4,22 @@
 
 | Before | After |
 |--------|-------|
-| `FormFieldset` | `FormGroup` |
+| `FormFieldset` | `Form.Group` (was standalone `FormGroup`) |
 | `legend` / section `label` | `title` |
 | `FormActions` | App-layer footer (`div` + Tailwind) |
 
 ## Usage
 
-- **`FormGroup`** — layout section with optional `title` (Heading). Stack related fields; do not wrap avatars and inputs in one group when they serve different purposes.
-- **`CheckboxGroup` / `RadioGroup`** — use built-in `label` for a single field group; omit `FormGroup` when one group field owns the section name.
+- **`Form.Group`** — layout section with optional `title` (Heading). Stack related fields; do not wrap avatars and inputs in one group when they serve different purposes.
+- **`CheckboxGroup` / `RadioGroup`** — use built-in `label` for a single field group; omit `Form.Group` when one group field owns the section name.
+
+```tsx
+import { Form } from "@jigsaw/design-system";
+
+<Form>
+  <Form.Group title="Account details">...</Form.Group>
+</Form>
+```
 - **Field labels** — remain on `Input`, `Select`, `Textarea`, etc. (React Aria pattern; no `FormItem`).
 
 ## Example footer (app layer)

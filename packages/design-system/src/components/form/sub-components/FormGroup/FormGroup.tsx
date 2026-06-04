@@ -39,4 +39,4 @@ export const FormGroup = ({
   );
 };
 
-FormGroup.displayName = "DS_FormGroup";
+FormGroup.displayName = "Form.Group";

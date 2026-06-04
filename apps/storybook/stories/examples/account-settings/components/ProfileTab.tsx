@@ -2,7 +2,6 @@ import {
   Avatar,
   Button,
   Form,
-  FormGroup,
   Input,
   Textarea,
   toast,
@@ -21,7 +20,7 @@ export const ProfileTab = () => (
     }}
   >
     <div className="flex flex-col gap-6">
-      <FormGroup title="Public profile">
+      <Form.Group title="Public profile">
         <div className="flex items-center gap-4">
           <Avatar size="xl" initials="JH" status="online" />
           <div className="flex gap-2">
@@ -33,7 +32,7 @@ export const ProfileTab = () => (
             </Button>
           </div>
         </div>
-      </FormGroup>
+      </Form.Group>
       {/* RAC fields own their labels — separate stack, no section wrapper */}
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-4">

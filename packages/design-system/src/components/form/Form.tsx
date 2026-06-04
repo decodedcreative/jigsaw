@@ -2,6 +2,7 @@
 
 import { Form as ReactAriaForm } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
+import { FormGroup } from "./sub-components/FormGroup";
 import { formStyles } from "./Form.styles";
 import type { FormProps } from "./Form.types";
 
@@ -15,3 +16,8 @@ export const Form = ({ children, classNameOverrides, ...props }: FormProps) => {
 };
 
 Form.displayName = "DS_Form";
+Form.Group = FormGroup;
+
+export type FormComponent = typeof Form & {
+  Group: typeof FormGroup;
+};
