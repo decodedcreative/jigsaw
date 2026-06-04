@@ -1,8 +1,7 @@
 import {
   Button,
   Form,
-  FormActions,
-  FormFieldset,
+  FormGroup,
   Select,
   SelectItem,
   toast,
@@ -11,7 +10,7 @@ import { DATE_FORMATS, LANGUAGES, TIMEZONES } from "../AccountSettings.stories.c
 
 export const AppearanceTab = () => (
     <Form onSubmit={(e) => e.preventDefault()}>
-      <FormFieldset legend="Display preferences">
+      <FormGroup title="Display preferences">
         <Select label="Timezone" defaultSelectedKey="utc">
           {TIMEZONES.map((tz) => (
             <SelectItem key={tz.id} id={tz.id}>{tz.label}</SelectItem>
@@ -27,8 +26,8 @@ export const AppearanceTab = () => (
             <SelectItem key={lang.id} id={lang.id}>{lang.label}</SelectItem>
           ))}
         </Select>
-      </FormFieldset>
-      <FormActions>
+      </FormGroup>
+      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
         <Button variant="secondary">Cancel</Button>
         <Button
           onPress={() =>
@@ -41,6 +40,6 @@ export const AppearanceTab = () => (
         >
           Save changes
         </Button>
-      </FormActions>
+      </div>
     </Form>
 );

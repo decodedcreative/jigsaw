@@ -46,8 +46,8 @@ export { Disclosure, DisclosureGroup } from "@components/disclosure/Disclosure";
 export type { DisclosureProps, DisclosureGroupProps } from "@components/disclosure/Disclosure";
 
 // Form
-export { Form, FormFieldset, FormActions } from "@components/form/Form";
-export type { FormProps, FormFieldsetProps, FormActionsProps } from "@components/form/Form";
+export { Form, FormGroup } from "@components/form";
+export type { FormProps, FormGroupProps } from "@components/form";
 
 // Icon
 export { Icon } from "@components/icon";
