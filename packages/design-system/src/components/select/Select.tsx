@@ -46,14 +46,12 @@ export function Select<T extends object>({
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
   const classNames = useGetClassNames(selectStyles, classNameOverrides, {
-    wrapper: {},
     label: { state },
     trigger: { size, state },
+    description: { state },
     chevron: {},
     popover: {},
     listbox: {},
-    item: {},
-    description: { state },
   });
 
   return (
@@ -64,24 +62,26 @@ export function Select<T extends object>({
       {...props}
     >
       {label && <Label className={classNames.label}>{label}</Label>}
-      <Button className={classNames.trigger}>
-        <SelectValue className="flex-1 text-left truncate">
-          {({ selectedText }) => selectedText || placeholder}
-        </SelectValue>
-        <Icon
-          icon={CaretDownIcon}
-          size={size}
-          classNameOverrides={{ component: classNames.chevron }}
-        />
-      </Button>
-      {(description || errorMessage) && (
-        <Text
-          slot={errorMessage ? "errorMessage" : "description"}
-          className={classNames.description}
-        >
-          {errorMessage || description}
-        </Text>
-      )}
+      <div className={classNames.fieldBody}>
+        <Button className={classNames.trigger}>
+          <SelectValue className="flex-1 text-left truncate">
+            {({ selectedText }) => selectedText || placeholder}
+          </SelectValue>
+          <Icon
+            icon={CaretDownIcon}
+            size={size}
+            classNameOverrides={{ component: classNames.chevron }}
+          />
+        </Button>
+        {(description || errorMessage) && (
+          <Text
+            slot={errorMessage ? "errorMessage" : "description"}
+            className={classNames.description}
+          >
+            {errorMessage || description}
+          </Text>
+        )}
+      </div>
       <Popover className={classNames.popover}>
         <ListBox className={classNames.listbox} items={items}>
           {children as (item: T) => React.ReactNode}

@@ -47,7 +47,13 @@ export type { DisclosureProps, DisclosureGroupProps } from "@components/disclosu
 
 // Form
 export { Form } from "@components/form";
-export type { FormComponent, FormProps, FormGroupProps, FormGroupClassNameOverrides } from "@components/form";
+export type {
+  FormComponent,
+  FormProps,
+  FormGroupProps,
+  FormGroupClassNameOverrides,
+  LabelPosition,
+} from "@components/form";
 
 // Icon
 export { Icon } from "@components/icon";

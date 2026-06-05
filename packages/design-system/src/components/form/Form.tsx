@@ -6,10 +6,15 @@ import { FormGroup } from "./sub-components/FormGroup";
 import { formStyles } from "./Form.styles";
 import type { FormProps } from "./Form.types";
 
-export const Form = ({ children, classNameOverrides, ...props }: FormProps) => {
-  const classNames = useGetClassNames(formStyles, classNameOverrides, { form: {} });
+export const Form = ({
+  children,
+  classNameOverrides,
+  labelPosition = "top",
+  ...props
+}: FormProps) => {
+  const classNames = useGetClassNames(formStyles, classNameOverrides);
   return (
-    <ReactAriaForm className={classNames.form} {...props}>
+    <ReactAriaForm className={classNames.form} data-label-position={labelPosition} {...props}>
       {children}
     </ReactAriaForm>
   );

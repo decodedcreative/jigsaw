@@ -75,4 +75,5 @@ describe('Input', () => {
     render(<Input label="Field" data-testid="my-input" />);
     expect(screen.getByTestId('my-input')).toBeInTheDocument();
   });
+
 });

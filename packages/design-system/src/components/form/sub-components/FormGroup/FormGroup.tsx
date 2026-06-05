@@ -14,7 +14,7 @@ export const FormGroup = ({
 }: FormGroupProps) => {
   const titleId = useId();
   const { title: titleClassName, ...sectionClassNameOverrides } = classNameOverrides ?? {};
-  const classNames = useGetClassNames(formGroupStyles, sectionClassNameOverrides, { section: {} });
+  const classNames = useGetClassNames(formGroupStyles, sectionClassNameOverrides);
 
   return (
     <section
@@ -39,4 +39,4 @@ export const FormGroup = ({
   );
 };
 
-FormGroup.displayName = "Form.Group";
+FormGroup.displayName = "DS_Form.Group";
