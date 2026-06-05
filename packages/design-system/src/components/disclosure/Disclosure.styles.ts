@@ -1,8 +1,8 @@
 import { cva } from "class-variance-authority";
 
 export const disclosureStyles = {
-  wrapper: cva([
-    "border border-border-default rounded-md overflow-hidden",
+  component: cva([
+    "group border border-border-default rounded-md overflow-hidden",
     "data-[disabled]:opacity-50",
   ]),
   trigger: cva([
@@ -19,8 +19,4 @@ export const disclosureStyles = {
     "hidden group-data-[expanded]:block",
     "px-4 pb-4 pt-0 text-foreground-secondary text-sm",
   ]),
-};
-
-export const disclosureGroupStyles = {
-  wrapper: cva(["flex flex-col gap-2"]),
 };

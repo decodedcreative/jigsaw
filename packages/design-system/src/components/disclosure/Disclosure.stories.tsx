@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Disclosure, DisclosureGroup } from "./Disclosure";
+import { Disclosure } from "./Disclosure";
+import { DisclosureGroup } from "./DisclosureGroup";
 
 const meta = {
   title: "Design System/Disclosure",

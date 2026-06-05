@@ -1,2 +1,3 @@
-export { Disclosure, DisclosureGroup } from "./Disclosure";
-export type { DisclosureProps, DisclosureGroupProps } from "./Disclosure";
+export { Disclosure } from "./Disclosure";
+export { DisclosureGroup } from "./DisclosureGroup";
+export type { DisclosureProps, DisclosureGroupProps } from "./Disclosure.types";
