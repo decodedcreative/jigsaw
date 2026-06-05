@@ -42,8 +42,8 @@ export { CheckboxGroup } from "@components/checkbox-group/CheckboxGroup";
 export type { CheckboxGroupProps } from "@components/checkbox-group/CheckboxGroup";
 
 // Disclosure
-export { Disclosure, DisclosureGroup } from "@components/disclosure/Disclosure";
-export type { DisclosureProps, DisclosureGroupProps } from "@components/disclosure/Disclosure";
+export { Disclosure, DisclosureGroup } from "@components/disclosure";
+export type { DisclosureProps, DisclosureGroupProps } from "@components/disclosure";
 
 // Form
 export { Form } from "@components/form";

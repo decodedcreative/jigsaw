@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Disclosure, DisclosureGroup } from './Disclosure';
+import { Disclosure } from './Disclosure';
+import { DisclosureGroup } from './DisclosureGroup';
 
 afterEach(() => {
   cleanup();
@@ -37,6 +38,32 @@ describe('Disclosure', () => {
     render(<Disclosure title="Toggle">Panel content</Disclosure>);
     await user.click(screen.getByRole('button'));
     expect(screen.getByText('Panel content')).toBeVisible();
+  });
+
+  it('merges className onto the disclosure root', () => {
+    render(
+      <Disclosure title="Section" className="ring-2 ring-brand-primary">
+        Content
+      </Disclosure>
+    );
+    const disclosure = screen.getByRole('button').closest('[class*="rounded-md"]');
+    expect(disclosure).toHaveClass('rounded-md');
+    expect(disclosure).toHaveClass('ring-2');
+    expect(disclosure).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.component onto the disclosure root', () => {
+    render(
+      <Disclosure
+        title="Section"
+        classNameOverrides={{ component: 'ring-2 ring-brand-primary' }}
+      >
+        Content
+      </Disclosure>
+    );
+    const disclosure = screen.getByRole('button').closest('[class*="rounded-md"]');
+    expect(disclosure).toHaveClass('ring-2');
+    expect(disclosure).toHaveClass('ring-brand-primary');
   });
 
   it('collapses panel on second trigger click', async () => {
@@ -83,5 +110,18 @@ describe('DisclosureGroup', () => {
     );
     await user.click(screen.getByText('Item 1'));
     expect(screen.getByText('Content 1')).toBeVisible();
+  });
+
+  it('merges className onto the disclosure group root', () => {
+    const { container } = render(
+      <DisclosureGroup className="gap-4">
+        <Disclosure title="Item 1">Content 1</Disclosure>
+      </DisclosureGroup>
+    );
+    const group = container.firstElementChild;
+    expect(group).toHaveClass('flex');
+    expect(group).toHaveClass('flex-col');
+    expect(group).toHaveClass('gap-4');
+    expect(group).not.toHaveClass('gap-2');
   });
 });

@@ -1,39 +1,26 @@
 "use client";
 
-import * as React from "react";
 import {
   Disclosure as ReactAriaDisclosure,
-  DisclosureGroup as ReactAriaDisclosureGroup,
   DisclosurePanel,
   Button,
-  type DisclosureProps as ReactAriaDisclosureProps,
-  type DisclosureGroupProps as ReactAriaDisclosureGroupProps,
 } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
-import { disclosureStyles, disclosureGroupStyles } from "./Disclosure.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import { useGetClassNames, useRootClassName } from "@hooks";
+import { disclosureStyles } from "./Disclosure.styles";
+import type { DisclosureProps } from "./Disclosure.types";
 
-export type DisclosureProps = ReactAriaDisclosureProps & {
-  title: string;
-  children?: React.ReactNode;
-  classNameOverrides?: ClassNameOverrides<typeof disclosureStyles>;
-};
-
-export const Disclosure = ({
+export function Disclosure({
   title,
   children,
   classNameOverrides,
+  className,
   ...props
-}: DisclosureProps) => {
-  const classNames = useGetClassNames(disclosureStyles, classNameOverrides, {
-    wrapper: {},
-    trigger: {},
-    chevron: {},
-    panel: {},
-  });
+}: DisclosureProps) {
+  const classNames = useGetClassNames(disclosureStyles, classNameOverrides);
+  const rootClassName = useRootClassName(classNames.component, className);
 
   return (
-    <ReactAriaDisclosure className={`group ${classNames.wrapper}`} {...props}>
+    <ReactAriaDisclosure className={rootClassName} {...props}>
       <Button slot="trigger" className={classNames.trigger}>
         <span>{title}</span>
         <svg className={classNames.chevron} viewBox="0 0 16 16" fill="none">
@@ -49,29 +36,6 @@ export const Disclosure = ({
       <DisclosurePanel className={classNames.panel}>{children}</DisclosurePanel>
     </ReactAriaDisclosure>
   );
-};
+}
 
 Disclosure.displayName = "DS_Disclosure";
-
-export type DisclosureGroupProps = Omit<ReactAriaDisclosureGroupProps, "children"> & {
-  children?: React.ReactNode;
-  classNameOverrides?: ClassNameOverrides<typeof disclosureStyles>;
-};
-
-export const DisclosureGroup = ({
-  children,
-  classNameOverrides,
-  ...props
-}: DisclosureGroupProps) => {
-  const classNames = useGetClassNames(disclosureGroupStyles, classNameOverrides, {
-    wrapper: {},
-  });
-
-  return (
-    <ReactAriaDisclosureGroup className={classNames.wrapper} {...props}>
-      {children}
-    </ReactAriaDisclosureGroup>
-  );
-};
-
-DisclosureGroup.displayName = "DS_DisclosureGroup";
