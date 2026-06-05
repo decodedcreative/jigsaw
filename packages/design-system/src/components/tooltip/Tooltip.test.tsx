@@ -1,6 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { Tooltip } from './Tooltip';
 import { TooltipTrigger } from './TooltipTrigger';
 
@@ -137,5 +136,38 @@ describe('Tooltip', () => {
     const tooltip = screen.getByRole('tooltip');
     expect(tooltip).toHaveClass('px-6');
     expect(tooltip).not.toHaveClass('px-3');
+  });
+
+  it('merges classNameOverrides.component onto the tooltip root', () => {
+    render(
+      <TooltipTrigger isOpen>
+        <button>Trigger</button>
+        <Tooltip classNameOverrides={{ component: 'ring-2 ring-brand-primary' }}>
+          Override styled tooltip
+        </Tooltip>
+      </TooltipTrigger>
+    );
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toHaveClass('rounded-md');
+    expect(tooltip).toHaveClass('ring-2');
+    expect(tooltip).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.component and className together', () => {
+    render(
+      <TooltipTrigger isOpen>
+        <button>Trigger</button>
+        <Tooltip
+          classNameOverrides={{ component: 'mt-2' }}
+          className="ring-2 ring-brand-primary"
+        >
+          Combined styling
+        </Tooltip>
+      </TooltipTrigger>
+    );
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toHaveClass('mt-2');
+    expect(tooltip).toHaveClass('ring-2');
+    expect(tooltip).toHaveClass('ring-brand-primary');
   });
 });

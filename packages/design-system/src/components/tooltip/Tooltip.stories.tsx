@@ -26,3 +26,23 @@ export const Default: Story = {
     </TooltipTrigger>
   ),
 };
+
+export const NoArrow: Story = {
+  args: { children: "No arrow", placement: "top", showArrow: false },
+  render: (args) => (
+    <TooltipTrigger>
+      <Button>Hover me</Button>
+      <Tooltip {...args}>No arrow</Tooltip>
+    </TooltipTrigger>
+  ),
+};
+
+export const Bottom: Story = {
+  args: { children: "Bottom placement", placement: "bottom", showArrow: true },
+  render: (args) => (
+    <TooltipTrigger>
+      <Button>Hover me</Button>
+      <Tooltip {...args}>Bottom placement</Tooltip>
+    </TooltipTrigger>
+  ),
+};

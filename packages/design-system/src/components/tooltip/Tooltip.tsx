@@ -20,8 +20,7 @@ export function Tooltip({
     tooltipStyles,
     classNameOverrides,
     {
-      component: { placement },
-      arrow: {},
+      component: { placement }
     }
   );
   const rootClassName = useRootClassName(classNames.component, className);
