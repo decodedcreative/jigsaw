@@ -1,8 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const tooltipStyles = {
-  trigger: cva("outline-none"),
-  content: cva(
+  component: cva(
     [
       "z-50 px-3 py-1.5 text-sm rounded-md shadow-md",
       "bg-surface-inverse text-foreground-inverse",
@@ -23,4 +22,3 @@ export const tooltipStyles = {
   ),
   arrow: cva("fill-surface-inverse"),
 };
-

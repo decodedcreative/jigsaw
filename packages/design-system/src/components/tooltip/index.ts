@@ -1,3 +1,3 @@
-export { Tooltip, TooltipTrigger } from "./Tooltip";
-export type { TooltipProps, TooltipTriggerProps } from "./Tooltip";
-export type { TooltipPlacement } from "./Tooltip.types";
+export { Tooltip } from "./Tooltip";
+export { TooltipTrigger } from "./TooltipTrigger";
+export type { TooltipProps, TooltipTriggerProps, TooltipPlacement } from "./Tooltip.types";
