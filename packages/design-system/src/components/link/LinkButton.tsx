@@ -2,18 +2,18 @@
 
 import { Link as ReactAriaLink } from "react-aria-components";
 import { useGetClassNames, useRootClassName } from "@hooks";
-import { linkStyles } from "./Link.styles";
-import type { LinkProps } from "./Link.types";
+import { linkButtonStyles } from "./LinkButton.styles";
+import type { LinkButtonProps } from "./LinkButton.types";
 
-export function Link({
-  variant = "default",
+export function LinkButton({
+  variant = "primary",
   size = "md",
   classNameOverrides,
   className,
   children,
   ...props
-}: LinkProps) {
-  const classNames = useGetClassNames(linkStyles, classNameOverrides, {
+}: LinkButtonProps) {
+  const classNames = useGetClassNames(linkButtonStyles, classNameOverrides, {
     component: { variant, size },
   });
   const rootClassName = useRootClassName(classNames.component, className);
@@ -25,4 +25,7 @@ export function Link({
   );
 }
 
-Link.displayName = "DS_Link";
+LinkButton.displayName = "DS_LinkButton";
+
+export const ButtonLink = LinkButton;
+ButtonLink.displayName = "DS_ButtonLink";

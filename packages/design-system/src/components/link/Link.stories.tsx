@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Link, LinkButton } from "./Link";
+import { Link } from "./Link";
+import { LinkButton, ButtonLink } from "./LinkButton";
 
 const meta = {
   title: "Design System/Link",
@@ -24,5 +25,13 @@ export const AsButton: Story = {
     <LinkButton href="#" variant="primary">
       Go somewhere
     </LinkButton>
+  ),
+};
+
+export const AsButtonLink: Story = {
+  render: () => (
+    <ButtonLink href="#" variant="secondary">
+      ButtonLink alias
+    </ButtonLink>
   ),
 };
