@@ -16,13 +16,9 @@ export function Tooltip({
   placement = "top",
   ...props
 }: TooltipProps) {
-  const classNames = useGetClassNames(
-    tooltipStyles,
-    classNameOverrides,
-    {
-      component: { placement }
-    }
-  );
+  const classNames = useGetClassNames(tooltipStyles, classNameOverrides, {
+    component: { placement },
+  });
   const rootClassName = useRootClassName(classNames.component, className);
 
   return (
