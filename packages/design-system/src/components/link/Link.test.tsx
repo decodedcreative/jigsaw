@@ -24,33 +24,33 @@ describe('Link', () => {
   });
 
   it('renders default variant', () => {
-    const { container } = render(<Link href="/">Default Link</Link>);
-    expect(container.firstChild).toBeInTheDocument();
+    render(<Link href="/">Default Link</Link>);
+    expect(screen.getByRole('link')).toHaveClass('text-interactive-primary');
   });
 
   it('renders accent variant', () => {
     render(<Link href="/" variant="accent">Accent</Link>);
-    expect(screen.getByRole('link')).toBeInTheDocument();
+    expect(screen.getByRole('link')).toHaveClass('text-interactive-accent');
   });
 
   it('renders subtle variant', () => {
     render(<Link href="/" variant="subtle">Subtle</Link>);
-    expect(screen.getByRole('link')).toBeInTheDocument();
+    expect(screen.getByRole('link')).toHaveClass('text-foreground-secondary');
   });
 
   it('renders muted variant', () => {
     render(<Link href="/" variant="muted">Muted</Link>);
-    expect(screen.getByRole('link')).toBeInTheDocument();
+    expect(screen.getByRole('link')).toHaveClass('text-foreground-muted');
   });
 
   it('renders sm size', () => {
     render(<Link href="/" size="sm">Small</Link>);
-    expect(screen.getByRole('link')).toBeInTheDocument();
+    expect(screen.getByRole('link')).toHaveClass('text-xs');
   });
 
   it('renders lg size', () => {
     render(<Link href="/" size="lg">Large</Link>);
-    expect(screen.getByRole('link')).toBeInTheDocument();
+    expect(screen.getByRole('link')).toHaveClass('text-base');
   });
 
   it('passes additional attributes', () => {
@@ -59,30 +59,41 @@ describe('Link', () => {
   });
 
   it('merges className onto the link root', () => {
-    const { container } = render(
+    render(
       <Link href="/" className="ring-2 ring-brand-primary">
         Link
       </Link>
     );
-    const link = container.firstElementChild;
+    const link = screen.getByRole('link');
     expect(link).toHaveClass('inline-flex');
     expect(link).toHaveClass('ring-2');
     expect(link).toHaveClass('ring-brand-primary');
   });
 
+  it('lets className override conflicting utilities from CVA defaults', () => {
+    render(
+      <Link href="/" size="sm" className="text-base">
+        Sized link
+      </Link>
+    );
+    const link = screen.getByRole('link');
+    expect(link).toHaveClass('text-base');
+    expect(link).not.toHaveClass('text-xs');
+  });
+
   it('merges classNameOverrides.component onto the link root', () => {
-    const { container } = render(
+    render(
       <Link href="/" classNameOverrides={{ component: 'ring-2 ring-brand-primary' }}>
         Link
       </Link>
     );
-    const link = container.firstElementChild;
+    const link = screen.getByRole('link');
     expect(link).toHaveClass('ring-2');
     expect(link).toHaveClass('ring-brand-primary');
   });
 
   it('merges classNameOverrides.component and className together', () => {
-    const { container } = render(
+    render(
       <Link
         href="/"
         classNameOverrides={{ component: 'mt-2' }}
@@ -91,7 +102,7 @@ describe('Link', () => {
         Link
       </Link>
     );
-    const link = container.firstElementChild;
+    const link = screen.getByRole('link');
     expect(link).toHaveClass('mt-2');
     expect(link).toHaveClass('ring-2');
     expect(link).toHaveClass('ring-brand-primary');
@@ -111,44 +122,44 @@ describe('LinkButton', () => {
 
   it('renders primary variant by default', () => {
     render(<LinkButton href="/">Primary</LinkButton>);
-    expect(screen.getByRole('link')).toBeInTheDocument();
+    expect(screen.getByRole('link')).toHaveClass('bg-interactive-primary');
   });
 
   it('renders secondary variant', () => {
     render(<LinkButton href="/" variant="secondary">Secondary</LinkButton>);
-    expect(screen.getByRole('link')).toBeInTheDocument();
+    expect(screen.getByRole('link')).toHaveClass('bg-surface-muted');
   });
 
   it('renders outline variant', () => {
     render(<LinkButton href="/" variant="outline">Outline</LinkButton>);
-    expect(screen.getByRole('link')).toBeInTheDocument();
+    expect(screen.getByRole('link')).toHaveClass('border-border-strong');
   });
 
   it('merges className onto the link button root', () => {
-    const { container } = render(
+    render(
       <LinkButton href="/" className="ring-2 ring-brand-primary">
         Action
       </LinkButton>
     );
-    const linkButton = container.firstElementChild;
+    const linkButton = screen.getByRole('link');
     expect(linkButton).toHaveClass('inline-flex');
     expect(linkButton).toHaveClass('ring-2');
     expect(linkButton).toHaveClass('ring-brand-primary');
   });
 
   it('merges classNameOverrides.component onto the link button root', () => {
-    const { container } = render(
+    render(
       <LinkButton href="/" classNameOverrides={{ component: 'ring-2 ring-brand-primary' }}>
         Action
       </LinkButton>
     );
-    const linkButton = container.firstElementChild;
+    const linkButton = screen.getByRole('link');
     expect(linkButton).toHaveClass('ring-2');
     expect(linkButton).toHaveClass('ring-brand-primary');
   });
 
   it('merges classNameOverrides.component and className together', () => {
-    const { container } = render(
+    render(
       <LinkButton
         href="/"
         classNameOverrides={{ component: 'mt-2' }}
@@ -157,7 +168,7 @@ describe('LinkButton', () => {
         Action
       </LinkButton>
     );
-    const linkButton = container.firstElementChild;
+    const linkButton = screen.getByRole('link');
     expect(linkButton).toHaveClass('mt-2');
     expect(linkButton).toHaveClass('ring-2');
     expect(linkButton).toHaveClass('ring-brand-primary');

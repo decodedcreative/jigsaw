@@ -27,3 +27,11 @@ export const AsButton: Story = {
     </LinkButton>
   ),
 };
+
+export const AsButtonLink: Story = {
+  render: () => (
+    <ButtonLink href="#" variant="secondary">
+      ButtonLink alias
+    </ButtonLink>
+  ),
+};

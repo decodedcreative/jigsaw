@@ -65,7 +65,14 @@ export type { InputProps } from "@components/input/Input";
 
 // Link
 export { Link, LinkButton, ButtonLink } from "@components/link";
-export type { LinkProps, LinkButtonProps, LinkVariant, LinkSize } from "@components/link";
+export type {
+  LinkProps,
+  LinkButtonProps,
+  LinkVariant,
+  LinkSize,
+  LinkButtonVariant,
+  LinkButtonSize,
+} from "@components/link";
 
 // Modal
 export { Modal } from "@components/modal";
