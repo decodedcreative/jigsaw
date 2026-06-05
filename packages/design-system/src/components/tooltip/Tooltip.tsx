@@ -4,8 +4,7 @@ import {
   Tooltip as ReactAriaTooltip,
   OverlayArrow,
 } from "react-aria-components";
-import { twMerge } from "tailwind-merge";
-import { useGetClassNames, useThemeProvider } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { tooltipStyles } from "./Tooltip.styles";
 import type { TooltipProps } from "./Tooltip.types";
 
@@ -17,9 +16,6 @@ export function Tooltip({
   placement = "top",
   ...props
 }: TooltipProps) {
-  const theme = useThemeProvider();
-  const twMergeFn = theme?.twMerge ?? twMerge;
-
   const classNames = useGetClassNames(
     tooltipStyles,
     classNameOverrides,
@@ -28,11 +24,7 @@ export function Tooltip({
       arrow: {},
     }
   );
-
-  const rootClassName =
-    typeof className === "function"
-      ? className
-      : twMergeFn(classNames.component, className);
+  const rootClassName = useRootClassName(classNames.component, className);
 
   return (
     <ReactAriaTooltip
