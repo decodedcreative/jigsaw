@@ -41,19 +41,19 @@ describe('Disclosure', () => {
   });
 
   it('merges className onto the disclosure root', () => {
-    render(
+    const { container } = render(
       <Disclosure title="Section" className="ring-2 ring-brand-primary">
         Content
       </Disclosure>
     );
-    const disclosure = screen.getByRole('button').closest('[class*="rounded-md"]');
+    const disclosure = container.firstElementChild;
     expect(disclosure).toHaveClass('rounded-md');
     expect(disclosure).toHaveClass('ring-2');
     expect(disclosure).toHaveClass('ring-brand-primary');
   });
 
   it('merges classNameOverrides.component onto the disclosure root', () => {
-    render(
+    const { container } = render(
       <Disclosure
         title="Section"
         classNameOverrides={{ component: 'ring-2 ring-brand-primary' }}
@@ -61,7 +61,23 @@ describe('Disclosure', () => {
         Content
       </Disclosure>
     );
-    const disclosure = screen.getByRole('button').closest('[class*="rounded-md"]');
+    const disclosure = container.firstElementChild;
+    expect(disclosure).toHaveClass('ring-2');
+    expect(disclosure).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.component and className together', () => {
+    const { container } = render(
+      <Disclosure
+        title="Section"
+        classNameOverrides={{ component: 'mt-2' }}
+        className="ring-2 ring-brand-primary"
+      >
+        Content
+      </Disclosure>
+    );
+    const disclosure = container.firstElementChild;
+    expect(disclosure).toHaveClass('mt-2');
     expect(disclosure).toHaveClass('ring-2');
     expect(disclosure).toHaveClass('ring-brand-primary');
   });
@@ -121,6 +137,17 @@ describe('DisclosureGroup', () => {
     const group = container.firstElementChild;
     expect(group).toHaveClass('flex');
     expect(group).toHaveClass('flex-col');
+    expect(group).toHaveClass('gap-4');
+    expect(group).not.toHaveClass('gap-2');
+  });
+
+  it('merges classNameOverrides.component onto the disclosure group root', () => {
+    const { container } = render(
+      <DisclosureGroup classNameOverrides={{ component: 'gap-4' }}>
+        <Disclosure title="Item 1">Content 1</Disclosure>
+      </DisclosureGroup>
+    );
+    const group = container.firstElementChild;
     expect(group).toHaveClass('gap-4');
     expect(group).not.toHaveClass('gap-2');
   });
