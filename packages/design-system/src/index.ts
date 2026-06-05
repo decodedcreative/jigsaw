@@ -1,7 +1,7 @@
 export const designSystemVersion = "0.0.1";
 
 // Shared prop types
-export type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+export type { ClassNameOverrides, RootClassName, WithoutClassName } from "@jsw-types/component-props";
 
 // Button
 export { Button } from "@components/button/Button";
