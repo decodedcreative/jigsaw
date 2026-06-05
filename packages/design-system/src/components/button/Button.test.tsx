@@ -19,60 +19,60 @@ describe('Button', () => {
   });
 
   it('renders media and text in separate spans', () => {
-    const { container } = render(
+    render(
       <Button media="⚙" aria-label="Build">
         Build
       </Button>
     );
-    const spans = container.querySelectorAll('button > span');
+    const spans = screen.getByRole('button').querySelectorAll(':scope > span');
     expect(spans).toHaveLength(2);
     expect(spans[0]).toHaveTextContent('⚙');
     expect(spans[1]).toHaveTextContent('Build');
   });
 
   it('renders primary variant', () => {
-    const { container } = render(<Button variant="primary">Primary</Button>);
-    expect(container.firstChild).toHaveClass('bg-interactive-primary');
+    render(<Button variant="primary">Primary</Button>);
+    expect(screen.getByRole('button')).toHaveClass('bg-interactive-primary');
   });
 
   it('renders secondary variant', () => {
-    const { container } = render(<Button variant="secondary">Secondary</Button>);
-    expect(container.firstChild).toHaveClass('bg-surface-muted');
+    render(<Button variant="secondary">Secondary</Button>);
+    expect(screen.getByRole('button')).toHaveClass('bg-surface-muted');
   });
 
   it('renders outline variant', () => {
-    const { container } = render(<Button variant="outline">Outline</Button>);
-    expect(container.firstChild).toHaveClass('bg-transparent');
+    render(<Button variant="outline">Outline</Button>);
+    expect(screen.getByRole('button')).toHaveClass('bg-transparent');
   });
 
   it('renders accent variant', () => {
-    const { container } = render(<Button variant="accent">Accent</Button>);
-    expect(container.firstChild).toHaveClass('bg-interactive-accent');
+    render(<Button variant="accent">Accent</Button>);
+    expect(screen.getByRole('button')).toHaveClass('bg-interactive-accent');
   });
 
   it('renders ghost variant', () => {
-    const { container } = render(<Button variant="ghost">Ghost</Button>);
-    expect(container.firstChild).toHaveClass('bg-transparent');
+    render(<Button variant="ghost">Ghost</Button>);
+    expect(screen.getByRole('button')).toHaveClass('bg-transparent');
   });
 
   it('renders destructive variant', () => {
-    const { container } = render(<Button variant="destructive">Delete</Button>);
-    expect(container.firstChild).toHaveClass('bg-interactive-destructive');
+    render(<Button variant="destructive">Delete</Button>);
+    expect(screen.getByRole('button')).toHaveClass('bg-interactive-destructive');
   });
 
   it('renders sm size', () => {
-    const { container } = render(<Button size="sm">Small</Button>);
-    expect(container.firstChild).toHaveClass('text-xs');
+    render(<Button size="sm">Small</Button>);
+    expect(screen.getByRole('button')).toHaveClass('text-xs');
   });
 
   it('renders md size', () => {
-    const { container } = render(<Button size="md">Medium</Button>);
-    expect(container.firstChild).toHaveClass('text-sm');
+    render(<Button size="md">Medium</Button>);
+    expect(screen.getByRole('button')).toHaveClass('text-sm');
   });
 
   it('renders lg size', () => {
-    const { container } = render(<Button size="lg">Large</Button>);
-    expect(container.firstChild).toHaveClass('text-base');
+    render(<Button size="lg">Large</Button>);
+    expect(screen.getByRole('button')).toHaveClass('text-base');
   });
 
   it('fires onPress when clicked', async () => {
@@ -102,44 +102,69 @@ describe('Button', () => {
   });
 
   it('applies mediaOnly styles when mediaOnly is true', () => {
-    const { container } = render(
-      <Button variant="ghost" mediaOnly aria-label="Settings" media="⚙" />
-    );
-    expect(container.firstChild).toHaveClass('rounded-full', 'p-0');
-    expect(container.querySelectorAll('button > span')).toHaveLength(1);
+    render(<Button variant="ghost" mediaOnly aria-label="Settings" media="⚙" />);
+    const button = screen.getByRole('button', { name: 'Settings' });
+    expect(button).toHaveClass('rounded-full', 'p-0', '!px-0', '!py-0');
+    expect(button).not.toHaveClass('px-4', 'py-2');
+    expect(button.querySelectorAll(':scope > span')).toHaveLength(1);
   });
 
   it('does not apply mediaOnly styles when media is provided without mediaOnly', () => {
-    const { container } = render(
-      <Button variant="ghost" aria-label="Settings" media="⚙" />
+    render(<Button variant="ghost" aria-label="Settings" media="⚙" />);
+    expect(screen.getByRole('button')).not.toHaveClass('rounded-full');
+  });
+
+  it('suppresses ghost hover background when mediaOnly is true', () => {
+    render(<Button variant="ghost" mediaOnly aria-label="Settings" media="⚙" />);
+    expect(screen.getByRole('button')).toHaveClass('hover:bg-transparent');
+  });
+
+  it('ignores mediaPosition when mediaOnly is true', () => {
+    render(
+      <Button
+        variant="ghost"
+        mediaOnly
+        mediaPosition="right"
+        aria-label="Settings"
+        media="⚙"
+      />
     );
-    expect(container.firstChild).not.toHaveClass('rounded-full');
+    const button = screen.getByRole('button', { name: 'Settings' });
+    expect(button.querySelectorAll(':scope > span')).toHaveLength(1);
+    expect(button).not.toHaveClass('justify-between');
   });
 
   it('aligns full-width content to the start when mediaPosition is left', () => {
-    const { container } = render(
+    render(
       <Button fullWidth media="→">
         Label
       </Button>
     );
-    expect(container.firstChild).toHaveClass('justify-start');
+    expect(screen.getByRole('button')).toHaveClass('justify-start');
+  });
+
+  it('aligns full-width content between edges when mediaPosition is right', () => {
+    render(
+      <Button fullWidth mediaPosition="right" media="→">
+        Label
+      </Button>
+    );
+    expect(screen.getByRole('button')).toHaveClass('justify-between');
   });
 
   it('places media after text when mediaPosition is right', () => {
-    const { container } = render(
+    render(
       <Button mediaPosition="right" media="→">
         Label
       </Button>
     );
-    const spans = container.querySelectorAll('button > span');
+    const spans = screen.getByRole('button').querySelectorAll(':scope > span');
     expect(spans[0]).toHaveTextContent('Label');
     expect(spans[1]).toHaveTextContent('→');
   });
 
   it('applies custom className via classNameOverrides', () => {
-    const { container } = render(
-      <Button classNameOverrides={{ component: 'custom-class' }}>Button</Button>
-    );
-    expect(container.firstChild).toHaveClass('custom-class');
+    render(<Button classNameOverrides={{ component: 'custom-class' }}>Button</Button>);
+    expect(screen.getByRole('button')).toHaveClass('custom-class');
   });
 });

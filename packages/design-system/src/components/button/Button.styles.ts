@@ -50,6 +50,7 @@ export const buttonStyles = {
       compoundVariants: [
         { variant: "link", class: "p-0 rounded-sm h-auto" },
         { mediaOnly: true, variant: "ghost", class: "hover:bg-transparent" },
+        { mediaOnly: true, size: ["sm", "md", "lg"], class: "!px-0 !py-0" },
         { fullWidth: true, mediaPosition: "left", class: "justify-start" },
         { fullWidth: true, mediaPosition: "right", class: "justify-between" },
       ],
