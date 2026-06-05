@@ -35,7 +35,6 @@ export const SearchField = ({
   const state = isDisabled ? "disabled" : "default";
 
   const classNames = useGetClassNames(searchFieldStyles, classNameOverrides, {
-    wrapper: {},
     label: { state },
     inputWrapper: {},
     searchIcon: {},
@@ -47,23 +46,24 @@ export const SearchField = ({
   return (
     <ReactAriaSearchField className={classNames.wrapper} isDisabled={isDisabled} {...props}>
       {label && <Label className={classNames.label}>{label}</Label>}
-      <div className={classNames.inputWrapper}>
-        {/* Layout classes (absolute positioning) live on the searchIcon slot; size comes from Icon. */}
-        <Icon
-          icon={MagnifyingGlassIcon}
-          size={size}
-          classNameOverrides={{ component: classNames.searchIcon }}
-        />
-        <Input className={classNames.input} placeholder={placeholder} />
-        <Button className={classNames.clearButton}>
-          <Icon icon={XIcon} size="sm" />
-        </Button>
+      <div className={classNames.fieldBody}>
+        <div className={classNames.inputWrapper}>
+          <Icon
+            icon={MagnifyingGlassIcon}
+            size={size}
+            classNameOverrides={{ component: classNames.searchIcon }}
+          />
+          <Input className={classNames.input} placeholder={placeholder} />
+          <Button className={classNames.clearButton}>
+            <Icon icon={XIcon} size="sm" />
+          </Button>
+        </div>
+        {description && (
+          <Text slot="description" className={classNames.description}>
+            {description}
+          </Text>
+        )}
       </div>
-      {description && (
-        <Text slot="description" className={classNames.description}>
-          {description}
-        </Text>
-      )}
     </ReactAriaSearchField>
   );
 };

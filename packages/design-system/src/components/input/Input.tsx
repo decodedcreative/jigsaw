@@ -35,7 +35,6 @@ export const Input = ({
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
   const classNames = useGetClassNames(inputStyles, classNameOverrides, {
-    wrapper: {},
     label: { state },
     input: { size, state },
     description: { state },
@@ -49,12 +48,17 @@ export const Input = ({
       {...props}
     >
       {label && <Label className={classNames.label}>{label}</Label>}
-      <ReactAriaInput className={classNames.input} placeholder={placeholder} />
-      {(description || errorMessage) && (
-        <Text slot={errorMessage ? "errorMessage" : "description"} className={classNames.description}>
-          {errorMessage || description}
-        </Text>
-      )}
+      <div className={classNames.fieldBody}>
+        <ReactAriaInput className={classNames.input} placeholder={placeholder} />
+        {(description || errorMessage) && (
+          <Text
+            slot={errorMessage ? "errorMessage" : "description"}
+            className={classNames.description}
+          >
+            {errorMessage || description}
+          </Text>
+        )}
+      </div>
     </TextField>
   );
 };

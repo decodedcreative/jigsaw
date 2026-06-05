@@ -6,7 +6,6 @@ import {
   Checkbox,
   Disclosure,
   Form,
-  FormActions,
   Input,
   NumberField,
   Radio,
@@ -93,9 +92,9 @@ export const previews: PreviewMap = {
       <div className="w-40 scale-90">
         <Form>
           <Input label="Email" placeholder="you@example.com" />
-          <FormActions>
+          <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
             <Button size="sm" type="submit">Save</Button>
-          </FormActions>
+          </div>
         </Form>
       </div>
     </Preview>

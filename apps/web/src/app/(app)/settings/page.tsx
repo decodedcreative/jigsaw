@@ -5,9 +5,8 @@ import {
   Avatar,
   Button,
   Checkbox,
+  CheckboxGroup,
   Form,
-  FormActions,
-  FormFieldset,
   Input,
   Modal,
   Select,
@@ -20,6 +19,7 @@ import {
   Textarea,
   toast,
 } from "@jigsaw/design-system";
+import { formFooterClassName } from "./settings.constants";
 
 // ---------------------------------------------------------------------------
 // Profile tab
@@ -27,26 +27,30 @@ import {
 function ProfileTab() {
   return (
     <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Profile saved", variant: "success" }); }}>
-      <FormFieldset legend="Public profile">
-        <div className="flex items-center gap-4 mb-2">
-          <Avatar size="xl" initials="JH" status="online" />
-          <div className="flex gap-2">
-            <Button variant="secondary" size="sm">Upload photo</Button>
-            <Button variant="ghost" size="sm">Remove</Button>
+      <div className="flex flex-col gap-6">
+        <Form.Group title="Public profile">
+          <div className="flex items-center gap-4">
+            <Avatar size="xl" initials="JH" status="online" />
+            <div className="flex gap-2">
+              <Button variant="secondary" size="sm">Upload photo</Button>
+              <Button variant="ghost" size="sm">Remove</Button>
+            </div>
           </div>
+        </Form.Group>
+        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-4">
+            <Input label="First name" defaultValue="James" />
+            <Input label="Last name" defaultValue="Howell" />
+          </div>
+          <Input label="Username" defaultValue="jameshowell" />
+          <Input label="Email address" type="email" defaultValue="james@example.com" />
+          <Textarea label="Bio" defaultValue="Building design systems." rows={3} />
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <Input label="First name" defaultValue="James" />
-          <Input label="Last name" defaultValue="Howell" />
-        </div>
-        <Input label="Username" defaultValue="jameshowell" />
-        <Input label="Email address" type="email" defaultValue="james@example.com" />
-        <Textarea label="Bio" defaultValue="Building design systems." rows={3} />
-      </FormFieldset>
-      <FormActions>
+      </div>
+      <div className={formFooterClassName}>
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>
-      </FormActions>
+      </div>
     </Form>
   );
 }
@@ -55,33 +59,36 @@ function ProfileTab() {
 // Notifications tab
 // ---------------------------------------------------------------------------
 function NotificationsTab() {
-  const [prefs, setPrefs] = useState({ digest: true, product: true, security: true, activity: false });
+  const [selected, setSelected] = useState<string[]>(["digest", "product", "security"]);
 
   return (
     <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Preferences saved", variant: "success" }); }}>
-      <FormFieldset legend="Email notifications">
-        <div className="flex flex-col gap-4">
-          {([
-            { key: "digest",   label: "Weekly digest",   desc: "A summary of activity from the past week." },
-            { key: "product",  label: "Product updates", desc: "New features and improvements to Jigsaw." },
-            { key: "security", label: "Security alerts", desc: "Unusual sign-in activity and account changes." },
-            { key: "activity", label: "Team activity",   desc: "Comments, mentions, and assignments." },
-          ] as const).map(({ key, label, desc }) => (
-            <Checkbox
-              key={key}
-              isSelected={prefs[key]}
-              onChange={(v) => setPrefs((p) => ({ ...p, [key]: v }))}
-            >
-              <span className="font-medium">{label}</span>
-              <span className="block text-xs text-foreground-secondary">{desc}</span>
-            </Checkbox>
-          ))}
-        </div>
-      </FormFieldset>
-      <FormActions>
+      <CheckboxGroup label="Email notifications" value={selected} onChange={setSelected}>
+        <Checkbox
+          value="digest"
+          label="Weekly digest"
+          description="A summary of activity from the past week."
+        />
+        <Checkbox
+          value="product"
+          label="Product updates"
+          description="New features and improvements to Jigsaw."
+        />
+        <Checkbox
+          value="security"
+          label="Security alerts"
+          description="Unusual sign-in activity and account changes."
+        />
+        <Checkbox
+          value="activity"
+          label="Team activity"
+          description="Comments, mentions, and assignments."
+        />
+      </CheckboxGroup>
+      <div className={formFooterClassName}>
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>
-      </FormActions>
+      </div>
     </Form>
   );
 }
@@ -92,7 +99,7 @@ function NotificationsTab() {
 function AppearanceTab() {
   return (
     <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Preferences saved", variant: "success" }); }}>
-      <FormFieldset legend="Display preferences">
+      <Form.Group title="Display preferences">
         <Select label="Timezone" defaultSelectedKey="utc">
           <SelectItem id="utc">UTC — Coordinated Universal Time</SelectItem>
           <SelectItem id="london">Europe/London (GMT+0)</SelectItem>
@@ -112,11 +119,11 @@ function AppearanceTab() {
           <SelectItem id="de">Deutsch</SelectItem>
           <SelectItem id="es">Español</SelectItem>
         </Select>
-      </FormFieldset>
-      <FormActions>
+      </Form.Group>
+      <div className={formFooterClassName}>
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>
-      </FormActions>
+      </div>
     </Form>
   );
 }

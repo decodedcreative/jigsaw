@@ -1,17 +1,22 @@
 import { cva } from "class-variance-authority";
+import { formStyles } from "@components/form/Form.styles";
 
 export const selectStyles = {
-  wrapper: cva(["flex flex-col"]),
-  label: cva(["block text-sm font-medium mb-1.5 transition-colors"], {
-    variants: {
-      state: {
-        default: "text-foreground-primary",
-        error: "text-state-error",
-        disabled: "text-foreground-muted",
+  wrapper: cva(["flex flex-col", formStyles.field()]),
+  label: cva(
+    ["block text-sm font-medium mb-1.5 transition-colors", formStyles.fieldLabel()],
+    {
+      variants: {
+        state: {
+          default: "text-foreground-primary",
+          error: "text-state-error",
+          disabled: "text-foreground-muted",
+        },
       },
-    },
-    defaultVariants: { state: "default" },
-  }),
+      defaultVariants: { state: "default" },
+    }
+  ),
+  fieldBody: cva([formStyles.fieldBody()]),
   trigger: cva(
     [
       "group inline-flex items-center justify-between w-full rounded-default border bg-surface-default text-foreground-primary transition-colors",

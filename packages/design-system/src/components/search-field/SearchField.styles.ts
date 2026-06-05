@@ -1,8 +1,9 @@
 import { cva } from "class-variance-authority";
+import { formStyles } from "@components/form/Form.styles";
 
 export const searchFieldStyles = {
-  wrapper: cva(["flex flex-col"]),
-  label: cva(["block text-sm font-medium mb-1.5"], {
+  wrapper: cva(["flex flex-col", formStyles.field()]),
+  label: cva(["block text-sm font-medium mb-1.5", formStyles.fieldLabel()], {
     variants: {
       state: {
         default: "text-foreground-primary",
@@ -11,6 +12,7 @@ export const searchFieldStyles = {
     },
     defaultVariants: { state: "default" },
   }),
+  fieldBody: cva([formStyles.fieldBody()]),
   inputWrapper: cva(["relative flex items-center"]),
   searchIcon: cva(["absolute left-3 text-foreground-muted pointer-events-none"]),
   input: cva(

@@ -37,7 +37,6 @@ export const Textarea = ({
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
   const classNames = useGetClassNames(textareaStyles, classNameOverrides, {
-    wrapper: {},
     label: { state },
     textarea: { size, state },
     description: { state },
@@ -51,15 +50,17 @@ export const Textarea = ({
       {...props}
     >
       {label && <Label className={classNames.label}>{label}</Label>}
-      <ReactAriaTextArea className={classNames.textarea} placeholder={placeholder} rows={rows} />
-      {(description || errorMessage) && (
-        <Text
-          slot={errorMessage ? "errorMessage" : "description"}
-          className={classNames.description}
-        >
-          {errorMessage || description}
-        </Text>
-      )}
+      <div className={classNames.fieldBody}>
+        <ReactAriaTextArea className={classNames.textarea} placeholder={placeholder} rows={rows} />
+        {(description || errorMessage) && (
+          <Text
+            slot={errorMessage ? "errorMessage" : "description"}
+            className={classNames.description}
+          >
+            {errorMessage || description}
+          </Text>
+        )}
+      </div>
     </TextField>
   );
 };
