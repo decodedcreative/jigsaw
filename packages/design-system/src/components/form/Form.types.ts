@@ -5,7 +5,7 @@ import type { formStyles } from "./Form.styles";
 export type LabelPosition = "top" | "side";
 
 export type FormProps = WithoutClassName<ReactAriaFormProps> & {
-  /** Left-align field labels in a fixed column for all labelled fields in this form. */
+  /** Place field labels in a fixed left column (right-aligned) beside their controls. */
   labelPosition?: LabelPosition;
   classNameOverrides?: ClassNameOverrides<typeof formStyles>;
 };

@@ -22,7 +22,7 @@ const meta = {
         component: [
           "`Form` wraps React Aria's form primitive for submission and validation.",
           "",
-          'Set `labelPosition="side"` on `Form` to left-align labels for labelled fields (`Input`, `Textarea`, `Select`, `NumberField`, `SearchField`, `CheckboxGroup`, `RadioGroup`) inside the form.',
+          'Set `labelPosition="side"` on `Form` to place field labels in a fixed left column (right-aligned) beside their controls for `Input`, `Textarea`, `Select`, `NumberField`, `SearchField`, `CheckboxGroup`, and `RadioGroup`.',
         ].join("\n"),
       },
     },
@@ -63,7 +63,7 @@ export const SideLabels: Story = {
     docs: {
       description: {
         story:
-          'Form-level `labelPosition="side"` left-aligns labels in a fixed column. Fields still own their labels via the `label` prop.',
+          'Form-level `labelPosition="side"` places labels in a fixed left column (right-aligned) beside controls. `Form.Group` titles align with the control column. Fields still own their labels via the `label` prop.',
       },
     },
   },
