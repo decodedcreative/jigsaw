@@ -1,51 +1,31 @@
 "use client";
 
-import { type ReactNode } from "react";
 import {
   Tooltip as ReactAriaTooltip,
-  TooltipTrigger as ReactAriaTooltipTrigger,
   OverlayArrow,
-  type TooltipProps as ReactAriaTooltipProps,
-  type TooltipTriggerComponentProps,
 } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { tooltipStyles } from "./Tooltip.styles";
-import type { TooltipPlacement } from "./Tooltip.types";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
-
-export type TooltipTriggerProps = TooltipTriggerComponentProps & {
-  children: ReactNode;
-};
-
-export function TooltipTrigger({ children, ...props }: TooltipTriggerProps) {
-  return <ReactAriaTooltipTrigger {...props}>{children}</ReactAriaTooltipTrigger>;
-}
-
-TooltipTrigger.displayName = "DS_TooltipTrigger";
-
-export type TooltipProps = Omit<ReactAriaTooltipProps, "children"> & {
-  children: ReactNode;
-  showArrow?: boolean;
-  classNameOverrides?: ClassNameOverrides<typeof tooltipStyles>;
-};
+import type { TooltipProps } from "./Tooltip.types";
 
 export function Tooltip({
   children,
   showArrow = true,
   classNameOverrides,
+  className,
   placement = "top",
   ...props
 }: TooltipProps) {
   const classNames = useGetClassNames(tooltipStyles, classNameOverrides, {
-    content: { placement: placement as TooltipPlacement },
-    arrow: {},
+    component: { placement },
   });
+  const rootClassName = useRootClassName(classNames.component, className);
 
   return (
     <ReactAriaTooltip
       offset={10}
       placement={placement}
-      className={classNames.content}
+      className={rootClassName}
       {...props}
     >
       {showArrow && (

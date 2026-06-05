@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { Tooltip, TooltipTrigger } from './Tooltip';
+import { Tooltip } from './Tooltip';
+import { TooltipTrigger } from './TooltipTrigger';
 
 afterEach(() => {
   cleanup();
@@ -111,5 +111,63 @@ describe('Tooltip', () => {
     );
     expect(screen.getByRole('button', { name: 'Custom trigger' })).toBeInTheDocument();
     expect(screen.getByText('Custom tooltip')).toBeInTheDocument();
+  });
+
+  it('merges className onto the tooltip root via twMerge', () => {
+    render(
+      <TooltipTrigger isOpen>
+        <button>Trigger</button>
+        <Tooltip className="ring-2 ring-brand-primary">Styled tooltip</Tooltip>
+      </TooltipTrigger>
+    );
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toHaveClass('rounded-md');
+    expect(tooltip).toHaveClass('ring-2');
+    expect(tooltip).toHaveClass('ring-brand-primary');
+  });
+
+  it('lets className override conflicting utilities from CVA defaults', () => {
+    render(
+      <TooltipTrigger isOpen>
+        <button>Trigger</button>
+        <Tooltip className="px-6">Padded tooltip</Tooltip>
+      </TooltipTrigger>
+    );
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toHaveClass('px-6');
+    expect(tooltip).not.toHaveClass('px-3');
+  });
+
+  it('merges classNameOverrides.component onto the tooltip root', () => {
+    render(
+      <TooltipTrigger isOpen>
+        <button>Trigger</button>
+        <Tooltip classNameOverrides={{ component: 'ring-2 ring-brand-primary' }}>
+          Override styled tooltip
+        </Tooltip>
+      </TooltipTrigger>
+    );
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toHaveClass('rounded-md');
+    expect(tooltip).toHaveClass('ring-2');
+    expect(tooltip).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.component and className together', () => {
+    render(
+      <TooltipTrigger isOpen>
+        <button>Trigger</button>
+        <Tooltip
+          classNameOverrides={{ component: 'mt-2' }}
+          className="ring-2 ring-brand-primary"
+        >
+          Combined styling
+        </Tooltip>
+      </TooltipTrigger>
+    );
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toHaveClass('mt-2');
+    expect(tooltip).toHaveClass('ring-2');
+    expect(tooltip).toHaveClass('ring-brand-primary');
   });
 });

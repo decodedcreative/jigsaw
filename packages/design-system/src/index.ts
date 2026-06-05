@@ -119,6 +119,5 @@ export type {
 export { toastVariants, toastPositions } from "@components/toast";
 
 // Tooltip
-export { Tooltip, TooltipTrigger } from "@components/tooltip/Tooltip";
-export type { TooltipProps, TooltipTriggerProps } from "@components/tooltip/Tooltip";
-export type { TooltipPlacement } from "@components/tooltip/Tooltip.types";
+export { Tooltip, TooltipTrigger } from "@components/tooltip";
+export type { TooltipProps, TooltipTriggerProps, TooltipPlacement } from "@components/tooltip";

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tooltip, TooltipTrigger } from "./Tooltip";
+import { Tooltip } from "./Tooltip";
+import { TooltipTrigger } from "./TooltipTrigger";
 import { Button } from "../button/Button";
 
 const meta = {
@@ -22,6 +23,26 @@ export const Default: Story = {
     <TooltipTrigger>
       <Button>Hover me</Button>
       <Tooltip {...args}>Helpful info</Tooltip>
+    </TooltipTrigger>
+  ),
+};
+
+export const NoArrow: Story = {
+  args: { children: "No arrow", placement: "top", showArrow: false },
+  render: (args) => (
+    <TooltipTrigger>
+      <Button>Hover me</Button>
+      <Tooltip {...args}>No arrow</Tooltip>
+    </TooltipTrigger>
+  ),
+};
+
+export const Bottom: Story = {
+  args: { children: "Bottom placement", placement: "bottom", showArrow: true },
+  render: (args) => (
+    <TooltipTrigger>
+      <Button>Hover me</Button>
+      <Tooltip {...args}>Bottom placement</Tooltip>
     </TooltipTrigger>
   ),
 };
