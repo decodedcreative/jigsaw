@@ -37,11 +37,9 @@ export const NumberField = ({
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
   const classNames = useGetClassNames(numberFieldStyles, classNameOverrides, {
-    wrapper: {},
     label: { state },
     group: {},
     input: { size, state },
-    stepButton: { size, state },
     description: { state },
   });
 
@@ -56,23 +54,25 @@ export const NumberField = ({
       {...props}
     >
       {label && <Label className={classNames.label}>{label}</Label>}
-      <Group className={classNames.group}>
-        <Button slot="decrement" className={decrementClasses}>
-          <Icon icon={MinusIcon} size={size} />
-        </Button>
-        <Input className={classNames.input} />
-        <Button slot="increment" className={incrementClasses}>
-          <Icon icon={PlusIcon} size={size} />
-        </Button>
-      </Group>
-      {(description || errorMessage) && (
-        <Text
-          slot={errorMessage ? "errorMessage" : "description"}
-          className={classNames.description}
-        >
-          {errorMessage || description}
-        </Text>
-      )}
+      <div className={classNames.fieldBody}>
+        <Group className={classNames.group}>
+          <Button slot="decrement" className={decrementClasses}>
+            <Icon icon={MinusIcon} size={size} />
+          </Button>
+          <Input className={classNames.input} />
+          <Button slot="increment" className={incrementClasses}>
+            <Icon icon={PlusIcon} size={size} />
+          </Button>
+        </Group>
+        {(description || errorMessage) && (
+          <Text
+            slot={errorMessage ? "errorMessage" : "description"}
+            className={classNames.description}
+          >
+            {errorMessage || description}
+          </Text>
+        )}
+      </div>
     </ReactAriaNumberField>
   );
 };

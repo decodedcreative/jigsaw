@@ -34,7 +34,6 @@ export const RadioGroup = ({
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
   const classNames = useGetClassNames(radioGroupStyles, classNameOverrides, {
-    group: {},
     label: { state },
     description: {},
     errorMessage: {},
@@ -49,17 +48,19 @@ export const RadioGroup = ({
       {...props}
     >
       {label && <Label className={classNames.label}>{label}</Label>}
-      {description && (
-        <Text slot="description" className={classNames.description}>
-          {description}
-        </Text>
-      )}
-      <div className={classNames.options}>{children}</div>
-      {errorMessage && (
-        <Text slot="errorMessage" className={classNames.errorMessage}>
-          {errorMessage}
-        </Text>
-      )}
+      <div className={classNames.fieldBody}>
+        {description && (
+          <Text slot="description" className={classNames.description}>
+            {description}
+          </Text>
+        )}
+        <div className={classNames.options}>{children}</div>
+        {errorMessage && (
+          <Text slot="errorMessage" className={classNames.errorMessage}>
+            {errorMessage}
+          </Text>
+        )}
+      </div>
     </ReactAriaRadioGroup>
   );
 };

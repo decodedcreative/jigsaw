@@ -2,7 +2,13 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { getClassNames } from "@utils";
 import { Form } from "./index";
 import { Input } from "../input/Input";
+import { Textarea } from "../textarea/Textarea";
 import { Select, SelectItem } from "../select/Select";
+import { NumberField } from "../number-field/NumberField";
+import { SearchField } from "../search-field/SearchField";
+import { Checkbox } from "../checkbox/Checkbox";
+import { CheckboxGroup } from "../checkbox-group/CheckboxGroup";
+import { Radio, RadioGroup } from "../radio-group/RadioGroup";
 import { Button } from "../button/Button";
 import { formStoryStyles } from "./Form.stories.styles";
 
@@ -16,7 +22,7 @@ const meta = {
         component: [
           "`Form` wraps React Aria's form primitive for submission and validation.",
           "",
-          'Set `labelPosition="side"` on `Form` to left-align labels for labelled fields (`Input`, `Select`, etc.) inside the form.',
+          'Set `labelPosition="side"` on `Form` to left-align labels for labelled fields (`Input`, `Textarea`, `Select`, `NumberField`, `SearchField`, `CheckboxGroup`, `RadioGroup`) inside the form.',
         ].join("\n"),
       },
     },
@@ -71,6 +77,11 @@ export const SideLabels: Story = {
             <Input label="Name" defaultValue="James Howell" />
             <Input label="Email" type="email" defaultValue="james@example.com" />
             <Input label="Phone" type="tel" description="Optional. Include country code." />
+            <Textarea
+              label="Bio"
+              description="A short summary shown on your profile."
+              defaultValue="Product designer based in London."
+            />
             <Input
               label="Username"
               defaultValue="j"
@@ -81,6 +92,37 @@ export const SideLabels: Story = {
               <SelectItem id="editor">Editor</SelectItem>
               <SelectItem id="admin">Admin</SelectItem>
             </Select>
+            <NumberField
+              label="Team size"
+              description="Including yourself."
+              defaultValue={4}
+              minValue={1}
+            />
+            <SearchField
+              label="Find colleague"
+              description="Search by name or email."
+              placeholder="Search people…"
+            />
+          </Form.Group>
+          <Form.Group title="Preferences">
+            <CheckboxGroup
+              label="Notifications"
+              description="Choose which updates you receive."
+              defaultValue={["product", "security"]}
+            >
+              <Checkbox value="product" label="Product updates" />
+              <Checkbox value="security" label="Security alerts" />
+              <Checkbox value="marketing" label="Marketing emails" />
+            </CheckboxGroup>
+            <RadioGroup
+              label="Theme"
+              description="Applies across all devices."
+              defaultValue="system"
+            >
+              <Radio value="light" label="Light" />
+              <Radio value="dark" label="Dark" />
+              <Radio value="system" label="System" />
+            </RadioGroup>
           </Form.Group>
           <div className={classNames.footer}>
             <Button variant="secondary">Cancel</Button>

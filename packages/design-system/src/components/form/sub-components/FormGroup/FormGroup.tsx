@@ -16,6 +16,8 @@ export const FormGroup = ({
   const { title: titleClassName, ...sectionClassNameOverrides } = classNameOverrides ?? {};
   const classNames = useGetClassNames(formGroupStyles, sectionClassNameOverrides);
 
+  const headingClassName = [classNames.title, titleClassName].filter(Boolean).join(" ");
+
   return (
     <section
       aria-labelledby={title ? titleId : undefined}
@@ -28,7 +30,7 @@ export const FormGroup = ({
           as="h3"
           size="h4"
           classNameOverrides={
-            titleClassName ? { component: titleClassName } : undefined
+            headingClassName ? { component: headingClassName } : undefined
           }
         >
           {title}

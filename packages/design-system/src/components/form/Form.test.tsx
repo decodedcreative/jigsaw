@@ -69,4 +69,18 @@ describe("Form", () => {
     expect(screen.getByRole("heading", { name: "Account details" })).toBeInTheDocument();
     expect(screen.getByText("Field content")).toBeInTheDocument();
   });
+
+  it("offsets Form.Group title to the control column when labelPosition is side", () => {
+    const { container } = render(
+      <Form labelPosition="side">
+        <Form.Group title="Account details">
+          <Input label="Email" />
+        </Form.Group>
+      </Form>
+    );
+    expect(container.querySelector("form")).toHaveAttribute("data-label-position", "side");
+    expect(screen.getByRole("heading", { name: "Account details" }).className).toContain(
+      "group-data-[label-position=side]/form-label:ml-[8.5rem]"
+    );
+  });
 });

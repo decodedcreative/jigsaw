@@ -32,7 +32,6 @@ export const CheckboxGroup = ({
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
   const classNames = useGetClassNames(checkboxGroupStyles, classNameOverrides, {
-    group: {},
     label: { state },
     description: {},
     errorMessage: {},
@@ -47,17 +46,19 @@ export const CheckboxGroup = ({
       {...props}
     >
       {label && <Label className={classNames.label}>{label}</Label>}
-      {description && (
-        <Text slot="description" className={classNames.description}>
-          {description}
-        </Text>
-      )}
-      <div className={classNames.options}>{children}</div>
-      {errorMessage && (
-        <Text slot="errorMessage" className={classNames.errorMessage}>
-          {errorMessage}
-        </Text>
-      )}
+      <div className={classNames.fieldBody}>
+        {description && (
+          <Text slot="description" className={classNames.description}>
+            {description}
+          </Text>
+        )}
+        <div className={classNames.options}>{children}</div>
+        {errorMessage && (
+          <Text slot="errorMessage" className={classNames.errorMessage}>
+            {errorMessage}
+          </Text>
+        )}
+      </div>
     </ReactAriaCheckboxGroup>
   );
 };
