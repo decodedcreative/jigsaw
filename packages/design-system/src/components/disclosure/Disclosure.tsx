@@ -21,6 +21,8 @@ export function Disclosure({
 
   return (
     <ReactAriaDisclosure className={rootClassName} {...props}>
+      {/* TODO(JSW-22): Refactor trigger to DS Button with `media`/`mediaPosition` for the chevron
+          instead of an inline SVG child once Button icon layout support merges. */}
       <Button slot="trigger" className={classNames.trigger}>
         <span>{title}</span>
         <svg className={classNames.chevron} viewBox="0 0 16 16" fill="none">
