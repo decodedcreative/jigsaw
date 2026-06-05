@@ -18,6 +18,18 @@ describe('Button', () => {
     expect(screen.getByText('Submit')).toBeInTheDocument();
   });
 
+  it('renders media and text in separate spans', () => {
+    const { container } = render(
+      <Button media="⚙" aria-label="Build">
+        Build
+      </Button>
+    );
+    const spans = container.querySelectorAll('button > span');
+    expect(spans).toHaveLength(2);
+    expect(spans[0]).toHaveTextContent('⚙');
+    expect(spans[1]).toHaveTextContent('Build');
+  });
+
   it('renders primary variant', () => {
     const { container } = render(<Button variant="primary">Primary</Button>);
     expect(container.firstChild).toHaveClass('bg-interactive-primary');
@@ -89,9 +101,44 @@ describe('Button', () => {
     expect(screen.getByTestId('custom-button')).toBeInTheDocument();
   });
 
+  it('applies mediaOnly styles when mediaOnly is true', () => {
+    const { container } = render(
+      <Button variant="ghost" mediaOnly aria-label="Settings" media="⚙" />
+    );
+    expect(container.firstChild).toHaveClass('rounded-full', 'p-0');
+    expect(container.querySelectorAll('button > span')).toHaveLength(1);
+  });
+
+  it('does not apply mediaOnly styles when media is provided without mediaOnly', () => {
+    const { container } = render(
+      <Button variant="ghost" aria-label="Settings" media="⚙" />
+    );
+    expect(container.firstChild).not.toHaveClass('rounded-full');
+  });
+
+  it('aligns full-width content to the start when mediaPosition is left', () => {
+    const { container } = render(
+      <Button fullWidth media="→">
+        Label
+      </Button>
+    );
+    expect(container.firstChild).toHaveClass('justify-start');
+  });
+
+  it('places media after text when mediaPosition is right', () => {
+    const { container } = render(
+      <Button mediaPosition="right" media="→">
+        Label
+      </Button>
+    );
+    const spans = container.querySelectorAll('button > span');
+    expect(spans[0]).toHaveTextContent('Label');
+    expect(spans[1]).toHaveTextContent('→');
+  });
+
   it('applies custom className via classNameOverrides', () => {
     const { container } = render(
-      <Button classNameOverrides={{ component: "custom-class" }}>Button</Button>
+      <Button classNameOverrides={{ component: 'custom-class' }}>Button</Button>
     );
     expect(container.firstChild).toHaveClass('custom-class');
   });
