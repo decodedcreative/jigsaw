@@ -1,4 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { PlayIcon } from "@phosphor-icons/react";
+import { Avatar } from "../avatar";
+import { Icon } from "../icon";
 import { Button } from "./Button";
 
 const meta = {
@@ -17,6 +20,11 @@ const meta = {
       control: "select",
       options: ["sm", "md", "lg"],
     },
+    mediaPosition: {
+      control: "select",
+      options: [undefined, "left", "right"],
+    },
+    mediaOnly: { control: "boolean" },
   },
 } satisfies Meta<typeof Button>;
 
@@ -63,16 +71,59 @@ export const Disabled: Story = {
   },
 };
 
+export const WithMediaLeft: Story = {
+  render: () => (
+    <Button
+      fullWidth
+      media={<Icon icon={PlayIcon} weight="fill" />}
+      classNameOverrides={{ component: "max-w-xs" }}
+    >
+      Trigger build
+    </Button>
+  ),
+};
+
+export const WithMediaRight: Story = {
+  render: () => (
+    <Button
+      fullWidth
+      mediaPosition="right"
+      media={<Icon icon={PlayIcon} />}
+      classNameOverrides={{ component: "max-w-xs" }}
+    >
+      Next step
+    </Button>
+  ),
+};
+
 /**
  * Visually a link, rendered as a `<button>`. Use for inline actions that
  * trigger behavior (cancel, expand, dismiss) rather than navigation — the
- * inverse of `LinkButton`, which is a `<a>` styled as a button.
+ * inverse of `LinkButton`, which is an `<a>` styled as a button.
  */
 export const Link: Story = {
   args: {
     variant: "link",
     children: "Forgot password?",
   },
+};
+
+/** Icon-only layout: set `mediaOnly` and provide `aria-label` (or `title`). */
+export const MediaOnly: Story = {
+  render: () => (
+    <Button variant="ghost" mediaOnly aria-label="Settings" media="⚙" />
+  ),
+};
+
+export const MediaOnlyAvatar: Story = {
+  render: () => (
+    <Button
+      variant="ghost"
+      mediaOnly
+      aria-label="James Howell"
+      media={<Avatar size="sm" initials="JH" />}
+    />
+  ),
 };
 
 export const LinkInSentence: Story = {
