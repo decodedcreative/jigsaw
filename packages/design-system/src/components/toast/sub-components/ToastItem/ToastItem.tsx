@@ -8,33 +8,28 @@ import {
 import { XIcon } from "@phosphor-icons/react";
 import { Button } from "@components/button/Button";
 import { Icon } from "@components/icon";
-import { twMerge } from "tailwind-merge";
-import { useGetClassNames, useThemeProvider } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import type { ToastItemProps } from "./ToastItem.types";
 import { toastItemStyles } from "./ToastItem.styles";
 import { toastVariantIcons } from "./ToastItem.icons";
 
 export const ToastItem = ({ toast, classNameOverrides }: ToastItemProps) => {
   const { title, description, variant = "default", icon, action, className } = toast.content;
-  const theme = useThemeProvider();
-  const twMergeFn = theme?.twMerge ?? twMerge;
 
   const classNames = useGetClassNames(
     toastItemStyles,
-    {
-      ...classNameOverrides,
-      component: twMergeFn(classNameOverrides?.component, className),
-    },
+    classNameOverrides,
     {
       component: { variant },
       icon: { variant },
     }
   );
+  const rootClassName = useRootClassName(classNames.component, className);
 
   const statusIcon = icon ?? toastVariantIcons[variant];
 
   return (
-    <ReactAriaToast toast={toast} className={classNames.component} data-toast-id={toast.key}>
+    <ReactAriaToast toast={toast} className={rootClassName} data-toast-id={toast.key}>
       <span className={classNames.icon} data-testid="toast-status-icon">
         <Icon icon={statusIcon} size="lg" weight="fill" />
       </span>
