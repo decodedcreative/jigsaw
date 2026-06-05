@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
-import { Link, LinkButton, ButtonLink } from './Link';
+import { Link } from "./Link";
+import { LinkButton, ButtonLink } from "./LinkButton";
 
 afterEach(() => {
   cleanup();
@@ -56,6 +57,45 @@ describe('Link', () => {
     render(<Link href="/" data-testid="my-link">Link</Link>);
     expect(screen.getByTestId('my-link')).toBeInTheDocument();
   });
+
+  it('merges className onto the link root', () => {
+    const { container } = render(
+      <Link href="/" className="ring-2 ring-brand-primary">
+        Link
+      </Link>
+    );
+    const link = container.firstElementChild;
+    expect(link).toHaveClass('inline-flex');
+    expect(link).toHaveClass('ring-2');
+    expect(link).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.component onto the link root', () => {
+    const { container } = render(
+      <Link href="/" classNameOverrides={{ component: 'ring-2 ring-brand-primary' }}>
+        Link
+      </Link>
+    );
+    const link = container.firstElementChild;
+    expect(link).toHaveClass('ring-2');
+    expect(link).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.component and className together', () => {
+    const { container } = render(
+      <Link
+        href="/"
+        classNameOverrides={{ component: 'mt-2' }}
+        className="ring-2 ring-brand-primary"
+      >
+        Link
+      </Link>
+    );
+    const link = container.firstElementChild;
+    expect(link).toHaveClass('mt-2');
+    expect(link).toHaveClass('ring-2');
+    expect(link).toHaveClass('ring-brand-primary');
+  });
 });
 
 describe('LinkButton', () => {
@@ -82,6 +122,45 @@ describe('LinkButton', () => {
   it('renders outline variant', () => {
     render(<LinkButton href="/" variant="outline">Outline</LinkButton>);
     expect(screen.getByRole('link')).toBeInTheDocument();
+  });
+
+  it('merges className onto the link button root', () => {
+    const { container } = render(
+      <LinkButton href="/" className="ring-2 ring-brand-primary">
+        Action
+      </LinkButton>
+    );
+    const linkButton = container.firstElementChild;
+    expect(linkButton).toHaveClass('inline-flex');
+    expect(linkButton).toHaveClass('ring-2');
+    expect(linkButton).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.component onto the link button root', () => {
+    const { container } = render(
+      <LinkButton href="/" classNameOverrides={{ component: 'ring-2 ring-brand-primary' }}>
+        Action
+      </LinkButton>
+    );
+    const linkButton = container.firstElementChild;
+    expect(linkButton).toHaveClass('ring-2');
+    expect(linkButton).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.component and className together', () => {
+    const { container } = render(
+      <LinkButton
+        href="/"
+        classNameOverrides={{ component: 'mt-2' }}
+        className="ring-2 ring-brand-primary"
+      >
+        Action
+      </LinkButton>
+    );
+    const linkButton = container.firstElementChild;
+    expect(linkButton).toHaveClass('mt-2');
+    expect(linkButton).toHaveClass('ring-2');
+    expect(linkButton).toHaveClass('ring-brand-primary');
   });
 });
 
