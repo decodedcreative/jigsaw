@@ -66,7 +66,7 @@ export type { IconProps, CustomIconStyle, IconTone, IconSize } from "@components
 
 // Input
 export { Input } from "@components/input";
-export type { InputProps } from "@components/input";
+export type { InputProps, InputSize } from "@components/input";
 
 // Link
 export { Link, LinkButton, ButtonLink } from "@components/link";
@@ -89,7 +89,7 @@ export type { NavigationProps, NavigationInnerProps, NavigationBrandProps, Navig
 
 // NumberField
 export { NumberField } from "@components/number-field";
-export type { NumberFieldProps } from "@components/number-field";
+export type { NumberFieldProps, NumberFieldSize } from "@components/number-field";
 
 // RadioGroup
 export { RadioGroup, Radio } from "@components/radio-group/RadioGroup";
@@ -97,7 +97,7 @@ export type { RadioGroupProps, RadioProps } from "@components/radio-group/RadioG
 
 // SearchField
 export { SearchField } from "@components/search-field";
-export type { SearchFieldProps } from "@components/search-field";
+export type { SearchFieldProps, SearchFieldSize } from "@components/search-field";
 
 // Select
 export { Select, SelectItem } from "@components/select/Select";
@@ -115,7 +115,7 @@ export type { TabsVariant } from "@components/tabs";
 
 // Textarea
 export { Textarea } from "@components/textarea";
-export type { TextareaProps } from "@components/textarea";
+export type { TextareaProps, TextareaSize } from "@components/textarea";
 
 // Toast
 export { toast, ToastRegion, DEFAULT_TOAST_REGION } from "@components/toast";

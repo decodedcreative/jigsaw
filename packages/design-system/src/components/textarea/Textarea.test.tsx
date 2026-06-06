@@ -91,4 +91,31 @@ describe('Textarea', () => {
     expect(screen.getByTestId('my-textarea')).toBeInTheDocument();
   });
 
+  it('merges classNameOverrides.wrapper onto the field root', () => {
+    render(
+      <Textarea label="Field" classNameOverrides={{ wrapper: 'mt-2' }} data-testid="my-textarea" />
+    );
+    expect(screen.getByTestId('my-textarea')).toHaveClass('mt-2');
+  });
+
+  it('merges classNameOverrides.textarea onto the textbox', () => {
+    render(<Textarea label="Field" classNameOverrides={{ textarea: 'ring-2 ring-brand-primary' }} />);
+    expect(screen.getByRole('textbox')).toHaveClass('ring-2');
+    expect(screen.getByRole('textbox')).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.wrapper and className together', () => {
+    render(
+      <Textarea
+        label="Field"
+        classNameOverrides={{ wrapper: 'mt-2' }}
+        className="p-4"
+        data-testid="my-textarea"
+      />
+    );
+    const root = screen.getByTestId('my-textarea');
+    expect(root).toHaveClass('mt-2');
+    expect(root).toHaveClass('p-4');
+  });
+
 });

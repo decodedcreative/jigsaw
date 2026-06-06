@@ -9,6 +9,7 @@ const meta = {
   argTypes: {
     size: { control: "select", options: ["sm", "md", "lg"] },
     isDisabled: { control: "boolean" },
+    isInvalid: { control: "boolean" },
   },
 } satisfies Meta<typeof SearchField>;
 
@@ -25,6 +26,14 @@ export const WithValue: Story = {
 
 export const WithDescription: Story = {
   args: { label: "Search", description: "Press Escape to clear." },
+};
+
+export const WithError: Story = {
+  args: {
+    label: "Search",
+    defaultValue: "???",
+    errorMessage: "No results found for this query.",
+  },
 };
 
 export const Disabled: Story = {
@@ -51,6 +60,7 @@ export const AllStates: Story = {
       <SearchField label="Default" placeholder="Search..." />
       <SearchField label="With value" defaultValue="Button" />
       <SearchField label="With description" description="Helper text" />
+      <SearchField label="Error" defaultValue="???" errorMessage="Invalid search query" />
       <SearchField label="Disabled" isDisabled defaultValue="Locked" />
     </div>
   ),

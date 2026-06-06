@@ -6,7 +6,7 @@ import {
   TextArea as ReactAriaTextArea,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { textareaStyles } from "./Textarea.styles";
 import type { TextareaProps } from "./Textarea.types";
 
@@ -18,6 +18,7 @@ export const Textarea = ({
   rows = 4,
   size = "md",
   classNameOverrides,
+  className,
   isDisabled,
   isInvalid,
   ...props
@@ -29,10 +30,11 @@ export const Textarea = ({
     textarea: { size, state },
     description: { state },
   });
+  const rootClassName = useRootClassName(classNames.wrapper, className);
 
   return (
     <ReactAriaTextField
-      className={classNames.wrapper}
+      className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}

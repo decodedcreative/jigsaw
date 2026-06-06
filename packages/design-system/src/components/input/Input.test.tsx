@@ -76,4 +76,29 @@ describe('Input', () => {
     expect(screen.getByTestId('my-input')).toBeInTheDocument();
   });
 
+  it('merges classNameOverrides.wrapper onto the field root', () => {
+    render(<Input label="Field" classNameOverrides={{ wrapper: 'mt-2' }} data-testid="my-input" />);
+    expect(screen.getByTestId('my-input')).toHaveClass('mt-2');
+  });
+
+  it('merges classNameOverrides.input onto the textbox', () => {
+    render(<Input label="Field" classNameOverrides={{ input: 'ring-2 ring-brand-primary' }} />);
+    expect(screen.getByRole('textbox')).toHaveClass('ring-2');
+    expect(screen.getByRole('textbox')).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.wrapper and className together', () => {
+    render(
+      <Input
+        label="Field"
+        classNameOverrides={{ wrapper: 'mt-2' }}
+        className="p-4"
+        data-testid="my-input"
+      />
+    );
+    const root = screen.getByTestId('my-input');
+    expect(root).toHaveClass('mt-2');
+    expect(root).toHaveClass('p-4');
+  });
+
 });

@@ -6,7 +6,7 @@ import {
   Input as ReactAriaInput,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { inputStyles } from "./Input.styles";
 import type { InputProps } from "./Input.types";
 
@@ -17,6 +17,7 @@ export const Input = ({
   placeholder,
   size = "md",
   classNameOverrides,
+  className,
   isDisabled,
   isInvalid,
   ...props
@@ -28,10 +29,11 @@ export const Input = ({
     input: { size, state },
     description: { state },
   });
+  const rootClassName = useRootClassName(classNames.wrapper, className);
 
   return (
     <ReactAriaTextField
-      className={classNames.wrapper}
+      className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}

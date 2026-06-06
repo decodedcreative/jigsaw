@@ -81,4 +81,47 @@ describe('NumberField', () => {
     const input = container.querySelector('input');
     expect(input).toHaveAttribute('inputmode', 'numeric');
   });
+
+  it('merges classNameOverrides.wrapper onto the field root', () => {
+    render(<NumberField label="Qty" classNameOverrides={{ wrapper: 'mt-2' }} data-testid="number-field" />);
+    expect(screen.getByTestId('number-field')).toHaveClass('mt-2');
+  });
+
+  it('merges classNameOverrides.input onto the input', () => {
+    const { container } = render(
+      <NumberField label="Qty" classNameOverrides={{ input: 'ring-2 ring-brand-primary' }} />
+    );
+    const input = container.querySelector('input');
+    expect(input).toHaveClass('ring-2');
+    expect(input).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides onto step buttons', () => {
+    render(
+      <NumberField
+        label="Qty"
+        classNameOverrides={{
+          decrementButton: 'bg-state-error',
+          incrementButton: 'bg-state-success',
+        }}
+      />
+    );
+    const buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveClass('bg-state-error');
+    expect(buttons[buttons.length - 1]).toHaveClass('bg-state-success');
+  });
+
+  it('merges classNameOverrides.wrapper and className together', () => {
+    render(
+      <NumberField
+        label="Qty"
+        classNameOverrides={{ wrapper: 'mt-2' }}
+        className="p-4"
+        data-testid="number-field"
+      />
+    );
+    const root = screen.getByTestId('number-field');
+    expect(root).toHaveClass('mt-2');
+    expect(root).toHaveClass('p-4');
+  });
 });
