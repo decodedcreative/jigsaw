@@ -1,27 +1,17 @@
 "use client";
 
-import * as React from "react";
+import { MagnifyingGlassIcon, XIcon } from "@phosphor-icons/react";
 import {
   SearchField as ReactAriaSearchField,
-  Label,
-  Input,
-  Button,
-  Text,
-  type SearchFieldProps as ReactAriaSearchFieldProps,
+  Label as ReactAriaLabel,
+  Input as ReactAriaInput,
+  Button as ReactAriaButton,
+  Text as ReactAriaText,
 } from "react-aria-components";
-import { MagnifyingGlassIcon, XIcon } from "@phosphor-icons/react";
 import { useGetClassNames } from "@hooks";
 import { Icon } from "@components/icon";
 import { searchFieldStyles } from "./SearchField.styles";
-import type { ClassNameOverrides } from "@jsw-types/component-props";
-
-export type SearchFieldProps = Omit<ReactAriaSearchFieldProps, "children"> & {
-  label?: string;
-  description?: string;
-  placeholder?: string;
-  classNameOverrides?: ClassNameOverrides<typeof searchFieldStyles>;
-  size?: "sm" | "md" | "lg";
-};
+import type { SearchFieldProps } from "./SearchField.types";
 
 export const SearchField = ({
   label,
@@ -36,16 +26,13 @@ export const SearchField = ({
 
   const classNames = useGetClassNames(searchFieldStyles, classNameOverrides, {
     label: { state },
-    inputWrapper: {},
-    searchIcon: {},
     input: { size, state },
     clearButton: { size },
-    description: {},
   });
 
   return (
     <ReactAriaSearchField className={classNames.wrapper} isDisabled={isDisabled} {...props}>
-      {label && <Label className={classNames.label}>{label}</Label>}
+      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <div className={classNames.fieldBody}>
         <div className={classNames.inputWrapper}>
           <Icon
@@ -53,15 +40,15 @@ export const SearchField = ({
             size={size}
             classNameOverrides={{ component: classNames.searchIcon }}
           />
-          <Input className={classNames.input} placeholder={placeholder} />
-          <Button className={classNames.clearButton}>
+          <ReactAriaInput className={classNames.input} placeholder={placeholder} />
+          <ReactAriaButton className={classNames.clearButton}>
             <Icon icon={XIcon} size="sm" />
-          </Button>
+          </ReactAriaButton>
         </div>
         {description && (
-          <Text slot="description" className={classNames.description}>
+          <ReactAriaText slot="description" className={classNames.description}>
             {description}
-          </Text>
+          </ReactAriaText>
         )}
       </div>
     </ReactAriaSearchField>
