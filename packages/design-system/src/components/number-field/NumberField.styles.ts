@@ -43,19 +43,38 @@ export const numberFieldStyles = {
       defaultVariants: { size: "md", state: "default" },
     }
   ),
-  stepButton: cva(
+  decrementButton: cva(
     [
-      "absolute top-0 bottom-0 flex items-center justify-center bg-surface-muted text-foreground-secondary border transition-colors",
+      "absolute top-0 bottom-0 left-0 flex items-center justify-center rounded-l-default border border-r-0 bg-surface-muted text-foreground-secondary transition-colors",
       "hover:bg-surface-subtle hover:text-foreground-primary",
       "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:z-10",
       "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-surface-muted data-[disabled]:hover:text-foreground-secondary",
     ],
     {
       variants: {
-        position: {
-          decrement: "left-0 rounded-l-default border-r-0",
-          increment: "right-0 rounded-r-default border-l-0",
+        size: {
+          sm: "w-7 text-xs",
+          md: "w-9 text-sm",
+          lg: "w-11 text-base",
         },
+        state: {
+          default: "border-border-strong",
+          error: "border-state-error",
+          disabled: "border-border-default",
+        },
+      },
+      defaultVariants: { size: "md", state: "default" },
+    }
+  ),
+  incrementButton: cva(
+    [
+      "absolute top-0 bottom-0 right-0 flex items-center justify-center rounded-r-default border border-l-0 bg-surface-muted text-foreground-secondary transition-colors",
+      "hover:bg-surface-subtle hover:text-foreground-primary",
+      "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:z-10",
+      "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-surface-muted data-[disabled]:hover:text-foreground-secondary",
+    ],
+    {
+      variants: {
         size: {
           sm: "w-7 text-xs",
           md: "w-9 text-sm",

@@ -33,6 +33,23 @@ describe('SearchField', () => {
     expect(screen.getByText('Type to search')).toBeInTheDocument();
   });
 
+  it('renders error message', () => {
+    render(<SearchField label="Search" errorMessage="Invalid search query" />);
+    expect(screen.getByText('Invalid search query')).toBeInTheDocument();
+  });
+
+  it('shows error message instead of description when both provided', () => {
+    render(
+      <SearchField
+        label="Search"
+        description="Type to search"
+        errorMessage="Query is required"
+      />
+    );
+    expect(screen.getByText('Query is required')).toBeInTheDocument();
+    expect(screen.queryByText('Type to search')).not.toBeInTheDocument();
+  });
+
   it('allows typing in the search field', async () => {
     const user = userEvent.setup();
     render(<SearchField />);
@@ -69,5 +86,29 @@ describe('SearchField', () => {
   it('passes additional attributes', () => {
     render(<SearchField data-testid="search" />);
     expect(screen.getByTestId('search')).toBeInTheDocument();
+  });
+
+  it('merges classNameOverrides.wrapper onto the field root', () => {
+    render(<SearchField classNameOverrides={{ wrapper: 'mt-2' }} data-testid="search" />);
+    expect(screen.getByTestId('search')).toHaveClass('mt-2');
+  });
+
+  it('merges classNameOverrides.input onto the searchbox', () => {
+    render(<SearchField classNameOverrides={{ input: 'ring-2 ring-brand-primary' }} />);
+    expect(screen.getByRole('searchbox')).toHaveClass('ring-2');
+    expect(screen.getByRole('searchbox')).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.wrapper and className together', () => {
+    render(
+      <SearchField
+        classNameOverrides={{ wrapper: 'mt-2' }}
+        className="p-4"
+        data-testid="search"
+      />
+    );
+    const root = screen.getByTestId('search');
+    expect(root).toHaveClass('mt-2');
+    expect(root).toHaveClass('p-4');
   });
 });

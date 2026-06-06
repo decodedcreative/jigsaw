@@ -1,2 +1,2 @@
 export { SearchField } from "./SearchField";
-export type { SearchFieldProps } from "./SearchField";
+export type { SearchFieldProps, SearchFieldSize } from "./SearchField.types";

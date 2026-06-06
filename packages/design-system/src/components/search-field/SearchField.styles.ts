@@ -3,15 +3,19 @@ import { formStyles } from "@components/form/Form.styles";
 
 export const searchFieldStyles = {
   wrapper: cva(["flex flex-col", formStyles.field()]),
-  label: cva(["block text-sm font-medium mb-1.5", formStyles.fieldLabel()], {
-    variants: {
-      state: {
-        default: "text-foreground-primary",
-        disabled: "text-foreground-muted",
+  label: cva(
+    ["block text-sm font-medium mb-1.5 transition-colors", formStyles.fieldLabel()],
+    {
+      variants: {
+        state: {
+          default: "text-foreground-primary",
+          error: "text-state-error",
+          disabled: "text-foreground-muted",
+        },
       },
-    },
-    defaultVariants: { state: "default" },
-  }),
+      defaultVariants: { state: "default" },
+    }
+  ),
   fieldBody: cva([formStyles.fieldBody()]),
   inputWrapper: cva(["relative flex items-center"]),
   searchIcon: cva(["absolute left-3 text-foreground-muted pointer-events-none"]),
@@ -31,6 +35,8 @@ export const searchFieldStyles = {
         },
         state: {
           default: "border-border-strong",
+          error:
+            "border-state-error bg-state-error/5 focus:ring-state-error/20 focus:border-state-error",
           disabled: "border-border-default",
         },
       },
@@ -54,5 +60,14 @@ export const searchFieldStyles = {
       defaultVariants: { size: "md" },
     }
   ),
-  description: cva(["mt-1.5 text-xs text-foreground-muted"]),
+  description: cva(["mt-1.5 text-xs"], {
+    variants: {
+      state: {
+        default: "text-foreground-muted",
+        error: "text-state-error",
+        disabled: "text-foreground-muted",
+      },
+    },
+    defaultVariants: { state: "default" },
+  }),
 };

@@ -1,26 +1,14 @@
 "use client";
 
-import * as React from "react";
 import {
-  TextField,
-  Label,
+  TextField as ReactAriaTextField,
+  Label as ReactAriaLabel,
   TextArea as ReactAriaTextArea,
-  Text,
-  type TextFieldProps,
+  Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { textareaStyles } from "./Textarea.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
-
-export type TextareaProps = Omit<TextFieldProps, "children"> & {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  placeholder?: string;
-  rows?: number;
-  classNameOverrides?: ClassNameOverrides<typeof textareaStyles>;
-  size?: "sm" | "md" | "lg";
-};
+import type { TextareaProps } from "./Textarea.types";
 
 export const Textarea = ({
   label,
@@ -30,6 +18,7 @@ export const Textarea = ({
   rows = 4,
   size = "md",
   classNameOverrides,
+  className,
   isDisabled,
   isInvalid,
   ...props
@@ -41,27 +30,28 @@ export const Textarea = ({
     textarea: { size, state },
     description: { state },
   });
+  const rootClassName = useRootClassName(classNames.wrapper, className);
 
   return (
-    <TextField
-      className={classNames.wrapper}
+    <ReactAriaTextField
+      className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
     >
-      {label && <Label className={classNames.label}>{label}</Label>}
+      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <div className={classNames.fieldBody}>
         <ReactAriaTextArea className={classNames.textarea} placeholder={placeholder} rows={rows} />
         {(description || errorMessage) && (
-          <Text
+          <ReactAriaText
             slot={errorMessage ? "errorMessage" : "description"}
             className={classNames.description}
           >
             {errorMessage || description}
-          </Text>
+          </ReactAriaText>
         )}
       </div>
-    </TextField>
+    </ReactAriaTextField>
   );
 };
 
