@@ -18,7 +18,6 @@ import {
   Textarea,
   toast,
 } from "@jigsaw/design-system";
-import { formFooterClassName } from "./settings.constants";
 
 // ---------------------------------------------------------------------------
 // Profile tab
@@ -46,7 +45,7 @@ function ProfileTab() {
           <Textarea label="Bio" defaultValue="Building design systems." rows={3} />
         </div>
       </div>
-      <div className={formFooterClassName}>
+      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>
       </div>
@@ -84,7 +83,7 @@ function NotificationsTab() {
           description="Comments, mentions, and assignments."
         />
       </CheckboxGroup>
-      <div className={formFooterClassName}>
+      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>
       </div>
@@ -119,7 +118,7 @@ function AppearanceTab() {
           <Select.Item id="es">Español</Select.Item>
         </Select>
       </Form.Group>
-      <div className={formFooterClassName}>
+      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>
       </div>
