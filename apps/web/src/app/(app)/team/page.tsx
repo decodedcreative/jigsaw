@@ -8,7 +8,6 @@ import {
   Card,
   Input,
   Modal,
-  Radio,
   RadioGroup,
   SearchField,
   Select,
@@ -182,9 +181,9 @@ function TeamInner() {
                         value={pendingRole[m.id] ?? m.role.toLowerCase()}
                         onChange={(v) => setPendingRole((p) => ({ ...p, [m.id]: v }))}
                       >
-                        <Radio value="viewer">Viewer — read-only</Radio>
-                        <Radio value="editor">Editor — can create and edit</Radio>
-                        <Radio value="admin">Admin — full access</Radio>
+                        <RadioGroup.Item value="viewer">Viewer — read-only</RadioGroup.Item>
+                        <RadioGroup.Item value="editor">Editor — can create and edit</RadioGroup.Item>
+                        <RadioGroup.Item value="admin">Admin — full access</RadioGroup.Item>
                       </RadioGroup>
                     </Modal>
 

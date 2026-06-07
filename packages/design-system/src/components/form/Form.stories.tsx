@@ -8,7 +8,7 @@ import { NumberField } from "../number-field/NumberField";
 import { SearchField } from "../search-field/SearchField";
 import { Checkbox } from "../checkbox";
 import { CheckboxGroup } from "../checkbox-group";
-import { Radio, RadioGroup } from "../radio-group/RadioGroup";
+import { RadioGroup } from "../radio-group";
 import { Button } from "../button/Button";
 import { formStoryStyles } from "./Form.stories.styles";
 
@@ -119,9 +119,9 @@ export const SideLabels: Story = {
               description="Applies across all devices."
               defaultValue="system"
             >
-              <Radio value="light" label="Light" />
-              <Radio value="dark" label="Dark" />
-              <Radio value="system" label="System" />
+              <RadioGroup.Item value="light" label="Light" />
+              <RadioGroup.Item value="dark" label="Dark" />
+              <RadioGroup.Item value="system" label="System" />
             </RadioGroup>
           </Form.Group>
           <div className={classNames.footer}>

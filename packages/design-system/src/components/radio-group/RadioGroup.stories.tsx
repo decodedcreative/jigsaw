@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { RadioGroup, Radio } from "./RadioGroup";
+import { RadioGroup } from "./index";
 
 const meta = {
   title: "Design System/RadioGroup",
@@ -17,9 +17,9 @@ type Story = StoryObj<typeof meta>;
 
 const items = (
   <>
-    <Radio value="free" label="Free" description="Up to 3 projects" />
-    <Radio value="pro" label="Pro" description="Unlimited projects" />
-    <Radio value="team" label="Team" description="Pro features for everyone" />
+    <RadioGroup.Item value="free" label="Free" description="Up to 3 projects" />
+    <RadioGroup.Item value="pro" label="Pro" description="Unlimited projects" />
+    <RadioGroup.Item value="team" label="Team" description="Pro features for everyone" />
   </>
 );
 
@@ -43,23 +43,23 @@ export const Disabled: Story = {
   render: (args) => <RadioGroup {...args}>{items}</RadioGroup>,
 };
 
-export const RadioSizes: Story = {
+export const ItemSizes: Story = {
   render: () => (
     <RadioGroup label="Sizes">
-      <Radio value="sm" size="sm" label="Small" />
-      <Radio value="md" size="md" label="Medium (default)" />
-      <Radio value="lg" size="lg" label="Large" />
+      <RadioGroup.Item value="sm" size="sm" label="Small" />
+      <RadioGroup.Item value="md" size="md" label="Medium (default)" />
+      <RadioGroup.Item value="lg" size="lg" label="Large" />
     </RadioGroup>
   ),
 };
 
-export const RadioStates: Story = {
+export const ItemStates: Story = {
   render: () => (
     <RadioGroup label="States" defaultValue="checked">
-      <Radio value="default" label="Default" />
-      <Radio value="checked" label="Checked" />
-      <Radio value="error" label="Error" hasError />
-      <Radio value="disabled" label="Disabled" isDisabled />
+      <RadioGroup.Item value="default" label="Default" />
+      <RadioGroup.Item value="checked" label="Checked" />
+      <RadioGroup.Item value="error" label="Error" hasError />
+      <RadioGroup.Item value="disabled" label="Disabled" isDisabled />
     </RadioGroup>
   ),
 };

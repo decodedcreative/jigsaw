@@ -8,7 +8,6 @@ import {
   Form,
   Input,
   NumberField,
-  Radio,
   RadioGroup,
   SearchField,
   Select,
@@ -152,8 +151,8 @@ export const previews: PreviewMap = {
   RadioGroup: (
     <Preview>
       <RadioGroup label="Plan" defaultValue="pro">
-        <Radio value="free">Free</Radio>
-        <Radio value="pro">Pro</Radio>
+        <RadioGroup.Item value="free">Free</RadioGroup.Item>
+        <RadioGroup.Item value="pro">Pro</RadioGroup.Item>
       </RadioGroup>
     </Preview>
   ),

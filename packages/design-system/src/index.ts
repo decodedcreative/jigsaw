@@ -92,8 +92,8 @@ export { NumberField } from "@components/number-field";
 export type { NumberFieldProps, NumberFieldSize } from "@components/number-field";
 
 // RadioGroup
-export { RadioGroup, Radio } from "@components/radio-group/RadioGroup";
-export type { RadioGroupProps, RadioProps } from "@components/radio-group/RadioGroup";
+export { RadioGroup } from "@components/radio-group";
+export type { RadioGroupComponent, RadioGroupProps, RadioGroupClassNameOverrides, RadioItemProps, RadioSize, RadioGroupItemClassNameOverrides } from "@components/radio-group";
 
 // SearchField
 export { SearchField } from "@components/search-field";
