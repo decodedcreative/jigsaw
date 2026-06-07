@@ -80,4 +80,39 @@ describe('CheckboxGroup', () => {
     expect(checkboxes[0]).toBeChecked();
     expect(checkboxes[1]).not.toBeChecked();
   });
+
+  it('merges classNameOverrides.group onto the group root', () => {
+    render(
+      <CheckboxGroup label="Group" classNameOverrides={{ group: 'mt-2' }} data-testid="my-group">
+        <Checkbox label="Option A" value="a" />
+      </CheckboxGroup>
+    );
+    expect(screen.getByTestId('my-group')).toHaveClass('mt-2');
+  });
+
+  it('merges classNameOverrides.options onto the options container', () => {
+    render(
+      <CheckboxGroup label="Group" classNameOverrides={{ options: 'gap-4' }}>
+        <Checkbox label="Option A" value="a" />
+      </CheckboxGroup>
+    );
+    const options = screen.getByRole('group').querySelector('.gap-4');
+    expect(options).toBeInTheDocument();
+  });
+
+  it('merges classNameOverrides.group and className together', () => {
+    render(
+      <CheckboxGroup
+        label="Group"
+        classNameOverrides={{ group: 'mt-2' }}
+        className="p-4"
+        data-testid="my-group"
+      >
+        <Checkbox label="Option A" value="a" />
+      </CheckboxGroup>
+    );
+    const root = screen.getByTestId('my-group');
+    expect(root).toHaveClass('mt-2');
+    expect(root).toHaveClass('p-4');
+  });
 });

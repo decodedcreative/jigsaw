@@ -1,23 +1,13 @@
 "use client";
 
-import * as React from "react";
 import {
   CheckboxGroup as ReactAriaCheckboxGroup,
-  Label,
-  Text,
-  type CheckboxGroupProps as ReactAriaCheckboxGroupProps,
+  Label as ReactAriaLabel,
+  Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { checkboxGroupStyles } from "./CheckboxGroup.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
-
-export type CheckboxGroupProps = Omit<ReactAriaCheckboxGroupProps, "children"> & {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  children?: React.ReactNode;
-  classNameOverrides?: ClassNameOverrides<typeof checkboxGroupStyles>;
-};
+import type { CheckboxGroupProps } from "./CheckboxGroup.types";
 
 export const CheckboxGroup = ({
   label,
@@ -25,6 +15,7 @@ export const CheckboxGroup = ({
   errorMessage,
   children,
   classNameOverrides,
+  className,
   isDisabled,
   isInvalid,
   ...props
@@ -33,30 +24,28 @@ export const CheckboxGroup = ({
 
   const classNames = useGetClassNames(checkboxGroupStyles, classNameOverrides, {
     label: { state },
-    description: {},
-    errorMessage: {},
-    options: {},
   });
+  const rootClassName = useRootClassName(classNames.group, className);
 
   return (
     <ReactAriaCheckboxGroup
-      className={classNames.group}
+      className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
     >
-      {label && <Label className={classNames.label}>{label}</Label>}
+      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <div className={classNames.fieldBody}>
         {description && (
-          <Text slot="description" className={classNames.description}>
+          <ReactAriaText slot="description" className={classNames.description}>
             {description}
-          </Text>
+          </ReactAriaText>
         )}
         <div className={classNames.options}>{children}</div>
         {errorMessage && (
-          <Text slot="errorMessage" className={classNames.errorMessage}>
+          <ReactAriaText slot="errorMessage" className={classNames.errorMessage}>
             {errorMessage}
-          </Text>
+          </ReactAriaText>
         )}
       </div>
     </ReactAriaCheckboxGroup>

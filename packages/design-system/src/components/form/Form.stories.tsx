@@ -7,7 +7,7 @@ import { Select } from "../select/Select";
 import { NumberField } from "../number-field/NumberField";
 import { SearchField } from "../search-field/SearchField";
 import { Checkbox } from "../checkbox";
-import { CheckboxGroup } from "../checkbox-group/CheckboxGroup";
+import { CheckboxGroup } from "../checkbox-group";
 import { Radio, RadioGroup } from "../radio-group/RadioGroup";
 import { Button } from "../button/Button";
 import { formStoryStyles } from "./Form.stories.styles";
