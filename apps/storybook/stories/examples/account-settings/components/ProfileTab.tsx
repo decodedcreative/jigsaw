@@ -6,7 +6,7 @@ import {
   Textarea,
   toast,
 } from "@jigsaw/design-system";
-import { FormFooter } from "./FormFooter";
+import { formFooterClassName } from "./formFooter.constants";
 
 export const ProfileTab = () => (
   <Form
@@ -44,9 +44,9 @@ export const ProfileTab = () => (
         <Textarea label="Bio" defaultValue="Building design systems." rows={3} />
       </div>
     </div>
-    <FormFooter>
+    <div className={formFooterClassName}>
       <Button variant="secondary">Cancel</Button>
       <Button type="submit">Save changes</Button>
-    </FormFooter>
+    </div>
   </Form>
 );

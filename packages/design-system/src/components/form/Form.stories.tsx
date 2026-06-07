@@ -23,6 +23,8 @@ const meta = {
           "`Form` wraps React Aria's form primitive for submission and validation.",
           "",
           'Set `labelPosition="side"` on `Form` to place field labels in a fixed left column (right-aligned) beside their controls for `Input`, `Textarea`, `Select`, `NumberField`, `SearchField`, `CheckboxGroup`, and `RadioGroup`.',
+          "",
+          "**Action rows** — place Cancel/Submit buttons in a plain layout `div` at the end of the form. There is no `FormActions` wrapper component. Use flex + gap + top border utilities, or `formStoryStyles.footer` in stories (includes side-label alignment when needed).",
         ].join("\n"),
       },
     },
@@ -38,6 +40,14 @@ type Story = StoryObj<typeof meta>;
  * - **CheckboxGroup / RadioGroup** — use their own `label` when the section is a single field group; skip Form.Group.
  */
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Stack fields in `Form.Group` sections, then add a plain `div` action row with Cancel and Submit buttons — see `formStoryStyles.footer` for the recommended layout classes.",
+      },
+    },
+  },
   render: () => {
     const classNames = getClassNames(formStoryStyles, {}, { canvas: { width: "default" } });
 
