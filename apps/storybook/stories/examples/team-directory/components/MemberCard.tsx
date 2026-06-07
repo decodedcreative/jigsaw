@@ -5,7 +5,6 @@ import {
   Card,
   Modal,
   Select,
-  SelectItem,
   Text,
   toast,
 } from "@jigsaw/design-system";
@@ -70,10 +69,10 @@ export const MemberCard = ({ member }: { member: Member }) => {
               Choose a new role for <strong className="text-foreground-primary">{member.name}</strong>.
               This will update their permissions immediately.
             </Text>
-            <Select label="Role" defaultSelectedKey={member.role.toLowerCase()}>
-              <SelectItem id="viewer">Viewer — read-only access</SelectItem>
-              <SelectItem id="editor">Editor — can create and edit</SelectItem>
-              <SelectItem id="admin">Admin — full workspace access</SelectItem>
+            <Select label="Role" defaultValue={member.role.toLowerCase()}>
+              <Select.Item id="viewer">Viewer — read-only access</Select.Item>
+              <Select.Item id="editor">Editor — can create and edit</Select.Item>
+              <Select.Item id="admin">Admin — full workspace access</Select.Item>
             </Select>
           </Modal>
 

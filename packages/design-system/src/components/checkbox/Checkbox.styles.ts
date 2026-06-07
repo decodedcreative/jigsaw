@@ -30,40 +30,7 @@ export const checkboxStyles = {
       defaultVariants: { size: "md", state: "default" },
     }
   ),
-  checkmark: cva(
-    [
-      "absolute text-foreground-inverse opacity-0 transition-opacity",
-      "group-data-[selected]:opacity-100",
-      // Hide checkmark when indeterminate (indeterminate takes precedence)
-      "group-data-[indeterminate]:opacity-0",
-    ],
-    {
-      variants: {
-        size: {
-          sm: "h-2.5 w-2.5",
-          md: "h-3 w-3",
-          lg: "h-4 w-4",
-        },
-      },
-      defaultVariants: { size: "md" },
-    }
-  ),
-  indeterminateMark: cva(
-    [
-      "absolute text-foreground-inverse opacity-0 transition-opacity",
-      "group-data-[indeterminate]:opacity-100",
-    ],
-    {
-      variants: {
-        size: {
-          sm: "h-2.5 w-2.5",
-          md: "h-3 w-3",
-          lg: "h-4 w-4",
-        },
-      },
-      defaultVariants: { size: "md" },
-    }
-  ),
+  icon: cva(["absolute text-foreground-inverse"]),
   label: cva(["select-none transition-colors group-data-[disabled]:text-foreground-muted"], {
     variants: {
       size: {

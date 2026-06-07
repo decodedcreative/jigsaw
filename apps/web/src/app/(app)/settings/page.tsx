@@ -10,7 +10,6 @@ import {
   Input,
   Modal,
   Select,
-  SelectItem,
   Tab,
   TabList,
   TabPanel,
@@ -100,24 +99,24 @@ function AppearanceTab() {
   return (
     <Form onSubmit={(e) => { e.preventDefault(); toast({ title: "Preferences saved", variant: "success" }); }}>
       <Form.Group title="Display preferences">
-        <Select label="Timezone" defaultSelectedKey="utc">
-          <SelectItem id="utc">UTC — Coordinated Universal Time</SelectItem>
-          <SelectItem id="london">Europe/London (GMT+0)</SelectItem>
-          <SelectItem id="paris">Europe/Paris (GMT+1)</SelectItem>
-          <SelectItem id="new_york">America/New_York (GMT-5)</SelectItem>
-          <SelectItem id="la">America/Los_Angeles (GMT-8)</SelectItem>
-          <SelectItem id="sydney">Australia/Sydney (GMT+11)</SelectItem>
+        <Select label="Timezone" defaultValue="utc">
+          <Select.Item id="utc">UTC — Coordinated Universal Time</Select.Item>
+          <Select.Item id="london">Europe/London (GMT+0)</Select.Item>
+          <Select.Item id="paris">Europe/Paris (GMT+1)</Select.Item>
+          <Select.Item id="new_york">America/New_York (GMT-5)</Select.Item>
+          <Select.Item id="la">America/Los_Angeles (GMT-8)</Select.Item>
+          <Select.Item id="sydney">Australia/Sydney (GMT+11)</Select.Item>
         </Select>
-        <Select label="Date format" defaultSelectedKey="dmy">
-          <SelectItem id="dmy">DD/MM/YYYY</SelectItem>
-          <SelectItem id="mdy">MM/DD/YYYY</SelectItem>
-          <SelectItem id="ymd">YYYY-MM-DD</SelectItem>
+        <Select label="Date format" defaultValue="dmy">
+          <Select.Item id="dmy">DD/MM/YYYY</Select.Item>
+          <Select.Item id="mdy">MM/DD/YYYY</Select.Item>
+          <Select.Item id="ymd">YYYY-MM-DD</Select.Item>
         </Select>
-        <Select label="Language" defaultSelectedKey="en">
-          <SelectItem id="en">English</SelectItem>
-          <SelectItem id="fr">Français</SelectItem>
-          <SelectItem id="de">Deutsch</SelectItem>
-          <SelectItem id="es">Español</SelectItem>
+        <Select label="Language" defaultValue="en">
+          <Select.Item id="en">English</Select.Item>
+          <Select.Item id="fr">Français</Select.Item>
+          <Select.Item id="de">Deutsch</Select.Item>
+          <Select.Item id="es">Español</Select.Item>
         </Select>
       </Form.Group>
       <div className={formFooterClassName}>

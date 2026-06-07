@@ -1,107 +1,86 @@
 "use client";
 
-import * as React from "react";
+import { CaretDownIcon } from "@phosphor-icons/react";
 import {
   Select as ReactAriaSelect,
-  Label,
-  Button,
-  SelectValue,
-  Popover,
-  ListBox,
-  ListBoxItem,
-  Text,
-  type SelectProps as ReactAriaSelectProps,
-  type ListBoxItemProps,
+  Label as ReactAriaLabel,
+  Button as ReactAriaButton,
+  SelectValue as ReactAriaSelectValue,
+  Popover as ReactAriaPopover,
+  ListBox as ReactAriaListBox,
+  ListBoxItem as ReactAriaListBoxItem,
+  Text as ReactAriaText,
 } from "react-aria-components";
-import { CaretDownIcon } from "@phosphor-icons/react";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { Icon } from "@components/icon";
 import { selectStyles } from "./Select.styles";
-import type { ClassNameOverrides } from "@jsw-types/component-props";
+import type { SelectItemProps, SelectProps } from "./Select.types";
 
-export type SelectProps<T extends object> = Omit<ReactAriaSelectProps<T>, "children"> & {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  placeholder?: string;
-  items?: Iterable<T>;
-  children?: React.ReactNode | ((item: T) => React.ReactNode);
-  classNameOverrides?: ClassNameOverrides<typeof selectStyles>;
-  size?: "sm" | "md" | "lg";
-};
-
-export function Select<T extends object>({
+export const Select = ({
   label,
   description,
   errorMessage,
   placeholder = "Select an option",
-  items,
   children,
   size = "md",
   classNameOverrides,
+  className,
   isDisabled,
   isInvalid,
   ...props
-}: SelectProps<T>) {
+}: SelectProps) => {
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
   const classNames = useGetClassNames(selectStyles, classNameOverrides, {
     label: { state },
     trigger: { size, state },
     description: { state },
-    chevron: {},
-    popover: {},
-    listbox: {},
   });
+  const rootClassName = useRootClassName(classNames.wrapper, className);
 
   return (
     <ReactAriaSelect
-      className={classNames.wrapper}
+      className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
     >
-      {label && <Label className={classNames.label}>{label}</Label>}
+      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <div className={classNames.fieldBody}>
-        <Button className={classNames.trigger}>
-          <SelectValue className="flex-1 text-left truncate">
+        <ReactAriaButton className={classNames.trigger}>
+          <ReactAriaSelectValue className="flex-1 text-left truncate">
             {({ selectedText }) => selectedText || placeholder}
-          </SelectValue>
-          <Icon
-            icon={CaretDownIcon}
-            size={size}
-            classNameOverrides={{ component: classNames.chevron }}
-          />
-        </Button>
+          </ReactAriaSelectValue>
+          <Icon icon={CaretDownIcon} size={size} classNameOverrides={{ component: classNames.chevron }} />
+        </ReactAriaButton>
         {(description || errorMessage) && (
-          <Text
+          <ReactAriaText
             slot={errorMessage ? "errorMessage" : "description"}
             className={classNames.description}
           >
             {errorMessage || description}
-          </Text>
+          </ReactAriaText>
         )}
       </div>
-      <Popover className={classNames.popover}>
-        <ListBox className={classNames.listbox} items={items}>
-          {children as (item: T) => React.ReactNode}
-        </ListBox>
-      </Popover>
+      <ReactAriaPopover className={classNames.popover}>
+        <ReactAriaListBox className={classNames.listbox}>
+          {children}
+        </ReactAriaListBox>
+      </ReactAriaPopover>
     </ReactAriaSelect>
-  );
-}
-
-Select.displayName = "DS_Select";
-
-export type SelectItemProps = ListBoxItemProps;
-
-export const SelectItem = ({ children, ...props }: SelectItemProps) => {
-  const classNames = useGetClassNames(selectStyles, undefined, { item: {} });
-  return (
-    <ListBoxItem className={classNames.item} {...props}>
-      {children}
-    </ListBoxItem>
   );
 };
 
-SelectItem.displayName = "DS_SelectItem";
+const SelectItem = ({ children, ...props }: SelectItemProps) => (
+  <ReactAriaListBoxItem className={selectStyles.item()} {...props}>
+    {children}
+  </ReactAriaListBoxItem>
+);
+
+Select.displayName = "DS_Select";
+SelectItem.displayName = "DS_Select.Item";
+Select.Item = SelectItem;
+
+export type SelectComponent = typeof Select & {
+  Item: typeof SelectItem;
+};

@@ -39,8 +39,8 @@ export { Card } from "@components/card";
 export type { CardComponent, CardProps, CardVariant } from "@components/card";
 
 // Checkbox
-export { Checkbox } from "@components/checkbox/Checkbox";
-export type { CheckboxProps } from "@components/checkbox/Checkbox";
+export { Checkbox } from "@components/checkbox";
+export type { CheckboxProps, CheckboxSize } from "@components/checkbox";
 
 // CheckboxGroup
 export { CheckboxGroup } from "@components/checkbox-group/CheckboxGroup";
@@ -100,8 +100,8 @@ export { SearchField } from "@components/search-field";
 export type { SearchFieldProps, SearchFieldSize } from "@components/search-field";
 
 // Select
-export { Select, SelectItem } from "@components/select/Select";
-export type { SelectProps, SelectItemProps } from "@components/select/Select";
+export { Select } from "@components/select";
+export type { SelectComponent, SelectProps, SelectItemProps, SelectSize } from "@components/select";
 
 // Skeleton
 export { Skeleton, SkeletonText, SkeletonCircle, SkeletonCard } from "@components/skeleton/Skeleton";

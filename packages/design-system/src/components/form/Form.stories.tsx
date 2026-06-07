@@ -3,10 +3,10 @@ import { getClassNames } from "@utils";
 import { Form } from "./index";
 import { Input } from "../input/Input";
 import { Textarea } from "../textarea/Textarea";
-import { Select, SelectItem } from "../select/Select";
+import { Select } from "../select/Select";
 import { NumberField } from "../number-field/NumberField";
 import { SearchField } from "../search-field/SearchField";
-import { Checkbox } from "../checkbox/Checkbox";
+import { Checkbox } from "../checkbox";
 import { CheckboxGroup } from "../checkbox-group/CheckboxGroup";
 import { Radio, RadioGroup } from "../radio-group/RadioGroup";
 import { Button } from "../button/Button";
@@ -87,10 +87,10 @@ export const SideLabels: Story = {
               defaultValue="j"
               errorMessage="Username must be at least 3 characters."
             />
-            <Select label="Role" defaultSelectedKey="editor">
-              <SelectItem id="viewer">Viewer</SelectItem>
-              <SelectItem id="editor">Editor</SelectItem>
-              <SelectItem id="admin">Admin</SelectItem>
+            <Select label="Role" defaultValue="editor">
+              <Select.Item id="viewer">Viewer</Select.Item>
+              <Select.Item id="editor">Editor</Select.Item>
+              <Select.Item id="admin">Admin</Select.Item>
             </Select>
             <NumberField
               label="Team size"
