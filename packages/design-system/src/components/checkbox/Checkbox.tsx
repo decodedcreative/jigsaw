@@ -7,6 +7,7 @@ import {
 } from "react-aria-components";
 import { useGetClassNames, useRootClassName } from "@hooks";
 import { Icon, type IconSize } from "@components/icon";
+import { useCheckboxGroupContext } from "../checkbox-group/CheckboxGroupContext";
 import { checkboxStyles } from "./Checkbox.styles";
 import type { CheckboxProps, CheckboxSize } from "./Checkbox.types";
 
@@ -27,7 +28,9 @@ export const Checkbox = ({
   isInvalid,
   ...props
 }: CheckboxProps) => {
-  const state = hasError ? "error" : "default";
+  const group = useCheckboxGroupContext();
+  const resolvedHasError = hasError || group?.groupHasError || false;
+  const state = resolvedHasError ? "error" : "default";
 
   const iconSize = checkboxIconSize[size];
   const classNames = useGetClassNames(checkboxStyles, classNameOverrides, {
@@ -38,7 +41,7 @@ export const Checkbox = ({
   const rootClassName = useRootClassName(classNames.wrapper, className);
 
   return (
-    <ReactAriaCheckboxField isInvalid={isInvalid || hasError} {...props}>
+    <ReactAriaCheckboxField isInvalid={isInvalid || resolvedHasError} {...props}>
       <ReactAriaCheckboxButton className={rootClassName}>
         {({ isSelected, isIndeterminate }) => (
           <>

@@ -129,6 +129,48 @@ describe('RadioGroup', () => {
       expect(radio.closest('label')).toHaveClass('gap-4');
     });
   });
+
+  it('merges classNameOverrides.item onto fragment-wrapped radio items', () => {
+    render(
+      <RadioGroup
+        label="Group"
+        classNameOverrides={{
+          item: { wrapper: 'gap-4' },
+        }}
+      >
+        <>
+          <RadioGroup.Item label="Option A" value="a" />
+          <RadioGroup.Item label="Option B" value="b" />
+        </>
+      </RadioGroup>
+    );
+    screen.getAllByRole('radio').forEach((radio) => {
+      expect(radio.closest('label')).toHaveClass('gap-4');
+    });
+  });
+
+  it('applies error styling to all items when group has errorMessage', () => {
+    render(
+      <RadioGroup label="Group" errorMessage="Required">
+        <RadioGroup.Item label="Option A" value="a" />
+        <RadioGroup.Item label="Option B" value="b" />
+      </RadioGroup>
+    );
+    screen.getAllByRole('radio').forEach((radio) => {
+      const circle = radio.closest('label')?.querySelector('div');
+      expect(circle).toHaveClass('border-state-error');
+    });
+  });
+
+  it('applies error styling to all items when group isInvalid', () => {
+    render(
+      <RadioGroup label="Group" isInvalid>
+        <RadioGroup.Item label="Option A" value="a" />
+      </RadioGroup>
+    );
+    const circle = screen.getByRole('radio').closest('label')?.querySelector('div');
+    expect(circle).toHaveClass('border-state-error');
+  });
 });
 
 describe('RadioGroup.Item', () => {

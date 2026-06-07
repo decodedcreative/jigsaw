@@ -5,8 +5,9 @@ import {
   RadioButton as ReactAriaRadioButton,
 } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
+import { useRadioGroupContext } from "./RadioGroupContext";
 import { radioStyles } from "./RadioGroupItem.styles";
-import type { RadioGroupItemProps } from "./RadioGroupItem.types";
+import type { RadioItemProps } from "./RadioGroupItem.types";
 
 export const RadioGroupItem = ({
   label,
@@ -15,12 +16,13 @@ export const RadioGroupItem = ({
   hasError = false,
   value,
   children,
-  itemClassNameOverrides,
   ...props
-}: RadioGroupItemProps) => {
-  const state = hasError ? "error" : "default";
+}: RadioItemProps) => {
+  const group = useRadioGroupContext();
+  const resolvedHasError = hasError || group?.groupHasError || false;
+  const state = resolvedHasError ? "error" : "default";
 
-  const classNames = useGetClassNames(radioStyles, itemClassNameOverrides, {
+  const classNames = useGetClassNames(radioStyles, group?.itemClassNameOverrides, {
     circle: { size, state },
     dot: { size, state },
     label: { size },

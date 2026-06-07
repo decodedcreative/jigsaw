@@ -15,8 +15,3 @@ export type RadioItemProps = WithoutClassName<Omit<ReactAriaRadioFieldProps, "ch
   size?: RadioSize;
   hasError?: boolean;
 };
-
-/** Includes internal props injected by RadioGroup — not part of the public item API. */
-export type RadioGroupItemProps = RadioItemProps & {
-  itemClassNameOverrides?: ClassNameOverrides<typeof radioStyles>;
-};

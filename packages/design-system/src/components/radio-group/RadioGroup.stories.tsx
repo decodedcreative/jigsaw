@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
 import { RadioGroup } from "./index";
+import type { RadioGroupProps } from "./RadioGroup.types";
 
 const meta = {
   title: "Design System/RadioGroup",
@@ -23,24 +25,37 @@ const items = (
   </>
 );
 
+type ControlledRadioGroupProps = Omit<RadioGroupProps, "value" | "onChange">;
+
+/** Radio group with local selection state — matches typical app usage. */
+const ControlledRadioGroup = ({ defaultValue, ...props }: ControlledRadioGroupProps) => {
+  const [value, setValue] = useState(defaultValue ?? undefined);
+
+  return (
+    <RadioGroup {...props} value={value} onChange={(next) => setValue(next ?? undefined)}>
+      {items}
+    </RadioGroup>
+  );
+};
+
 export const Default: Story = {
   args: { label: "Plan", description: "Choose your subscription tier." },
-  render: (args) => <RadioGroup {...args}>{items}</RadioGroup>,
+  render: (args) => <ControlledRadioGroup {...args} />,
 };
 
 export const WithPreselected: Story = {
   args: { label: "Plan", defaultValue: "pro" },
-  render: (args) => <RadioGroup {...args}>{items}</RadioGroup>,
+  render: (args) => <ControlledRadioGroup {...args} />,
 };
 
 export const WithError: Story = {
   args: { label: "Plan", errorMessage: "Please pick a plan." },
-  render: (args) => <RadioGroup {...args}>{items}</RadioGroup>,
+  render: (args) => <ControlledRadioGroup {...args} />,
 };
 
 export const Disabled: Story = {
   args: { label: "Plan", isDisabled: true, defaultValue: "free" },
-  render: (args) => <RadioGroup {...args}>{items}</RadioGroup>,
+  render: (args) => <ControlledRadioGroup {...args} />,
 };
 
 export const ItemSizes: Story = {

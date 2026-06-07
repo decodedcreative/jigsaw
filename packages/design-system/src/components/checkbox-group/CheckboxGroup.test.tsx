@@ -115,4 +115,27 @@ describe('CheckboxGroup', () => {
     expect(root).toHaveClass('mt-2');
     expect(root).toHaveClass('p-4');
   });
+
+  it('applies error styling to all checkboxes when group has errorMessage', () => {
+    render(
+      <CheckboxGroup label="Group" errorMessage="Required">
+        <Checkbox label="Option A" value="a" />
+        <Checkbox label="Option B" value="b" />
+      </CheckboxGroup>
+    );
+    screen.getAllByRole('checkbox').forEach((checkbox) => {
+      const box = checkbox.closest('label')?.querySelector('div');
+      expect(box).toHaveClass('border-state-error');
+    });
+  });
+
+  it('applies error styling to all checkboxes when group isInvalid', () => {
+    render(
+      <CheckboxGroup label="Group" isInvalid>
+        <Checkbox label="Option A" value="a" />
+      </CheckboxGroup>
+    );
+    const box = screen.getByRole('checkbox').closest('label')?.querySelector('div');
+    expect(box).toHaveClass('border-state-error');
+  });
 });

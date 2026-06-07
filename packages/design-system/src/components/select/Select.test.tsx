@@ -151,4 +151,18 @@ describe('Select', () => {
     expect(root).toHaveClass('mt-2');
     expect(root).toHaveClass('p-4');
   });
+
+  it('merges classNameOverrides.item onto all list items', async () => {
+    const user = userEvent.setup();
+    render(
+      <Select label="Fruit" classNameOverrides={{ item: 'font-semibold' }}>
+        <Select.Item id="apple">Apple</Select.Item>
+        <Select.Item id="banana">Banana</Select.Item>
+      </Select>
+    );
+    await user.click(screen.getByRole('button'));
+    screen.getAllByRole('option').forEach((option) => {
+      expect(option).toHaveClass('font-semibold');
+    });
+  });
 });

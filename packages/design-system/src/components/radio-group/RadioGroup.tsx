@@ -1,13 +1,14 @@
 "use client";
 
+import { useMemo } from "react";
 import {
   RadioGroup as ReactAriaRadioGroup,
   Label as ReactAriaLabel,
   Text as ReactAriaText,
 } from "react-aria-components";
 import { useGetClassNames, useRootClassName } from "@hooks";
-import { applyItemClassNameOverrides } from "@utils";
 import { radioGroupStyles } from "./RadioGroup.styles";
+import { RadioGroupProvider } from "./RadioGroupContext";
 import { RadioGroupItem } from "./RadioGroupItem";
 import type { RadioGroupProps } from "./RadioGroup.types";
 
@@ -22,7 +23,8 @@ export const RadioGroup = ({
   isInvalid,
   ...props
 }: RadioGroupProps) => {
-  const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
+  const groupHasError = isInvalid || !!errorMessage;
+  const state = isDisabled ? "disabled" : groupHasError ? "error" : "default";
   const { item: itemClassNameOverrides, ...groupClassNameOverrides } = classNameOverrides ?? {};
 
   const classNames = useGetClassNames(radioGroupStyles, groupClassNameOverrides, {
@@ -30,30 +32,35 @@ export const RadioGroup = ({
   });
   const rootClassName = useRootClassName(classNames.group, className);
 
+  const contextValue = useMemo(
+    () => ({ itemClassNameOverrides, groupHasError }),
+    [itemClassNameOverrides, groupHasError]
+  );
+
   return (
-    <ReactAriaRadioGroup
-      className={rootClassName}
-      isDisabled={isDisabled}
-      isInvalid={isInvalid || !!errorMessage}
-      {...props}
-    >
-      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
-      <div className={classNames.fieldBody}>
-        {description && (
-          <ReactAriaText slot="description" className={classNames.description}>
-            {description}
-          </ReactAriaText>
-        )}
-        <div className={classNames.options}>
-          {applyItemClassNameOverrides(children, RadioGroupItem, itemClassNameOverrides)}
+    <RadioGroupProvider value={contextValue}>
+      <ReactAriaRadioGroup
+        className={rootClassName}
+        isDisabled={isDisabled}
+        isInvalid={groupHasError}
+        {...props}
+      >
+        {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
+        <div className={classNames.fieldBody}>
+          {description && (
+            <ReactAriaText slot="description" className={classNames.description}>
+              {description}
+            </ReactAriaText>
+          )}
+          <div className={classNames.options}>{children}</div>
+          {errorMessage && (
+            <ReactAriaText slot="errorMessage" className={classNames.errorMessage}>
+              {errorMessage}
+            </ReactAriaText>
+          )}
         </div>
-        {errorMessage && (
-          <ReactAriaText slot="errorMessage" className={classNames.errorMessage}>
-            {errorMessage}
-          </ReactAriaText>
-        )}
-      </div>
-    </ReactAriaRadioGroup>
+      </ReactAriaRadioGroup>
+    </RadioGroupProvider>
   );
 };
 
