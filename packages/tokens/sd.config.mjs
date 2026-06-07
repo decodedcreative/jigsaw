@@ -1,3 +1,7 @@
+import { figmaTokens } from "./scripts/formats/figma-tokens.mjs";
+
+const figmaFormats = { "figma/tokens": figmaTokens };
+
 /**
  * Convert a CSS color value to a space-separated RGB tuple
  * (e.g. "#ff6b1a" → "255 107 26") so Tailwind's `<alpha-value>`
@@ -198,5 +202,89 @@ const portfolioThemeConfig = {
   hooks: { formats: { "css/themed-variables": cssThemedVariables } },
 };
 
+// ─── Figma / Tokens Studio exports (legacy value/type JSON) ─────────────────
+const figmaSharedConfig = {
+  source: ["src/tokens/shared/**/*.json"],
+  platforms: {
+    figma: {
+      buildPath: "dist/figma/",
+      files: [{ destination: "shared.tokens.json", format: "figma/tokens" }],
+    },
+  },
+  hooks: { formats: figmaFormats },
+};
+
+const figmaDefaultConfig = {
+  source: [
+    "src/tokens/themes/default/base/**/*.json",
+    "src/tokens/themes/default/semantic/**/*.json",
+  ],
+  platforms: {
+    figmaBase: {
+      buildPath: "dist/figma/",
+      files: [
+        {
+          destination: "default-base.tokens.json",
+          format: "figma/tokens",
+          filter: (token) => token.filePath.includes("default/base"),
+        },
+      ],
+    },
+    figmaLight: {
+      buildPath: "dist/figma/",
+      files: [
+        {
+          destination: "default-light.tokens.json",
+          format: "figma/tokens",
+          filter: (token) => token.path[0] === "light",
+          options: { stripFirstSegment: true },
+        },
+      ],
+    },
+    figmaDark: {
+      buildPath: "dist/figma/",
+      files: [
+        {
+          destination: "default-dark.tokens.json",
+          format: "figma/tokens",
+          filter: (token) => token.path[0] === "dark",
+          options: { stripFirstSegment: true },
+        },
+      ],
+    },
+  },
+  hooks: { formats: figmaFormats },
+};
+
+const figmaPortfolioConfig = {
+  source: [
+    "src/tokens/themes/portfolio/base/**/*.json",
+    "src/tokens/themes/portfolio/semantic/**/*.json",
+  ],
+  platforms: {
+    figma: {
+      buildPath: "dist/figma/",
+      files: [
+        {
+          destination: "portfolio.tokens.json",
+          format: "figma/tokens",
+          filter: (token) =>
+            token.filePath.includes("portfolio/base") || token.path[0] === "portfolio",
+          options: { stripModePrefixes: ["portfolio"] },
+        },
+      ],
+    },
+  },
+  hooks: { formats: figmaFormats },
+};
+
 // Style Dictionary supports exporting an array of configs
-export default [sharedConfig, tailwindThemeConfig, defaultThemeConfig, portfolioThemeConfig];
+export default [
+  sharedConfig,
+  tailwindThemeConfig,
+  defaultThemeConfig,
+  portfolioThemeConfig,
+  figmaSharedConfig,
+  figmaDefaultConfig,
+  figmaPortfolioConfig,
+];
