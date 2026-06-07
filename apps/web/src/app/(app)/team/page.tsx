@@ -8,11 +8,9 @@ import {
   Card,
   Input,
   Modal,
-  Radio,
   RadioGroup,
   SearchField,
   Select,
-  SelectItem,
   toast,
   type AvatarStatus,
   type BadgeVariant,
@@ -124,21 +122,21 @@ function TeamInner() {
           <SearchField label="Search" placeholder="Search by name or email…" value={query} onChange={setQuery} />
         </div>
         <div className="w-36">
-          <Select label="Role" selectedKey={roleFilter} onSelectionChange={(k) => setRoleFilter(k as string)}>
-            <SelectItem id="all">All roles</SelectItem>
-            <SelectItem id="owner">Owner</SelectItem>
-            <SelectItem id="admin">Admin</SelectItem>
-            <SelectItem id="editor">Editor</SelectItem>
-            <SelectItem id="viewer">Viewer</SelectItem>
+          <Select label="Role" value={roleFilter} onChange={(k) => setRoleFilter(k as string)}>
+            <Select.Item id="all">All roles</Select.Item>
+            <Select.Item id="owner">Owner</Select.Item>
+            <Select.Item id="admin">Admin</Select.Item>
+            <Select.Item id="editor">Editor</Select.Item>
+            <Select.Item id="viewer">Viewer</Select.Item>
           </Select>
         </div>
         <div className="w-44">
-          <Select label="Department" selectedKey={deptFilter} onSelectionChange={(k) => setDeptFilter(k as string)}>
-            <SelectItem id="all">All departments</SelectItem>
-            <SelectItem id="Engineering">Engineering</SelectItem>
-            <SelectItem id="Design">Design</SelectItem>
-            <SelectItem id="Product">Product</SelectItem>
-            <SelectItem id="Marketing">Marketing</SelectItem>
+          <Select label="Department" value={deptFilter} onChange={(k) => setDeptFilter(k as string)}>
+            <Select.Item id="all">All departments</Select.Item>
+            <Select.Item id="Engineering">Engineering</Select.Item>
+            <Select.Item id="Design">Design</Select.Item>
+            <Select.Item id="Product">Product</Select.Item>
+            <Select.Item id="Marketing">Marketing</Select.Item>
           </Select>
         </div>
       </div>
@@ -183,9 +181,9 @@ function TeamInner() {
                         value={pendingRole[m.id] ?? m.role.toLowerCase()}
                         onChange={(v) => setPendingRole((p) => ({ ...p, [m.id]: v }))}
                       >
-                        <Radio value="viewer">Viewer — read-only</Radio>
-                        <Radio value="editor">Editor — can create and edit</Radio>
-                        <Radio value="admin">Admin — full access</Radio>
+                        <RadioGroup.Item value="viewer">Viewer — read-only</RadioGroup.Item>
+                        <RadioGroup.Item value="editor">Editor — can create and edit</RadioGroup.Item>
+                        <RadioGroup.Item value="admin">Admin — full access</RadioGroup.Item>
                       </RadioGroup>
                     </Modal>
 

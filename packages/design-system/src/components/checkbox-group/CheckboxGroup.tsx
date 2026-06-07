@@ -1,23 +1,15 @@
 "use client";
 
-import * as React from "react";
+import { useMemo } from "react";
 import {
   CheckboxGroup as ReactAriaCheckboxGroup,
-  Label,
-  Text,
-  type CheckboxGroupProps as ReactAriaCheckboxGroupProps,
+  Label as ReactAriaLabel,
+  Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { checkboxGroupStyles } from "./CheckboxGroup.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
-
-export type CheckboxGroupProps = Omit<ReactAriaCheckboxGroupProps, "children"> & {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  children?: React.ReactNode;
-  classNameOverrides?: ClassNameOverrides<typeof checkboxGroupStyles>;
-};
+import { CheckboxGroupProvider } from "./CheckboxGroupContext";
+import type { CheckboxGroupProps } from "./CheckboxGroup.types";
 
 export const CheckboxGroup = ({
   label,
@@ -25,41 +17,45 @@ export const CheckboxGroup = ({
   errorMessage,
   children,
   classNameOverrides,
+  className,
   isDisabled,
   isInvalid,
   ...props
 }: CheckboxGroupProps) => {
-  const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
+  const groupHasError = isInvalid || !!errorMessage;
+  const state = isDisabled ? "disabled" : groupHasError ? "error" : "default";
 
   const classNames = useGetClassNames(checkboxGroupStyles, classNameOverrides, {
     label: { state },
-    description: {},
-    errorMessage: {},
-    options: {},
   });
+  const rootClassName = useRootClassName(classNames.group, className);
+
+  const contextValue = useMemo(() => ({ groupHasError }), [groupHasError]);
 
   return (
-    <ReactAriaCheckboxGroup
-      className={classNames.group}
-      isDisabled={isDisabled}
-      isInvalid={isInvalid || !!errorMessage}
-      {...props}
-    >
-      {label && <Label className={classNames.label}>{label}</Label>}
-      <div className={classNames.fieldBody}>
-        {description && (
-          <Text slot="description" className={classNames.description}>
-            {description}
-          </Text>
-        )}
-        <div className={classNames.options}>{children}</div>
-        {errorMessage && (
-          <Text slot="errorMessage" className={classNames.errorMessage}>
-            {errorMessage}
-          </Text>
-        )}
-      </div>
-    </ReactAriaCheckboxGroup>
+    <CheckboxGroupProvider value={contextValue}>
+      <ReactAriaCheckboxGroup
+        className={rootClassName}
+        isDisabled={isDisabled}
+        isInvalid={groupHasError}
+        {...props}
+      >
+        {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
+        <div className={classNames.fieldBody}>
+          {description && (
+            <ReactAriaText slot="description" className={classNames.description}>
+              {description}
+            </ReactAriaText>
+          )}
+          <div className={classNames.options}>{children}</div>
+          {errorMessage && (
+            <ReactAriaText slot="errorMessage" className={classNames.errorMessage}>
+              {errorMessage}
+            </ReactAriaText>
+          )}
+        </div>
+      </ReactAriaCheckboxGroup>
+    </CheckboxGroupProvider>
   );
 };
 

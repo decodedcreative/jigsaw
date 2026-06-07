@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Select, SelectItem } from "./Select";
+import { Select } from "./index";
 
 const meta = {
   title: "Design System/Select",
@@ -12,17 +12,17 @@ const meta = {
     isInvalid: { control: "boolean" },
     isRequired: { control: "boolean" },
   },
-} satisfies Meta<typeof Select<{ id: string; name: string }>>;
+} satisfies Meta<typeof Select>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const options = (
   <>
-    <SelectItem id="react">React</SelectItem>
-    <SelectItem id="vue">Vue</SelectItem>
-    <SelectItem id="svelte">Svelte</SelectItem>
-    <SelectItem id="solid">Solid</SelectItem>
+    <Select.Item id="react">React</Select.Item>
+    <Select.Item id="vue">Vue</Select.Item>
+    <Select.Item id="svelte">Svelte</Select.Item>
+    <Select.Item id="solid">Solid</Select.Item>
   </>
 );
 
@@ -36,7 +36,7 @@ export const Default: Story = {
 };
 
 export const WithSelectedValue: Story = {
-  args: { label: "Framework", defaultSelectedKey: "react" },
+  args: { label: "Framework", defaultValue: "react" },
   render: (args) => (
     <div style={{ width: 280 }}>
       <Select {...args}>{options}</Select>
@@ -94,7 +94,7 @@ export const ErrorWithDescription: Story = {
 };
 
 export const Disabled: Story = {
-  args: { label: "Framework", isDisabled: true, defaultSelectedKey: "react" },
+  args: { label: "Framework", isDisabled: true, defaultValue: "react" },
   render: (args) => (
     <div style={{ width: 280 }}>
       <Select {...args}>{options}</Select>
@@ -116,10 +116,10 @@ export const AllStates: Story = {
   render: () => (
     <div className="flex flex-col gap-3" style={{ width: 280 }}>
       <Select label="Default" placeholder="Pick one">{options}</Select>
-      <Select label="With selection" defaultSelectedKey="react">{options}</Select>
+      <Select label="With selection" defaultValue="react">{options}</Select>
       <Select label="Required" isRequired placeholder="Required">{options}</Select>
       <Select label="Error" placeholder="Pick one" errorMessage="Required">{options}</Select>
-      <Select label="Disabled" isDisabled defaultSelectedKey="react">{options}</Select>
+      <Select label="Disabled" isDisabled defaultValue="react">{options}</Select>
     </div>
   ),
 };

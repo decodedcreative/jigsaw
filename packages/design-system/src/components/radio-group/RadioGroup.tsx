@@ -1,25 +1,16 @@
 "use client";
 
-import * as React from "react";
+import { useMemo } from "react";
 import {
   RadioGroup as ReactAriaRadioGroup,
-  Radio as ReactAriaRadio,
-  Label,
-  Text,
-  type RadioGroupProps as ReactAriaRadioGroupProps,
-  type RadioProps as ReactAriaRadioProps,
+  Label as ReactAriaLabel,
+  Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
-import { radioGroupStyles, radioStyles } from "./RadioGroup.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
-
-export type RadioGroupProps = Omit<ReactAriaRadioGroupProps, "children"> & {
-  label?: string;
-  description?: string;
-  errorMessage?: string;
-  children?: React.ReactNode;
-  classNameOverrides?: ClassNameOverrides<typeof radioGroupStyles>;
-};
+import { useGetClassNames, useRootClassName } from "@hooks";
+import { radioGroupStyles } from "./RadioGroup.styles";
+import { RadioGroupProvider } from "./RadioGroupContext";
+import { RadioGroupItem } from "./RadioGroupItem";
+import type { RadioGroupProps } from "./RadioGroup.types";
 
 export const RadioGroup = ({
   label,
@@ -27,89 +18,55 @@ export const RadioGroup = ({
   errorMessage,
   children,
   classNameOverrides,
+  className,
   isDisabled,
   isInvalid,
   ...props
 }: RadioGroupProps) => {
-  const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
+  const groupHasError = isInvalid || !!errorMessage;
+  const state = isDisabled ? "disabled" : groupHasError ? "error" : "default";
+  const { item: itemClassNameOverrides, ...groupClassNameOverrides } = classNameOverrides ?? {};
 
-  const classNames = useGetClassNames(radioGroupStyles, classNameOverrides, {
+  const classNames = useGetClassNames(radioGroupStyles, groupClassNameOverrides, {
     label: { state },
-    description: {},
-    errorMessage: {},
-    options: {},
   });
+  const rootClassName = useRootClassName(classNames.group, className);
+
+  const contextValue = useMemo(
+    () => ({ itemClassNameOverrides, groupHasError }),
+    [itemClassNameOverrides, groupHasError]
+  );
 
   return (
-    <ReactAriaRadioGroup
-      className={classNames.group}
-      isDisabled={isDisabled}
-      isInvalid={isInvalid || !!errorMessage}
-      {...props}
-    >
-      {label && <Label className={classNames.label}>{label}</Label>}
-      <div className={classNames.fieldBody}>
-        {description && (
-          <Text slot="description" className={classNames.description}>
-            {description}
-          </Text>
-        )}
-        <div className={classNames.options}>{children}</div>
-        {errorMessage && (
-          <Text slot="errorMessage" className={classNames.errorMessage}>
-            {errorMessage}
-          </Text>
-        )}
-      </div>
-    </ReactAriaRadioGroup>
+    <RadioGroupProvider value={contextValue}>
+      <ReactAriaRadioGroup
+        className={rootClassName}
+        isDisabled={isDisabled}
+        isInvalid={groupHasError}
+        {...props}
+      >
+        {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
+        <div className={classNames.fieldBody}>
+          {description && (
+            <ReactAriaText slot="description" className={classNames.description}>
+              {description}
+            </ReactAriaText>
+          )}
+          <div className={classNames.options}>{children}</div>
+          {errorMessage && (
+            <ReactAriaText slot="errorMessage" className={classNames.errorMessage}>
+              {errorMessage}
+            </ReactAriaText>
+          )}
+        </div>
+      </ReactAriaRadioGroup>
+    </RadioGroupProvider>
   );
 };
 
 RadioGroup.displayName = "DS_RadioGroup";
+RadioGroup.Item = RadioGroupItem;
 
-export type RadioProps = Omit<ReactAriaRadioProps, "children"> & {
-  label?: string;
-  description?: string;
-  children?: React.ReactNode;
-  classNameOverrides?: ClassNameOverrides<typeof radioGroupStyles>;
-  size?: "sm" | "md" | "lg";
-  hasError?: boolean;
+export type RadioGroupComponent = typeof RadioGroup & {
+  Item: typeof RadioGroupItem;
 };
-
-export const Radio = ({
-  label,
-  description,
-  size = "md",
-  hasError = false,
-  classNameOverrides,
-  children,
-  ...props
-}: RadioProps) => {
-  const state = hasError ? "error" : "default";
-
-  const classNames = useGetClassNames(radioStyles, classNameOverrides, {
-    wrapper: {},
-    circle: { size, state },
-    dot: { size, state },
-    label: { size },
-    itemDescription: { size },
-  });
-
-  return (
-    <ReactAriaRadio className={classNames.wrapper} {...props}>
-      <div className={classNames.circle}>
-        <div className={classNames.dot} />
-      </div>
-      {(label || children || description) && (
-        <div className="flex flex-col">
-          {(label || children) && (
-            <span className={classNames.label}>{label || children}</span>
-          )}
-          {description && <span className={classNames.itemDescription}>{description}</span>}
-        </div>
-      )}
-    </ReactAriaRadio>
-  );
-};
-
-Radio.displayName = "DS_Radio";

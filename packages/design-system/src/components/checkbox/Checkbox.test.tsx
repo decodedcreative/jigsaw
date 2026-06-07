@@ -64,8 +64,57 @@ describe('Checkbox', () => {
     expect(screen.getByRole('checkbox')).toBeChecked();
   });
 
+  it('renders indeterminate state with a single icon', () => {
+    render(<Checkbox label="Select all" isIndeterminate data-testid="my-checkbox" />);
+    const box = screen.getByTestId('my-checkbox').querySelector('div');
+    expect(box?.querySelectorAll('svg')).toHaveLength(1);
+  });
+
+  it('shows only the checkmark after clicking an indeterminate checkbox', async () => {
+    const user = userEvent.setup();
+    render(<Checkbox label="Select all" isIndeterminate data-testid="my-checkbox" />);
+    await user.click(screen.getByRole('checkbox'));
+    const box = screen.getByTestId('my-checkbox').querySelector('div');
+    expect(box?.querySelectorAll('svg')).toHaveLength(1);
+    expect(screen.getByRole('checkbox')).toBeChecked();
+  });
+
   it('passes additional props', () => {
     render(<Checkbox label="Test" data-testid="my-checkbox" />);
     expect(screen.getByTestId('my-checkbox')).toBeInTheDocument();
+  });
+
+  it('merges classNameOverrides.wrapper onto the checkbox root', () => {
+    render(<Checkbox label="Test" classNameOverrides={{ wrapper: 'mt-2' }} data-testid="my-checkbox" />);
+    expect(screen.getByRole('checkbox').closest('label')).toHaveClass('mt-2');
+  });
+
+  it('merges classNameOverrides.box onto the checkbox control', () => {
+    render(
+      <Checkbox label="Test" classNameOverrides={{ box: 'ring-2 ring-brand-primary' }} data-testid="my-checkbox" />
+    );
+    const box = screen.getByTestId('my-checkbox').querySelector('div');
+    expect(box).toHaveClass('ring-2');
+    expect(box).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.wrapper and className together', () => {
+    render(
+      <Checkbox
+        label="Test"
+        classNameOverrides={{ wrapper: 'mt-2' }}
+        className="p-4"
+        data-testid="my-checkbox"
+      />
+    );
+    const root = screen.getByRole('checkbox').closest('label');
+    expect(root).toHaveClass('mt-2');
+    expect(root).toHaveClass('p-4');
+  });
+
+  it('applies error state styles when hasError is true', () => {
+    render(<Checkbox label="Test" hasError data-testid="my-checkbox" />);
+    const box = screen.getByTestId('my-checkbox').querySelector('div');
+    expect(box).toHaveClass('border-state-error');
   });
 });

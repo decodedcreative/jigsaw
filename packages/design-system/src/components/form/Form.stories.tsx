@@ -3,12 +3,12 @@ import { getClassNames } from "@utils";
 import { Form } from "./index";
 import { Input } from "../input/Input";
 import { Textarea } from "../textarea/Textarea";
-import { Select, SelectItem } from "../select/Select";
+import { Select } from "../select/Select";
 import { NumberField } from "../number-field/NumberField";
 import { SearchField } from "../search-field/SearchField";
-import { Checkbox } from "../checkbox/Checkbox";
-import { CheckboxGroup } from "../checkbox-group/CheckboxGroup";
-import { Radio, RadioGroup } from "../radio-group/RadioGroup";
+import { Checkbox } from "../checkbox";
+import { CheckboxGroup } from "../checkbox-group";
+import { RadioGroup } from "../radio-group";
 import { Button } from "../button/Button";
 import { formStoryStyles } from "./Form.stories.styles";
 
@@ -87,10 +87,10 @@ export const SideLabels: Story = {
               defaultValue="j"
               errorMessage="Username must be at least 3 characters."
             />
-            <Select label="Role" defaultSelectedKey="editor">
-              <SelectItem id="viewer">Viewer</SelectItem>
-              <SelectItem id="editor">Editor</SelectItem>
-              <SelectItem id="admin">Admin</SelectItem>
+            <Select label="Role" defaultValue="editor">
+              <Select.Item id="viewer">Viewer</Select.Item>
+              <Select.Item id="editor">Editor</Select.Item>
+              <Select.Item id="admin">Admin</Select.Item>
             </Select>
             <NumberField
               label="Team size"
@@ -119,9 +119,9 @@ export const SideLabels: Story = {
               description="Applies across all devices."
               defaultValue="system"
             >
-              <Radio value="light" label="Light" />
-              <Radio value="dark" label="Dark" />
-              <Radio value="system" label="System" />
+              <RadioGroup.Item value="light" label="Light" />
+              <RadioGroup.Item value="dark" label="Dark" />
+              <RadioGroup.Item value="system" label="System" />
             </RadioGroup>
           </Form.Group>
           <div className={classNames.footer}>

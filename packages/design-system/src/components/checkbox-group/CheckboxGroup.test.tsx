@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CheckboxGroup } from './CheckboxGroup';
-import { Checkbox } from '../checkbox/Checkbox';
+import { Checkbox } from '../checkbox';
 
 afterEach(() => {
   cleanup();
@@ -79,5 +79,63 @@ describe('CheckboxGroup', () => {
     const checkboxes = screen.getAllByRole('checkbox');
     expect(checkboxes[0]).toBeChecked();
     expect(checkboxes[1]).not.toBeChecked();
+  });
+
+  it('merges classNameOverrides.group onto the group root', () => {
+    render(
+      <CheckboxGroup label="Group" classNameOverrides={{ group: 'mt-2' }} data-testid="my-group">
+        <Checkbox label="Option A" value="a" />
+      </CheckboxGroup>
+    );
+    expect(screen.getByTestId('my-group')).toHaveClass('mt-2');
+  });
+
+  it('merges classNameOverrides.options onto the options container', () => {
+    render(
+      <CheckboxGroup label="Group" classNameOverrides={{ options: 'gap-4' }}>
+        <Checkbox label="Option A" value="a" />
+      </CheckboxGroup>
+    );
+    const options = screen.getByRole('group').querySelector('.gap-4');
+    expect(options).toBeInTheDocument();
+  });
+
+  it('merges classNameOverrides.group and className together', () => {
+    render(
+      <CheckboxGroup
+        label="Group"
+        classNameOverrides={{ group: 'mt-2' }}
+        className="p-4"
+        data-testid="my-group"
+      >
+        <Checkbox label="Option A" value="a" />
+      </CheckboxGroup>
+    );
+    const root = screen.getByTestId('my-group');
+    expect(root).toHaveClass('mt-2');
+    expect(root).toHaveClass('p-4');
+  });
+
+  it('applies error styling to all checkboxes when group has errorMessage', () => {
+    render(
+      <CheckboxGroup label="Group" errorMessage="Required">
+        <Checkbox label="Option A" value="a" />
+        <Checkbox label="Option B" value="b" />
+      </CheckboxGroup>
+    );
+    screen.getAllByRole('checkbox').forEach((checkbox) => {
+      const box = checkbox.closest('label')?.querySelector('div');
+      expect(box).toHaveClass('border-state-error');
+    });
+  });
+
+  it('applies error styling to all checkboxes when group isInvalid', () => {
+    render(
+      <CheckboxGroup label="Group" isInvalid>
+        <Checkbox label="Option A" value="a" />
+      </CheckboxGroup>
+    );
+    const box = screen.getByRole('checkbox').closest('label')?.querySelector('div');
+    expect(box).toHaveClass('border-state-error');
   });
 });

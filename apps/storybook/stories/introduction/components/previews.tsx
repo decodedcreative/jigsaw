@@ -8,11 +8,9 @@ import {
   Form,
   Input,
   NumberField,
-  Radio,
   RadioGroup,
   SearchField,
   Select,
-  SelectItem,
   Skeleton,
   SkeletonText,
   Tab,
@@ -153,8 +151,8 @@ export const previews: PreviewMap = {
   RadioGroup: (
     <Preview>
       <RadioGroup label="Plan" defaultValue="pro">
-        <Radio value="free">Free</Radio>
-        <Radio value="pro">Pro</Radio>
+        <RadioGroup.Item value="free">Free</RadioGroup.Item>
+        <RadioGroup.Item value="pro">Pro</RadioGroup.Item>
       </RadioGroup>
     </Preview>
   ),
@@ -171,8 +169,8 @@ export const previews: PreviewMap = {
     <Preview>
       <div className="w-32 scale-90">
         <Select label="Role" placeholder="Pick one">
-          <SelectItem id="admin">Admin</SelectItem>
-          <SelectItem id="editor">Editor</SelectItem>
+          <Select.Item id="admin">Admin</Select.Item>
+          <Select.Item id="editor">Editor</Select.Item>
         </Select>
       </div>
     </Preview>

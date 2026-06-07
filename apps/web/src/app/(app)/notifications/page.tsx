@@ -10,7 +10,6 @@ import {
   DisclosureGroup,
   Icon,
   Select,
-  SelectItem,
   toast,
   type IconTone,
 } from "@jigsaw/design-system";
@@ -161,10 +160,10 @@ function NotificationsInner() {
       {/* Filter + feed */}
       <div className="flex items-center justify-between mb-4">
         <div className="w-36">
-          <Select label="Show" selectedKey={filter} onSelectionChange={(k) => setFilter(k as string)}>
-            <SelectItem id="all">All</SelectItem>
-            <SelectItem id="unread">Unread</SelectItem>
-            <SelectItem id="read">Read</SelectItem>
+          <Select label="Show" value={filter} onChange={(k) => setFilter(k as string)}>
+            <Select.Item id="all">All</Select.Item>
+            <Select.Item id="unread">Unread</Select.Item>
+            <Select.Item id="read">Read</Select.Item>
           </Select>
         </div>
         <p className="text-xs text-foreground-muted">{filtered.length} notification{filtered.length !== 1 ? "s" : ""}</p>

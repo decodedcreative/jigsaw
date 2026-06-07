@@ -2,7 +2,6 @@ import {
   Button,
   Form,
   Select,
-  SelectItem,
   toast,
 } from "@jigsaw/design-system";
 import { DATE_FORMATS, LANGUAGES, TIMEZONES } from "../AccountSettings.stories.constants";
@@ -20,19 +19,19 @@ export const AppearanceTab = () => (
     }}
   >
     <Form.Group title="Display preferences">
-      <Select label="Timezone" defaultSelectedKey="utc">
+      <Select label="Timezone" defaultValue="utc">
         {TIMEZONES.map((tz) => (
-          <SelectItem key={tz.id} id={tz.id}>{tz.label}</SelectItem>
+          <Select.Item key={tz.id} id={tz.id}>{tz.label}</Select.Item>
         ))}
       </Select>
-      <Select label="Date format" defaultSelectedKey="dmy">
+      <Select label="Date format" defaultValue="dmy">
         {DATE_FORMATS.map((df) => (
-          <SelectItem key={df.id} id={df.id}>{df.label}</SelectItem>
+          <Select.Item key={df.id} id={df.id}>{df.label}</Select.Item>
         ))}
       </Select>
-      <Select label="Language" defaultSelectedKey="en">
+      <Select label="Language" defaultValue="en">
         {LANGUAGES.map((lang) => (
-          <SelectItem key={lang.id} id={lang.id}>{lang.label}</SelectItem>
+          <Select.Item key={lang.id} id={lang.id}>{lang.label}</Select.Item>
         ))}
       </Select>
     </Form.Group>

@@ -4,7 +4,6 @@ import {
   Button,
   SearchField,
   Select,
-  SelectItem,
   Text,
   ToastRegion,
 } from "@jigsaw/design-system";
@@ -59,27 +58,27 @@ const TeamDirectoryPage = () => {
             <div className="w-40">
               <Select
                 label="Role"
-                selectedKey={roleFilter}
-                onSelectionChange={(k) => setRoleFilter(k as string)}
+                value={roleFilter}
+                onChange={(k) => setRoleFilter(k as string)}
               >
-                <SelectItem id="all">All roles</SelectItem>
-                <SelectItem id="owner">Owner</SelectItem>
-                <SelectItem id="admin">Admin</SelectItem>
-                <SelectItem id="editor">Editor</SelectItem>
-                <SelectItem id="viewer">Viewer</SelectItem>
+                <Select.Item id="all">All roles</Select.Item>
+                <Select.Item id="owner">Owner</Select.Item>
+                <Select.Item id="admin">Admin</Select.Item>
+                <Select.Item id="editor">Editor</Select.Item>
+                <Select.Item id="viewer">Viewer</Select.Item>
               </Select>
             </div>
             <div className="w-44">
               <Select
                 label="Department"
-                selectedKey={deptFilter}
-                onSelectionChange={(k) => setDeptFilter(k as string)}
+                value={deptFilter}
+                onChange={(k) => setDeptFilter(k as string)}
               >
-                <SelectItem id="all">All departments</SelectItem>
-                <SelectItem id="Engineering">Engineering</SelectItem>
-                <SelectItem id="Design">Design</SelectItem>
-                <SelectItem id="Product">Product</SelectItem>
-                <SelectItem id="Marketing">Marketing</SelectItem>
+                <Select.Item id="all">All departments</Select.Item>
+                <Select.Item id="Engineering">Engineering</Select.Item>
+                <Select.Item id="Design">Design</Select.Item>
+                <Select.Item id="Product">Product</Select.Item>
+                <Select.Item id="Marketing">Marketing</Select.Item>
               </Select>
             </div>
           </div>

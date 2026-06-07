@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Select, SelectItem } from './Select';
+import { Select } from './Select';
 
 afterEach(() => {
   cleanup();
@@ -11,9 +11,9 @@ describe('Select', () => {
   const renderSelect = () =>
     render(
       <Select label="Fruit">
-        <SelectItem id="apple">Apple</SelectItem>
-        <SelectItem id="banana">Banana</SelectItem>
-        <SelectItem id="cherry">Cherry</SelectItem>
+        <Select.Item id="apple">Apple</Select.Item>
+        <Select.Item id="banana">Banana</Select.Item>
+        <Select.Item id="cherry">Cherry</Select.Item>
       </Select>
     );
 
@@ -35,7 +35,7 @@ describe('Select', () => {
   it('shows custom placeholder text', () => {
     render(
       <Select label="Color" placeholder="Pick a color">
-        <SelectItem id="red">Red</SelectItem>
+        <Select.Item id="red">Red</Select.Item>
       </Select>
     );
     expect(screen.getByText('Pick a color')).toBeInTheDocument();
@@ -62,7 +62,6 @@ describe('Select', () => {
     renderSelect();
     await user.click(screen.getByRole('button'));
     await user.click(screen.getByRole('option', { name: 'Banana' }));
-    // After selection the listbox closes; trigger shows selected text
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
     expect(screen.getByRole('button')).toHaveTextContent('Banana');
   });
@@ -78,7 +77,7 @@ describe('Select', () => {
   it('renders description text', () => {
     render(
       <Select label="Fruit" description="Choose your favorite">
-        <SelectItem id="apple">Apple</SelectItem>
+        <Select.Item id="apple">Apple</Select.Item>
       </Select>
     );
     expect(screen.getByText('Choose your favorite')).toBeInTheDocument();
@@ -87,7 +86,7 @@ describe('Select', () => {
   it('renders error message', () => {
     render(
       <Select label="Fruit" errorMessage="Please select a fruit">
-        <SelectItem id="apple">Apple</SelectItem>
+        <Select.Item id="apple">Apple</Select.Item>
       </Select>
     );
     expect(screen.getByText('Please select a fruit')).toBeInTheDocument();
@@ -97,25 +96,73 @@ describe('Select', () => {
     renderSelect();
     render(
       <Select label="Fruit" isDisabled>
-        <SelectItem id="apple">Apple</SelectItem>
+        <Select.Item id="apple">Apple</Select.Item>
       </Select>
     );
     const buttons = screen.getAllByRole('button');
-    // The last rendered select has a disabled trigger
     expect(buttons[buttons.length - 1]).toBeDisabled();
   });
 
-  it('calls onSelectionChange when item selected', async () => {
+  it('calls onChange when item selected', async () => {
     const user = userEvent.setup();
-    const onSelectionChange = vi.fn();
+    const onChange = vi.fn();
     render(
-      <Select label="Fruit" onSelectionChange={onSelectionChange}>
-        <SelectItem id="apple">Apple</SelectItem>
-        <SelectItem id="banana">Banana</SelectItem>
+      <Select label="Fruit" onChange={onChange}>
+        <Select.Item id="apple">Apple</Select.Item>
+        <Select.Item id="banana">Banana</Select.Item>
       </Select>
     );
     await user.click(screen.getByRole('button'));
     await user.click(screen.getByRole('option', { name: 'Apple' }));
-    expect(onSelectionChange).toHaveBeenCalledWith('apple');
+    expect(onChange).toHaveBeenCalledWith('apple');
+  });
+
+  it('merges classNameOverrides.wrapper onto the field root', () => {
+    render(
+      <Select label="Fruit" classNameOverrides={{ wrapper: 'mt-2' }} data-testid="my-select">
+        <Select.Item id="apple">Apple</Select.Item>
+      </Select>
+    );
+    expect(screen.getByTestId('my-select')).toHaveClass('mt-2');
+  });
+
+  it('merges classNameOverrides.trigger onto the button', () => {
+    render(
+      <Select label="Fruit" classNameOverrides={{ trigger: 'ring-2 ring-brand-primary' }}>
+        <Select.Item id="apple">Apple</Select.Item>
+      </Select>
+    );
+    expect(screen.getByRole('button')).toHaveClass('ring-2');
+    expect(screen.getByRole('button')).toHaveClass('ring-brand-primary');
+  });
+
+  it('merges classNameOverrides.wrapper and className together', () => {
+    render(
+      <Select
+        label="Fruit"
+        classNameOverrides={{ wrapper: 'mt-2' }}
+        className="p-4"
+        data-testid="my-select"
+      >
+        <Select.Item id="apple">Apple</Select.Item>
+      </Select>
+    );
+    const root = screen.getByTestId('my-select');
+    expect(root).toHaveClass('mt-2');
+    expect(root).toHaveClass('p-4');
+  });
+
+  it('merges classNameOverrides.item onto all list items', async () => {
+    const user = userEvent.setup();
+    render(
+      <Select label="Fruit" classNameOverrides={{ item: 'font-semibold' }}>
+        <Select.Item id="apple">Apple</Select.Item>
+        <Select.Item id="banana">Banana</Select.Item>
+      </Select>
+    );
+    await user.click(screen.getByRole('button'));
+    screen.getAllByRole('option').forEach((option) => {
+      expect(option).toHaveClass('font-semibold');
+    });
   });
 });

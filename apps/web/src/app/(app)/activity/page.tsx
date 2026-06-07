@@ -9,7 +9,6 @@ import {
   Icon,
   SearchField,
   Select,
-  SelectItem,
   Tooltip,
   TooltipTrigger,
   type BadgeVariant,
@@ -114,18 +113,18 @@ export default function ActivityPage() {
           <SearchField label="Search" placeholder="Search events…" value={query} onChange={setQuery} />
         </div>
         <div className="w-40">
-          <Select label="Category" selectedKey={kindFilter} onSelectionChange={(k) => setKindFilter(k as string)}>
-            <SelectItem id="all">All categories</SelectItem>
+          <Select label="Category" value={kindFilter} onChange={(k) => setKindFilter(k as string)}>
+            <Select.Item id="all">All categories</Select.Item>
             {(Object.entries(KIND_LABELS) as [EventKind, string][]).map(([k, label]) => (
-              <SelectItem key={k} id={k}>{label}</SelectItem>
+              <Select.Item key={k} id={k}>{label}</Select.Item>
             ))}
           </Select>
         </div>
         <div className="w-44">
-          <Select label="Member" selectedKey={actorFilter} onSelectionChange={(k) => setActorFilter(k as string)}>
-            <SelectItem id="all">All members</SelectItem>
+          <Select label="Member" value={actorFilter} onChange={(k) => setActorFilter(k as string)}>
+            <Select.Item id="all">All members</Select.Item>
             {actors.map((a) => (
-              <SelectItem key={a} id={a}>{a}</SelectItem>
+              <Select.Item key={a} id={a}>{a}</Select.Item>
             ))}
           </Select>
         </div>

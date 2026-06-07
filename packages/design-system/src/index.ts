@@ -39,12 +39,12 @@ export { Card } from "@components/card";
 export type { CardComponent, CardProps, CardVariant } from "@components/card";
 
 // Checkbox
-export { Checkbox } from "@components/checkbox/Checkbox";
-export type { CheckboxProps } from "@components/checkbox/Checkbox";
+export { Checkbox } from "@components/checkbox";
+export type { CheckboxProps, CheckboxSize } from "@components/checkbox";
 
 // CheckboxGroup
-export { CheckboxGroup } from "@components/checkbox-group/CheckboxGroup";
-export type { CheckboxGroupProps } from "@components/checkbox-group/CheckboxGroup";
+export { CheckboxGroup } from "@components/checkbox-group";
+export type { CheckboxGroupProps } from "@components/checkbox-group";
 
 // Disclosure
 export { Disclosure, DisclosureGroup } from "@components/disclosure";
@@ -92,16 +92,16 @@ export { NumberField } from "@components/number-field";
 export type { NumberFieldProps, NumberFieldSize } from "@components/number-field";
 
 // RadioGroup
-export { RadioGroup, Radio } from "@components/radio-group/RadioGroup";
-export type { RadioGroupProps, RadioProps } from "@components/radio-group/RadioGroup";
+export { RadioGroup } from "@components/radio-group";
+export type { RadioGroupComponent, RadioGroupProps, RadioGroupClassNameOverrides, RadioItemProps, RadioSize, RadioGroupItemClassNameOverrides } from "@components/radio-group";
 
 // SearchField
 export { SearchField } from "@components/search-field";
 export type { SearchFieldProps, SearchFieldSize } from "@components/search-field";
 
 // Select
-export { Select, SelectItem } from "@components/select/Select";
-export type { SelectProps, SelectItemProps } from "@components/select/Select";
+export { Select } from "@components/select";
+export type { SelectComponent, SelectProps, SelectItemProps, SelectSize } from "@components/select";
 
 // Skeleton
 export { Skeleton, SkeletonText, SkeletonCircle, SkeletonCard } from "@components/skeleton/Skeleton";
