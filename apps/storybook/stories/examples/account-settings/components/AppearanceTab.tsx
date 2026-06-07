@@ -5,7 +5,6 @@ import {
   toast,
 } from "@jigsaw/design-system";
 import { DATE_FORMATS, LANGUAGES, TIMEZONES } from "../AccountSettings.stories.constants";
-import { formFooterClassName } from "./formFooter.constants";
 
 export const AppearanceTab = () => (
   <Form
@@ -35,7 +34,7 @@ export const AppearanceTab = () => (
         ))}
       </Select>
     </Form.Group>
-    <div className={formFooterClassName}>
+    <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
       <Button variant="secondary">Cancel</Button>
       <Button type="submit">Save changes</Button>
     </div>

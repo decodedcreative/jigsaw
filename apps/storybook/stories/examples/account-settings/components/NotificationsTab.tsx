@@ -6,7 +6,6 @@ import {
   Form,
   toast,
 } from "@jigsaw/design-system";
-import { formFooterClassName } from "./formFooter.constants";
 
 const NOTIFICATION_OPTIONS = [
   { value: "digest", label: "Weekly digest", description: "A summary of activity from the past week." },
@@ -30,7 +29,7 @@ export const NotificationsTab = () => {
           <Checkbox key={value} value={value} label={label} description={description} />
         ))}
       </CheckboxGroup>
-      <div className={formFooterClassName}>
+      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border-default">
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save changes</Button>
       </div>
