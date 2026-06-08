@@ -11,12 +11,8 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
-    "./shared/base.css": "./dist/css/shared/base.css",
-    "./themes/default/base.css": "./dist/css/themes/default/base.css",
-    "./themes/default/semantic-light.css": "./dist/css/themes/default/semantic-light.css",
-    "./themes/default/semantic-dark.css": "./dist/css/themes/default/semantic-dark.css",
-    "./themes/portfolio/base.css": "./dist/css/themes/portfolio/base.css",
-    "./themes/portfolio/semantic.css": "./dist/css/themes/portfolio/semantic.css",
+    "./shared/*": "./dist/css/shared/*",
+    "./themes/*": "./dist/css/themes/*",
     "./theme": "./dist/theme.mjs",
     "./semantic-colors": {
       "types": "./dist/semantic-colors.d.ts",

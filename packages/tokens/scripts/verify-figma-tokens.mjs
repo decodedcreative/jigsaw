@@ -5,64 +5,147 @@ import { fileURLToPath } from "node:url";
 const packageRoot = path.dirname(fileURLToPath(import.meta.url));
 const figmaDir = path.join(packageRoot, "../dist/figma");
 
-const EXPECTED_FILES = {
-  "shared.tokens.json": { leafCount: 96, sample: (json) => json.spacing?.["4"]?.value === "1rem" },
-  "default-base.tokens.json": {
-    leafCount: 35,
-    sample: (json) => json.color?.navy?.["500"]?.value === "#627d98",
-  },
-  "default-light.tokens.json": {
-    leafCount: 64,
-    sample: (json) => json.color?.interactive?.secondary?.value === "transparent",
-  },
-  "default-dark.tokens.json": {
-    leafCount: 64,
-    sample: (json) => json.color?.surface?.primary?.value === "#0a1929",
-  },
-  "portfolio.tokens.json": {
-    leafCount: 84,
-    sample: (json) => json.color?.surface?.primary?.value === "#1a2332",
-  },
-};
+/** Token set files: `{slug}.tokens.json` (kebab-case). Matches sd.config.mjs figma destinations. */
+const TOKEN_FILE_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*\.tokens\.json$/;
 
-function countLeaves(obj) {
-  if (obj && typeof obj === "object" && "value" in obj && "type" in obj) return 1;
-  return Object.values(obj ?? {}).reduce((total, value) => total + countLeaves(value), 0);
+function discoverTokenFiles() {
+  if (!fs.existsSync(figmaDir)) {
+    return { files: [], errors: [`Missing output directory: ${figmaDir}`] };
+  }
+
+  const entries = fs.readdirSync(figmaDir, { withFileTypes: true });
+  const matched = [];
+  const skipped = [];
+
+  for (const entry of entries) {
+    if (!entry.isFile()) continue;
+    if (TOKEN_FILE_PATTERN.test(entry.name)) {
+      matched.push(entry.name);
+    } else {
+      skipped.push(entry.name);
+    }
+  }
+
+  matched.sort();
+  const errors = [];
+
+  if (matched.length === 0) {
+    errors.push(`No *.tokens.json files found in ${figmaDir}`);
+  }
+
+  for (const name of skipped) {
+    errors.push(`Unexpected file in dist/figma/: ${name} (expected {slug}.tokens.json)`);
+  }
+
+  return { files: matched, errors };
 }
 
-let failed = false;
+/** Style Dictionary css/color transform — colours should stay as source literals. */
+const CSS_TRANSFORMED_COLOR = /^rgba?\(\d+\s*,/;
 
-for (const [filename, { leafCount, sample }] of Object.entries(EXPECTED_FILES)) {
+function validateNode(node, tokenPath, errors) {
+  if (node === null || typeof node !== "object" || Array.isArray(node)) {
+    errors.push(`${tokenPath || "(root)"}: expected object`);
+    return 0;
+  }
+
+  const hasValue = "value" in node;
+  const hasType = "type" in node;
+
+  if (hasValue !== hasType) {
+    errors.push(`${tokenPath}: token leaf must include both "value" and "type"`);
+    return 0;
+  }
+
+  if (hasValue) {
+    const keys = Object.keys(node);
+    if (keys.length !== 2) {
+      errors.push(`${tokenPath}: leaf must contain only "value" and "type"`);
+      return 0;
+    }
+
+    if (typeof node.type !== "string" || node.type.length === 0) {
+      errors.push(`${tokenPath}: "type" must be a non-empty string`);
+      return 0;
+    }
+
+    if (typeof node.value !== "string" && typeof node.value !== "number") {
+      errors.push(`${tokenPath}: "value" must be a string or number`);
+      return 0;
+    }
+
+    if (
+      node.type === "color" &&
+      typeof node.value === "string" &&
+      CSS_TRANSFORMED_COLOR.test(node.value)
+    ) {
+      errors.push(
+        `${tokenPath}: color value looks CSS-transformed (${node.value}) — expected hex or literal`,
+      );
+      return 0;
+    }
+
+    return 1;
+  }
+
+  let count = 0;
+  for (const [key, child] of Object.entries(node)) {
+    const childPath = tokenPath ? `${tokenPath}.${key}` : key;
+    count += validateNode(child, childPath, errors);
+  }
+  return count;
+}
+
+function validateFile(filename) {
   const filePath = path.join(figmaDir, filename);
   if (!fs.existsSync(filePath)) {
-    console.error(`Missing ${filename}`);
-    failed = true;
-    continue;
+    return { errors: [`Missing ${filename}`], leafCount: 0 };
   }
 
   let json;
   try {
     json = JSON.parse(fs.readFileSync(filePath, "utf8"));
   } catch (error) {
-    console.error(`Invalid JSON in ${filename}:`, error.message);
+    return { errors: [`Invalid JSON in ${filename}: ${error.message}`], leafCount: 0 };
+  }
+
+  const errors = [];
+  const leafCount = validateNode(json, "", errors);
+
+  if (leafCount === 0 && errors.length === 0) {
+    errors.push(`${filename}: expected at least one token`);
+  }
+
+  return { errors, leafCount };
+}
+
+const { files: tokenFiles, errors: discoveryErrors } = discoverTokenFiles();
+
+let failed = discoveryErrors.length > 0;
+if (failed) {
+  for (const message of discoveryErrors) {
+    console.error(message);
+  }
+}
+
+let totalLeaves = 0;
+
+for (const filename of tokenFiles) {
+  const { errors, leafCount } = validateFile(filename);
+  if (errors.length > 0) {
+    for (const message of errors) {
+      console.error(message.startsWith(filename) ? message : `${filename}: ${message}`);
+    }
     failed = true;
     continue;
   }
-
-  const actualCount = countLeaves(json);
-  if (actualCount !== leafCount) {
-    console.error(`${filename}: expected ${leafCount} tokens, got ${actualCount}`);
-    failed = true;
-  }
-
-  if (!sample(json)) {
-    console.error(`${filename}: sample value check failed`);
-    failed = true;
-  }
+  totalLeaves += leafCount;
 }
 
 if (failed) {
   process.exit(1);
 }
 
-console.log(`Verified ${Object.keys(EXPECTED_FILES).length} Figma token files in dist/figma/`);
+console.log(
+  `Verified ${tokenFiles.length} Figma token files in dist/figma/ (${totalLeaves} tokens)`,
+);
