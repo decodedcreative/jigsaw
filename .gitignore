@@ -6,7 +6,6 @@ node_modules
 .next
 out
 dist
-packages/tokens/spike/
 storybook-static
 .turbo
 *.tsbuildinfo
