@@ -2,6 +2,29 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+/**
+ * Theme discovery for Style Dictionary export pipelines.
+ *
+ * Source layout:
+ *   src/tokens/shared/               → shared.tokens.json, shared/base.css
+ *   src/tokens/themes/{id}/base/     → palette tokens (unprefixed paths)
+ *   src/tokens/themes/{id}/semantic/ → semantic tokens; mode = JSON root key
+ *
+ * Semantic modes are the top-level keys in semantic/*.json (e.g. light, dark, portfolio).
+ *
+ * Export rules (CSS and Figma follow the same split):
+ *   1. Multiple modes, or a single appearance mode (light/dark)
+ *      → semantic-{mode}.css, {id}-{mode}.tokens.json (stripFirstSegment)
+ *   2. Single mode matching theme id (e.g. portfolio/portfolio)
+ *      → semantic.css + {id}.tokens.json merging base + semantic (stripModePrefixes)
+ *   3. Single mode that is neither appearance nor theme id (unusual)
+ *      → semantic.css + {id}-semantic.tokens.json (stripFirstSegment)
+ *
+ * CSS selectors: default uses :root / .dark; named themes use [data-theme='{id}'].
+ *
+ * Tokens Studio $themes.json and git-tracked figma/ output → JSW-56.
+ */
+
 const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const tokensRoot = path.join(packageRoot, "src/tokens");
 const themesRoot = path.join(tokensRoot, "themes");
@@ -53,6 +76,15 @@ export const splitSemanticByMode = (themeId, modes) => {
 /** Single Figma file combining base + semantic (portfolio.tokens.json). */
 export const mergeFigmaBaseAndSemantic = (themeId, modes) =>
   modes.length === 1 && modes[0] === themeId;
+
+/**
+ * Single semantic prefix that is neither light/dark nor the theme id (rule 3 above).
+ * CSS → semantic.css; Figma → {id}-semantic.tokens.json.
+ */
+export const isStandaloneSemantic = (themeId, modes) =>
+  modes.length === 1 &&
+  !APPEARANCE_MODES.has(modes[0]) &&
+  modes[0] !== themeId;
 
 export const baseCssSelector = (themeId) =>
   themeId === "default" ? ":root" : `[data-theme='${themeId}']`;

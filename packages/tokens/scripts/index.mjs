@@ -3,6 +3,7 @@ export {
   capitalize,
   discoverSemanticModes,
   discoverThemes,
+  isStandaloneSemantic,
   mergeFigmaBaseAndSemantic,
   semanticCssSelector,
   splitSemanticByMode,
@@ -14,6 +15,7 @@ export {
 
 export {
   TOKEN_FILE_RE,
+  FIGMA_OUTPUT_ALLOWLIST,
   auditFigmaOutputDir,
   validateTokenTree,
   verifyFigmaExports,

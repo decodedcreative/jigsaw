@@ -5,6 +5,9 @@ import { isPlainObject, readJsonFile } from "../utils/index.mjs";
 /** Matches sd.config output convention: `{slug}.tokens.json` (kebab-case). */
 export const TOKEN_FILE_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*\.tokens\.json$/;
 
+/** Non-token files allowed in dist/figma/ once JSW-56 adds Tokens Studio metadata. */
+export const FIGMA_OUTPUT_ALLOWLIST = new Set(["$themes.json"]);
+
 /** Detects Style Dictionary css/color transform leaking into Figma exports. */
 const CSS_TRANSFORMED_COLOR = /^rgba?\(\d+\s*,/;
 
@@ -82,6 +85,7 @@ export const auditFigmaOutputDir = (figmaDir) => {
     if (!entry.isFile()) continue;
 
     if (TOKEN_FILE_RE.test(entry.name)) files.push(entry.name);
+    else if (FIGMA_OUTPUT_ALLOWLIST.has(entry.name)) continue;
     else errors.push(`Unexpected file in dist/figma/: ${entry.name} (expected {slug}.tokens.json)`);
   }
 

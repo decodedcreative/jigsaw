@@ -4,6 +4,7 @@ import {
   discoverSemanticModes,
   discoverThemes,
   figmaTokens,
+  isStandaloneSemantic,
   mergeFigmaBaseAndSemantic,
   semanticCssSelector,
   splitSemanticByMode,
@@ -169,6 +170,7 @@ const buildThemeCssConfig = (themeId) => {
 //
 // log.warnings disabled: SD flags leaf-key name collisions on flat token.name —
 // benign; we nest by full path. Output files follow {slug}.tokens.json convention.
+// $themes.json for Tokens Studio sync → JSW-56 (allowlisted in verify script).
 
 const buildThemeFigmaConfig = (themeId) => {
   const modes = discoverSemanticModes(themeId);
@@ -217,6 +219,16 @@ const buildThemeFigmaConfig = (themeId) => {
         },
       ]);
     }
+  } else if (hasSemantic && isStandaloneSemantic(themeId, modes)) {
+    const mode = modes[0];
+    source.push(themeSemanticSourceGlob(themeId));
+    platforms.figmaSemantic = figmaPlatform([
+      {
+        destination: `${themeId}-semantic.tokens.json`,
+        filter: (token) => token.path[0] === mode,
+        options: { stripFirstSegment: true },
+      },
+    ]);
   }
 
   if (source.length === 0) return null;
