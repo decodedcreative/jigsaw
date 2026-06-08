@@ -13,7 +13,7 @@ const APPEARANCE_MODES = new Set(["light", "dark"]);
  * @param {string} themeId
  * @returns {string[]} Top-level token path prefixes in semantic JSON (e.g. light, dark, portfolio).
  */
-export function discoverSemanticModes(themeId) {
+export const discoverSemanticModes = (themeId) => {
   const semanticDir = path.join(themesRoot, themeId, "semantic");
   if (!fs.existsSync(semanticDir)) return [];
 
@@ -25,61 +25,52 @@ export function discoverSemanticModes(themeId) {
   }
 
   return [...prefixes].sort();
-}
+};
 
 /** @returns {string[]} Theme ids under src/tokens/themes/. */
-export function discoverThemes() {
+export const discoverThemes = () => {
   if (!fs.existsSync(themesRoot)) return [];
   return fs
     .readdirSync(themesRoot, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
-}
+};
 
-export function themeHasBase(themeId) {
-  return fs.existsSync(path.join(themesRoot, themeId, "base"));
-}
+export const themeHasBase = (themeId) =>
+  fs.existsSync(path.join(themesRoot, themeId, "base"));
 
 /**
  * Multiple semantic outputs (semantic-light.css, default-light.tokens.json, …).
  * True for light/dark appearance modes; false when a single theme-scoped prefix matches theme id.
  */
-export function splitSemanticByMode(themeId, modes) {
+export const splitSemanticByMode = (themeId, modes) => {
   if (modes.length === 0) return false;
   if (modes.length > 1) return true;
   return APPEARANCE_MODES.has(modes[0]);
-}
+};
 
 /** Single Figma file combining base + semantic (portfolio.tokens.json). */
-export function mergeFigmaBaseAndSemantic(themeId, modes) {
-  return modes.length === 1 && modes[0] === themeId;
-}
+export const mergeFigmaBaseAndSemantic = (themeId, modes) =>
+  modes.length === 1 && modes[0] === themeId;
 
-export function baseCssSelector(themeId) {
-  return themeId === "default" ? ":root" : `[data-theme='${themeId}']`;
-}
+export const baseCssSelector = (themeId) =>
+  themeId === "default" ? ":root" : `[data-theme='${themeId}']`;
 
-export function semanticCssSelector(themeId, mode) {
+export const semanticCssSelector = (themeId, mode) => {
   if (themeId === "default") {
     if (mode === "light") return ":root, [data-theme='light']";
     if (mode === "dark") return "[data-theme='dark'], .dark";
   }
   return `[data-theme='${themeId}']`;
-}
+};
 
-export function themeSourceGlob(themeId) {
-  return `src/tokens/themes/${themeId}/**/*.json`;
-}
+export const themeSourceGlob = (themeId) => `src/tokens/themes/${themeId}/**/*.json`;
 
-export function themeBaseSourceGlob(themeId) {
-  return `src/tokens/themes/${themeId}/base/**/*.json`;
-}
+export const themeBaseSourceGlob = (themeId) =>
+  `src/tokens/themes/${themeId}/base/**/*.json`;
 
-export function themeSemanticSourceGlob(themeId) {
-  return `src/tokens/themes/${themeId}/semantic/**/*.json`;
-}
+export const themeSemanticSourceGlob = (themeId) =>
+  `src/tokens/themes/${themeId}/semantic/**/*.json`;
 
-export function capitalize(value) {
-  return value.charAt(0).toUpperCase() + value.slice(1);
-}
+export const capitalize = (value) => value.charAt(0).toUpperCase() + value.slice(1);

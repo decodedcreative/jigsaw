@@ -4,22 +4,22 @@
  * (unlike the css transform group which converts colours to RGB tuples).
  */
 
-function resolvePath(token, options) {
+const resolvePath = (token, options) => {
   if (options.stripFirstSegment) return token.path.slice(1);
   // Portfolio merges base + semantic in one file; only semantic paths are prefixed.
   const prefixes = options.stripModePrefixes ?? [];
   if (prefixes.includes(token.path[0])) return token.path.slice(1);
   return token.path;
-}
+};
 
-function leafFromToken(token) {
+const leafFromToken = (token) => {
   const original = token.original ?? token;
   const value = original.value ?? original.$value ?? token.value;
   const type = original.type ?? original.$type ?? token.$type ?? token.type;
   return { value, type };
-}
+};
 
-function setNestedLeaf(tree, path, leaf) {
+const setNestedLeaf = (tree, path, leaf) => {
   let node = tree;
   for (let i = 0; i < path.length - 1; i++) {
     const key = path[i];
@@ -47,9 +47,9 @@ function setNestedLeaf(tree, path, leaf) {
     );
   }
   node[leafKey] = leaf;
-}
+};
 
-export function figmaTokens({ dictionary, options = {} }) {
+export const figmaTokens = ({ dictionary, options = {} }) => {
   const tree = {};
 
   for (const token of dictionary.allTokens) {
@@ -58,4 +58,4 @@ export function figmaTokens({ dictionary, options = {} }) {
   }
 
   return `${JSON.stringify(tree, null, 2)}\n`;
-}
+};
