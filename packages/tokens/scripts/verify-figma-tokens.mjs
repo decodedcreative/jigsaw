@@ -1,8 +1,9 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { verifyFigmaExports } from "./index.mjs";
+import { FIGMA_OUTPUT_DIR, verifyFigmaExports } from "./index.mjs";
 
-const figmaDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "../dist/figma");
+const packageRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
+const figmaDir = path.join(packageRoot, FIGMA_OUTPUT_DIR);
 const result = verifyFigmaExports(figmaDir);
 
 if (!result.ok) {
@@ -11,5 +12,5 @@ if (!result.ok) {
 }
 
 console.log(
-  `Verified ${result.fileCount} Figma token files in dist/figma/ (${result.tokenCount} tokens)`,
+  `Verified ${result.fileCount} Figma token files in ${FIGMA_OUTPUT_DIR}/ (${result.tokenCount} tokens)`,
 );

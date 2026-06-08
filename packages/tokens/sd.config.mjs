@@ -4,9 +4,11 @@ import {
   discoverSemanticModes,
   discoverThemes,
   figmaTokens,
+  FIGMA_OUTPUT_DIR,
   isStandaloneSemantic,
   mergeFigmaBaseAndSemantic,
   semanticCssSelector,
+  sortAppearanceModes,
   splitSemanticByMode,
   themeBaseSourceGlob,
   themeHasBase,
@@ -77,7 +79,7 @@ const figmaFormats = { "figma/tokens": figmaTokens };
 const cssHooks = { formats: { "css/themed-variables": cssThemedVariables } };
 
 const CSS_BUILD_PATH = "dist/css/";
-const FIGMA_BUILD_PATH = "dist/figma/";
+const FIGMA_BUILD_PATH = `${FIGMA_OUTPUT_DIR}/`;
 
 /** @param {Array<{ destination: string, filter?: (token: object) => boolean, options?: object }>} files */
 const cssPlatform = (files) => ({
@@ -172,6 +174,8 @@ const buildThemeCssConfig = (themeId) => {
 // benign; we nest by full path. Output files follow {slug}.tokens.json convention.
 // $themes.json for Tokens Studio sync → JSW-56 (allowlisted in verify script).
 
+// Output filenames must match discoverFigmaOutputs() in scripts/figma/discovery/discover-outputs/discover-outputs.mjs.
+
 const buildThemeFigmaConfig = (themeId) => {
   const modes = discoverSemanticModes(themeId);
   const hasBase = themeHasBase(themeId);
@@ -210,7 +214,7 @@ const buildThemeFigmaConfig = (themeId) => {
 
   if (hasSemantic && splitSemanticByMode(themeId, modes)) {
     source.push(themeSemanticSourceGlob(themeId));
-    for (const mode of modes) {
+    for (const mode of sortAppearanceModes(modes)) {
       platforms[`figma${capitalize(mode)}`] = figmaPlatform([
         {
           destination: `${themeId}-${mode}.tokens.json`,

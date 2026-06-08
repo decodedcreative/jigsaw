@@ -1,0 +1,31 @@
+[
+  {
+    "id": "05d7d269b3df019b735754894ffac63061ddd0ae",
+    "name": "Default Light",
+    "group": "Default",
+    "selectedTokenSets": {
+      "shared.tokens": "source",
+      "default-base.tokens": "source",
+      "default-light.tokens": "enabled"
+    }
+  },
+  {
+    "id": "98e1bb045a492e91d0a351d0c84472805d0498d3",
+    "name": "Default Dark",
+    "group": "Default",
+    "selectedTokenSets": {
+      "shared.tokens": "source",
+      "default-base.tokens": "source",
+      "default-dark.tokens": "enabled"
+    }
+  },
+  {
+    "id": "f5950a329f98fcd08f07f0564f5512e24989b072",
+    "name": "Portfolio",
+    "group": "Theme",
+    "selectedTokenSets": {
+      "shared.tokens": "source",
+      "portfolio.tokens": "enabled"
+    }
+  }
+]
