@@ -20,3 +20,20 @@ jobs:
 
       - name: Test design-system
         run: npm run test --workspace=@jigsaw/design-system
+
+  test-tokens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build and verify Figma token exports
+        run: |
+          npm run build:tokens --workspace=@jigsaw/tokens
+          npm run verify:figma-tokens --workspace=@jigsaw/tokens

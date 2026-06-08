@@ -11,12 +11,8 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
-    "./shared/base.css": "./dist/css/shared/base.css",
-    "./themes/default/base.css": "./dist/css/themes/default/base.css",
-    "./themes/default/semantic-light.css": "./dist/css/themes/default/semantic-light.css",
-    "./themes/default/semantic-dark.css": "./dist/css/themes/default/semantic-dark.css",
-    "./themes/portfolio/base.css": "./dist/css/themes/portfolio/base.css",
-    "./themes/portfolio/semantic.css": "./dist/css/themes/portfolio/semantic.css",
+    "./shared/*": "./dist/css/shared/*",
+    "./themes/*": "./dist/css/themes/*",
     "./theme": "./dist/theme.mjs",
     "./semantic-colors": {
       "types": "./dist/semantic-colors.d.ts",
@@ -27,6 +23,7 @@
   "scripts": {
     "build": "npm run build:tokens && tsup",
     "build:tokens": "node scripts/build-tokens.mjs",
+    "verify:figma-tokens": "node scripts/verify-figma-tokens.mjs",
     "dev": "npm run build:tokens && tsup --watch",
     "lint": "eslint .",
     "clean": "rm -rf dist"
@@ -34,6 +31,7 @@
   "devDependencies": {
     "@eslint/js": "^9.16.0",
     "eslint": "^9.16.0",
+    "globals": "^14.0.0",
     "style-dictionary": "^4.1.1",
     "typescript-eslint": "^8.18.0",
     "tsup": "^8.3.5",
