@@ -203,80 +203,84 @@ const portfolioThemeConfig = {
 };
 
 // ─── Figma / Tokens Studio exports (legacy value/type JSON) ─────────────────
-const figmaSharedConfig = {
-  source: ["src/tokens/shared/**/*.json"],
-  platforms: {
-    figma: {
-      buildPath: "dist/figma/",
-      files: [{ destination: "shared.tokens.json", format: "figma/tokens" }],
-    },
-  },
-  hooks: { formats: figmaFormats },
-};
+// No transformGroup: css/js transforms mutate values (e.g. hex → RGB tuples).
+// Figma exports read token.original via figma/tokens for source literals.
+//
+// log.warnings disabled: SD flags leaf-key name collisions (e.g. font.weight.normal
+// vs font.lineHeight.normal) on flat token.name — benign; we nest by full path.
+// light/dark semantic files use stripFirstSegment (entire file is prefixed).
+// Portfolio merges base + semantic — base paths are unprefixed; semantic uses stripModePrefixes.
 
-const figmaDefaultConfig = {
-  source: [
+const FIGMA_BUILD_PATH = "dist/figma/";
+
+/** @param {Array<{ destination: string, filter?: (token: object) => boolean, options?: object }>} files */
+function figmaPlatform(files) {
+  return {
+    buildPath: FIGMA_BUILD_PATH,
+    log: { warnings: "disabled" },
+    files: files.map(({ destination, filter, options }) => ({
+      destination,
+      format: "figma/tokens",
+      ...(filter ? { filter } : {}),
+      ...(options ? { options } : {}),
+    })),
+  };
+}
+
+/** @param {string[]} source @param {Record<string, ReturnType<typeof figmaPlatform>>} platforms */
+function figmaConfig(source, platforms) {
+  return { source, platforms, hooks: { formats: figmaFormats } };
+}
+
+const figmaSharedConfig = figmaConfig(["src/tokens/shared/**/*.json"], {
+  figma: figmaPlatform([{ destination: "shared.tokens.json" }]),
+});
+
+const figmaDefaultConfig = figmaConfig(
+  [
     "src/tokens/themes/default/base/**/*.json",
     "src/tokens/themes/default/semantic/**/*.json",
   ],
-  platforms: {
-    figmaBase: {
-      buildPath: "dist/figma/",
-      files: [
-        {
-          destination: "default-base.tokens.json",
-          format: "figma/tokens",
-          filter: (token) => token.filePath.includes("default/base"),
-        },
-      ],
-    },
-    figmaLight: {
-      buildPath: "dist/figma/",
-      files: [
-        {
-          destination: "default-light.tokens.json",
-          format: "figma/tokens",
-          filter: (token) => token.path[0] === "light",
-          options: { stripFirstSegment: true },
-        },
-      ],
-    },
-    figmaDark: {
-      buildPath: "dist/figma/",
-      files: [
-        {
-          destination: "default-dark.tokens.json",
-          format: "figma/tokens",
-          filter: (token) => token.path[0] === "dark",
-          options: { stripFirstSegment: true },
-        },
-      ],
-    },
+  {
+    figmaBase: figmaPlatform([
+      {
+        destination: "default-base.tokens.json",
+        filter: (token) => token.filePath.includes("default/base"),
+      },
+    ]),
+    figmaLight: figmaPlatform([
+      {
+        destination: "default-light.tokens.json",
+        filter: (token) => token.path[0] === "light",
+        options: { stripFirstSegment: true },
+      },
+    ]),
+    figmaDark: figmaPlatform([
+      {
+        destination: "default-dark.tokens.json",
+        filter: (token) => token.path[0] === "dark",
+        options: { stripFirstSegment: true },
+      },
+    ]),
   },
-  hooks: { formats: figmaFormats },
-};
+);
 
-const figmaPortfolioConfig = {
-  source: [
+const figmaPortfolioConfig = figmaConfig(
+  [
     "src/tokens/themes/portfolio/base/**/*.json",
     "src/tokens/themes/portfolio/semantic/**/*.json",
   ],
-  platforms: {
-    figma: {
-      buildPath: "dist/figma/",
-      files: [
-        {
-          destination: "portfolio.tokens.json",
-          format: "figma/tokens",
-          filter: (token) =>
-            token.filePath.includes("portfolio/base") || token.path[0] === "portfolio",
-          options: { stripModePrefixes: ["portfolio"] },
-        },
-      ],
-    },
+  {
+    figma: figmaPlatform([
+      {
+        destination: "portfolio.tokens.json",
+        filter: (token) =>
+          token.filePath.includes("portfolio/base") || token.path[0] === "portfolio",
+        options: { stripModePrefixes: ["portfolio"] },
+      },
+    ]),
   },
-  hooks: { formats: figmaFormats },
-};
+);
 
 // Style Dictionary supports exporting an array of configs
 export default [

@@ -6,6 +6,7 @@
 
 function resolvePath(token, options) {
   if (options.stripFirstSegment) return token.path.slice(1);
+  // Portfolio merges base + semantic in one file; only semantic paths are prefixed.
   const prefixes = options.stripModePrefixes ?? [];
   if (prefixes.includes(token.path[0])) return token.path.slice(1);
   return token.path;
@@ -22,10 +23,30 @@ function setNestedLeaf(tree, path, leaf) {
   let node = tree;
   for (let i = 0; i < path.length - 1; i++) {
     const key = path[i];
-    if (!Object.prototype.hasOwnProperty.call(node, key)) node[key] = {};
+    if (Object.prototype.hasOwnProperty.call(node, key)) {
+      const existing = node[key];
+      if (existing && typeof existing === "object" && "value" in existing && "type" in existing) {
+        throw new Error(
+          `Token path conflict at "${path.slice(0, i + 1).join(".")}": cannot nest under an existing token leaf`,
+        );
+      }
+    } else {
+      node[key] = {};
+    }
     node = node[key];
   }
-  node[path[path.length - 1]] = leaf;
+  const leafKey = path[path.length - 1];
+  if (
+    Object.prototype.hasOwnProperty.call(node, leafKey) &&
+    node[leafKey] &&
+    typeof node[leafKey] === "object" &&
+    !("value" in node[leafKey])
+  ) {
+    throw new Error(
+      `Token path conflict at "${path.join(".")}": cannot replace an existing token group`,
+    );
+  }
+  node[leafKey] = leaf;
 }
 
 export function figmaTokens({ dictionary, options = {} }) {

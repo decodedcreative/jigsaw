@@ -27,6 +27,7 @@
   "scripts": {
     "build": "npm run build:tokens && tsup",
     "build:tokens": "node scripts/build-tokens.mjs",
+    "verify:figma-tokens": "node scripts/verify-figma-tokens.mjs",
     "dev": "npm run build:tokens && tsup --watch",
     "lint": "eslint .",
     "clean": "rm -rf dist"
