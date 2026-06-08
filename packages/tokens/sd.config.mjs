@@ -1,6 +1,20 @@
 import { figmaTokens } from "./scripts/formats/figma-tokens.mjs";
+import {
+  baseCssSelector,
+  capitalize,
+  discoverSemanticModes,
+  discoverThemes,
+  mergeFigmaBaseAndSemantic,
+  semanticCssSelector,
+  splitSemanticByMode,
+  themeBaseSourceGlob,
+  themeHasBase,
+  themeSemanticSourceGlob,
+  themeSourceGlob,
+} from "./scripts/discover-token-sets.mjs";
 
 const figmaFormats = { "figma/tokens": figmaTokens };
+const cssHooks = { formats: { "css/themed-variables": cssThemedVariables } };
 
 /**
  * Convert a CSS color value to a space-separated RGB tuple
@@ -26,7 +40,7 @@ function toRgbTuple(value) {
 
 /**
  * CSS variables format. Pass `stripFirstSegment: true` for semantic files
- * so "light"/"dark"/"portfolio" is removed from the variable name.
+ * so mode prefixes (light/dark/portfolio) are removed from the variable name.
  */
 function cssThemedVariables({ dictionary, options }) {
   const selector = options.selector ?? ":root";
@@ -61,157 +75,22 @@ function tailwindTheme({ dictionary }) {
 export default ${JSON.stringify(theme, null, 2)};\n`;
 }
 
-// ─── Shared config (spacing, typography, motion, radius, shadows → CSS only) ─
-const sharedConfig = {
-  source: ["src/tokens/shared/**/*.json"],
-  platforms: {
-    css: {
-      transformGroup: "css",
-      buildPath: "dist/css/",
-      files: [
-        {
-          destination: "shared/base.css",
-          format: "css/themed-variables",
-          options: { selector: ":root", stripFirstSegment: false, showFileHeader: true },
-        },
-      ],
-    },
-  },
-  hooks: { formats: { "css/themed-variables": cssThemedVariables } },
-};
-
-// ─── Tailwind theme (shared tokens + default palette → theme.mjs) ────────────
-// Combines shared non-colour tokens with the default theme's base palette so
-// that Tailwind utilities like bg-navy-500 and spacing-4 both resolve correctly.
-const tailwindThemeConfig = {
-  source: [
-    "src/tokens/shared/**/*.json",
-    "src/tokens/themes/default/base/**/*.json",
-  ],
-  platforms: {
-    js: {
-      transformGroup: "js",
-      buildPath: "dist/",
-      files: [
-        {
-          destination: "theme.mjs",
-          format: "tailwind/theme",
-          options: { showFileHeader: true },
-        },
-      ],
-    },
-  },
-  hooks: { formats: { "tailwind/theme": tailwindTheme } },
-};
-
-// ─── Default theme (neutral palette + light/dark semantic) ──────────────────
-const defaultThemeConfig = {
-  source: [
-    "src/tokens/themes/default/base/**/*.json",
-    "src/tokens/themes/default/semantic/**/*.json",
-  ],
-  platforms: {
-    cssBase: {
-      transformGroup: "css",
-      buildPath: "dist/css/",
-      files: [
-        {
-          destination: "themes/default/base.css",
-          format: "css/themed-variables",
-          filter: (token) => token.filePath.includes("default/base"),
-          options: { selector: ":root", stripFirstSegment: false, showFileHeader: true },
-        },
-      ],
-    },
-    cssLight: {
-      transformGroup: "css",
-      buildPath: "dist/css/",
-      files: [
-        {
-          destination: "themes/default/semantic-light.css",
-          format: "css/themed-variables",
-          filter: (token) => token.path[0] === "light",
-          options: {
-            selector: ":root, [data-theme='light']",
-            stripFirstSegment: true,
-            showFileHeader: true,
-          },
-        },
-      ],
-    },
-    cssDark: {
-      transformGroup: "css",
-      buildPath: "dist/css/",
-      files: [
-        {
-          destination: "themes/default/semantic-dark.css",
-          format: "css/themed-variables",
-          filter: (token) => token.path[0] === "dark",
-          options: {
-            selector: "[data-theme='dark'], .dark",
-            stripFirstSegment: true,
-            showFileHeader: true,
-          },
-        },
-      ],
-    },
-  },
-  hooks: { formats: { "css/themed-variables": cssThemedVariables } },
-};
-
-// ─── Portfolio theme (navy/orange palette + dark semantic) ──────────────────
-const portfolioThemeConfig = {
-  source: [
-    "src/tokens/themes/portfolio/base/**/*.json",
-    "src/tokens/themes/portfolio/semantic/**/*.json",
-  ],
-  platforms: {
-    cssBase: {
-      transformGroup: "css",
-      buildPath: "dist/css/",
-      files: [
-        {
-          destination: "themes/portfolio/base.css",
-          format: "css/themed-variables",
-          filter: (token) => token.filePath.includes("portfolio/base"),
-          options: {
-            selector: "[data-theme='portfolio']",
-            stripFirstSegment: false,
-            showFileHeader: true,
-          },
-        },
-      ],
-    },
-    cssSemantic: {
-      transformGroup: "css",
-      buildPath: "dist/css/",
-      files: [
-        {
-          destination: "themes/portfolio/semantic.css",
-          format: "css/themed-variables",
-          filter: (token) => token.path[0] === "portfolio",
-          options: {
-            selector: "[data-theme='portfolio']",
-            stripFirstSegment: true,
-            showFileHeader: true,
-          },
-        },
-      ],
-    },
-  },
-  hooks: { formats: { "css/themed-variables": cssThemedVariables } },
-};
-
-// ─── Figma / Tokens Studio exports (legacy value/type JSON) ─────────────────
-// No transformGroup: css/js transforms mutate values (e.g. hex → RGB tuples).
-// Figma exports read token.original via figma/tokens for source literals.
-//
-// log.warnings disabled: SD flags leaf-key name collisions (e.g. font.weight.normal
-// vs font.lineHeight.normal) on flat token.name — benign; we nest by full path.
-// light/dark semantic files use stripFirstSegment (entire file is prefixed).
-// Portfolio merges base + semantic — base paths are unprefixed; semantic uses stripModePrefixes.
-
+const CSS_BUILD_PATH = "dist/css/";
 const FIGMA_BUILD_PATH = "dist/figma/";
+
+/** @param {Array<{ destination: string, filter?: (token: object) => boolean, options?: object }>} files */
+function cssPlatform(files) {
+  return {
+    transformGroup: "css",
+    buildPath: CSS_BUILD_PATH,
+    files: files.map(({ destination, filter, options }) => ({
+      destination,
+      format: "css/themed-variables",
+      filter,
+      options,
+    })),
+  };
+}
 
 /** @param {Array<{ destination: string, filter?: (token: object) => boolean, options?: object }>} files */
 function figmaPlatform(files) {
@@ -227,68 +106,182 @@ function figmaPlatform(files) {
   };
 }
 
-/** @param {string[]} source @param {Record<string, ReturnType<typeof figmaPlatform>>} platforms */
-function figmaConfig(source, platforms) {
-  return { source, platforms, hooks: { formats: figmaFormats } };
+/** @param {string[]} source @param {Record<string, object>} platforms @param {object} hooks */
+function sdConfig(source, platforms, hooks) {
+  return { source, platforms, hooks };
 }
 
-const figmaSharedConfig = figmaConfig(["src/tokens/shared/**/*.json"], {
-  figma: figmaPlatform([{ destination: "shared.tokens.json" }]),
-});
+// ─── Shared + Tailwind (fixed entry points) ───────────────────────────────────
 
-const figmaDefaultConfig = figmaConfig(
-  [
-    "src/tokens/themes/default/base/**/*.json",
-    "src/tokens/themes/default/semantic/**/*.json",
-  ],
+const sharedConfig = sdConfig(
+  ["src/tokens/shared/**/*.json"],
   {
-    figmaBase: figmaPlatform([
+    css: cssPlatform([
       {
-        destination: "default-base.tokens.json",
-        filter: (token) => token.filePath.includes("default/base"),
-      },
-    ]),
-    figmaLight: figmaPlatform([
-      {
-        destination: "default-light.tokens.json",
-        filter: (token) => token.path[0] === "light",
-        options: { stripFirstSegment: true },
-      },
-    ]),
-    figmaDark: figmaPlatform([
-      {
-        destination: "default-dark.tokens.json",
-        filter: (token) => token.path[0] === "dark",
-        options: { stripFirstSegment: true },
+        destination: "shared/base.css",
+        filter: () => true,
+        options: { selector: ":root", stripFirstSegment: false, showFileHeader: true },
       },
     ]),
   },
+  cssHooks,
 );
 
-const figmaPortfolioConfig = figmaConfig(
-  [
-    "src/tokens/themes/portfolio/base/**/*.json",
-    "src/tokens/themes/portfolio/semantic/**/*.json",
-  ],
+const tailwindThemeConfig = sdConfig(
+  ["src/tokens/shared/**/*.json", themeBaseSourceGlob("default")],
   {
-    figma: figmaPlatform([
-      {
-        destination: "portfolio.tokens.json",
-        filter: (token) =>
-          token.filePath.includes("portfolio/base") || token.path[0] === "portfolio",
-        options: { stripModePrefixes: ["portfolio"] },
-      },
-    ]),
+    js: {
+      transformGroup: "js",
+      buildPath: "dist/",
+      files: [
+        {
+          destination: "theme.mjs",
+          format: "tailwind/theme",
+          options: { showFileHeader: true },
+        },
+      ],
+    },
   },
+  { formats: { "tailwind/theme": tailwindTheme } },
 );
 
-// Style Dictionary supports exporting an array of configs
+// ─── Theme CSS — discovered from src/tokens/themes/{id}/ ────────────────────
+
+function buildThemeCssConfig(themeId) {
+  const modes = discoverSemanticModes(themeId);
+  const hasBase = themeHasBase(themeId);
+  const hasSemantic = modes.length > 0;
+  if (!hasBase && !hasSemantic) return null;
+
+  const platforms = {};
+
+  if (hasBase) {
+    platforms.cssBase = cssPlatform([
+      {
+        destination: `themes/${themeId}/base.css`,
+        filter: (token) => token.filePath.includes(`${themeId}/base`),
+        options: {
+          selector: baseCssSelector(themeId),
+          stripFirstSegment: false,
+          showFileHeader: true,
+        },
+      },
+    ]);
+  }
+
+  if (hasSemantic) {
+    if (splitSemanticByMode(themeId, modes)) {
+      for (const mode of modes) {
+        platforms[`css${capitalize(mode)}`] = cssPlatform([
+          {
+            destination: `themes/${themeId}/semantic-${mode}.css`,
+            filter: (token) => token.path[0] === mode,
+            options: {
+              selector: semanticCssSelector(themeId, mode),
+              stripFirstSegment: true,
+              showFileHeader: true,
+            },
+          },
+        ]);
+      }
+    } else {
+      const mode = modes[0];
+      platforms.cssSemantic = cssPlatform([
+        {
+          destination: `themes/${themeId}/semantic.css`,
+          filter: (token) => token.path[0] === mode,
+          options: {
+            selector: semanticCssSelector(themeId, mode),
+            stripFirstSegment: true,
+            showFileHeader: true,
+          },
+        },
+      ]);
+    }
+  }
+
+  return sdConfig([themeSourceGlob(themeId)], platforms, cssHooks);
+}
+
+// ─── Figma / Tokens Studio exports (legacy value/type JSON) ─────────────────
+// No transformGroup: css/js transforms mutate values (e.g. hex → RGB tuples).
+// Figma exports read token.original via figma/tokens for source literals.
+//
+// log.warnings disabled: SD flags leaf-key name collisions on flat token.name —
+// benign; we nest by full path. Output files follow {slug}.tokens.json convention.
+
+const figmaSharedConfig = sdConfig(
+  ["src/tokens/shared/**/*.json"],
+  { figma: figmaPlatform([{ destination: "shared.tokens.json" }]) },
+  { formats: figmaFormats },
+);
+
+function buildThemeFigmaConfig(themeId) {
+  const modes = discoverSemanticModes(themeId);
+  const hasBase = themeHasBase(themeId);
+  const hasSemantic = modes.length > 0;
+  if (!hasBase && !hasSemantic) return null;
+
+  if (mergeFigmaBaseAndSemantic(themeId, modes)) {
+    return sdConfig(
+      [themeBaseSourceGlob(themeId), themeSemanticSourceGlob(themeId)],
+      {
+        figma: figmaPlatform([
+          {
+            destination: `${themeId}.tokens.json`,
+            filter: (token) =>
+              token.filePath.includes(`${themeId}/base`) || token.path[0] === themeId,
+            options: { stripModePrefixes: [themeId] },
+          },
+        ]),
+      },
+      { formats: figmaFormats },
+    );
+  }
+
+  const source = [];
+  const platforms = {};
+
+  if (hasBase) {
+    source.push(themeBaseSourceGlob(themeId));
+    platforms.figmaBase = figmaPlatform([
+      {
+        destination: `${themeId}-base.tokens.json`,
+        filter: (token) => token.filePath.includes(`${themeId}/base`),
+      },
+    ]);
+  }
+
+  if (hasSemantic && splitSemanticByMode(themeId, modes)) {
+    source.push(themeSemanticSourceGlob(themeId));
+    for (const mode of modes) {
+      platforms[`figma${capitalize(mode)}`] = figmaPlatform([
+        {
+          destination: `${themeId}-${mode}.tokens.json`,
+          filter: (token) => token.path[0] === mode,
+          options: { stripFirstSegment: true },
+        },
+      ]);
+    }
+  }
+
+  if (source.length === 0) return null;
+
+  return sdConfig(source, platforms, { formats: figmaFormats });
+}
+
+const themeCssConfigs = discoverThemes()
+  .map((themeId) => buildThemeCssConfig(themeId))
+  .filter(Boolean);
+
+const themeFigmaConfigs = discoverThemes()
+  .map((themeId) => buildThemeFigmaConfig(themeId))
+  .filter(Boolean);
+
 export default [
   sharedConfig,
   tailwindThemeConfig,
-  defaultThemeConfig,
-  portfolioThemeConfig,
+  ...themeCssConfigs,
   figmaSharedConfig,
-  figmaDefaultConfig,
-  figmaPortfolioConfig,
+  ...themeFigmaConfigs,
 ];
