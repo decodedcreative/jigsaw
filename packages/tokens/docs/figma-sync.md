@@ -18,6 +18,10 @@ Design tokens for Figma are exported from source JSON under `src/tokens/` into *
 
 Token set names in Tokens Studio match filenames without `.json` (e.g. `shared.tokens.json` → `shared.tokens`).
 
+### Figma variable path segments
+
+Figma rejects dots in variable names (e.g. `spacing/1.5` is invalid). The Figma export rewrites **JSON keys only** at build time: `1.5` → `1-5`, so Tokens Studio exports `spacing/1-5`. Source tokens and Tailwind keep dotted keys (`py-1.5`, `spacing.1.5` in code). Code → Figma mapping: replace `.` with `-` in each path segment.
+
 ## Tokens Studio setup (GitHub sync)
 
 Requires **Tokens Studio Pro** for multi-file folder sync and themes.

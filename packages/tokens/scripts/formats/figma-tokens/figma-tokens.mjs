@@ -4,6 +4,8 @@
  * (unlike the css transform group which converts colours to RGB tuples).
  */
 
+import { figmaSafeSegment } from "../../figma/names/index.mjs";
+
 const resolvePath = (token, options) => {
   if (options.stripFirstSegment) return token.path.slice(1);
   // Portfolio merges base + semantic in one file; only semantic paths are prefixed.
@@ -53,7 +55,7 @@ export const figmaTokens = ({ dictionary, options = {} }) => {
   const tree = {};
 
   for (const token of dictionary.allTokens) {
-    const path = resolvePath(token, options);
+    const path = resolvePath(token, options).map(figmaSafeSegment);
     setNestedLeaf(tree, path, leafFromToken(token));
   }
 

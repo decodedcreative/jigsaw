@@ -71,18 +71,11 @@ The **Legacy format** badge in Tokens Studio is **expected**. Repo exports use `
 
 ### Shared primitives (`shared.tokens`)
 
-`shared.tokens` is `"source"` in `$themes.json`, so spacing/radius/typography may **not** export via Themes. Token Sets export can also fail (UI shows **0 of 5 selected**; decimal keys like `spacing/1.5` break Figma variable names).
+`shared.tokens` is `"source"` in `$themes.json`, so spacing/radius/typography may **not** export via Themes. Use **Token Sets** export for `shared.tokens` only (Variables: Number + String on).
 
-**Workaround (JSW-58):** create `shared` collection via Figma MCP from `packages/tokens/figma/shared.tokens.json`.
+**Figma path segments:** the build rewrites dotted JSON keys for Figma (`1.5` → `1-5` in `figma/shared.tokens.json`). Tokens Studio exports `spacing/1-5`; code/Tailwind stay `spacing.1.5` / `py-1.5`. See [figma-sync.md](./figma-sync.md#figma-variable-path-segments).
 
-**Naming quirk:** Figma rejects dots in variable names. Map decimal keys with hyphens:
-
-| Token JSON key | Figma variable |
-|----------------|----------------|
-| `spacing.1.5` | `spacing/1-5` |
-| `spacing.2.5` | `spacing/2-5` |
-
-Rem values → px at **16px/rem** when creating FLOAT variables.
+If Token Sets export is still stuck, create the `shared` collection via Figma MCP from the exported JSON (rem → px at **16px/rem** for FLOAT variables).
 
 ### Prerequisites
 
@@ -171,7 +164,7 @@ Steps:
 |-------|------------|
 | Tokens Studio **0 of 5 selected** on Token Sets export | Use **Themes** export for colours; MCP for `shared` primitives |
 | Only colour variables after Themes export | Expected; add `shared` collection separately |
-| `spacing/1.5` invalid in Figma | Use `spacing/1-5` |
+| `spacing/1.5` invalid in Figma | Build exports `1-5`; pull latest `figma/` before Token Sets export |
 | Multi-mode export fails in Drafts | Move file to team project |
 | Publish not on right-click component | Publish entire file via Assets / Libraries |
 | Legacy format badge | Expected; repo uses legacy JSON intentionally |
@@ -180,4 +173,4 @@ Steps:
 
 - [JSW-61](https://decodedcreative.atlassian.net/browse/JSW-61) — Code Connect
 - [JSW-59](https://decodedcreative.atlassian.net/browse/JSW-59) — Text, TextField, Card
-- Repo change to export `shared.tokens` via Themes (enable set in `$themes.json`)
+- Repo change to export `shared.tokens` via Themes (enable set in `$themes.json`) — optional; Token Sets export works after hyphenated Figma keys
