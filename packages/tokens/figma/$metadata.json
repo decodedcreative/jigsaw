@@ -1,0 +1,9 @@
+{
+  "tokenSetOrder": [
+    "shared.tokens",
+    "default-base.tokens",
+    "default-light.tokens",
+    "default-dark.tokens",
+    "portfolio.tokens"
+  ]
+}

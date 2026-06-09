@@ -35,5 +35,7 @@ jobs:
 
       - name: Build and verify Figma token exports
         run: |
+          npm run test --workspace=@jigsaw/tokens
           npm run build:tokens --workspace=@jigsaw/tokens
           npm run verify:figma-tokens --workspace=@jigsaw/tokens
+          npm run check:figma-drift --workspace=@jigsaw/tokens

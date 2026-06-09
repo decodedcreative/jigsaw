@@ -22,10 +22,10 @@ import { fileURLToPath } from "node:url";
  *
  * CSS selectors: default uses :root / .dark; named themes use [data-theme='{id}'].
  *
- * Tokens Studio $themes.json and git-tracked figma/ output → JSW-56.
+ * Tokens Studio $themes.json and $metadata.json generated after SD build (see figma/discovery/).
  */
 
-const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const packageRoot = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 const tokensRoot = path.join(packageRoot, "src/tokens");
 const themesRoot = path.join(tokensRoot, "themes");
 
@@ -106,3 +106,11 @@ export const themeSemanticSourceGlob = (themeId) =>
   `src/tokens/themes/${themeId}/semantic/**/*.json`;
 
 export const capitalize = (value) => value.charAt(0).toUpperCase() + value.slice(1);
+
+/** light before dark; remaining modes alphabetical */
+export const sortAppearanceModes = (modes) =>
+  [...modes].sort((a, b) => {
+    if (a === "light" && b === "dark") return -1;
+    if (a === "dark" && b === "light") return 1;
+    return a.localeCompare(b);
+  });
