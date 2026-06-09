@@ -103,6 +103,7 @@ No manual edits to `sd.config.mjs` file lists are required for standard theme sh
 | Themes missing or broken | Pull again after `$themes.json` is on the branch; set names must match filenames |
 | CI `check:figma-drift` fails | Run `build:tokens` and commit `figma/` |
 | Colours look like RGB tuples in export | Figma platforms must not use the CSS `transformGroup` — see `sd.config.mjs` |
+| Token Sets export stuck / **0 of 5 selected** | Themes export covers colours; use Figma MCP for `shared` spacing/radius/font (see [figma-agent-workflow.md](./figma-agent-workflow.md)) |
 
 ## Agent workflow (code → Figma)
 

@@ -46,7 +46,7 @@ Do **not** use Claude Design mockups or ad-hoc frames as reference.
 ### File setup (Figma MCP)
 
 - Skills: `figma-create-new-file`, `figma-use`, `figma-generate-library`
-- Create **Jigsaw Design System** design file; page skeleton: Cover, Getting Started, Foundations, `---`, Components
+- Create **Jigsaw Design System** design file; page skeleton: Cover, Getting Started, Foundations, `---`, then **one page per component** (e.g. Button, Text, Input, Card)
 
 ### Tokens Studio (manual in Figma)
 
@@ -71,11 +71,11 @@ The **Legacy format** badge in Tokens Studio is **expected**. Repo exports use `
 
 ### Shared primitives (`shared.tokens`)
 
-`shared.tokens` is `"source"` in `$themes.json`, so spacing/radius/typography may **not** export via Themes. Use **Token Sets** export for `shared.tokens` only (Variables: Number + String on).
+`shared.tokens` is `"source"` in `$themes.json`, so spacing/radius/typography do **not** export via **Themes**. Token Sets export for `shared.tokens` was unreliable in the JSW-58 pilot (UI stuck at **0 of 5 selected** even after hyphenated keys).
 
-**Figma path segments:** the build rewrites dotted JSON keys for Figma (`1.5` → `1-5` in `figma/shared.tokens.json`). Tokens Studio exports `spacing/1-5`; code/Tailwind stay `spacing.1.5` / `py-1.5`. See [figma-sync.md](./figma-sync.md#figma-variable-path-segments).
+**Recommended (pilot-proven):** create or refresh the `shared` collection via **Figma MCP** from `packages/tokens/figma/shared.tokens.json` (spacing, `borderRadius`, `font` — rem → px at **16px/rem** for FLOAT variables). Pull from GitHub in Tokens Studio still keeps the plugin in sync; you do not need a successful Token Sets export for primitives.
 
-If Token Sets export is still stuck, create the `shared` collection via Figma MCP from the exported JSON (rem → px at **16px/rem** for FLOAT variables).
+**Figma path segments:** the build rewrites dotted JSON keys (`1.5` → `1-5` in `figma/shared.tokens.json`). MCP and Figma variables use `spacing/1-5`; code/Tailwind stay `spacing.1.5` / `py-1.5`. See [figma-sync.md](./figma-sync.md#figma-variable-path-segments).
 
 ### Prerequisites
 
@@ -94,7 +94,8 @@ Load **`figma-use`** + **`figma-generate-library`** before every `use_figma` cal
 2. **Incremental `use_figma` calls** — create variants → `combineAsVariants` → grid layout → states/docs
 3. **Variant properties** match code (`variant`, `size`, `disabled`, etc.)
 4. **States** (hover, focus-visible) as static frames beside the component set, not always in the variant matrix
-5. **42-variant cap** — fine for Button; split component sets if axes exceed ~30 for future components
+5. **Matrix labels** on each component page — row/column captions aligned to the variant grid (variant, size, disabled, etc.) plus a section title; not inside the component set
+6. **42-variant cap** — fine for Button; split component sets if axes exceed ~30 for future components
 
 ### Button pilot mapping (reference)
 
@@ -120,7 +121,7 @@ Disabled: **50% opacity** on the component (matches `data-[disabled]:opacity-50`
 
 ### Publish
 
-**Assets → Publish** (or **Libraries → Publish changes**). Components page as a shared dumping ground is fine for the pilot.
+**Assets → Publish** (or **Libraries → Publish changes**). Each component lives on its own page (variant set + state/docs frames).
 
 ## Phase 3 — Parity check
 
@@ -152,9 +153,9 @@ Prerequisites:
 Steps:
 1. Inventory variants from {Component}.styles.ts
 2. Add Chromatic stories for any missing variants
-3. Build component set on Components page via figma-use + figma-generate-library
+3. Build component set on the component's dedicated page via figma-use + figma-generate-library
 4. Bind all fills/strokes/padding/radius/typography to variables
-5. Add static state frames (hover, focus-visible)
+5. Add matrix labels (row/column captions for variant axes) and static state frames (hover, focus-visible)
 6. Spot-check against Chromatic
 ```
 
@@ -162,9 +163,9 @@ Steps:
 
 | Issue | Mitigation |
 |-------|------------|
-| Tokens Studio **0 of 5 selected** on Token Sets export | Use **Themes** export for colours; MCP for `shared` primitives |
-| Only colour variables after Themes export | Expected; add `shared` collection separately |
-| `spacing/1.5` invalid in Figma | Build exports `1-5`; pull latest `figma/` before Token Sets export |
+| Tokens Studio **0 of 5 selected** on Token Sets export | Use **Themes** for colours; **MCP** for `shared` primitives (don't block on Token Sets) |
+| Only colour variables after Themes export | Expected; add `shared` via MCP |
+| `spacing/1.5` invalid in Figma | Build exports `1-5`; MCP uses hyphenated paths |
 | Multi-mode export fails in Drafts | Move file to team project |
 | Publish not on right-click component | Publish entire file via Assets / Libraries |
 | Legacy format badge | Expected; repo uses legacy JSON intentionally |
