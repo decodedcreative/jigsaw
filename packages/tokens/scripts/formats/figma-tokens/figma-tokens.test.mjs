@@ -70,4 +70,12 @@ describe("figmaTokens", () => {
   it("appends a trailing newline to output", () => {
     expect(figmaTokens({ dictionary: { allTokens: [] } })).toBe("{}\n");
   });
+
+  it("maps dotted path segments to hyphenated keys for Figma variable names", () => {
+    expect(
+      format([token(["spacing", "1.5"], { value: "0.375rem", type: "dimension" })]),
+    ).toEqual({
+      spacing: { "1-5": { value: "0.375rem", type: "dimension" } },
+    });
+  });
 });

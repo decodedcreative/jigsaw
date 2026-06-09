@@ -18,6 +18,10 @@ Design tokens for Figma are exported from source JSON under `src/tokens/` into *
 
 Token set names in Tokens Studio match filenames without `.json` (e.g. `shared.tokens.json` → `shared.tokens`).
 
+### Figma variable path segments
+
+Figma rejects dots in variable names (e.g. `spacing/1.5` is invalid). The Figma export rewrites **JSON keys only** at build time: `1.5` → `1-5`, so Tokens Studio exports `spacing/1-5`. Source tokens and Tailwind keep dotted keys (`py-1.5`, `spacing.1.5` in code). Code → Figma mapping: replace `.` with `-` in each path segment.
+
 ## Tokens Studio setup (GitHub sync)
 
 Requires **Tokens Studio Pro** for multi-file folder sync and themes.
@@ -99,3 +103,7 @@ No manual edits to `sd.config.mjs` file lists are required for standard theme sh
 | Themes missing or broken | Pull again after `$themes.json` is on the branch; set names must match filenames |
 | CI `check:figma-drift` fails | Run `build:tokens` and commit `figma/` |
 | Colours look like RGB tuples in export | Figma platforms must not use the CSS `transformGroup` — see `sd.config.mjs` |
+
+## Agent workflow (code → Figma)
+
+For building components in Figma from code via Cursor + Figma MCP, see [figma-agent-workflow.md](./figma-agent-workflow.md) (JSW-58 pilot).

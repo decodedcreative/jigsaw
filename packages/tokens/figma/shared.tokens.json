@@ -262,19 +262,19 @@
       "value": "1px",
       "type": "dimension"
     },
-    "0.5": {
+    "0-5": {
       "value": "0.125rem",
       "type": "dimension"
     },
-    "1.5": {
+    "1-5": {
       "value": "0.375rem",
       "type": "dimension"
     },
-    "2.5": {
+    "2-5": {
       "value": "0.625rem",
       "type": "dimension"
     },
-    "3.5": {
+    "3-5": {
       "value": "0.875rem",
       "type": "dimension"
     }

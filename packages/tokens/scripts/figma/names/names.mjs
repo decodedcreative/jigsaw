@@ -10,3 +10,9 @@ export const setNameToFilename = (setName) => `${setName}.json`;
 export const tokenFilename = (slug) => `${slug}.tokens.json`;
 
 export const SHARED_SET = tokenSetName(SHARED_TOKEN_FILENAME);
+
+/**
+ * Figma variable names reject dots in path segments (e.g. spacing/1.5 is invalid).
+ * Applied at Figma JSON export only — source tokens and Tailwind keep dotted keys (1.5).
+ */
+export const figmaSafeSegment = (segment) => String(segment).replace(/\./g, "-");
