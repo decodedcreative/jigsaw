@@ -99,3 +99,7 @@ No manual edits to `sd.config.mjs` file lists are required for standard theme sh
 | Themes missing or broken | Pull again after `$themes.json` is on the branch; set names must match filenames |
 | CI `check:figma-drift` fails | Run `build:tokens` and commit `figma/` |
 | Colours look like RGB tuples in export | Figma platforms must not use the CSS `transformGroup` — see `sd.config.mjs` |
+
+## Agent workflow (code → Figma)
+
+For building components in Figma from code via Cursor + Figma MCP, see [figma-agent-workflow.md](./figma-agent-workflow.md) (JSW-58 pilot).
