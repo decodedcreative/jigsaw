@@ -53,6 +53,27 @@ export const Outline: Story = {
   },
 };
 
+export const Accent: Story = {
+  args: {
+    variant: "accent",
+    children: "Accent button",
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    variant: "ghost",
+    children: "Ghost button",
+  },
+};
+
+export const Destructive: Story = {
+  args: {
+    variant: "destructive",
+    children: "Destructive button",
+  },
+};
+
 export const Sizes: Story = {
   args: {},
   render: () => (
