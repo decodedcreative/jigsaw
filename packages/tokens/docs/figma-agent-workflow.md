@@ -130,9 +130,9 @@ For Button: Primary, Secondary, Outline, Sizes, Disabled, Link, Accent, Ghost, D
 
 ## Phase 4 — Close-out
 
-- [ ] Library published and Button insertable from Assets in another file
-- [ ] Jira ticket updated with Figma URL and completion note
-- [ ] This doc updated if workflow changes
+- [x] Library published and Button insertable from Assets in another file
+- [x] Jira ticket updated with Figma URL and completion note
+- [x] This doc updated if workflow changes
 
 ## Prompt template (next component)
 
