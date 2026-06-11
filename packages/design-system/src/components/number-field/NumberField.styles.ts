@@ -17,27 +17,35 @@ export const numberFieldStyles = {
     }
   ),
   fieldBody: cva([formStyles.fieldBody()]),
-  group: cva(["relative flex items-stretch"]),
+  group: cva(["flex items-stretch overflow-hidden rounded-default border"], {
+    variants: {
+      state: {
+        default: "border-border-strong",
+        error: "border-state-error",
+        disabled: "border-border-default",
+      },
+    },
+    defaultVariants: { state: "default" },
+  }),
   input: cva(
     [
-      "flex-1 rounded-default border bg-surface-default text-foreground-primary text-center transition-colors",
+      "min-w-0 flex-1 border-0 rounded-none bg-surface-default text-foreground-primary text-center transition-colors",
       "placeholder:text-foreground-muted",
-      "focus:outline-none focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent focus:z-10",
-      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted data-[disabled]:border-border-default",
-      "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
+      "focus:outline-none focus:ring-2 focus:ring-inset focus:ring-interactive-accent/20",
+      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted",
+      "[appearance:textfield] [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
     ],
     {
       variants: {
         size: {
-          sm: "px-8 py-1.5 text-xs",
-          md: "px-10 py-2 text-sm",
-          lg: "px-12 py-3 text-base",
+          sm: "px-2 py-1.5 text-xs",
+          md: "px-3 py-2 text-sm",
+          lg: "px-4 py-3 text-base",
         },
         state: {
-          default: "border-border-strong",
-          error:
-            "border-state-error bg-state-error/5 focus:ring-state-error/20 focus:border-state-error",
-          disabled: "border-border-default",
+          default: "",
+          error: "bg-state-error/5 focus:ring-state-error/20",
+          disabled: "",
         },
       },
       defaultVariants: { size: "md", state: "default" },
@@ -45,9 +53,9 @@ export const numberFieldStyles = {
   ),
   decrementButton: cva(
     [
-      "absolute top-0 bottom-0 left-0 flex items-center justify-center rounded-l-default border border-r-0 bg-surface-muted text-foreground-secondary transition-colors",
+      "shrink-0 flex items-center justify-center border-0 border-r bg-surface-muted text-foreground-secondary transition-colors",
       "hover:bg-surface-subtle hover:text-foreground-primary",
-      "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:z-10",
+      "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-interactive-accent",
       "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-surface-muted data-[disabled]:hover:text-foreground-secondary",
     ],
     {
@@ -68,9 +76,9 @@ export const numberFieldStyles = {
   ),
   incrementButton: cva(
     [
-      "absolute top-0 bottom-0 right-0 flex items-center justify-center rounded-r-default border border-l-0 bg-surface-muted text-foreground-secondary transition-colors",
+      "shrink-0 flex items-center justify-center border-0 border-l bg-surface-muted text-foreground-secondary transition-colors",
       "hover:bg-surface-subtle hover:text-foreground-primary",
-      "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:z-10",
+      "focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-interactive-accent",
       "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-surface-muted data-[disabled]:hover:text-foreground-secondary",
     ],
     {
