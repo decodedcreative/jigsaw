@@ -17,6 +17,6 @@ export const disclosureStyles = {
   ]),
   panel: cva([
     "hidden group-data-[expanded]:block",
-    "px-4 pb-4 pt-0 text-foreground-secondary text-sm",
+    "px-4 py-4 text-foreground-secondary text-sm",
   ]),
 };
