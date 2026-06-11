@@ -127,7 +127,20 @@ Load **`figma-use`** + **`figma-generate-library`** before every `use_figma` cal
 4. **States section is ONE frame** — a single vertical auto-layout frame named `{Component} / States` containing a title TEXT node plus the states row. Never create a separate sibling title frame (e.g. `… / States labels`): Figma draws each frame's name label on canvas, so a title frame placed above the states frame renders on top of the states frame's own name label (recurred on Checkbox and Icon)
 5. **Matrix labels** on each component page — row/column captions aligned to the variant grid (variant, size, disabled, etc.) plus a section title; not inside the component set
 6. **42-variant cap** — fine for Button; split component sets if axes exceed ~30 for future components
-7. **Never `resize(w, smallHeight)` on auto-layout frames** — `resize()` pins the axis FIXED and clips children (`clipsContent` defaults true). Set `layoutMode` + sizing first, append children, then only `resize()` the counter axis if needed (`layoutSizingVertical = 'HUG'` for vertical frames). Recurred on Input, Sign In, and the Icon docs frame
+7. **Never `resize(w, smallHeight)` on auto-layout frames** — `resize()` pins the axis FIXED and clips children (`clipsContent` defaults true). Set `layoutMode` + sizing first, append children, then only `resize()` the counter axis if needed (`layoutSizingVertical = 'HUG'` for vertical frames). Recurred on Input, Sign In, Icon docs frame, and **SearchField / Docs**
+8. **Component sets must not clip variants** — after `combineAsVariants`, set `componentSet.clipsContent = false`, re-grid using the **tallest variant per row**, then `resizeWithoutConstraints` to the computed height. `combineAsVariants` defaults to clipping; lg-row bottoms get cut off if the set is too short (SearchField)
+9. **States-row instances need a fixed width** — do **not** use `layoutSizingHorizontal = 'HUG'` on component instances in the states row; they collapse to ~40px and text wraps one character per line. Use **`resize(280, …)`** + `layoutSizingHorizontal = 'FIXED'` (match variant matrix width). Parent column: `counterAxisSizingMode = 'FIXED'`, width **280**
+10. **Focus-ring wrappers need a wider column** — a focus-visible pad is `instance width + padding + stroke`. If the column is 280px but the pad is 288px+, the ring clips on the right. Size the **column** to `pad.width + pad.strokeWeight * 2`; set `states-row.clipsContent = false`
+11. **Docs frames hug content** — `{Component} / Docs` is vertical auto-layout. Never leave at `resize(640, 10)`. After appending title + body text: `primaryAxisSizingMode = 'AUTO'`, `layoutSizingVertical = 'HUG'`, `clipsContent = false`
+
+### Layout validation checklist (run before hand-off)
+
+After building the variant set, states, and docs on each component page:
+
+1. **Variant set** — `clipsContent === false`; set height ≥ bottom of lowest variant; no input/frame children with `clipsContent` + fixed height squashing borders
+2. **States row** — each instance **280px** wide (text reads horizontally); focus-visible column fits pad + stroke; `states-row.clipsContent === false`
+3. **Docs frame** — height hugs title + body (not ~10px); heading not cut off at baseline
+4. **`get_screenshot`** on the component set and `{Component} / States` before Jira close-out
 
 ### Button pilot mapping (reference)
 
@@ -200,7 +213,9 @@ Steps:
 4. Bind all fills/strokes/padding/radius/typography to variables
 5. Add matrix labels (row/column captions for variant axes) and a single vertical
    `{Component} / States` frame (title text inside — no separate title frame)
-6. Spot-check against Chromatic
+6. Run the layout validation checklist (variant set clipping, states instance width,
+   focus-ring column width, docs frame HUG height)
+7. Spot-check against Chromatic (get_screenshot on set + states)
 
 Layout safety: never resize() the primary axis of an auto-layout frame —
 use HUG sizing after appending children (see Known pitfalls).
@@ -217,8 +232,12 @@ use HUG sizing after appending children (see Known pitfalls).
 | Publish not on right-click component | Publish entire file via Assets / Libraries |
 | Legacy format badge | Expected; repo uses legacy JSON intentionally |
 | Cannot append instances inside Card (or other) instances | Example screens: Card backdrop + absolute form overlay; or composition frames like Card / Composition |
-| `resize(w, 10)` collapses auto-layout height (recurred: Input grid, Sign In form, Icon docs frame) | Never `resize()` the primary axis of an auto-layout frame — it pins it FIXED and clips content. Set `layoutSizingVertical = 'HUG'` (vertical) / `layoutSizingHorizontal = 'HUG'` (horizontal) after appending children |
+| `resize(w, 10)` collapses auto-layout height (recurred: Input grid, Sign In form, Icon docs frame, **SearchField / Docs**) | Never `resize()` the primary axis of an auto-layout frame — it pins it FIXED and clips content. Set `layoutSizingVertical = 'HUG'` (vertical) / `layoutSizingHorizontal = 'HUG'` (horizontal) after appending children |
 | Separate title frame overlaps the states frame's on-canvas name label (recurred: Checkbox, Icon) | One vertical `{Component} / States` frame with the title TEXT inside it — never a sibling `… / States labels` frame |
+| Variant matrix bottoms clipped after `combineAsVariants` (recurred: **SearchField** lg/md row) | `componentSet.clipsContent = false`; re-grid with per-row max height; `resizeWithoutConstraints` to full grid height |
+| States instances squashed to ~40px, text stacks vertically (recurred: **SearchField**) | Instances in states row: `resize(280, …)` + `layoutSizingHorizontal = 'FIXED'` — never HUG width on instances |
+| Focus-visible ring clipped on right (recurred: **SearchField**) | Focus column width = pad width + stroke×2; `states-row.clipsContent = false` |
+| `combineAsVariants` squashes variant height to ~10px | On each variant + nested `input` frames: `layoutSizingVertical = 'HUG'`, `primaryAxisSizingMode = 'AUTO'`, `clipsContent = false` on inputs |
 
 ## Out of scope (follow-up tickets)
 
