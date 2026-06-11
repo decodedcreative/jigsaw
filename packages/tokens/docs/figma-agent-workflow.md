@@ -77,6 +77,7 @@ Pages / Sign In
 - New primitives → `Components / {Name}` under `--- Components ---`
 - New example screens → `Pages / {Name}` under `--- Pages ---`
 - Divider pages stay named exactly `--- Components ---` and `--- Pages ---`
+- Keep **`Components / *`** and **`Pages / *`** pages sorted **A–Z** by full page name (re-insert with `figma.root.insertChild` after adding a page)
 - Do **not** put component variant matrices on Pages; do **not** put full screens on Component pages
 
 ### Tokens Studio (manual in Figma)
@@ -125,7 +126,7 @@ Load **`figma-use`** + **`figma-generate-library`** before every `use_figma` cal
 2. **Incremental `use_figma` calls** — create variants → `combineAsVariants` → grid layout → states/docs
 3. **Variant properties** match code (`variant`, `size`, `disabled`, etc.)
 4. **States section is ONE frame** — a single vertical auto-layout frame named `{Component} / States` containing a title TEXT node plus the states row. Never create a separate sibling title frame (e.g. `… / States labels`): Figma draws each frame's name label on canvas, so a title frame placed above the states frame renders on top of the states frame's own name label (recurred on Checkbox and Icon)
-5. **Matrix labels** on each component page — row/column captions aligned to the variant grid (variant, size, disabled, etc.) plus a section title; not inside the component set
+5. **Matrix labels** on each component page — row/column captions aligned to the variant grid (variant, size, disabled, etc.) plus a section title; not inside the component set. Place the component set at **`y ≥ 200`** so Figma’s on-canvas component-set name label does not overlap column headers; align column captions to each column’s `variant=*, size=md` **x** and row captions to each row’s vertical centre
 6. **42-variant cap** — fine for Button; split component sets if axes exceed ~30 for future components
 7. **Never `resize(w, smallHeight)` on auto-layout frames** — `resize()` pins the axis FIXED and clips children (`clipsContent` defaults true). Set `layoutMode` + sizing first, append children, then only `resize()` the counter axis if needed (`layoutSizingVertical = 'HUG'` for vertical frames). Recurred on Input, Sign In, Icon docs frame, and **SearchField / Docs**
 8. **Component sets must not clip variants** — after `combineAsVariants`, set `componentSet.clipsContent = false`, re-grid using the **tallest variant per row**, then `resizeWithoutConstraints` to the computed height. `combineAsVariants` defaults to clipping; lg-row bottoms get cut off if the set is too short (SearchField)
