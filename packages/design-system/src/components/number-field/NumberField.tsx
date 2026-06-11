@@ -29,6 +29,7 @@ export const NumberField = ({
 
   const classNames = useGetClassNames(numberFieldStyles, classNameOverrides, {
     label: { state },
+    group: { state },
     input: { size, state },
     decrementButton: { size, state },
     incrementButton: { size, state },
