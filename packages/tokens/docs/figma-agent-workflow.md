@@ -46,7 +46,38 @@ Do **not** use Claude Design mockups or ad-hoc frames as reference.
 ### File setup (Figma MCP)
 
 - Skills: `figma-create-new-file`, `figma-use`, `figma-generate-library`
-- Create **Jigsaw Design System** design file; page skeleton: Cover, Getting Started, Foundations, `---`, then **one page per component** (e.g. Button, Text, Input, Card)
+- Create **Jigsaw Design System** design file using the page skeleton below
+
+### Page skeleton (Components vs Pages)
+
+Figma has no real page folders — use **divider pages** and a **`Section / Name`** prefix so the sidebar groups like Storybook (`Design System/*` vs `Examples/*`).
+
+```
+Cover
+Getting Started
+Foundations
+--- Components ---
+Components / Button
+Components / Text
+Components / Input
+… (one page per primitive — variant matrix + states)
+--- Pages ---
+Pages / Sign In
+… (composed example screens from library instances)
+```
+
+| Section | Purpose | Naming | Contents |
+|---------|---------|--------|----------|
+| **Onboarding** | File intro, token usage | `Cover`, `Getting Started`, `Foundations` | Docs frames only — no component sets |
+| **Components** | Publishable primitives | `Components / {Name}` | Component set, matrix labels, states row |
+| **Pages** | Example screens | `Pages / {Screen}` | Library instances only — not ad-hoc mocks |
+
+**Agent rules**
+
+- New primitives → `Components / {Name}` under `--- Components ---`
+- New example screens → `Pages / {Name}` under `--- Pages ---`
+- Divider pages stay named exactly `--- Components ---` and `--- Pages ---`
+- Do **not** put component variant matrices on Pages; do **not** put full screens on Component pages
 
 ### Tokens Studio (manual in Figma)
 
@@ -93,9 +124,10 @@ Load **`figma-use`** + **`figma-generate-library`** before every `use_figma` cal
 1. **Variables before components** — no hardcoded hex, spacing, or radius
 2. **Incremental `use_figma` calls** — create variants → `combineAsVariants` → grid layout → states/docs
 3. **Variant properties** match code (`variant`, `size`, `disabled`, etc.)
-4. **States** (hover, focus-visible) as static frames beside the component set, not always in the variant matrix
+4. **States section is ONE frame** — a single vertical auto-layout frame named `{Component} / States` containing a title TEXT node plus the states row. Never create a separate sibling title frame (e.g. `… / States labels`): Figma draws each frame's name label on canvas, so a title frame placed above the states frame renders on top of the states frame's own name label (recurred on Checkbox and Icon)
 5. **Matrix labels** on each component page — row/column captions aligned to the variant grid (variant, size, disabled, etc.) plus a section title; not inside the component set
 6. **42-variant cap** — fine for Button; split component sets if axes exceed ~30 for future components
+7. **Never `resize(w, smallHeight)` on auto-layout frames** — `resize()` pins the axis FIXED and clips children (`clipsContent` defaults true). Set `layoutMode` + sizing first, append children, then only `resize()` the counter axis if needed (`layoutSizingVertical = 'HUG'` for vertical frames). Recurred on Input, Sign In, and the Icon docs frame
 
 ### Button pilot mapping (reference)
 
@@ -121,7 +153,18 @@ Disabled: **50% opacity** on the component (matches `data-[disabled]:opacity-50`
 
 ### Publish
 
-**Assets → Publish** (or **Libraries → Publish changes**). Each component lives on its own page (variant set + state/docs frames).
+**Assets → Publish** (or **Libraries → Publish changes**). Each component lives on its own **Components /** page (variant set + state/docs frames).
+
+## Phase 2b — Example screens (Pages)
+
+Compose screens on **`Pages / {Name}`** from published library instances. Storybook **Examples/** is the layout reference.
+
+1. Desktop frame (e.g. 1440×1024), centred column, `color/surface/default` background
+2. **Only library instances** — Card, Input, Button, Text, Link, Checkbox, etc.
+3. Add a **`{Screen} / Docs`** frame: Storybook path + note that the screen is a **living example** (revisit when new primitives land, e.g. Icon for OAuth icons, Heading for titles, Form for form chrome)
+4. **Card + form:** Figma cannot nest instances inside a Card instance — use an elevated Card instance as backdrop with the form in an absolute overlay (same constraint as Card composition docs)
+
+Example screens are expected to get incremental updates as the library grows; they are not blocked on every backlog component ticket.
 
 ## Phase 3 — Parity check
 
@@ -153,10 +196,14 @@ Prerequisites:
 Steps:
 1. Inventory variants from {Component}.styles.ts
 2. Add Chromatic stories for any missing variants
-3. Build component set on the component's dedicated page via figma-use + figma-generate-library
+3. Build component set on **Components / {Component}** via figma-use + figma-generate-library
 4. Bind all fills/strokes/padding/radius/typography to variables
-5. Add matrix labels (row/column captions for variant axes) and static state frames (hover, focus-visible)
+5. Add matrix labels (row/column captions for variant axes) and a single vertical
+   `{Component} / States` frame (title text inside — no separate title frame)
 6. Spot-check against Chromatic
+
+Layout safety: never resize() the primary axis of an auto-layout frame —
+use HUG sizing after appending children (see Known pitfalls).
 ```
 
 ## Known pitfalls
@@ -169,9 +216,12 @@ Steps:
 | Multi-mode export fails in Drafts | Move file to team project |
 | Publish not on right-click component | Publish entire file via Assets / Libraries |
 | Legacy format badge | Expected; repo uses legacy JSON intentionally |
+| Cannot append instances inside Card (or other) instances | Example screens: Card backdrop + absolute form overlay; or composition frames like Card / Composition |
+| `resize(w, 10)` collapses auto-layout height (recurred: Input grid, Sign In form, Icon docs frame) | Never `resize()` the primary axis of an auto-layout frame — it pins it FIXED and clips content. Set `layoutSizingVertical = 'HUG'` (vertical) / `layoutSizingHorizontal = 'HUG'` (horizontal) after appending children |
+| Separate title frame overlaps the states frame's on-canvas name label (recurred: Checkbox, Icon) | One vertical `{Component} / States` frame with the title TEXT inside it — never a sibling `… / States labels` frame |
 
 ## Out of scope (follow-up tickets)
 
 - [JSW-61](https://decodedcreative.atlassian.net/browse/JSW-61) — Code Connect
-- [JSW-59](https://decodedcreative.atlassian.net/browse/JSW-59) — Text, TextField, Card
+- [JSW-62](https://decodedcreative.atlassian.net/browse/JSW-62) — remaining component migration (one ticket per component)
 - Repo change to export `shared.tokens` via Themes (enable set in `$themes.json`) — optional; Token Sets export works after hyphenated Figma keys
