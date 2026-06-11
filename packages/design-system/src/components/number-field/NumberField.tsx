@@ -29,8 +29,7 @@ export const NumberField = ({
 
   const classNames = useGetClassNames(numberFieldStyles, classNameOverrides, {
     label: { state },
-    group: { size, state },
-    inputCell: { state },
+    group: { state },
     input: { size, state },
     decrementButton: { size, state },
     incrementButton: { size, state },
@@ -51,9 +50,7 @@ export const NumberField = ({
           <ReactAriaButton slot="decrement" className={classNames.decrementButton}>
             <Icon icon={MinusIcon} size={size} />
           </ReactAriaButton>
-          <div className={classNames.inputCell}>
-            <ReactAriaInput className={classNames.input} />
-          </div>
+          <ReactAriaInput className={classNames.input} />
           <ReactAriaButton slot="increment" className={classNames.incrementButton}>
             <Icon icon={PlusIcon} size={size} />
           </ReactAriaButton>
