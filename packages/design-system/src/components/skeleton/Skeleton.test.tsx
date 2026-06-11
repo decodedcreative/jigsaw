@@ -10,6 +10,7 @@ describe('Skeleton', () => {
   it('renders a div element', () => {
     const { container } = render(<Skeleton />);
     expect(container.querySelector('div')).toBeInTheDocument();
+    expect(container.firstChild).toHaveClass('bg-border-default');
   });
 
   it('applies width as inline style with number', () => {
