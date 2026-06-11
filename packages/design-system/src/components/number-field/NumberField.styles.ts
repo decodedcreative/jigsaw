@@ -16,10 +16,10 @@ export const numberFieldStyles = {
       defaultVariants: { state: "default" },
     }
   ),
-  fieldBody: cva([formStyles.fieldBody()]),
+  fieldBody: cva(["flex flex-col", formStyles.fieldBody()]),
   group: cva(
     [
-      "inline-flex w-fit max-w-full items-stretch overflow-hidden rounded-default border",
+      "flex w-full items-stretch overflow-hidden rounded-default border",
       "focus-within:outline-none focus-within:ring-2 focus-within:ring-inset",
     ],
     {
@@ -35,18 +35,19 @@ export const numberFieldStyles = {
   ),
   input: cva(
     [
-      "relative z-0 shrink-0 border-0 rounded-none bg-surface-default text-foreground-primary text-center transition-colors",
+      "min-w-0 flex-1 border-0 rounded-none bg-surface-default text-foreground-primary text-center transition-colors",
       "placeholder:text-foreground-muted",
-      "focus:outline-none",
+      "focus:outline-none focus:ring-0",
+      "data-[focus-visible]:outline-none data-[focus-visible]:ring-0",
       "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted",
       "[appearance:textfield] [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
     ],
     {
       variants: {
         size: {
-          sm: "w-10 px-1 py-1.5 text-xs",
-          md: "w-12 px-1 py-2 text-sm",
-          lg: "w-14 px-1 py-3 text-base",
+          sm: "px-1 py-1.5 text-xs",
+          md: "px-1 py-2 text-sm",
+          lg: "px-1 py-3 text-base",
         },
         state: {
           default: "",
@@ -59,7 +60,7 @@ export const numberFieldStyles = {
   ),
   decrementButton: cva(
     [
-      "relative z-10 shrink-0 flex items-center justify-center border-0 border-r bg-surface-muted text-foreground-secondary transition-colors",
+      "shrink-0 flex items-center justify-center border-0 border-r bg-surface-muted text-foreground-secondary transition-colors",
       "hover:bg-surface-subtle hover:text-foreground-primary",
       "focus:outline-none",
       "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-surface-muted data-[disabled]:hover:text-foreground-secondary",
@@ -82,7 +83,7 @@ export const numberFieldStyles = {
   ),
   incrementButton: cva(
     [
-      "relative z-10 shrink-0 flex items-center justify-center border-0 border-l bg-surface-muted text-foreground-secondary transition-colors",
+      "shrink-0 flex items-center justify-center border-0 border-l bg-surface-muted text-foreground-secondary transition-colors",
       "hover:bg-surface-subtle hover:text-foreground-primary",
       "focus:outline-none",
       "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-surface-muted data-[disabled]:hover:text-foreground-secondary",
