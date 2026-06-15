@@ -35,7 +35,7 @@ const cssPlatform = (files) => ({
 });
 
 export default {
-  source: ["src/tokens/**/*.json"],
+  source: ["src/**/*.json"],
   platforms: {
     cssBase: cssPlatform([
       {

@@ -89,14 +89,12 @@ describe("CSS selectors", () => {
 
 describe("source globs", () => {
   it("builds theme-relative Style Dictionary globs", () => {
-    expect(themeSourceGlob("default")).toBe(
-      "../themes/default/src/tokens/**/*.json",
-    );
+    expect(themeSourceGlob("default")).toBe("../themes/default/src/**/*.json");
     expect(themeBaseSourceGlob("default")).toBe(
-      "../themes/default/src/tokens/base/**/*.json",
+      "../themes/default/src/base/**/*.json",
     );
     expect(themeSemanticSourceGlob("default")).toBe(
-      "../themes/default/src/tokens/semantic/**/*.json",
+      "../themes/default/src/semantic/**/*.json",
     );
     expect(themeSourceGlob("portfolio")).toBe(
       "src/tokens/themes/portfolio/**/*.json",
@@ -132,7 +130,7 @@ describe("filesystem discovery", () => {
 describe("external themes", () => {
   it("resolves default sources from packages/themes/default", () => {
     expect(isExternalTheme(THEME_DEFAULT_ID)).toBe(true);
-    expect(themeTokensRoot(THEME_DEFAULT_ID)).toMatch(/themes\/default\/src\/tokens$/);
+    expect(themeTokensRoot(THEME_DEFAULT_ID)).toMatch(/themes\/default\/src$/);
     expect(themeHasBase(THEME_DEFAULT_ID)).toBe(true);
     expect(themeHasBase("portfolio")).toBe(true);
   });
@@ -140,7 +138,7 @@ describe("external themes", () => {
   it("classifies base tokens from external and legacy themes", () => {
     expect(
       isThemeBaseToken("default", {
-        filePath: "/repo/packages/themes/default/src/tokens/base/colors.json",
+        filePath: "/repo/packages/themes/default/src/base/colors.json",
       }),
     ).toBe(true);
     expect(

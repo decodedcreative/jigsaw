@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
  *
  * Source layout:
  *   packages/tokens/src/tokens/shared/     → shared.tokens.json, shared/base.css
- *   packages/themes/{id}/src/tokens/     → extracted brand themes (CSS built in-package)
+ *   packages/themes/{id}/src/            → extracted brand themes (CSS built in-package)
  *     base/                              → palette tokens
  *     semantic/                          → semantic tokens; mode = JSON root key
  *   packages/tokens/src/tokens/themes/{id}/ → legacy in-repo themes (e.g. portfolio until migrated)
@@ -40,7 +40,7 @@ export const THEME_DEFAULT_ID = "default";
  * @returns {string}
  */
 export const externalThemeTokensRoot = (themeId) =>
-  path.join(themesPackageRoot, themeId, "src/tokens");
+  path.join(themesPackageRoot, themeId, "src");
 
 /** @param {string} themeId */
 export const isExternalTheme = (themeId) =>
@@ -152,17 +152,17 @@ export const semanticCssSelector = (themeId, mode) => {
 
 export const themeSourceGlob = (themeId) =>
   isExternalTheme(themeId)
-    ? `../themes/${themeId}/src/tokens/**/*.json`
+    ? `../themes/${themeId}/src/**/*.json`
     : `src/tokens/themes/${themeId}/**/*.json`;
 
 export const themeBaseSourceGlob = (themeId) =>
   isExternalTheme(themeId)
-    ? `../themes/${themeId}/src/tokens/base/**/*.json`
+    ? `../themes/${themeId}/src/base/**/*.json`
     : `src/tokens/themes/${themeId}/base/**/*.json`;
 
 export const themeSemanticSourceGlob = (themeId) =>
   isExternalTheme(themeId)
-    ? `../themes/${themeId}/src/tokens/semantic/**/*.json`
+    ? `../themes/${themeId}/src/semantic/**/*.json`
     : `src/tokens/themes/${themeId}/semantic/**/*.json`;
 
 export const capitalize = (value) => value.charAt(0).toUpperCase() + value.slice(1);
