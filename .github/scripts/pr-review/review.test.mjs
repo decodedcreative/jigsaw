@@ -3,6 +3,7 @@ import test from "node:test";
 
 import { shouldSkipPath, selectReviewableFiles } from "./lib/config.mjs";
 import { parseReviewableLines } from "./lib/diff.mjs";
+import { isGitHubRateLimited } from "./lib/github.mjs";
 import { parseReviewJson } from "./lib/parse-review.mjs";
 
 test("parseReviewableLines tracks RIGHT-side line numbers", () => {
@@ -51,4 +52,26 @@ test("parseReviewJson accepts fenced JSON", () => {
 
   assert.equal(parsed.summary, "ok");
   assert.equal(parsed.comments.length, 1);
+});
+
+test("isGitHubRateLimited detects 429 and exhausted quota", () => {
+  assert.equal(isGitHubRateLimited(new Response("", { status: 429 })), true);
+  assert.equal(
+    isGitHubRateLimited(
+      new Response("", {
+        status: 403,
+        headers: { "x-ratelimit-remaining": "0" },
+      }),
+    ),
+    true,
+  );
+  assert.equal(
+    isGitHubRateLimited(
+      new Response("", {
+        status: 403,
+        headers: { "x-ratelimit-remaining": "42" },
+      }),
+    ),
+    false,
+  );
 });

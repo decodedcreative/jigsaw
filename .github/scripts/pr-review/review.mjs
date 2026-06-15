@@ -3,16 +3,16 @@
 import {
   MAX_INLINE_COMMENTS,
   REVIEW_MARKER,
+  getProvider,
   selectReviewableFiles,
 } from "./lib/config.mjs";
 import { buildLineIndex } from "./lib/diff.mjs";
-import { getProvider } from "./lib/config.mjs";
-import { providerLabel, requestReview } from "./lib/model.mjs";
 import {
   fetchPullFiles,
   fetchPullRequest,
   postPullRequestReview,
 } from "./lib/github.mjs";
+import { providerLabel, requestReview } from "./lib/model.mjs";
 import {
   formatCommentBody,
   formatReviewSummary,
@@ -36,13 +36,30 @@ function requireEnv(name, value) {
  */
 function validateComments(comments, lineIndex) {
   const valid = [];
+  let skippedUnknownPath = 0;
+  let skippedInvalidLine = 0;
+  let skippedOverCap = 0;
 
   for (const comment of comments) {
+    if (valid.length >= MAX_INLINE_COMMENTS) {
+      skippedOverCap += 1;
+      continue;
+    }
+
     const lines = lineIndex.get(comment.path);
-    if (!lines?.has(comment.line)) {
+    if (!lines) {
       console.warn(
-        `Skipping comment on ${comment.path}:${comment.line} — not in diff hunks`,
+        `Skipping ${comment.path}:${comment.line} — file not in review set (filtered out or missing patch)`,
       );
+      skippedUnknownPath += 1;
+      continue;
+    }
+
+    if (!lines.has(comment.line)) {
+      console.warn(
+        `Skipping ${comment.path}:${comment.line} — line not in diff hunks (invalid line number)`,
+      );
+      skippedInvalidLine += 1;
       continue;
     }
 
@@ -51,8 +68,13 @@ function validateComments(comments, lineIndex) {
       line: comment.line,
       body: formatCommentBody(comment.severity, comment.body),
     });
+  }
 
-    if (valid.length >= MAX_INLINE_COMMENTS) break;
+  const skipped = skippedUnknownPath + skippedInvalidLine + skippedOverCap;
+  if (skipped > 0) {
+    console.warn(
+      `Comment validation: kept ${valid.length}, skipped ${skipped} (${skippedUnknownPath} unknown path, ${skippedInvalidLine} invalid line, ${skippedOverCap} over cap of ${MAX_INLINE_COMMENTS})`,
+    );
   }
 
   return valid;
@@ -78,6 +100,11 @@ async function main() {
   if (files.length === 0) {
     console.log("No reviewable files after filters — skipping.");
     return;
+  }
+
+  console.log(`Selected ${files.length} reviewable file(s):`);
+  for (const file of files) {
+    console.log(`  - ${file.filename}`);
   }
 
   console.log(`Sending ${files.length} file(s) to model…`);
