@@ -1,3 +1,5 @@
+import { toRgbTuple } from "./scripts/utils/css-rgb-tuple.mjs";
+
 /**
  * Style Dictionary config for @jigsaw/theme-default (CSS only).
  *
@@ -6,23 +8,6 @@
  * - semantic-light.css → :root, [data-theme='light']
  * - semantic-dark.css → [data-theme='dark'], .dark
  */
-
-const toRgbTuple = (value) => {
-  if (typeof value !== "string") return value;
-  const v = value.trim().toLowerCase();
-  if (v === "transparent") return "0 0 0";
-  const short = v.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/);
-  if (short) {
-    const [, r, g, b] = short;
-    return `${parseInt(r + r, 16)} ${parseInt(g + g, 16)} ${parseInt(b + b, 16)}`;
-  }
-  const long = v.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/);
-  if (long) {
-    const [, r, g, b] = long;
-    return `${parseInt(r, 16)} ${parseInt(g, 16)} ${parseInt(b, 16)}`;
-  }
-  return value;
-};
 
 const cssThemedVariables = ({ dictionary, options }) => {
   const selector = options.selector ?? ":root";

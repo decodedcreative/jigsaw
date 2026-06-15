@@ -5,14 +5,19 @@ import {
   discoverFigmaThemes,
   discoverSemanticModes,
   discoverThemes,
+  isExternalTheme,
   isStandaloneSemantic,
+  isThemeBaseToken,
   mergeFigmaBaseAndSemantic,
   semanticCssSelector,
   sortAppearanceModes,
   splitSemanticByMode,
   themeBaseSourceGlob,
+  themeHasBase,
   themeSemanticSourceGlob,
   themeSourceGlob,
+  themeTokensRoot,
+  THEME_DEFAULT_ID,
 } from "./index.mjs";
 
 describe("splitSemanticByMode", () => {
@@ -116,5 +121,27 @@ describe("filesystem discovery", () => {
   it("discovers semantic modes for default and portfolio", () => {
     expect(discoverSemanticModes("default")).toEqual(["dark", "light"]);
     expect(discoverSemanticModes("portfolio")).toEqual(["portfolio"]);
+  });
+});
+
+describe("external default theme", () => {
+  it("resolves default sources from @jigsaw/theme-default", () => {
+    expect(isExternalTheme(THEME_DEFAULT_ID)).toBe(true);
+    expect(themeTokensRoot(THEME_DEFAULT_ID)).toMatch(/theme-default\/src\/tokens$/);
+    expect(themeHasBase(THEME_DEFAULT_ID)).toBe(true);
+    expect(themeHasBase("portfolio")).toBe(true);
+  });
+
+  it("classifies base tokens from external and packaged themes", () => {
+    expect(
+      isThemeBaseToken("default", {
+        filePath: "/repo/packages/theme-default/src/tokens/base/colors.json",
+      }),
+    ).toBe(true);
+    expect(
+      isThemeBaseToken("portfolio", {
+        filePath: "/repo/packages/tokens/src/tokens/themes/portfolio/base/colors.json",
+      }),
+    ).toBe(true);
   });
 });
