@@ -56,6 +56,10 @@ const cssThemedVariables = ({ dictionary, options }) => {
   return `${header}${selector} {\n${lines.join("\n")}\n}\n`;
 };
 
+/** Map a colour token path to a Tailwind rgb(var(--…) / <alpha-value>) reference. */
+const tailwindColorVarRef = (path) =>
+  `rgb(var(--color-${path.slice(1).join("-")}) / <alpha-value>)`;
+
 /** Tailwind theme.mjs format */
 const tailwindTheme = ({ dictionary }) => {
   const theme = {};
@@ -66,7 +70,9 @@ const tailwindTheme = ({ dictionary }) => {
       if (!Object.prototype.hasOwnProperty.call(obj, key)) obj[key] = {};
       obj = obj[key];
     }
-    obj[token.path[token.path.length - 1]] = token.value;
+    const value =
+      token.path[0] === "color" ? tailwindColorVarRef(token.path) : token.value;
+    obj[token.path[token.path.length - 1]] = value;
   }
   return `/**
  * Design tokens for Tailwind theme.extend

@@ -1,8 +1,36 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { useEffect, useState } from "react";
 import theme from "../../../../packages/tokens/dist/theme.mjs";
 import { ColorSwatch, TokenPage, TokenRow, TokenSection } from "./_components";
 
 const paletteScales = ["navy", "orange", "grey"] as const;
+
+function readCssColor(cssVar: string): string {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
+  return raw ? `rgb(${raw})` : "";
+}
+
+function PaletteSwatch({
+  label,
+  cssVar,
+}: {
+  label: string;
+  cssVar: string;
+}) {
+  const [resolved, setResolved] = useState("");
+
+  useEffect(() => {
+    setResolved(readCssColor(cssVar));
+  }, [cssVar]);
+
+  return (
+    <ColorSwatch
+      label={label}
+      cssVar={cssVar}
+      value={resolved || cssVar}
+    />
+  );
+}
 
 function ColorPaletteContent() {
   const { color } = theme;
@@ -25,8 +53,12 @@ function ColorPaletteContent() {
             description={`bg-${name}-{50–950}`}
           >
             <TokenRow>
-              {Object.entries(scale).map(([step, hex]) => (
-                <ColorSwatch key={step} label={step} value={hex} />
+              {Object.keys(scale).map((step) => (
+                <PaletteSwatch
+                  key={step}
+                  label={step}
+                  cssVar={`--color-${name}-${step}`}
+                />
               ))}
             </TokenRow>
           </TokenSection>
@@ -35,8 +67,8 @@ function ColorPaletteContent() {
 
       <TokenSection title="Neutrals" description="bg-white · bg-black">
         <TokenRow>
-          <ColorSwatch label="white" value={color.white as string} />
-          <ColorSwatch label="black" value={color.black as string} />
+          <PaletteSwatch label="white" cssVar="--color-white" />
+          <PaletteSwatch label="black" cssVar="--color-black" />
         </TokenRow>
       </TokenSection>
     </TokenPage>
