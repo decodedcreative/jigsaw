@@ -21,6 +21,9 @@ jobs:
       - name: Test design-system
         run: npm run test --workspace=@jigsaw/design-system
 
+      - name: Test storybook token utilities
+        run: npm run test --workspace=@jigsaw/storybook
+
   test-tokens:
     runs-on: ubuntu-latest
     steps:
