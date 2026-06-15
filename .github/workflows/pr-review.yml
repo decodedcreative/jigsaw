@@ -32,4 +32,6 @@ jobs:
           PR_REVIEW_MODEL: ${{ vars.PR_REVIEW_MODEL }}
           PR_REVIEW_MAX_FEEDBACK_ROUNDS: ${{ vars.PR_REVIEW_MAX_FEEDBACK_ROUNDS }}
           PR_REVIEW_REPLY_ON_ADDRESS: ${{ vars.PR_REVIEW_REPLY_ON_ADDRESS }}
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.event.after }}
         run: node .github/scripts/pr-review/review.mjs

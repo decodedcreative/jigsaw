@@ -31,7 +31,8 @@ import {
   roundLabel,
 } from "./lib/rounds.mjs";
 
-const { GITHUB_TOKEN, GITHUB_REPOSITORY, PR_NUMBER } = process.env;
+const { GITHUB_TOKEN, GITHUB_REPOSITORY, PR_NUMBER, BEFORE_SHA, AFTER_SHA } =
+  process.env;
 
 function requireEnv(name, value) {
   if (!value) {
@@ -118,16 +119,18 @@ async function main() {
   );
 
   const pr = await fetchPullRequest(token, repo, pullNumber);
-  const allFiles = await fetchPullFiles(token, repo, pullNumber);
+  const afterSha = AFTER_SHA || pr.head.sha;
 
   const acknowledged = await acknowledgeAddressedComments(
     token,
     repo,
     pullNumber,
-    allFiles,
-    pr.head.sha,
+    BEFORE_SHA,
+    afterSha,
     priorCount,
   );
+
+  const allFiles = await fetchPullFiles(token, repo, pullNumber);
   if (acknowledged > 0) {
     console.log(`Posted ${acknowledged} addressed reply(ies) on prior inline comments.`);
   }

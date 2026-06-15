@@ -12,9 +12,11 @@ import {
   getReviewMode,
 } from "./lib/rounds.mjs";
 import {
+  buildAddressedReplyBody,
   findCommentsToAcknowledge,
   wasLineTouched,
 } from "./lib/addressed.mjs";
+import { extractHunkSnippet } from "./lib/hunk.mjs";
 
 test("parseReviewableLines tracks RIGHT-side line numbers", () => {
   const patch = [
@@ -125,8 +127,8 @@ test("wasLineTouched detects edits near the commented line", () => {
   assert.equal(wasLineTouched(patch, 20), false);
 });
 
-test("findCommentsToAcknowledge replies when nearby lines changed", () => {
-  const files = [
+test("findCommentsToAcknowledge replies when nearby lines changed in push diff", () => {
+  const pushFiles = [
     {
       filename: "src/a.ts",
       patch: "@@ -1,2 +1,3 @@\n ctx\n-old\n+new",
@@ -142,8 +144,104 @@ test("findCommentsToAcknowledge replies when nearby lines changed", () => {
     },
   ];
 
-  const replies = findCommentsToAcknowledge(comments, files, "abc1234567890");
+  const replies = findCommentsToAcknowledge(
+    comments,
+    pushFiles,
+    "abc1234567890",
+    ["fix: address review feedback"],
+  );
   assert.equal(replies.length, 1);
   assert.equal(replies[0].commentId, 100);
-  assert.match(replies[0].body, /Likely addressed/);
+  assert.match(replies[0].body, /Addressed in `abc1234`/);
+  assert.match(replies[0].body, /fix: address review feedback/);
+});
+
+test("findCommentsToAcknowledge skips threads with human replies", () => {
+  const pushFiles = [
+    {
+      filename: "src/a.ts",
+      patch: "@@ -1,2 +1,3 @@\n ctx\n-old\n+new",
+    },
+  ];
+  const comments = [
+    {
+      id: 100,
+      path: "src/a.ts",
+      line: 2,
+      user: { login: "github-actions[bot]" },
+      body: "**💡 Suggestion**\n\nfix this",
+    },
+    {
+      id: 101,
+      in_reply_to_id: 100,
+      user: { login: "jameshowell" },
+      body: "Fixed in abc1234",
+    },
+  ];
+
+  const replies = findCommentsToAcknowledge(
+    comments,
+    pushFiles,
+    "abc1234567890",
+    ["fix: address review feedback"],
+  );
+  assert.equal(replies.length, 0);
+});
+
+test("findCommentsToAcknowledge ignores files outside the push diff", () => {
+  const pushFiles = [
+    {
+      filename: "src/other.ts",
+      patch: "@@ -1,1 +1,2 @@\n line\n+added",
+    },
+  ];
+  const comments = [
+    {
+      id: 100,
+      path: "src/a.ts",
+      line: 2,
+      user: { login: "github-actions[bot]" },
+      body: "**💡 Suggestion**\n\nfix this",
+    },
+  ];
+
+  const replies = findCommentsToAcknowledge(comments, pushFiles, "abc1234567890");
+  assert.equal(replies.length, 0);
+});
+
+test("buildAddressedReplyBody includes commit messages and diff snippet", () => {
+  const patch = [
+    "@@ -10,3 +10,4 @@",
+    " context",
+    "-old",
+    "+new",
+    " tail",
+  ].join("\n");
+
+  const body = buildAddressedReplyBody({
+    shortSha: "abc1234",
+    commitMessages: ["fix: handle edge case"],
+    patch,
+    line: 11,
+    originalFeedback: "**💡 Suggestion**\n\nUse a guard here",
+  });
+
+  assert.match(body, /Addressed in `abc1234`/);
+  assert.match(body, /fix: handle edge case/);
+  assert.match(body, /```diff/);
+  assert.match(body, /\+new/);
+});
+
+test("extractHunkSnippet returns nearby changed lines", () => {
+  const patch = [
+    "@@ -10,3 +10,4 @@",
+    " context",
+    "-old",
+    "+new",
+    " tail",
+  ].join("\n");
+
+  const snippet = extractHunkSnippet(patch, 11);
+  assert.ok(snippet);
+  assert.match(snippet, /\+new/);
 });

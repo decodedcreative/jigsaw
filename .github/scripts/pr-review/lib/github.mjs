@@ -98,6 +98,77 @@ export async function fetchPullReviews(token, repo, pullNumber) {
  * @param {string} repo
  * @param {number} pullNumber
  */
+/**
+ * @param {string | undefined} sha
+ */
+function isZeroSha(sha) {
+  return !sha || /^0+$/.test(sha);
+}
+
+/**
+ * @param {string} token
+ * @param {string} repo
+ * @param {string | undefined} beforeSha
+ * @param {string} afterSha
+ */
+export async function fetchPushDiffFiles(token, repo, beforeSha, afterSha) {
+  if (!isZeroSha(beforeSha) && beforeSha !== afterSha) {
+    const data = await githubRequest(
+      token,
+      `/repos/${repo}/compare/${beforeSha}...${afterSha}`,
+    );
+    return (data.files ?? []).map(
+      /** @param {{ filename: string; patch?: string; status: string }} file */
+      (file) => ({
+        filename: file.filename,
+        patch: file.patch,
+        status: file.status,
+      }),
+    );
+  }
+
+  const commit = await githubRequest(
+    token,
+    `/repos/${repo}/commits/${afterSha}`,
+  );
+  return (commit.files ?? []).map(
+    /** @param {{ filename: string; patch?: string; status: string }} file */
+    (file) => ({
+      filename: file.filename,
+      patch: file.patch,
+      status: file.status,
+    }),
+  );
+}
+
+/**
+ * @param {string} token
+ * @param {string} repo
+ * @param {string | undefined} beforeSha
+ * @param {string} afterSha
+ */
+export async function fetchPushCommitMessages(token, repo, beforeSha, afterSha) {
+  if (!isZeroSha(beforeSha) && beforeSha !== afterSha) {
+    const data = await githubRequest(
+      token,
+      `/repos/${repo}/compare/${beforeSha}...${afterSha}`,
+    );
+    return (data.commits ?? [])
+      .map(
+        /** @param {{ commit?: { message?: string } }} commit */
+        (commit) => commit.commit?.message?.split("\n")[0] ?? "",
+      )
+      .filter(Boolean);
+  }
+
+  const commit = await githubRequest(
+    token,
+    `/repos/${repo}/commits/${afterSha}`,
+  );
+  const subject = commit.commit?.message?.split("\n")[0];
+  return subject ? [subject] : [];
+}
+
 export async function fetchPullFiles(token, repo, pullNumber) {
   /** @type {Array<{ filename: string; patch?: string; status: string }>} */
   const files = [];

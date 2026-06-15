@@ -1,26 +1,28 @@
 import {
   findCommentsToAcknowledge,
   isAddressReplyEnabled,
-} from "./lib/addressed.mjs";
+} from "./addressed.mjs";
 import {
   fetchPullReviewComments,
+  fetchPushCommitMessages,
+  fetchPushDiffFiles,
   replyToReviewComment,
-} from "./lib/github.mjs";
+} from "./github.mjs";
 
 /**
  * @param {string} token
  * @param {string} repo
  * @param {number} pullNumber
- * @param {Array<{ filename: string; patch?: string }>} files
- * @param {string} headSha
+ * @param {string | undefined} beforeSha
+ * @param {string} afterSha
  * @param {number} priorStaffReviewCount
  */
 export async function acknowledgeAddressedComments(
   token,
   repo,
   pullNumber,
-  files,
-  headSha,
+  beforeSha,
+  afterSha,
   priorStaffReviewCount,
 ) {
   if (!isAddressReplyEnabled()) {
@@ -32,11 +34,21 @@ export async function acknowledgeAddressedComments(
     return 0;
   }
 
-  const comments = await fetchPullReviewComments(token, repo, pullNumber);
-  const toReply = findCommentsToAcknowledge(comments ?? [], files, headSha);
+  const [comments, pushFiles, commitMessages] = await Promise.all([
+    fetchPullReviewComments(token, repo, pullNumber),
+    fetchPushDiffFiles(token, repo, beforeSha, afterSha),
+    fetchPushCommitMessages(token, repo, beforeSha, afterSha),
+  ]);
+
+  const toReply = findCommentsToAcknowledge(
+    comments ?? [],
+    pushFiles,
+    afterSha,
+    commitMessages,
+  );
 
   if (toReply.length === 0) {
-    console.log("No prior inline comments to acknowledge.");
+    console.log("No prior inline comments to acknowledge on this push.");
     return 0;
   }
 
@@ -45,11 +57,13 @@ export async function acknowledgeAddressedComments(
       token,
       repo,
       pullNumber,
-      headSha,
+      afterSha,
       reply.commentId,
       reply.body,
     );
-    console.log(`Replied on ${reply.path}:${reply.line} (comment ${reply.commentId})`);
+    console.log(
+      `Replied on ${reply.path}:${reply.line} (comment ${reply.commentId})`,
+    );
   }
 
   return toReply.length;

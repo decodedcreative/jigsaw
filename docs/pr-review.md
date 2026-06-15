@@ -54,9 +54,11 @@ To use Claude instead, set `PR_REVIEW_PROVIDER` to `anthropic` and add `ANTHROPI
 
 The model still runs on round 3+ to scan for critical issues, but skips posting when none are found.
 
-- **Address replies:** optional bot threads on line changes (disable with `PR_REVIEW_REPLY_ON_ADDRESS=false`). Prefer **manual replies** via `gh` when documenting your fixes (see below).
+- **Address replies:** on follow-up pushes, the bot replies on prior inline threads when **that push** touches nearby lines (via `github.event.before`…`after` compare). Replies include commit subject(s) and a diff snippet. Skips threads you already replied to manually. Disable with `PR_REVIEW_REPLY_ON_ADDRESS=false`.
 
-### Replying to review comments with `gh`
+### Replying to review comments manually with `gh`
+
+Automated address replies run first on each push. You can still reply yourself to document fixes in more detail:
 
 List bot inline comments:
 
