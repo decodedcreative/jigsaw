@@ -1,9 +1,11 @@
 export {
   baseCssSelector,
   capitalize,
+  discoverExternalThemes,
   discoverFigmaThemes,
   discoverSemanticModes,
   discoverThemes,
+  externalThemeTokensRoot,
   isExternalTheme,
   isStandaloneSemantic,
   isThemeBaseToken,

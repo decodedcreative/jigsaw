@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   baseCssSelector,
   capitalize,
+  discoverExternalThemes,
   discoverFigmaThemes,
   discoverSemanticModes,
   discoverThemes,
@@ -89,13 +90,13 @@ describe("CSS selectors", () => {
 describe("source globs", () => {
   it("builds theme-relative Style Dictionary globs", () => {
     expect(themeSourceGlob("default")).toBe(
-      "../theme-default/src/tokens/**/*.json",
+      "../themes/default/src/tokens/**/*.json",
     );
     expect(themeBaseSourceGlob("default")).toBe(
-      "../theme-default/src/tokens/base/**/*.json",
+      "../themes/default/src/tokens/base/**/*.json",
     );
     expect(themeSemanticSourceGlob("default")).toBe(
-      "../theme-default/src/tokens/semantic/**/*.json",
+      "../themes/default/src/tokens/semantic/**/*.json",
     );
     expect(themeSourceGlob("portfolio")).toBe(
       "src/tokens/themes/portfolio/**/*.json",
@@ -114,7 +115,11 @@ describe("filesystem discovery", () => {
     expect(discoverThemes()).toEqual(["portfolio"]);
   });
 
-  it("includes external default theme in Figma discovery", () => {
+  it("discovers external themes under packages/themes", () => {
+    expect(discoverExternalThemes()).toEqual(["default"]);
+  });
+
+  it("includes external and legacy themes in Figma discovery", () => {
     expect(discoverFigmaThemes()).toEqual(["default", "portfolio"]);
   });
 
@@ -124,18 +129,18 @@ describe("filesystem discovery", () => {
   });
 });
 
-describe("external default theme", () => {
-  it("resolves default sources from @jigsaw/theme-default", () => {
+describe("external themes", () => {
+  it("resolves default sources from packages/themes/default", () => {
     expect(isExternalTheme(THEME_DEFAULT_ID)).toBe(true);
-    expect(themeTokensRoot(THEME_DEFAULT_ID)).toMatch(/theme-default\/src\/tokens$/);
+    expect(themeTokensRoot(THEME_DEFAULT_ID)).toMatch(/themes\/default\/src\/tokens$/);
     expect(themeHasBase(THEME_DEFAULT_ID)).toBe(true);
     expect(themeHasBase("portfolio")).toBe(true);
   });
 
-  it("classifies base tokens from external and packaged themes", () => {
+  it("classifies base tokens from external and legacy themes", () => {
     expect(
       isThemeBaseToken("default", {
-        filePath: "/repo/packages/theme-default/src/tokens/base/colors.json",
+        filePath: "/repo/packages/themes/default/src/tokens/base/colors.json",
       }),
     ).toBe(true);
     expect(

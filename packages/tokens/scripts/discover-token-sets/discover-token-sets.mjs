@@ -6,9 +6,11 @@ import { fileURLToPath } from "node:url";
  * Theme discovery for Style Dictionary export pipelines.
  *
  * Source layout:
- *   src/tokens/shared/               → shared.tokens.json, shared/base.css
- *   src/tokens/themes/{id}/base/     → palette tokens (unprefixed paths)
- *   src/tokens/themes/{id}/semantic/ → semantic tokens; mode = JSON root key
+ *   packages/tokens/src/tokens/shared/     → shared.tokens.json, shared/base.css
+ *   packages/themes/{id}/src/tokens/     → extracted brand themes (CSS built in-package)
+ *     base/                              → palette tokens
+ *     semantic/                          → semantic tokens; mode = JSON root key
+ *   packages/tokens/src/tokens/themes/{id}/ → legacy in-repo themes (e.g. portfolio until migrated)
  *
  * Semantic modes are the top-level keys in semantic/*.json (e.g. light, dark, portfolio).
  *
@@ -27,21 +29,31 @@ import { fileURLToPath } from "node:url";
 
 const packageRoot = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 const tokensRoot = path.join(packageRoot, "src/tokens");
-const themesRoot = path.join(tokensRoot, "themes");
-const themeDefaultRoot = path.join(packageRoot, "../theme-default/src/tokens");
+const legacyThemesRoot = path.join(tokensRoot, "themes");
+const themesPackageRoot = path.join(packageRoot, "../themes");
 
+/** @deprecated Use isExternalTheme("default") — kept for existing tests/imports. */
 export const THEME_DEFAULT_ID = "default";
+
+/**
+ * @param {string} themeId
+ * @returns {string}
+ */
+export const externalThemeTokensRoot = (themeId) =>
+  path.join(themesPackageRoot, themeId, "src/tokens");
 
 /** @param {string} themeId */
 export const isExternalTheme = (themeId) =>
-  themeId === THEME_DEFAULT_ID && fs.existsSync(themeDefaultRoot);
+  fs.existsSync(externalThemeTokensRoot(themeId));
 
 /**
  * @param {string} themeId
  * @returns {string}
  */
 export const themeTokensRoot = (themeId) =>
-  isExternalTheme(themeId) ? themeDefaultRoot : path.join(themesRoot, themeId);
+  isExternalTheme(themeId)
+    ? externalThemeTokensRoot(themeId)
+    : path.join(legacyThemesRoot, themeId);
 
 /**
  * @param {string} themeId
@@ -75,20 +87,30 @@ export const discoverSemanticModes = (themeId) => {
 
 /** @returns {string[]} Theme ids with sources under packages/tokens/src/tokens/themes/. */
 export const discoverThemes = () => {
-  if (!fs.existsSync(themesRoot)) return [];
+  if (!fs.existsSync(legacyThemesRoot)) return [];
   return fs
-    .readdirSync(themesRoot, { withFileTypes: true })
+    .readdirSync(legacyThemesRoot, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
 };
 
-/** @returns {string[]} Theme ids included in Figma export discovery (includes external default). */
+/** @returns {string[]} Theme ids with sources under packages/themes/{id}/. */
+export const discoverExternalThemes = () => {
+  if (!fs.existsSync(themesPackageRoot)) return [];
+  return fs
+    .readdirSync(themesPackageRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .filter((themeId) => isExternalTheme(themeId))
+    .sort();
+};
+
+/** @returns {string[]} Theme ids included in Figma export discovery. */
 export const discoverFigmaThemes = () => {
-  const themes = discoverThemes();
-  return isExternalTheme(THEME_DEFAULT_ID)
-    ? [THEME_DEFAULT_ID, ...themes]
-    : themes;
+  const external = discoverExternalThemes();
+  const legacy = discoverThemes().filter((themeId) => !external.includes(themeId));
+  return [...external, ...legacy];
 };
 
 export const themeHasBase = (themeId) =>
@@ -130,17 +152,17 @@ export const semanticCssSelector = (themeId, mode) => {
 
 export const themeSourceGlob = (themeId) =>
   isExternalTheme(themeId)
-    ? "../theme-default/src/tokens/**/*.json"
+    ? `../themes/${themeId}/src/tokens/**/*.json`
     : `src/tokens/themes/${themeId}/**/*.json`;
 
 export const themeBaseSourceGlob = (themeId) =>
   isExternalTheme(themeId)
-    ? "../theme-default/src/tokens/base/**/*.json"
+    ? `../themes/${themeId}/src/tokens/base/**/*.json`
     : `src/tokens/themes/${themeId}/base/**/*.json`;
 
 export const themeSemanticSourceGlob = (themeId) =>
   isExternalTheme(themeId)
-    ? "../theme-default/src/tokens/semantic/**/*.json"
+    ? `../themes/${themeId}/src/tokens/semantic/**/*.json`
     : `src/tokens/themes/${themeId}/semantic/**/*.json`;
 
 export const capitalize = (value) => value.charAt(0).toUpperCase() + value.slice(1);
