@@ -28,6 +28,29 @@ import { fileURLToPath } from "node:url";
 const packageRoot = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
 const tokensRoot = path.join(packageRoot, "src/tokens");
 const themesRoot = path.join(tokensRoot, "themes");
+const themeDefaultRoot = path.join(packageRoot, "../theme-default/src/tokens");
+
+export const THEME_DEFAULT_ID = "default";
+
+/** @param {string} themeId */
+export const isExternalTheme = (themeId) =>
+  themeId === THEME_DEFAULT_ID && fs.existsSync(themeDefaultRoot);
+
+/**
+ * @param {string} themeId
+ * @returns {string}
+ */
+export const themeTokensRoot = (themeId) =>
+  isExternalTheme(themeId) ? themeDefaultRoot : path.join(themesRoot, themeId);
+
+/**
+ * @param {string} themeId
+ * @param {{ filePath: string }} token
+ */
+export const isThemeBaseToken = (themeId, token) =>
+  isExternalTheme(themeId)
+    ? token.filePath.includes("/base/")
+    : token.filePath.includes(`${themeId}/base`);
 
 /** Appearance modes split into separate outputs (e.g. default light/dark). */
 const APPEARANCE_MODES = new Set(["light", "dark"]);
@@ -37,7 +60,7 @@ const APPEARANCE_MODES = new Set(["light", "dark"]);
  * @returns {string[]} Top-level token path prefixes in semantic JSON (e.g. light, dark, portfolio).
  */
 export const discoverSemanticModes = (themeId) => {
-  const semanticDir = path.join(themesRoot, themeId, "semantic");
+  const semanticDir = path.join(themeTokensRoot(themeId), "semantic");
   if (!fs.existsSync(semanticDir)) return [];
 
   const prefixes = new Set();
@@ -50,7 +73,7 @@ export const discoverSemanticModes = (themeId) => {
   return [...prefixes].sort();
 };
 
-/** @returns {string[]} Theme ids under src/tokens/themes/. */
+/** @returns {string[]} Theme ids with sources under packages/tokens/src/tokens/themes/. */
 export const discoverThemes = () => {
   if (!fs.existsSync(themesRoot)) return [];
   return fs
@@ -60,8 +83,16 @@ export const discoverThemes = () => {
     .sort();
 };
 
+/** @returns {string[]} Theme ids included in Figma export discovery (includes external default). */
+export const discoverFigmaThemes = () => {
+  const themes = discoverThemes();
+  return isExternalTheme(THEME_DEFAULT_ID)
+    ? [THEME_DEFAULT_ID, ...themes]
+    : themes;
+};
+
 export const themeHasBase = (themeId) =>
-  fs.existsSync(path.join(themesRoot, themeId, "base"));
+  fs.existsSync(path.join(themeTokensRoot(themeId), "base"));
 
 /**
  * Multiple semantic outputs (semantic-light.css, default-light.tokens.json, …).
@@ -97,13 +128,20 @@ export const semanticCssSelector = (themeId, mode) => {
   return `[data-theme='${themeId}']`;
 };
 
-export const themeSourceGlob = (themeId) => `src/tokens/themes/${themeId}/**/*.json`;
+export const themeSourceGlob = (themeId) =>
+  isExternalTheme(themeId)
+    ? "../theme-default/src/tokens/**/*.json"
+    : `src/tokens/themes/${themeId}/**/*.json`;
 
 export const themeBaseSourceGlob = (themeId) =>
-  `src/tokens/themes/${themeId}/base/**/*.json`;
+  isExternalTheme(themeId)
+    ? "../theme-default/src/tokens/base/**/*.json"
+    : `src/tokens/themes/${themeId}/base/**/*.json`;
 
 export const themeSemanticSourceGlob = (themeId) =>
-  `src/tokens/themes/${themeId}/semantic/**/*.json`;
+  isExternalTheme(themeId)
+    ? "../theme-default/src/tokens/semantic/**/*.json"
+    : `src/tokens/themes/${themeId}/semantic/**/*.json`;
 
 export const capitalize = (value) => value.charAt(0).toUpperCase() + value.slice(1);
 

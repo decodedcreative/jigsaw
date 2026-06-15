@@ -4,7 +4,7 @@
  * These wrap each CSS variable in `rgb(var(--…) / <alpha-value>)` so Tailwind's
  * opacity modifiers work correctly (e.g. `bg-state-error/20`,
  * `ring-interactive-accent/20`). Requires the variables in
- * `@jigsaw/tokens/themes/default/semantic-light.css` / `semantic-dark.css` to be stored as
+ * `@jigsaw/theme-default/semantic-light.css` / `semantic-dark.css` to be stored as
  * space-separated RGB tuples (the Style Dictionary build does this).
  */
 const sc = (name: string) => `rgb(var(--color-${name}) / <alpha-value>)`;

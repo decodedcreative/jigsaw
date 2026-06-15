@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   baseCssSelector,
   capitalize,
+  discoverFigmaThemes,
   discoverSemanticModes,
   discoverThemes,
   isStandaloneSemantic,
@@ -82,9 +83,18 @@ describe("CSS selectors", () => {
 
 describe("source globs", () => {
   it("builds theme-relative Style Dictionary globs", () => {
-    expect(themeSourceGlob("default")).toBe("src/tokens/themes/default/**/*.json");
-    expect(themeBaseSourceGlob("default")).toBe("src/tokens/themes/default/base/**/*.json");
-    expect(themeSemanticSourceGlob("default")).toBe("src/tokens/themes/default/semantic/**/*.json");
+    expect(themeSourceGlob("default")).toBe(
+      "../theme-default/src/tokens/**/*.json",
+    );
+    expect(themeBaseSourceGlob("default")).toBe(
+      "../theme-default/src/tokens/base/**/*.json",
+    );
+    expect(themeSemanticSourceGlob("default")).toBe(
+      "../theme-default/src/tokens/semantic/**/*.json",
+    );
+    expect(themeSourceGlob("portfolio")).toBe(
+      "src/tokens/themes/portfolio/**/*.json",
+    );
   });
 });
 
@@ -95,8 +105,12 @@ describe("capitalize", () => {
 });
 
 describe("filesystem discovery", () => {
-  it("discovers current theme ids from src/tokens/themes", () => {
-    expect(discoverThemes()).toEqual(["default", "portfolio"]);
+  it("discovers packaged theme ids from src/tokens/themes", () => {
+    expect(discoverThemes()).toEqual(["portfolio"]);
+  });
+
+  it("includes external default theme in Figma discovery", () => {
+    expect(discoverFigmaThemes()).toEqual(["default", "portfolio"]);
   });
 
   it("discovers semantic modes for default and portfolio", () => {

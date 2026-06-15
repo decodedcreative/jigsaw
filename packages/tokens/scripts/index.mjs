@@ -1,9 +1,12 @@
 export {
   baseCssSelector,
   capitalize,
+  discoverFigmaThemes,
   discoverSemanticModes,
   discoverThemes,
+  isExternalTheme,
   isStandaloneSemantic,
+  isThemeBaseToken,
   mergeFigmaBaseAndSemantic,
   semanticCssSelector,
   sortAppearanceModes,
@@ -12,6 +15,7 @@ export {
   themeHasBase,
   themeSemanticSourceGlob,
   themeSourceGlob,
+  THEME_DEFAULT_ID,
 } from "./discover-token-sets/index.mjs";
 
 export {

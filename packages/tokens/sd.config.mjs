@@ -1,8 +1,10 @@
 import {
   baseCssSelector,
   capitalize,
+  discoverFigmaThemes,
   discoverSemanticModes,
   discoverThemes,
+  isThemeBaseToken,
   figmaTokens,
   FIGMA_OUTPUT_DIR,
   isStandaloneSemantic,
@@ -125,7 +127,7 @@ const buildThemeCssConfig = (themeId) => {
     platforms.cssBase = cssPlatform([
       {
         destination: `themes/${themeId}/base.css`,
-        filter: (token) => token.filePath.includes(`${themeId}/base`),
+        filter: (token) => isThemeBaseToken(themeId, token),
         options: {
           selector: baseCssSelector(themeId),
           stripFirstSegment: false,
@@ -193,7 +195,7 @@ const buildThemeFigmaConfig = (themeId) => {
           {
             destination: `${themeId}.tokens.json`,
             filter: (token) =>
-              token.filePath.includes(`${themeId}/base`) || token.path[0] === themeId,
+              isThemeBaseToken(themeId, token) || token.path[0] === themeId,
             options: { stripModePrefixes: [themeId] },
           },
         ]),
@@ -210,7 +212,7 @@ const buildThemeFigmaConfig = (themeId) => {
     platforms.figmaBase = figmaPlatform([
       {
         destination: `${themeId}-base.tokens.json`,
-        filter: (token) => token.filePath.includes(`${themeId}/base`),
+        filter: (token) => isThemeBaseToken(themeId, token),
       },
     ]);
   }
@@ -260,7 +262,7 @@ const sharedConfig = sdConfig(
 );
 
 const tailwindThemeConfig = sdConfig(
-  ["src/tokens/shared/**/*.json", themeBaseSourceGlob("default")],
+  ["src/tokens/shared/**/*.json", "src/tokens/color-schema/**/*.json"],
   {
     js: {
       transformGroup: "js",
@@ -287,7 +289,7 @@ const themeCssConfigs = discoverThemes()
   .map((themeId) => buildThemeCssConfig(themeId))
   .filter(Boolean);
 
-const themeFigmaConfigs = discoverThemes()
+const themeFigmaConfigs = discoverFigmaThemes()
   .map((themeId) => buildThemeFigmaConfig(themeId))
   .filter(Boolean);
 

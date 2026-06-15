@@ -3,9 +3,9 @@
  *
  * Consume tokens as:
  * - CSS variables (shared):  import "@jigsaw/tokens/shared/base.css"
- * - CSS variables (default): import "@jigsaw/tokens/themes/default/base.css"
- *                            import "@jigsaw/tokens/themes/default/semantic-light.css"
- *                            import "@jigsaw/tokens/themes/default/semantic-dark.css"
+ * - CSS variables (default): import "@jigsaw/theme-default/base.css"
+ *                            import "@jigsaw/theme-default/semantic-light.css"
+ *                            import "@jigsaw/theme-default/semantic-dark.css"
  * - CSS variables (portfolio): import "@jigsaw/tokens/themes/portfolio/base.css"
  *                              import "@jigsaw/tokens/themes/portfolio/semantic.css"
  * - Tailwind base theme: import theme from "@jigsaw/tokens/theme" for base token values

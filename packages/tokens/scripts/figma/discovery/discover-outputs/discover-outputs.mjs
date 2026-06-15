@@ -2,6 +2,7 @@ import {
   capitalize,
   discoverSemanticModes,
   discoverThemes,
+  discoverFigmaThemes,
   isStandaloneSemantic,
   mergeFigmaBaseAndSemantic,
   sortAppearanceModes,
@@ -25,7 +26,7 @@ import {
 export const discoverFigmaOutputs = () => {
   const outputs = [{ filename: SHARED_TOKEN_FILENAME, setName: SHARED_SET }];
 
-  for (const themeId of discoverThemes()) {
+  for (const themeId of discoverFigmaThemes()) {
     const modes = discoverSemanticModes(themeId);
     const hasBase = themeHasBase(themeId);
     const hasSemantic = modes.length > 0;
