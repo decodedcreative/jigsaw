@@ -35,9 +35,15 @@ describe("readCssVariableColor", () => {
     expect(value).toBe("rgb(10 20 30)");
   });
 
-  it("returns empty when the variable is unset or invalid", () => {
-    expect(readCssVariableColor("--color-navy-500", () => "")).toBe("");
-    expect(readCssVariableColor("--color-navy-500", () => "not-rgb")).toBe("");
-    expect(readCssVariableColor("color-navy-500", () => "10 20 30")).toBe("");
+  it("returns descriptive labels when the variable is unset or invalid", () => {
+    expect(readCssVariableColor("--color-navy-500", () => "")).toBe(
+      "--color-navy-500 unset",
+    );
+    expect(readCssVariableColor("--color-navy-500", () => "not-rgb")).toBe(
+      "--color-navy-500 malformed",
+    );
+    expect(readCssVariableColor("color-navy-500", () => "10 20 30")).toBe(
+      "invalid css var",
+    );
   });
 });

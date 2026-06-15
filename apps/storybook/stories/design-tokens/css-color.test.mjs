@@ -12,8 +12,11 @@ test("formatCssRgbTupleForDisplay rejects malformed tuples", () => {
   assert.equal(formatCssRgbTupleForDisplay("#ffffff"), "");
 });
 
-test("readCssVariableColor returns empty when CSS variable is unset", () => {
-  assert.equal(readCssVariableColor("--color-missing", () => ""), "");
+test("readCssVariableColor returns descriptive label when CSS variable is unset", () => {
+  assert.equal(
+    readCssVariableColor("--color-missing", () => ""),
+    "--color-missing unset",
+  );
 });
 
 test("readCssVariableColor formats resolved CSS variable values", () => {

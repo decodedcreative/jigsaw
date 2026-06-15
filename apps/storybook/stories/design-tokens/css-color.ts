@@ -58,15 +58,17 @@ export function subscribeThemeAttributeChanges(listener: () => void): () => void
 }
 
 export function useResolvedCssColor(cssVar: string): string {
+  const isValidVar = typeof cssVar === "string" && cssVar.startsWith("--");
   const [resolved, setResolved] = useState("");
 
   useEffect(() => {
-    if (typeof document === "undefined") return;
+    if (!isValidVar || typeof document === "undefined") return;
 
     const update = () => setResolved(readCssColor(cssVar));
     update();
     return subscribeThemeAttributeChanges(update);
-  }, [cssVar]);
+  }, [cssVar, isValidVar]);
 
+  if (!isValidVar) return "invalid css var";
   return resolved || cssVar;
 }

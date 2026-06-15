@@ -10,7 +10,7 @@ function PaletteSwatch({
   cssVar,
 }: {
   label: string;
-  cssVar: string;
+  cssVar: `--${string}`;
 }) {
   const value = useResolvedCssColor(cssVar);
 

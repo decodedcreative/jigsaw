@@ -26,8 +26,16 @@ export function formatCssRgbTupleForDisplay(raw) {
 /**
  * @param {string} cssVar CSS custom property name (e.g. `--color-navy-500`).
  * @param {(name: string) => string} getPropertyValue
+ * @returns {string} `rgb(r g b)` on success; descriptive labels for invalid, unset, or malformed values.
  */
 export function readCssVariableColor(cssVar, getPropertyValue) {
-  if (typeof cssVar !== "string" || !cssVar.startsWith("--")) return "";
-  return formatCssRgbTupleForDisplay(getPropertyValue(cssVar));
+  if (typeof cssVar !== "string" || !cssVar.startsWith("--")) {
+    return "invalid css var";
+  }
+
+  const raw = getPropertyValue(cssVar).trim();
+  if (!raw) return `${cssVar} unset`;
+
+  const formatted = formatCssRgbTupleForDisplay(raw);
+  return formatted || `${cssVar} malformed`;
 }

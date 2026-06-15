@@ -42,11 +42,12 @@ export function ColorSwatch({
   cssVar?: string;
   textClassName?: string;
 }) {
-  const swatchStyle = cssVar
+  const hasCssVar = typeof cssVar === "string" && cssVar.startsWith("--");
+  const swatchStyle = hasCssVar
     ? { backgroundColor: `rgb(var(${cssVar}))` }
     : className
       ? undefined
-      : { backgroundColor: value };
+      : { backgroundColor: value || "transparent" };
 
   return (
     <div className="flex flex-col w-28 shrink-0">
