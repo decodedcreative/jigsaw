@@ -28,7 +28,7 @@ export const REVIEW_MARKER = "<!-- jigsaw-staff-pr-review -->";
  * @returns {ReviewProvider}
  */
 export function getProvider() {
-  const provider = process.env.PR_REVIEW_PROVIDER ?? "openai";
+  const provider = (process.env.PR_REVIEW_PROVIDER || "openai").trim();
   if (provider === "openai" || provider === "anthropic") return provider;
   throw new Error(
     `Invalid PR_REVIEW_PROVIDER "${provider}" — use "openai" or "anthropic"`,
@@ -39,7 +39,8 @@ export function getProvider() {
  * @param {ReviewProvider} provider
  */
 export function getDefaultModel(provider) {
-  return process.env.PR_REVIEW_MODEL ?? DEFAULT_MODELS[provider];
+  const override = process.env.PR_REVIEW_MODEL?.trim();
+  return override || DEFAULT_MODELS[provider];
 }
 
 /**
