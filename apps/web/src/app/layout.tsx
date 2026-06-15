@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "@jigsaw/tokens/shared/base.css";
-import "@jigsaw/tokens/themes/default/base.css";
-import "@jigsaw/tokens/themes/default/semantic-light.css";
-import "@jigsaw/tokens/themes/default/semantic-dark.css";
+import "@jigsaw/theme-default/base.css";
+import "@jigsaw/theme-default/semantic-light.css";
+import "@jigsaw/theme-default/semantic-dark.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

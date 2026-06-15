@@ -1,0 +1,18 @@
+{
+  "name": "@jigsaw/theme-build",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "scripts": {
+    "build": "node -e \"process.exit(0)\"",
+    "clean": "node -e \"process.exit(0)\"",
+    "lint": "node -e \"process.exit(0)\"",
+    "test": "node --test tests/to-rgb-tuple.test.mjs"
+  },
+  "peerDependencies": {
+    "style-dictionary": "^4.1.1"
+  }
+}

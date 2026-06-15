@@ -1,0 +1,47 @@
+{
+  "$schema": "https://tokens.studio/schemas/$metadata.json",
+  "description": "Path-only palette schema for Tailwind theme.mjs. Hex values are placeholders; real colours live in packages/themes/default.",
+  "color": {
+    "navy": {
+      "50": { "value": "#000000", "type": "color" },
+      "100": { "value": "#000000", "type": "color" },
+      "200": { "value": "#000000", "type": "color" },
+      "300": { "value": "#000000", "type": "color" },
+      "400": { "value": "#000000", "type": "color" },
+      "500": { "value": "#000000", "type": "color" },
+      "600": { "value": "#000000", "type": "color" },
+      "700": { "value": "#000000", "type": "color" },
+      "800": { "value": "#000000", "type": "color" },
+      "900": { "value": "#000000", "type": "color" },
+      "950": { "value": "#000000", "type": "color" }
+    },
+    "orange": {
+      "50": { "value": "#000000", "type": "color" },
+      "100": { "value": "#000000", "type": "color" },
+      "200": { "value": "#000000", "type": "color" },
+      "300": { "value": "#000000", "type": "color" },
+      "400": { "value": "#000000", "type": "color" },
+      "500": { "value": "#000000", "type": "color" },
+      "600": { "value": "#000000", "type": "color" },
+      "700": { "value": "#000000", "type": "color" },
+      "800": { "value": "#000000", "type": "color" },
+      "900": { "value": "#000000", "type": "color" },
+      "950": { "value": "#000000", "type": "color" }
+    },
+    "grey": {
+      "50": { "value": "#000000", "type": "color" },
+      "100": { "value": "#000000", "type": "color" },
+      "200": { "value": "#000000", "type": "color" },
+      "300": { "value": "#000000", "type": "color" },
+      "400": { "value": "#000000", "type": "color" },
+      "500": { "value": "#000000", "type": "color" },
+      "600": { "value": "#000000", "type": "color" },
+      "700": { "value": "#000000", "type": "color" },
+      "800": { "value": "#000000", "type": "color" },
+      "900": { "value": "#000000", "type": "color" },
+      "950": { "value": "#000000", "type": "color" }
+    },
+    "white": { "value": "#000000", "type": "color" },
+    "black": { "value": "#000000", "type": "color" }
+  }
+}

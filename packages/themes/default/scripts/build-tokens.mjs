@@ -2,9 +2,15 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildStyleDictionary } from "@jigsaw/theme-build";
 import config from "../sd.config.mjs";
-import { FIGMA_OUTPUT_DIR, writeFigmaMetadata } from "./figma/index.mjs";
 
 const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
-await buildStyleDictionary(config);
-writeFigmaMetadata(path.join(packageRoot, FIGMA_OUTPUT_DIR));
+await buildStyleDictionary(config, {
+  packageRoot,
+  expectedOutputs: [
+    "dist/css/base.css",
+    "dist/css/semantic-light.css",
+    "dist/css/semantic-dark.css",
+  ],
+  successMessage: "Built 3 CSS files in dist/css/",
+});

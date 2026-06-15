@@ -24,6 +24,12 @@ jobs:
       - name: Test storybook token utilities
         run: npm run test --workspace=@jigsaw/storybook
 
+      - name: Test theme-build and theme-default CSS output
+        run: |
+          npm run test --workspace=@jigsaw/theme-build
+          npm run build --workspace=@jigsaw/theme-default
+          npm run test --workspace=@jigsaw/theme-default
+
   test-tokens:
     runs-on: ubuntu-latest
     steps:
@@ -39,6 +45,5 @@ jobs:
       - name: Build and verify Figma token exports
         run: |
           npm run test --workspace=@jigsaw/tokens
-          npm run build:tokens --workspace=@jigsaw/tokens
           npm run verify:figma-tokens --workspace=@jigsaw/tokens
           npm run check:figma-drift --workspace=@jigsaw/tokens

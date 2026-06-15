@@ -25,7 +25,7 @@
     "build:tokens": "node scripts/build-tokens.mjs",
     "verify:figma-tokens": "node scripts/verify-figma-tokens.mjs",
     "check:figma-drift": "node scripts/check-figma-drift.mjs",
-    "test": "vitest run",
+    "test": "npm run build:tokens && vitest run",
     "test:watch": "vitest",
     "dev": "npm run build:tokens && tsup --watch",
     "lint": "eslint .",
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
+    "@jigsaw/theme-build": "*",
     "eslint": "^9.16.0",
     "globals": "^14.0.0",
     "style-dictionary": "^4.1.1",

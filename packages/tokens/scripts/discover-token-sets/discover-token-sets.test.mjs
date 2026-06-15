@@ -2,16 +2,23 @@ import { describe, expect, it } from "vitest";
 import {
   baseCssSelector,
   capitalize,
+  discoverExternalThemes,
+  discoverFigmaThemes,
   discoverSemanticModes,
   discoverThemes,
+  isExternalTheme,
   isStandaloneSemantic,
+  isThemeBaseToken,
   mergeFigmaBaseAndSemantic,
   semanticCssSelector,
   sortAppearanceModes,
   splitSemanticByMode,
   themeBaseSourceGlob,
+  themeHasBase,
   themeSemanticSourceGlob,
   themeSourceGlob,
+  themeTokensRoot,
+  THEME_DEFAULT_ID,
 } from "./index.mjs";
 
 describe("splitSemanticByMode", () => {
@@ -82,9 +89,16 @@ describe("CSS selectors", () => {
 
 describe("source globs", () => {
   it("builds theme-relative Style Dictionary globs", () => {
-    expect(themeSourceGlob("default")).toBe("src/tokens/themes/default/**/*.json");
-    expect(themeBaseSourceGlob("default")).toBe("src/tokens/themes/default/base/**/*.json");
-    expect(themeSemanticSourceGlob("default")).toBe("src/tokens/themes/default/semantic/**/*.json");
+    expect(themeSourceGlob("default")).toBe("../themes/default/src/**/*.json");
+    expect(themeBaseSourceGlob("default")).toBe(
+      "../themes/default/src/base/**/*.json",
+    );
+    expect(themeSemanticSourceGlob("default")).toBe(
+      "../themes/default/src/semantic/**/*.json",
+    );
+    expect(themeSourceGlob("portfolio")).toBe(
+      "src/tokens/themes/portfolio/**/*.json",
+    );
   });
 });
 
@@ -95,12 +109,42 @@ describe("capitalize", () => {
 });
 
 describe("filesystem discovery", () => {
-  it("discovers current theme ids from src/tokens/themes", () => {
-    expect(discoverThemes()).toEqual(["default", "portfolio"]);
+  it("discovers packaged theme ids from src/tokens/themes", () => {
+    expect(discoverThemes()).toEqual(["portfolio"]);
+  });
+
+  it("discovers external themes under packages/themes", () => {
+    expect(discoverExternalThemes()).toEqual(["default"]);
+  });
+
+  it("includes external and legacy themes in Figma discovery", () => {
+    expect(discoverFigmaThemes()).toEqual(["default", "portfolio"]);
   });
 
   it("discovers semantic modes for default and portfolio", () => {
     expect(discoverSemanticModes("default")).toEqual(["dark", "light"]);
     expect(discoverSemanticModes("portfolio")).toEqual(["portfolio"]);
+  });
+});
+
+describe("external themes", () => {
+  it("resolves default sources from packages/themes/default", () => {
+    expect(isExternalTheme(THEME_DEFAULT_ID)).toBe(true);
+    expect(themeTokensRoot(THEME_DEFAULT_ID)).toMatch(/themes\/default\/src$/);
+    expect(themeHasBase(THEME_DEFAULT_ID)).toBe(true);
+    expect(themeHasBase("portfolio")).toBe(true);
+  });
+
+  it("classifies base tokens from external and legacy themes", () => {
+    expect(
+      isThemeBaseToken("default", {
+        filePath: "/repo/packages/themes/default/src/base/colors.json",
+      }),
+    ).toBe(true);
+    expect(
+      isThemeBaseToken("portfolio", {
+        filePath: "/repo/packages/tokens/src/tokens/themes/portfolio/base/colors.json",
+      }),
+    ).toBe(true);
   });
 });
