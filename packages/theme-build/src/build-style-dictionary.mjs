@@ -26,8 +26,14 @@ export const buildStyleDictionary = async (config, options = {}) => {
   );
 
   if (missing.length > 0) {
+    const builtPlatforms = configs.flatMap((entry) =>
+      Object.keys(entry.platforms ?? {}),
+    );
     console.error("Style Dictionary build missing outputs:");
     for (const file of missing) console.error(`  - ${file}`);
+    if (builtPlatforms.length > 0) {
+      console.error(`Platforms built: ${builtPlatforms.join(", ")}`);
+    }
     process.exit(1);
   }
 
