@@ -20,7 +20,18 @@ function PaletteSwatch({
   const [resolved, setResolved] = useState("");
 
   useEffect(() => {
-    setResolved(readCssColor(cssVar));
+    const update = () => setResolved(readCssColor(cssVar));
+    update();
+
+    const observer = new MutationObserver(update);
+    for (const target of [document.documentElement, document.body]) {
+      observer.observe(target, {
+        attributes: true,
+        attributeFilter: ["class", "style", "data-theme"],
+      });
+    }
+
+    return () => observer.disconnect();
   }, [cssVar]);
 
   return (
