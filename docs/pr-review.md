@@ -33,6 +33,7 @@ Add under **Settings → Secrets and variables → Actions → New repository se
 |----------|---------|-------------|
 | `PR_REVIEW_PROVIDER` | `openai` | `openai` or `anthropic` |
 | `PR_REVIEW_MODEL` | `gpt-4o` (OpenAI) / `claude-sonnet-4-20250514` (Anthropic) | Model ID for the chosen provider |
+| `PR_REVIEW_MAX_FEEDBACK_ROUNDS` | `2` | Full feedback rounds before switching to critical-only scans |
 
 To use Claude instead, set `PR_REVIEW_PROVIDER` to `anthropic` and add `ANTHROPIC_API_KEY`.
 
@@ -41,7 +42,16 @@ To use Claude instead, set `PR_REVIEW_PROVIDER` to `anthropic` and add `ANTHROPI
 - **Skips:** draft PRs, fork PRs (no secrets on untrusted forks)
 - **Path filters:** `package-lock.json`, generated `packages/tokens/figma/*.json`, snapshots, `dist/`, etc. (see `.github/scripts/pr-review/lib/config.mjs`)
 - **Limits:** 40 files, ~150k chars of diff, max 25 inline comments
-- **Re-runs:** each push posts a new review (historical reviews remain)
+- **Re-runs:** each push triggers a review run; round policy below limits noise
+- **Feedback rounds** (default `PR_REVIEW_MAX_FEEDBACK_ROUNDS=2`):
+
+| Round | Mode | Behaviour |
+|-------|------|-----------|
+| 1 | Initial | Full review — blockers, suggestions, nits (up to 15 inline comments) |
+| 2 | Follow-up | New changes only; prior review context supplied; no repeating old feedback (up to 8) |
+| 3+ | Critical | Blockers only on every push; **no review posted** if all clear |
+
+The model still runs on round 3+ to scan for critical issues, but skips posting when none are found.
 
 ## Local dry run
 

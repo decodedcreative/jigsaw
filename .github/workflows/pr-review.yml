@@ -30,4 +30,5 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_REVIEW_PROVIDER: ${{ vars.PR_REVIEW_PROVIDER }}
           PR_REVIEW_MODEL: ${{ vars.PR_REVIEW_MODEL }}
+          PR_REVIEW_MAX_FEEDBACK_ROUNDS: ${{ vars.PR_REVIEW_MAX_FEEDBACK_ROUNDS }}
         run: node .github/scripts/pr-review/review.mjs

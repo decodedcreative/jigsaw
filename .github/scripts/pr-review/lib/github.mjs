@@ -89,6 +89,15 @@ export async function fetchPullRequest(token, repo, pullNumber) {
  * @param {string} repo
  * @param {number} pullNumber
  */
+export async function fetchPullReviews(token, repo, pullNumber) {
+  return githubRequest(token, `/repos/${repo}/pulls/${pullNumber}/reviews`);
+}
+
+/**
+ * @param {string} token
+ * @param {string} repo
+ * @param {number} pullNumber
+ */
 export async function fetchPullFiles(token, repo, pullNumber) {
   /** @type {Array<{ filename: string; patch?: string; status: string }>} */
   const files = [];

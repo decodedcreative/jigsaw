@@ -10,6 +10,7 @@ import { buildLineIndex } from "./lib/diff.mjs";
 import {
   fetchPullFiles,
   fetchPullRequest,
+  fetchPullReviews,
   postPullRequestReview,
 } from "./lib/github.mjs";
 import { providerLabel, requestReview } from "./lib/model.mjs";
@@ -18,7 +19,16 @@ import {
   formatReviewSummary,
   parseReviewJson,
 } from "./lib/parse-review.mjs";
-import { SYSTEM_PROMPT, buildUserPrompt } from "./lib/prompt.mjs";
+import { buildSystemPrompt, buildUserPrompt } from "./lib/prompt.mjs";
+import {
+  countPriorStaffReviews,
+  filterCommentsForMode,
+  getLatestStaffReviewSummary,
+  getMaxCommentsForMode,
+  getMaxFeedbackRounds,
+  getReviewMode,
+  roundLabel,
+} from "./lib/rounds.mjs";
 
 const { GITHUB_TOKEN, GITHUB_REPOSITORY, PR_NUMBER } = process.env;
 
@@ -33,15 +43,16 @@ function requireEnv(name, value) {
 /**
  * @param {Array<{ path: string; line: number; severity: string; body: string }>} comments
  * @param {Map<string, Set<number>>} lineIndex
+ * @param {number} maxComments
  */
-function validateComments(comments, lineIndex) {
+function validateComments(comments, lineIndex, maxComments) {
   const valid = [];
   let skippedUnknownPath = 0;
   let skippedInvalidLine = 0;
   let skippedOverCap = 0;
 
   for (const comment of comments) {
-    if (valid.length >= MAX_INLINE_COMMENTS) {
+    if (valid.length >= maxComments) {
       skippedOverCap += 1;
       continue;
     }
@@ -73,7 +84,7 @@ function validateComments(comments, lineIndex) {
   const skipped = skippedUnknownPath + skippedInvalidLine + skippedOverCap;
   if (skipped > 0) {
     console.warn(
-      `Comment validation: kept ${valid.length}, skipped ${skipped} (${skippedUnknownPath} unknown path, ${skippedInvalidLine} invalid line, ${skippedOverCap} over cap of ${MAX_INLINE_COMMENTS})`,
+      `Comment validation: kept ${valid.length}, skipped ${skipped} (${skippedUnknownPath} unknown path, ${skippedInvalidLine} invalid line, ${skippedOverCap} over cap of ${maxComments})`,
     );
   }
 
@@ -85,13 +96,25 @@ async function main() {
   const repo = requireEnv("GITHUB_REPOSITORY", GITHUB_REPOSITORY);
   const pullNumber = Number.parseInt(requireEnv("PR_NUMBER", PR_NUMBER), 10);
   const provider = getProvider();
+  const maxFeedbackRounds = getMaxFeedbackRounds();
 
   if (!Number.isFinite(pullNumber)) {
     console.error("PR_NUMBER must be a valid integer");
     process.exit(1);
   }
 
-  console.log(`Reviewing ${repo}#${pullNumber} via ${provider}…`);
+  const priorReviews = await fetchPullReviews(token, repo, pullNumber);
+  const priorCount = countPriorStaffReviews(priorReviews ?? []);
+  const mode = getReviewMode(priorCount, maxFeedbackRounds);
+  const roundNumber = priorCount + 1;
+  const maxComments = Math.min(
+    MAX_INLINE_COMMENTS,
+    getMaxCommentsForMode(mode),
+  );
+
+  console.log(
+    `Reviewing ${repo}#${pullNumber} via ${provider} — mode=${mode}, round=${roundNumber}, maxFeedbackRounds=${maxFeedbackRounds}`,
+  );
 
   const pr = await fetchPullRequest(token, repo, pullNumber);
   const allFiles = await fetchPullFiles(token, repo, pullNumber);
@@ -107,7 +130,10 @@ async function main() {
     console.log(`  - ${file.filename}`);
   }
 
-  console.log(`Sending ${files.length} file(s) to model…`);
+  const priorReviewSummary =
+    mode !== "initial"
+      ? getLatestStaffReviewSummary(priorReviews ?? [])
+      : null;
 
   const userPrompt = buildUserPrompt({
     title: pr.title,
@@ -115,19 +141,34 @@ async function main() {
     author: pr.user?.login ?? "unknown",
     base: pr.base?.ref ?? "main",
     head: pr.head?.ref ?? "head",
+    mode,
+    roundNumber,
+    maxFeedbackRounds,
+    priorReviewSummary,
     files,
   });
 
-  const raw = await requestReview(SYSTEM_PROMPT, userPrompt);
-  const { summary, comments } = parseReviewJson(raw);
+  console.log(`Sending ${files.length} file(s) to model…`);
+
+  const raw = await requestReview(buildSystemPrompt(mode), userPrompt);
+  const { summary, comments: rawComments } = parseReviewJson(raw);
+  const modeComments = filterCommentsForMode(rawComments, mode);
   const lineIndex = buildLineIndex(files);
-  const inlineComments = validateComments(comments, lineIndex);
+  const inlineComments = validateComments(modeComments, lineIndex, maxComments);
+
+  if (mode === "critical" && inlineComments.length === 0) {
+    console.log(
+      "Critical-only round: no blockers found — skipping review post to avoid noise.",
+    );
+    return;
+  }
 
   const reviewBody = formatReviewSummary(
     summary,
-    comments,
+    modeComments,
     REVIEW_MARKER,
     providerLabel(provider),
+    roundLabel(mode, roundNumber, maxFeedbackRounds),
   );
 
   if (inlineComments.length === 0) {

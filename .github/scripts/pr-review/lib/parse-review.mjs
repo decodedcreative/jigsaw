@@ -68,11 +68,26 @@ export function formatCommentBody(severity, body) {
  * @param {Array<{ severity: string }>} comments
  * @param {string} marker
  */
-export function formatReviewSummary(summary, comments, marker, providerLabel) {
+/**
+ * @param {string} summary
+ * @param {Array<{ severity: string }>} comments
+ * @param {string} marker
+ * @param {string} providerLabel
+ * @param {string} [roundNote]
+ */
+export function formatReviewSummary(
+  summary,
+  comments,
+  marker,
+  providerLabel,
+  roundNote = "",
+) {
   const blockers = comments.filter((c) => c.severity === "blocker").length;
   const header = blockers
     ? `## Staff review — ${comments.length} note(s), **${blockers} blocker(s)**`
     : `## Staff review — ${comments.length} note(s)`;
 
-  return `${marker}\n\n${header}\n\n${summary}\n\n_Automated review (${providerLabel}). Not a substitute for human review._`;
+  const round = roundNote ? `${roundNote}\n\n` : "";
+
+  return `${marker}\n\n${round}${header}\n\n${summary}\n\n_Automated review (${providerLabel}). Not a substitute for human review._`;
 }

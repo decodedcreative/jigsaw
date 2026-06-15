@@ -5,6 +5,12 @@ import { shouldSkipPath, selectReviewableFiles } from "./lib/config.mjs";
 import { parseReviewableLines } from "./lib/diff.mjs";
 import { isGitHubRateLimited } from "./lib/github.mjs";
 import { parseReviewJson } from "./lib/parse-review.mjs";
+import {
+  countPriorStaffReviews,
+  filterCommentsForMode,
+  getMaxFeedbackRounds,
+  getReviewMode,
+} from "./lib/rounds.mjs";
 
 test("parseReviewableLines tracks RIGHT-side line numbers", () => {
   const patch = [
@@ -74,4 +80,30 @@ test("isGitHubRateLimited detects 429 and exhausted quota", () => {
     ),
     false,
   );
+});
+
+test("getReviewMode caps feedback rounds then switches to critical", () => {
+  const max = getMaxFeedbackRounds(2);
+  assert.equal(getReviewMode(0, max), "initial");
+  assert.equal(getReviewMode(1, max), "followup");
+  assert.equal(getReviewMode(2, max), "critical");
+  assert.equal(getReviewMode(5, max), "critical");
+});
+
+test("filterCommentsForMode keeps blockers only in critical mode", () => {
+  const comments = [
+    { severity: "blocker", path: "a.ts", line: 1, body: "x" },
+    { severity: "nit", path: "b.ts", line: 2, body: "y" },
+  ];
+  assert.equal(filterCommentsForMode(comments, "initial").length, 2);
+  assert.equal(filterCommentsForMode(comments, "critical").length, 1);
+});
+
+test("countPriorStaffReviews counts bot reviews with marker", () => {
+  const count = countPriorStaffReviews([
+    { user: { login: "github-actions[bot]" }, body: "<!-- jigsaw-staff-pr-review -->\nhi" },
+    { user: { login: "human" }, body: "<!-- jigsaw-staff-pr-review -->\nhi" },
+    { user: { login: "github-actions[bot]" }, body: "no marker" },
+  ]);
+  assert.equal(count, 1);
 });
