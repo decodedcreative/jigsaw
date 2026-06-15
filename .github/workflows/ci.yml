@@ -24,8 +24,9 @@ jobs:
       - name: Test storybook token utilities
         run: npm run test --workspace=@jigsaw/storybook
 
-      - name: Test theme-default CSS output
+      - name: Test theme-build and theme-default CSS output
         run: |
+          npm run test --workspace=@jigsaw/theme-build
           npm run build --workspace=@jigsaw/theme-default
           npm run test --workspace=@jigsaw/theme-default
 

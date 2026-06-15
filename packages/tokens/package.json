@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
+    "@jigsaw/theme-build": "*",
     "eslint": "^9.16.0",
     "globals": "^14.0.0",
     "style-dictionary": "^4.1.1",

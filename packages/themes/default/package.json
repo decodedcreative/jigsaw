@@ -11,9 +11,10 @@
     "build": "node scripts/build-tokens.mjs",
     "clean": "rm -rf dist",
     "lint": "node -e \"process.exit(0)\"",
-    "test": "node --test scripts/utils/css-rgb-tuple.test.mjs scripts/build-output.test.mjs"
+    "test": "node --test scripts/build-output.test.mjs"
   },
   "devDependencies": {
+    "@jigsaw/theme-build": "*",
     "style-dictionary": "^4.1.1"
   }
 }

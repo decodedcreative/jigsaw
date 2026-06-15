@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-
-import { toRgbTuple } from "./css-rgb-tuple.mjs";
+import { toRgbTuple } from "../src/to-rgb-tuple.mjs";
 
 test("toRgbTuple converts 6-digit hex colours", () => {
   assert.equal(toRgbTuple("#627d98"), "98 125 152");
