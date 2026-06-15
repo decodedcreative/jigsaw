@@ -6,7 +6,8 @@ import {
   selectReviewableFiles,
 } from "./lib/config.mjs";
 import { buildLineIndex } from "./lib/diff.mjs";
-import { requestReview } from "./lib/anthropic.mjs";
+import { getProvider } from "./lib/config.mjs";
+import { providerLabel, requestReview } from "./lib/model.mjs";
 import {
   fetchPullFiles,
   fetchPullRequest,
@@ -19,12 +20,7 @@ import {
 } from "./lib/parse-review.mjs";
 import { SYSTEM_PROMPT, buildUserPrompt } from "./lib/prompt.mjs";
 
-const {
-  GITHUB_TOKEN,
-  ANTHROPIC_API_KEY,
-  GITHUB_REPOSITORY,
-  PR_NUMBER,
-} = process.env;
+const { GITHUB_TOKEN, GITHUB_REPOSITORY, PR_NUMBER } = process.env;
 
 function requireEnv(name, value) {
   if (!value) {
@@ -64,16 +60,16 @@ function validateComments(comments, lineIndex) {
 
 async function main() {
   const token = requireEnv("GITHUB_TOKEN", GITHUB_TOKEN);
-  const apiKey = requireEnv("ANTHROPIC_API_KEY", ANTHROPIC_API_KEY);
   const repo = requireEnv("GITHUB_REPOSITORY", GITHUB_REPOSITORY);
   const pullNumber = Number.parseInt(requireEnv("PR_NUMBER", PR_NUMBER), 10);
+  const provider = getProvider();
 
   if (!Number.isFinite(pullNumber)) {
     console.error("PR_NUMBER must be a valid integer");
     process.exit(1);
   }
 
-  console.log(`Reviewing ${repo}#${pullNumber}…`);
+  console.log(`Reviewing ${repo}#${pullNumber} via ${provider}…`);
 
   const pr = await fetchPullRequest(token, repo, pullNumber);
   const allFiles = await fetchPullFiles(token, repo, pullNumber);
@@ -95,12 +91,17 @@ async function main() {
     files,
   });
 
-  const raw = await requestReview(apiKey, SYSTEM_PROMPT, userPrompt);
+  const raw = await requestReview(SYSTEM_PROMPT, userPrompt);
   const { summary, comments } = parseReviewJson(raw);
   const lineIndex = buildLineIndex(files);
   const inlineComments = validateComments(comments, lineIndex);
 
-  const reviewBody = formatReviewSummary(summary, comments, REVIEW_MARKER);
+  const reviewBody = formatReviewSummary(
+    summary,
+    comments,
+    REVIEW_MARKER,
+    providerLabel(provider),
+  );
 
   if (inlineComments.length === 0) {
     console.log("No inline comments to post — summary only.");

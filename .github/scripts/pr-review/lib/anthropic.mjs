@@ -1,4 +1,4 @@
-import { DEFAULT_MODEL } from "./config.mjs";
+import { getDefaultModel } from "./config.mjs";
 
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 
@@ -7,7 +7,7 @@ const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
  * @param {string} system
  * @param {string} user
  */
-export async function requestReview(apiKey, system, user) {
+export async function requestAnthropicReview(apiKey, system, user) {
   const response = await fetch(ANTHROPIC_API, {
     method: "POST",
     headers: {
@@ -16,7 +16,7 @@ export async function requestReview(apiKey, system, user) {
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: DEFAULT_MODEL,
+      model: getDefaultModel("anthropic"),
       max_tokens: 4096,
       system,
       messages: [{ role: "user", content: user }],

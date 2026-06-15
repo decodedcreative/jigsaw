@@ -68,11 +68,11 @@ export function formatCommentBody(severity, body) {
  * @param {Array<{ severity: string }>} comments
  * @param {string} marker
  */
-export function formatReviewSummary(summary, comments, marker) {
+export function formatReviewSummary(summary, comments, marker, providerLabel) {
   const blockers = comments.filter((c) => c.severity === "blocker").length;
   const header = blockers
     ? `## Staff review — ${comments.length} note(s), **${blockers} blocker(s)**`
     : `## Staff review — ${comments.length} note(s)`;
 
-  return `${marker}\n\n${header}\n\n${summary}\n\n_Automated review (Claude). Not a substitute for human review._`;
+  return `${marker}\n\n${header}\n\n${summary}\n\n_Automated review (${providerLabel}). Not a substitute for human review._`;
 }

@@ -15,10 +15,51 @@ export const MAX_PATCH_CHARS_PER_FILE = 12_000;
 export const MAX_TOTAL_PATCH_CHARS = 150_000;
 export const MAX_INLINE_COMMENTS = 25;
 
-export const DEFAULT_MODEL =
-  process.env.PR_REVIEW_MODEL ?? "claude-sonnet-4-20250514";
+/** @typedef {'openai' | 'anthropic'} ReviewProvider */
+
+const DEFAULT_MODELS = {
+  openai: "gpt-4o",
+  anthropic: "claude-sonnet-4-20250514",
+};
 
 export const REVIEW_MARKER = "<!-- jigsaw-staff-pr-review -->";
+
+/**
+ * @returns {ReviewProvider}
+ */
+export function getProvider() {
+  const provider = process.env.PR_REVIEW_PROVIDER ?? "openai";
+  if (provider === "openai" || provider === "anthropic") return provider;
+  throw new Error(
+    `Invalid PR_REVIEW_PROVIDER "${provider}" — use "openai" or "anthropic"`,
+  );
+}
+
+/**
+ * @param {ReviewProvider} provider
+ */
+export function getDefaultModel(provider) {
+  return process.env.PR_REVIEW_MODEL ?? DEFAULT_MODELS[provider];
+}
+
+/**
+ * @param {ReviewProvider} provider
+ */
+export function resolveApiKey(provider) {
+  if (provider === "anthropic") {
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) {
+      throw new Error("Missing required env: ANTHROPIC_API_KEY");
+    }
+    return apiKey;
+  }
+
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing required env: OPENAI_API_KEY");
+  }
+  return apiKey;
+}
 
 /**
  * @param {string} path

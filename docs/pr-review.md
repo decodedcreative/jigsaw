@@ -1,6 +1,6 @@
 # Automated PR review (GitHub Actions)
 
-Staff-level automated code review on pull requests using Claude via the Anthropic API. Posts a summary comment and inline feedback on changed files.
+Staff-level automated code review on pull requests using **OpenAI** (default) or Anthropic. Posts a summary comment and inline feedback on changed files.
 
 **Ticket:** [JSW-93](https://decodedcreative.atlassian.net/browse/JSW-93)
 
@@ -8,7 +8,7 @@ Staff-level automated code review on pull requests using Claude via the Anthropi
 
 1. Workflow `.github/workflows/pr-review.yml` runs on `pull_request` (`opened`, `synchronize`, `reopened`).
 2. Script `.github/scripts/pr-review/review.mjs` fetches the PR diff via GitHub API.
-3. Claude reviews the diff with a Jigsaw-specific Staff engineer prompt.
+3. The model reviews the diff with a Jigsaw-specific Staff engineer prompt.
 4. Valid inline comments are posted as a single PR review (`event: COMMENT`).
 
 Advisory only — does not block merge.
@@ -19,17 +19,22 @@ Advisory only — does not block merge.
 
 | Secret | Required | Description |
 |--------|----------|-------------|
-| `ANTHROPIC_API_KEY` | Yes | Anthropic API key with Messages API access |
+| `OPENAI_API_KEY` | Yes (default) | OpenAI API key from [platform.openai.com](https://platform.openai.com/api-keys) |
 
 Add under **Settings → Secrets and variables → Actions → New repository secret**.
 
+> **Note:** ChatGPT Plus and Claude Code subscriptions are separate from API billing. This workflow uses the **OpenAI API** (pay-as-you-go credits on your OpenAI account), not the ChatGPT web app directly.
+
 `GITHUB_TOKEN` is provided automatically; the workflow requests `pull-requests: write`.
 
-### Optional repository variable
+### Optional repository variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PR_REVIEW_MODEL` | `claude-sonnet-4-20250514` | Anthropic model ID |
+| `PR_REVIEW_PROVIDER` | `openai` | `openai` or `anthropic` |
+| `PR_REVIEW_MODEL` | `gpt-4o` (OpenAI) / `claude-sonnet-4-20250514` (Anthropic) | Model ID for the chosen provider |
+
+To use Claude instead, set `PR_REVIEW_PROVIDER` to `anthropic` and add `ANTHROPIC_API_KEY`.
 
 ## Behaviour
 
@@ -42,19 +47,21 @@ Add under **Settings → Secrets and variables → Actions → New repository se
 
 ```bash
 export GITHUB_TOKEN="ghp_..."
-export ANTHROPIC_API_KEY="sk-ant-..."
+export OPENAI_API_KEY="sk-..."
 export GITHUB_REPOSITORY="decodedcreative/jigsaw"
-export PR_NUMBER=47
+export PR_NUMBER=48
 
 node .github/scripts/pr-review/review.mjs
 ```
 
 ## Integration choice
 
-**v1: Anthropic Claude API** — structured JSON output, predictable inline comment posting, no agent runtime in CI.
+**v1: OpenAI Chat Completions API** (default) — JSON mode, works with an OpenAI API key; good fit if you already have OpenAI billing set up.
 
-**Future:** Cursor SDK (`@cursor/sdk`) cloud agent for deeper repo-aware reviews; evaluate cost/latency vs this workflow.
+**Alternative:** `PR_REVIEW_PROVIDER=anthropic` + `ANTHROPIC_API_KEY` for Claude.
+
+**Future:** Cursor SDK (`@cursor/sdk`) cloud agent for deeper repo-aware reviews.
 
 ## Disable
 
-Remove or disable `.github/workflows/pr-review.yml`, or delete the `ANTHROPIC_API_KEY` secret.
+Remove or disable `.github/workflows/pr-review.yml`, or delete the API key secret.
