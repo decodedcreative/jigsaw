@@ -1,14 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useEffect, useState } from "react";
 import theme from "../../../../packages/tokens/dist/theme.mjs";
 import { ColorSwatch, TokenPage, TokenRow, TokenSection } from "./_components";
+import { useResolvedCssColor } from "./css-color";
 
 const paletteScales = ["navy", "orange", "grey"] as const;
-
-function readCssColor(cssVar: string): string {
-  const raw = getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
-  return raw ? `rgb(${raw})` : "";
-}
 
 function PaletteSwatch({
   label,
@@ -17,30 +12,9 @@ function PaletteSwatch({
   label: string;
   cssVar: string;
 }) {
-  const [resolved, setResolved] = useState("");
+  const value = useResolvedCssColor(cssVar);
 
-  useEffect(() => {
-    const update = () => setResolved(readCssColor(cssVar));
-    update();
-
-    const observer = new MutationObserver(update);
-    for (const target of [document.documentElement, document.body]) {
-      observer.observe(target, {
-        attributes: true,
-        attributeFilter: ["class", "style", "data-theme"],
-      });
-    }
-
-    return () => observer.disconnect();
-  }, [cssVar]);
-
-  return (
-    <ColorSwatch
-      label={label}
-      cssVar={cssVar}
-      value={resolved || cssVar}
-    />
-  );
+  return <ColorSwatch label={label} cssVar={cssVar} value={value} />;
 }
 
 function ColorPaletteContent() {

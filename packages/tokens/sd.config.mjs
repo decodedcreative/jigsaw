@@ -15,6 +15,7 @@ import {
   themeSemanticSourceGlob,
   themeSourceGlob,
 } from "./scripts/index.mjs";
+import { tailwindColorVarRef } from "./scripts/utils/tailwind-theme-color.mjs";
 
 /**
  * Convert a CSS color value to a space-separated RGB tuple
@@ -55,10 +56,6 @@ const cssThemedVariables = ({ dictionary, options }) => {
 
   return `${header}${selector} {\n${lines.join("\n")}\n}\n`;
 };
-
-/** Map a colour token path to a Tailwind rgb(var(--…) / <alpha-value>) reference. */
-const tailwindColorVarRef = (path) =>
-  `rgb(var(--color-${path.slice(1).join("-")}) / <alpha-value>)`;
 
 /** Tailwind theme.mjs format */
 const tailwindTheme = ({ dictionary }) => {
