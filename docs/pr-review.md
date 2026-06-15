@@ -54,7 +54,29 @@ To use Claude instead, set `PR_REVIEW_PROVIDER` to `anthropic` and add `ANTHROPI
 
 The model still runs on round 3+ to scan for critical issues, but skips posting when none are found.
 
-- **Address replies:** from round 2 onward, when a push modifies lines near a prior bot inline comment, the bot posts a threaded reply: _Likely addressed in `<sha>`_ (disable with `PR_REVIEW_REPLY_ON_ADDRESS=false`).
+- **Address replies:** optional bot threads on line changes (disable with `PR_REVIEW_REPLY_ON_ADDRESS=false`). Prefer **manual replies** via `gh` when documenting your fixes (see below).
+
+### Replying to review comments with `gh`
+
+List bot inline comments:
+
+```bash
+gh api repos/decodedcreative/jigsaw/pulls/48/comments \
+  --jq '.[] | select(.user.login == "github-actions[bot]") | {id, path, line, body: .body[0:80]}'
+```
+
+Reply in the thread (use the comment `id` as `in_reply_to`):
+
+```bash
+SHA=$(gh api repos/decodedcreative/jigsaw/pulls/48 --jq .head.sha)
+
+gh api repos/decodedcreative/jigsaw/pulls/48/comments --method POST \
+  -f commit_id="$SHA" \
+  -F in_reply_to=COMMENT_ID \
+  -f body="Addressed in COMMIT_SHA — brief note on what changed."
+```
+
+View threads on the PR: `gh pr view 48 --web` → **Files changed** → inline discussions.
 
 ## Local dry run
 

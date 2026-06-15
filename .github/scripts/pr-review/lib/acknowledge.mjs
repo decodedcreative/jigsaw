@@ -41,7 +41,14 @@ export async function acknowledgeAddressedComments(
   }
 
   for (const reply of toReply) {
-    await replyToReviewComment(token, repo, reply.commentId, reply.body);
+    await replyToReviewComment(
+      token,
+      repo,
+      pullNumber,
+      headSha,
+      reply.commentId,
+      reply.body,
+    );
     console.log(`Replied on ${reply.path}:${reply.line} (comment ${reply.commentId})`);
   }
 

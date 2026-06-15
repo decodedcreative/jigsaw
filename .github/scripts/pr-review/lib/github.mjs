@@ -146,14 +146,27 @@ export async function fetchPullReviewComments(token, repo, pullNumber) {
 /**
  * @param {string} token
  * @param {string} repo
+ * @param {number} pullNumber
+ * @param {string} commitId
  * @param {number} commentId
  * @param {string} body
  */
-export async function replyToReviewComment(token, repo, commentId, body) {
-  return githubRequest(token, `/repos/${repo}/pulls/comments/${commentId}/replies`, {
+export async function replyToReviewComment(
+  token,
+  repo,
+  pullNumber,
+  commitId,
+  commentId,
+  body,
+) {
+  return githubRequest(token, `/repos/${repo}/pulls/${pullNumber}/comments`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ body }),
+    body: JSON.stringify({
+      body,
+      commit_id: commitId,
+      in_reply_to: commentId,
+    }),
   });
 }
 
