@@ -34,6 +34,7 @@ Add under **Settings → Secrets and variables → Actions → New repository se
 | `PR_REVIEW_PROVIDER` | `openai` | `openai` or `anthropic` |
 | `PR_REVIEW_MODEL` | `gpt-4o` (OpenAI) / `claude-sonnet-4-20250514` (Anthropic) | Model ID for the chosen provider |
 | `PR_REVIEW_MAX_FEEDBACK_ROUNDS` | `2` | Full feedback rounds before switching to critical-only scans |
+| `PR_REVIEW_REPLY_ON_ADDRESS` | `true` | Reply on prior inline threads when nearby lines change on push |
 
 To use Claude instead, set `PR_REVIEW_PROVIDER` to `anthropic` and add `ANTHROPIC_API_KEY`.
 
@@ -52,6 +53,8 @@ To use Claude instead, set `PR_REVIEW_PROVIDER` to `anthropic` and add `ANTHROPI
 | 3+ | Critical | Blockers only on every push; **no review posted** if all clear |
 
 The model still runs on round 3+ to scan for critical issues, but skips posting when none are found.
+
+- **Address replies:** from round 2 onward, when a push modifies lines near a prior bot inline comment, the bot posts a threaded reply: _Likely addressed in `<sha>`_ (disable with `PR_REVIEW_REPLY_ON_ADDRESS=false`).
 
 ## Local dry run
 

@@ -11,6 +11,10 @@ import {
   getMaxFeedbackRounds,
   getReviewMode,
 } from "./lib/rounds.mjs";
+import {
+  findCommentsToAcknowledge,
+  wasLineTouched,
+} from "./lib/addressed.mjs";
 
 test("parseReviewableLines tracks RIGHT-side line numbers", () => {
   const patch = [
@@ -106,4 +110,40 @@ test("countPriorStaffReviews counts bot reviews with marker", () => {
     { user: { login: "github-actions[bot]" }, body: "no marker" },
   ]);
   assert.equal(count, 1);
+});
+
+test("wasLineTouched detects edits near the commented line", () => {
+  const patch = [
+    "@@ -10,3 +10,4 @@",
+    " context",
+    "-old",
+    "+new",
+    " tail",
+  ].join("\n");
+
+  assert.equal(wasLineTouched(patch, 11), true);
+  assert.equal(wasLineTouched(patch, 20), false);
+});
+
+test("findCommentsToAcknowledge replies when nearby lines changed", () => {
+  const files = [
+    {
+      filename: "src/a.ts",
+      patch: "@@ -1,2 +1,3 @@\n ctx\n-old\n+new",
+    },
+  ];
+  const comments = [
+    {
+      id: 100,
+      path: "src/a.ts",
+      line: 2,
+      user: { login: "github-actions[bot]" },
+      body: "**💡 Suggestion**\n\nfix this",
+    },
+  ];
+
+  const replies = findCommentsToAcknowledge(comments, files, "abc1234567890");
+  assert.equal(replies.length, 1);
+  assert.equal(replies[0].commentId, 100);
+  assert.match(replies[0].body, /Likely addressed/);
 });

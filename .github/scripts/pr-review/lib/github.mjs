@@ -119,6 +119,45 @@ export async function fetchPullFiles(token, repo, pullNumber) {
 }
 
 /**
+ * @param {string} token
+ * @param {string} repo
+ * @param {number} pullNumber
+ */
+export async function fetchPullReviewComments(token, repo, pullNumber) {
+  /** @type {Array<Record<string, unknown>>} */
+  const comments = [];
+  let page = 1;
+
+  while (true) {
+    const batch = await githubRequest(
+      token,
+      `/repos/${repo}/pulls/${pullNumber}/comments?per_page=100&page=${page}`,
+    );
+
+    if (!Array.isArray(batch) || batch.length === 0) break;
+    comments.push(...batch);
+    if (batch.length < 100) break;
+    page += 1;
+  }
+
+  return comments;
+}
+
+/**
+ * @param {string} token
+ * @param {string} repo
+ * @param {number} commentId
+ * @param {string} body
+ */
+export async function replyToReviewComment(token, repo, commentId, body) {
+  return githubRequest(token, `/repos/${repo}/pulls/comments/${commentId}/replies`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ body }),
+  });
+}
+
+/**
  * @typedef {{ path: string; line: number; body: string }} ReviewComment
  */
 

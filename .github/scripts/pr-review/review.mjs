@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { acknowledgeAddressedComments } from "./lib/acknowledge.mjs";
 import {
   MAX_INLINE_COMMENTS,
   REVIEW_MARKER,
@@ -118,6 +119,19 @@ async function main() {
 
   const pr = await fetchPullRequest(token, repo, pullNumber);
   const allFiles = await fetchPullFiles(token, repo, pullNumber);
+
+  const acknowledged = await acknowledgeAddressedComments(
+    token,
+    repo,
+    pullNumber,
+    allFiles,
+    pr.head.sha,
+    priorCount,
+  );
+  if (acknowledged > 0) {
+    console.log(`Posted ${acknowledged} addressed reply(ies) on prior inline comments.`);
+  }
+
   const files = selectReviewableFiles(allFiles);
 
   if (files.length === 0) {
