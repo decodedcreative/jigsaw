@@ -10,11 +10,12 @@
     "clean": "rm -rf storybook-static",
     "chromatic": "chromatic",
     "chromatic:ci": "chromatic --exit-zero-on-changes --only-changed",
-    "test": "node --test stories/design-tokens/css-color.test.mjs"
+    "test": "node --test stories/design-tokens/css-color.test.mjs .storybook/apply-app-theme.test.mjs"
   },
   "dependencies": {
     "@jigsaw/design-system": "*",
     "@jigsaw/theme-default": "*",
+    "@jigsaw/theme-portfolio": "*",
     "@jigsaw/tokens": "*",
     "@phosphor-icons/react": "^2.1.10",
     "react": "^19.0.0",
