@@ -23,6 +23,7 @@ jobs:
       - name: Build design-system
         run: |
           npm run build --workspace=@jigsaw/theme-default
+          npm run build --workspace=@jigsaw/theme-portfolio
           npm run build --workspace=@jigsaw/tokens
           npm run build --workspace=@jigsaw/design-system
 

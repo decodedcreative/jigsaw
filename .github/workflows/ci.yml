@@ -26,11 +26,13 @@ jobs:
           npm run build --workspace=@jigsaw/tokens
           npm run test --workspace=@jigsaw/storybook
 
-      - name: Test theme-build and theme-default CSS output
+      - name: Test theme-build and theme CSS packages
         run: |
           npm run test --workspace=@jigsaw/theme-build
           npm run build --workspace=@jigsaw/theme-default
           npm run test --workspace=@jigsaw/theme-default
+          npm run build --workspace=@jigsaw/theme-portfolio
+          npm run test --workspace=@jigsaw/theme-portfolio
 
   test-tokens:
     runs-on: ubuntu-latest

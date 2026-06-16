@@ -3,6 +3,8 @@ import "@jigsaw/tokens/shared/base.css";
 import "@jigsaw/theme-default/base.css";
 import "@jigsaw/theme-default/semantic-light.css";
 import "@jigsaw/theme-default/semantic-dark.css";
+import "@jigsaw/theme-portfolio/base.css";
+import "@jigsaw/theme-portfolio/semantic.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

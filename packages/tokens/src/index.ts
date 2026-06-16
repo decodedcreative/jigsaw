@@ -9,7 +9,7 @@
  * - CSS variables (default): import "@jigsaw/theme-default/base.css"
  *                            import "@jigsaw/theme-default/semantic-light.css"
  *                            import "@jigsaw/theme-default/semantic-dark.css"
- * - CSS variables (portfolio): import "@jigsaw/tokens/themes/portfolio/base.css"
- *                              import "@jigsaw/tokens/themes/portfolio/semantic.css"
+ * - CSS variables (portfolio): import "@jigsaw/theme-portfolio/base.css"
+ *                              import "@jigsaw/theme-portfolio/semantic.css"
  */
 export const tokensPackageVersion = "0.0.1";

@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
  *   packages/themes/{id}/src/            → extracted brand themes (CSS built in-package)
  *     base/                              → palette tokens
  *     semantic/                          → semantic tokens; mode = JSON root key
- *   packages/tokens/src/tokens/themes/{id}/ → legacy in-repo themes (e.g. portfolio until migrated)
+ *   packages/tokens/src/tokens/themes/{id}/ → legacy in-repo themes (prefer packages/themes/{id}/)
  *
  * Semantic modes are the top-level keys in semantic/*.json (e.g. light, dark, portfolio).
  *

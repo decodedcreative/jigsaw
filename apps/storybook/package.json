@@ -15,6 +15,7 @@
   "dependencies": {
     "@jigsaw/design-system": "*",
     "@jigsaw/theme-default": "*",
+    "@jigsaw/theme-portfolio": "*",
     "@jigsaw/tokens": "*",
     "@phosphor-icons/react": "^2.1.10",
     "react": "^19.0.0",

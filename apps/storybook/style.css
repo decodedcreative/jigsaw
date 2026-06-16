@@ -2,8 +2,8 @@
 @import '@jigsaw/theme-default/base.css' layer(base);
 @import '@jigsaw/theme-default/semantic-light.css' layer(base);
 @import '@jigsaw/theme-default/semantic-dark.css' layer(base);
-@import '@jigsaw/tokens/themes/portfolio/base.css' layer(base);
-@import '@jigsaw/tokens/themes/portfolio/semantic.css' layer(base);
+@import '@jigsaw/theme-portfolio/base.css' layer(base);
+@import '@jigsaw/theme-portfolio/semantic.css' layer(base);
 @import 'tailwindcss';
 @import '@jigsaw/tokens/tailwind-theme.css';
 
