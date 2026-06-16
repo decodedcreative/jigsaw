@@ -5,7 +5,6 @@ import {
   discoverExternalThemes,
   discoverFigmaThemes,
   discoverSemanticModes,
-  discoverThemes,
   isExternalTheme,
   isStandaloneSemantic,
   isThemeBaseToken,
@@ -113,11 +112,7 @@ describe("capitalize", () => {
 });
 
 describe("filesystem discovery", () => {
-  it("discovers no legacy in-repo theme ids", () => {
-    expect(discoverThemes()).toEqual([]);
-  });
-
-  it("discovers Figma themes from packages/themes only", () => {
+  it("discovers Figma themes from packages/themes", () => {
     expect(discoverExternalThemes()).toEqual(["default", "portfolio"]);
     expect(discoverFigmaThemes()).toEqual(["default", "portfolio"]);
   });

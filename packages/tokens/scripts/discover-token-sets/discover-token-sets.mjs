@@ -11,8 +11,6 @@ import { fileURLToPath } from "node:url";
  *     base/                             → palette tokens
  *     semantic/                         → semantic tokens; mode = JSON root key
  *
- * Legacy fallback: packages/tokens/src/tokens/themes/{id}/ (unused — all themes are external)
- *
  * Semantic modes are the top-level keys in semantic/*.json (e.g. light, dark, portfolio).
  *
  * Export rules (CSS and Figma follow the same split):
@@ -29,8 +27,6 @@ import { fileURLToPath } from "node:url";
  */
 
 const packageRoot = path.dirname(path.dirname(path.dirname(fileURLToPath(import.meta.url))));
-const tokensRoot = path.join(packageRoot, "src/tokens");
-const legacyThemesRoot = path.join(tokensRoot, "themes");
 const themesPackageRoot = path.join(packageRoot, "../themes");
 
 /** @deprecated Use isExternalTheme("default") — kept for existing tests/imports. */
@@ -51,19 +47,13 @@ export const isExternalTheme = (themeId) =>
  * @param {string} themeId
  * @returns {string}
  */
-export const themeTokensRoot = (themeId) =>
-  isExternalTheme(themeId)
-    ? externalThemeTokensRoot(themeId)
-    : path.join(legacyThemesRoot, themeId);
+export const themeTokensRoot = (themeId) => externalThemeTokensRoot(themeId);
 
 /**
- * @param {string} themeId
+ * @param {string} _themeId
  * @param {{ filePath: string }} token
  */
-export const isThemeBaseToken = (themeId, token) =>
-  isExternalTheme(themeId)
-    ? token.filePath.includes("/base/")
-    : token.filePath.includes(`${themeId}/base`);
+export const isThemeBaseToken = (_themeId, token) => token.filePath.includes("/base/");
 
 /** Appearance modes split into separate outputs (e.g. default light/dark). */
 const APPEARANCE_MODES = new Set(["light", "dark"]);
@@ -86,17 +76,7 @@ export const discoverSemanticModes = (themeId) => {
   return [...prefixes].sort();
 };
 
-/** @returns {string[]} Theme ids with legacy in-repo sources (packages/tokens/src/tokens/themes/). */
-export const discoverThemes = () => {
-  if (!fs.existsSync(legacyThemesRoot)) return [];
-  return fs
-    .readdirSync(legacyThemesRoot, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name)
-    .sort();
-};
-
-/** @returns {string[]} Theme ids with sources under packages/themes/{id}/. */
+/** @returns {string[]} Theme ids with JSON under packages/themes/{id}/src/. */
 export const discoverExternalThemes = () => {
   if (!fs.existsSync(themesPackageRoot)) return [];
   return fs
@@ -108,11 +88,7 @@ export const discoverExternalThemes = () => {
 };
 
 /** @returns {string[]} Theme ids included in Figma export discovery. */
-export const discoverFigmaThemes = () => {
-  const external = discoverExternalThemes();
-  const legacy = discoverThemes().filter((themeId) => !external.includes(themeId));
-  return [...external, ...legacy];
-};
+export const discoverFigmaThemes = () => discoverExternalThemes();
 
 export const themeHasBase = (themeId) =>
   fs.existsSync(path.join(themeTokensRoot(themeId), "base"));
@@ -151,20 +127,13 @@ export const semanticCssSelector = (themeId, mode) => {
   return `[data-theme='${themeId}']`;
 };
 
-export const themeSourceGlob = (themeId) =>
-  isExternalTheme(themeId)
-    ? `../themes/${themeId}/src/**/*.json`
-    : `src/tokens/themes/${themeId}/**/*.json`;
+export const themeSourceGlob = (themeId) => `../themes/${themeId}/src/**/*.json`;
 
 export const themeBaseSourceGlob = (themeId) =>
-  isExternalTheme(themeId)
-    ? `../themes/${themeId}/src/base/**/*.json`
-    : `src/tokens/themes/${themeId}/base/**/*.json`;
+  `../themes/${themeId}/src/base/**/*.json`;
 
 export const themeSemanticSourceGlob = (themeId) =>
-  isExternalTheme(themeId)
-    ? `../themes/${themeId}/src/semantic/**/*.json`
-    : `src/tokens/themes/${themeId}/semantic/**/*.json`;
+  `../themes/${themeId}/src/semantic/**/*.json`;
 
 export const capitalize = (value) => value.charAt(0).toUpperCase() + value.slice(1);
 

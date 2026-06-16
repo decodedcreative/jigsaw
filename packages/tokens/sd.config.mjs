@@ -1,22 +1,18 @@
 import { cssHooks, cssPlatform } from "@jigsaw/theme-build";
 import {
-  baseCssSelector,
   capitalize,
   discoverFigmaThemes,
   discoverSemanticModes,
-  discoverThemes,
   isThemeBaseToken,
   figmaTokens,
   FIGMA_OUTPUT_DIR,
   isStandaloneSemantic,
   mergeFigmaBaseAndSemantic,
-  semanticCssSelector,
   sortAppearanceModes,
   splitSemanticByMode,
   themeBaseSourceGlob,
   themeHasBase,
   themeSemanticSourceGlob,
-  themeSourceGlob,
 } from "./scripts/index.mjs";
 import { docsTokens } from "./scripts/formats/docs-tokens/index.mjs";
 import { tailwindThemeCss } from "./scripts/formats/tailwind-theme-css/index.mjs";
@@ -40,73 +36,6 @@ const figmaPlatform = (files) => ({
 
 /** @param {string[]} source @param {Record<string, object>} platforms @param {object} hooks */
 const sdConfig = (source, platforms, hooks) => ({ source, platforms, hooks });
-
-// ─── Theme CSS (legacy in-repo only) — brand themes build CSS in packages/themes/{id}/ ─
-
-const buildThemeCssConfig = (themeId) => {
-  const modes = discoverSemanticModes(themeId);
-  const hasBase = themeHasBase(themeId);
-  const hasSemantic = modes.length > 0;
-  if (!hasBase && !hasSemantic) return null;
-
-  const platforms = {};
-
-  if (hasBase) {
-    platforms.cssBase = cssPlatform(
-      [
-        {
-          destination: `themes/${themeId}/base.css`,
-          filter: (token) => isThemeBaseToken(themeId, token),
-          options: {
-            selector: baseCssSelector(themeId),
-            stripFirstSegment: false,
-            showFileHeader: true,
-          },
-        },
-      ],
-      CSS_BUILD_PATH,
-    );
-  }
-
-  if (hasSemantic) {
-    if (splitSemanticByMode(themeId, modes)) {
-      for (const mode of modes) {
-        platforms[`css${capitalize(mode)}`] = cssPlatform(
-          [
-            {
-              destination: `themes/${themeId}/semantic-${mode}.css`,
-              filter: (token) => token.path[0] === mode,
-              options: {
-                selector: semanticCssSelector(themeId, mode),
-                stripFirstSegment: true,
-                showFileHeader: true,
-              },
-            },
-          ],
-          CSS_BUILD_PATH,
-        );
-      }
-    } else {
-      const mode = modes[0];
-      platforms.cssSemantic = cssPlatform(
-        [
-          {
-            destination: `themes/${themeId}/semantic.css`,
-            filter: (token) => token.path[0] === mode,
-            options: {
-              selector: semanticCssSelector(themeId, mode),
-              stripFirstSegment: true,
-              showFileHeader: true,
-            },
-          },
-        ],
-        CSS_BUILD_PATH,
-      );
-    }
-  }
-
-  return sdConfig([themeSourceGlob(themeId)], platforms, cssHooks);
-};
 
 // ─── Figma exports — theme JSON from packages/themes/{id}/src/ via discoverFigmaThemes() ─
 // No transformGroup: css/js transforms mutate values (e.g. hex → RGB tuples).
@@ -241,10 +170,6 @@ const figmaSharedConfig = sdConfig(
   { formats: figmaFormats },
 );
 
-const themeCssConfigs = discoverThemes()
-  .map((themeId) => buildThemeCssConfig(themeId))
-  .filter(Boolean);
-
 const themeFigmaConfigs = discoverFigmaThemes()
   .map((themeId) => buildThemeFigmaConfig(themeId))
   .filter(Boolean);
@@ -252,7 +177,6 @@ const themeFigmaConfigs = discoverFigmaThemes()
 export default [
   sharedConfig,
   tailwindThemeConfig,
-  ...themeCssConfigs,
   figmaSharedConfig,
   ...themeFigmaConfigs,
 ];

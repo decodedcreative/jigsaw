@@ -16,6 +16,19 @@ Brand theme **CSS** is built in each `@jigsaw/theme-*` package. `@jigsaw/tokens`
 
 Colour JSON must not be duplicated under `packages/tokens/` — theme packages are the single source for brand colours.
 
+## How automatic discovery works
+
+Figma filenames and Tokens Studio manifests are derived from theme package sources — no hand-maintained file lists.
+
+| Step | Module | Role |
+|------|--------|------|
+| 1 | [`scripts/discover-token-sets/discover-token-sets.mjs`](../scripts/discover-token-sets/discover-token-sets.mjs) | Scans `packages/themes/{id}/src/`, reads semantic mode keys, applies export rules (see module header) |
+| 2 | [`scripts/figma/discovery/discover-outputs/discover-outputs.mjs`](../scripts/figma/discovery/discover-outputs/discover-outputs.mjs) | `discoverFigmaOutputs()` — canonical list of `*.tokens.json` filenames and `$themes.json` entries |
+| 3 | [`sd.config.mjs`](../sd.config.mjs) | `buildThemeFigmaConfig()` — Style Dictionary sources/globs and destinations; must match step 2 |
+| 4 | Post-build scripts in `scripts/figma/` | Write `$themes.json` and `$metadata.json` from discovery output |
+
+Brand theme **CSS** is not built here — each `@jigsaw/theme-*` package runs its own Style Dictionary config. `@jigsaw/tokens` only exports Figma JSON for themes.
+
 ## Folder contents (`packages/tokens/figma/`)
 
 | File | Purpose |
@@ -97,7 +110,7 @@ CI runs the same build, verify, and drift checks on every PR.
 
 1. Create `packages/themes/{id}/` with `src/base/` and `src/semantic/` JSON (see `@jigsaw/theme-default` or `@jigsaw/theme-portfolio`).
 2. Add a CSS build in that package (`sd.config.mjs` + `@jigsaw/theme-build`).
-3. Rebuild Figma exports — discovery in `scripts/discover-token-sets/` drives Figma filenames, `$themes.json`, and `$metadata.json` automatically. Output names are defined in `discoverFigmaOutputs()` (`scripts/figma/discovery/`). See the header comment in `scripts/discover-token-sets/` for export rules.
+3. Rebuild Figma exports — see [How automatic discovery works](#how-automatic-discovery-works) above. Output names come from `discoverFigmaOutputs()`; Style Dictionary config is in `sd.config.mjs` (`buildThemeFigmaConfig`).
 
 ```bash
 npm run build:tokens -w @jigsaw/tokens

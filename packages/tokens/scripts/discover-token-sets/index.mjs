@@ -4,7 +4,6 @@ export {
   discoverExternalThemes,
   discoverFigmaThemes,
   discoverSemanticModes,
-  discoverThemes,
   externalThemeTokensRoot,
   isExternalTheme,
   isStandaloneSemantic,
