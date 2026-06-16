@@ -4,8 +4,11 @@ import { cssHooks, cssPlatform } from "@jigsaw/theme-build";
  * Style Dictionary config for @jigsaw/theme-portfolio (CSS only).
  *
  * Selectors match the previous @jigsaw/tokens portfolio theme outputs:
- * - base.css → [data-theme='portfolio']
- * - semantic.css → [data-theme='portfolio'] (portfolio prefix stripped)
+ * - base.css → [data-theme='portfolio'] (all src/base/**/*.json tokens)
+ * - semantic.css → [data-theme='portfolio'] with portfolio prefix stripped
+ *
+ * The semantic filter (token.path[0] === "portfolio") exports every colour leaf
+ * under src/semantic/colors.json; build-output.test.mjs asserts a 1:1 match.
  */
 
 export default {

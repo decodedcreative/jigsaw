@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+// Theme CSS load order: shared primitives → default (light/dark at :root) → portfolio
+// ([data-theme='portfolio']). All sheets are bundled up front; runtime switching only
+// changes which selector matches — no rebuild required.
 import "@jigsaw/tokens/shared/base.css";
 import "@jigsaw/theme-default/base.css";
 import "@jigsaw/theme-default/semantic-light.css";

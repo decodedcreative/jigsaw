@@ -1,4 +1,5 @@
 @import '@jigsaw/tokens/shared/base.css' layer(base);
+/* Theme CSS: shared → default (light/dark) → portfolio. All load up front; data-theme selects the active sheet. */
 @import '@jigsaw/theme-default/base.css' layer(base);
 @import '@jigsaw/theme-default/semantic-light.css' layer(base);
 @import '@jigsaw/theme-default/semantic-dark.css' layer(base);
