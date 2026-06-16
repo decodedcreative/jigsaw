@@ -16,7 +16,7 @@ export const MemberCard = ({ member }: { member: Member }) => {
     <Card
       classNameOverrides={{ component: "flex flex-col gap-0 overflow-hidden", content: "pt-0 pb-5 px-5" }}
     >
-      {/* Top strip */}
+      {/* Top strip — Tailwind v4: bg-gradient-to-r → bg-linear-to-r */}
       <div className="h-12 bg-linear-to-r from-navy-800 to-navy-700" />
 
         {/* Avatar overlapping the strip */}

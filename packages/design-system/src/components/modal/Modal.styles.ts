@@ -2,6 +2,7 @@ import { cva } from "class-variance-authority";
 
 export const modalStyles = {
   overlay: cva([
+    // Tailwind v4: backdrop-blur-sm (4px) → backdrop-blur-xs
     "fixed inset-0 z-50 bg-black/50 backdrop-blur-xs",
     "entering:animate-in entering:fade-in",
     "exiting:animate-out exiting:fade-out",

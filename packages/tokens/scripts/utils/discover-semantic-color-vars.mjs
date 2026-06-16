@@ -87,13 +87,17 @@ export const discoverSemanticColorVars = (themeId = THEME_DEFAULT_ID) => {
     return { semanticColorVars: [], semanticColorAliases: {} };
   }
 
-  const modeLists = [...suffixesByMode.values()];
-  const reference = modeLists[0];
-  for (let i = 1; i < modeLists.length; i++) {
-    const current = modeLists[i];
+  const modeEntries = [...suffixesByMode.entries()];
+  const [referenceMode, reference] = modeEntries[0];
+  for (let i = 1; i < modeEntries.length; i++) {
+    const [mode, current] = modeEntries[i];
     if (reference.join("\0") !== current.join("\0")) {
+      const onlyInReference = reference.filter((suffix) => !current.includes(suffix));
+      const onlyInMode = current.filter((suffix) => !reference.includes(suffix));
       throw new Error(
-        `Semantic colour paths differ between modes for theme "${themeId}"`,
+        `Semantic colour paths differ between modes for theme "${themeId}" (${referenceMode} vs ${mode}). ` +
+          `Only in ${referenceMode}: ${onlyInReference.join(", ") || "none"}. ` +
+          `Only in ${mode}: ${onlyInMode.join(", ") || "none"}.`,
       );
     }
   }
