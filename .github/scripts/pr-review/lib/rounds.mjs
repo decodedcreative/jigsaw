@@ -2,35 +2,36 @@ import { REVIEW_MARKER } from "./config.mjs";
 
 /** @typedef {'initial' | 'followup' | 'critical'} ReviewMode */
 
+export { getMaxFeedbackRounds } from "./review-profile.mjs";
+
 const BOT_LOGINS = new Set(["github-actions[bot]"]);
 
 /**
- * @param {number} [value]
- */
-export function getMaxFeedbackRounds(value = Number(process.env.PR_REVIEW_MAX_FEEDBACK_ROUNDS)) {
-  const rounds = Number.isFinite(value) ? value : Number.parseInt(String(value), 10);
-  if (!Number.isFinite(rounds) || rounds < 1) return 2;
-  return rounds;
-}
-
-/**
  * @param {number} priorStaffReviewCount
- * @param {number} [maxFeedbackRounds]
+ * @param {import('./review-profile.mjs').ReviewProfile} profile
  * @returns {ReviewMode}
  */
-export function getReviewMode(priorStaffReviewCount, maxFeedbackRounds = getMaxFeedbackRounds()) {
+export function getReviewMode(priorStaffReviewCount, profile) {
   if (priorStaffReviewCount < 1) return "initial";
-  if (priorStaffReviewCount < maxFeedbackRounds) return "followup";
+  if (profile.keepFullFeedbackRounds) return "followup";
+  if (priorStaffReviewCount < profile.maxFeedbackRounds) return "followup";
   return "critical";
 }
 
 /**
  * @param {ReviewMode} mode
+ * @param {import('./review-profile.mjs').ReviewProfile} profile
  */
-export function getMaxCommentsForMode(mode) {
-  if (mode === "initial") return 15;
-  if (mode === "followup") return 8;
-  return 5;
+export function getMaxCommentsForMode(mode, profile) {
+  return profile.maxCommentsByMode[mode];
+}
+
+/**
+ * @param {ReviewMode} mode
+ * @param {import('./review-profile.mjs').ReviewProfile} profile
+ */
+export function getEffectiveMaxComments(mode, profile) {
+  return Math.min(profile.maxInlineComments, getMaxCommentsForMode(mode, profile));
 }
 
 /**
@@ -84,14 +85,21 @@ export function filterCommentsForMode(comments, mode) {
 /**
  * @param {ReviewMode} mode
  * @param {number} roundNumber
- * @param {number} maxFeedbackRounds
+ * @param {import('./review-profile.mjs').ReviewProfile} profile
  */
-export function roundLabel(mode, roundNumber, maxFeedbackRounds) {
+export function roundLabel(mode, roundNumber, profile) {
+  if (profile.name === "thorough") {
+    if (mode === "initial") {
+      return `_Thorough review — round ${roundNumber} (full coverage, no caps)._`;
+    }
+    return `_Thorough review — round ${roundNumber} follow-up (full feedback continues)._`;
+  }
+
   if (mode === "critical") {
-    return `_Round ${roundNumber} — critical scan only (feedback rounds capped at ${maxFeedbackRounds})._`;
+    return `_Round ${roundNumber} — critical scan only (feedback capped at ${profile.maxFeedbackRounds} full rounds)._`;
   }
   if (mode === "followup") {
-    return `_Round ${roundNumber} of ${maxFeedbackRounds} feedback rounds — follow-up on new changes only._`;
+    return `_Round ${roundNumber} of ${profile.maxFeedbackRounds} feedback rounds — follow-up on new changes only._`;
   }
-  return `_Round ${roundNumber} of ${maxFeedbackRounds} feedback rounds._`;
+  return `_Round ${roundNumber} of ${profile.maxFeedbackRounds} feedback rounds._`;
 }

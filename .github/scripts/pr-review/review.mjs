@@ -1,12 +1,7 @@
 #!/usr/bin/env node
 
 import { acknowledgeAddressedComments } from "./lib/acknowledge.mjs";
-import {
-  MAX_INLINE_COMMENTS,
-  REVIEW_MARKER,
-  getProvider,
-  selectReviewableFiles,
-} from "./lib/config.mjs";
+import { getProvider, REVIEW_MARKER, selectReviewableFiles } from "./lib/config.mjs";
 import { buildLineIndex } from "./lib/diff.mjs";
 import {
   fetchPullFiles,
@@ -21,12 +16,12 @@ import {
   parseReviewJson,
 } from "./lib/parse-review.mjs";
 import { buildSystemPrompt, buildUserPrompt } from "./lib/prompt.mjs";
+import { resolveReviewProfile } from "./lib/review-profile.mjs";
 import {
   countPriorStaffReviews,
   filterCommentsForMode,
+  getEffectiveMaxComments,
   getLatestStaffReviewSummary,
-  getMaxCommentsForMode,
-  getMaxFeedbackRounds,
   getReviewMode,
   roundLabel,
 } from "./lib/rounds.mjs";
@@ -52,9 +47,10 @@ function validateComments(comments, lineIndex, maxComments) {
   let skippedUnknownPath = 0;
   let skippedInvalidLine = 0;
   let skippedOverCap = 0;
+  const hasCommentCap = Number.isFinite(maxComments);
 
   for (const comment of comments) {
-    if (valid.length >= maxComments) {
+    if (hasCommentCap && valid.length >= maxComments) {
       skippedOverCap += 1;
       continue;
     }
@@ -86,7 +82,7 @@ function validateComments(comments, lineIndex, maxComments) {
   const skipped = skippedUnknownPath + skippedInvalidLine + skippedOverCap;
   if (skipped > 0) {
     console.warn(
-      `Comment validation: kept ${valid.length}, skipped ${skipped} (${skippedUnknownPath} unknown path, ${skippedInvalidLine} invalid line, ${skippedOverCap} over cap of ${maxComments})`,
+      `Comment validation: kept ${valid.length}, skipped ${skipped} (${skippedUnknownPath} unknown path, ${skippedInvalidLine} invalid line, ${skippedOverCap} over cap${hasCommentCap ? ` of ${maxComments}` : ""})`,
     );
   }
 
@@ -98,27 +94,25 @@ async function main() {
   const repo = requireEnv("GITHUB_REPOSITORY", GITHUB_REPOSITORY);
   const pullNumber = Number.parseInt(requireEnv("PR_NUMBER", PR_NUMBER), 10);
   const provider = getProvider();
-  const maxFeedbackRounds = getMaxFeedbackRounds();
 
   if (!Number.isFinite(pullNumber)) {
     console.error("PR_NUMBER must be a valid integer");
     process.exit(1);
   }
 
+  const pr = await fetchPullRequest(token, repo, pullNumber);
+  const profile = resolveReviewProfile(pr.labels);
+
   const priorReviews = await fetchPullReviews(token, repo, pullNumber);
   const priorCount = countPriorStaffReviews(priorReviews ?? []);
-  const mode = getReviewMode(priorCount, maxFeedbackRounds);
+  const mode = getReviewMode(priorCount, profile);
   const roundNumber = priorCount + 1;
-  const maxComments = Math.min(
-    MAX_INLINE_COMMENTS,
-    getMaxCommentsForMode(mode),
-  );
+  const maxComments = getEffectiveMaxComments(mode, profile);
 
   console.log(
-    `Reviewing ${repo}#${pullNumber} via ${provider} — mode=${mode}, round=${roundNumber}, maxFeedbackRounds=${maxFeedbackRounds}`,
+    `Reviewing ${repo}#${pullNumber} via ${provider} — profile=${profile.name}, mode=${mode}, round=${roundNumber}, maxFeedbackRounds=${profile.maxFeedbackRounds}`,
   );
 
-  const pr = await fetchPullRequest(token, repo, pullNumber);
   const afterSha = AFTER_SHA || pr.head.sha;
 
   const acknowledged = await acknowledgeAddressedComments(
@@ -135,7 +129,7 @@ async function main() {
     console.log(`Posted ${acknowledged} addressed reply(ies) on prior inline comments.`);
   }
 
-  const files = selectReviewableFiles(allFiles);
+  const { files, skipped } = selectReviewableFiles(allFiles, profile);
 
   if (files.length === 0) {
     console.log("No reviewable files after filters — skipping.");
@@ -145,6 +139,15 @@ async function main() {
   console.log(`Selected ${files.length} reviewable file(s):`);
   for (const file of files) {
     console.log(`  - ${file.filename}`);
+  }
+
+  if (skipped.length > 0) {
+    console.warn(
+      `Skipped ${skipped.length} file(s) due to profile limits (${profile.name}):`,
+    );
+    for (const filename of skipped) {
+      console.warn(`  - ${filename}`);
+    }
   }
 
   const priorReviewSummary =
@@ -160,14 +163,14 @@ async function main() {
     head: pr.head?.ref ?? "head",
     mode,
     roundNumber,
-    maxFeedbackRounds,
+    profile,
     priorReviewSummary,
     files,
   });
 
   console.log(`Sending ${files.length} file(s) to model…`);
 
-  const raw = await requestReview(buildSystemPrompt(mode), userPrompt);
+  const raw = await requestReview(buildSystemPrompt(mode, profile), userPrompt);
   const { summary, comments: rawComments } = parseReviewJson(raw);
   const modeComments = filterCommentsForMode(rawComments, mode);
   const lineIndex = buildLineIndex(files);
@@ -185,7 +188,7 @@ async function main() {
     modeComments,
     REVIEW_MARKER,
     providerLabel(provider),
-    roundLabel(mode, roundNumber, maxFeedbackRounds),
+    roundLabel(mode, roundNumber, profile),
   );
 
   if (inlineComments.length === 0) {

@@ -6,8 +6,14 @@ import { parseReviewableLines } from "./lib/diff.mjs";
 import { isGitHubRateLimited } from "./lib/github.mjs";
 import { parseReviewJson } from "./lib/parse-review.mjs";
 import {
+  DEFAULT_PROFILE,
+  THOROUGH_PROFILE,
+  resolveReviewProfile,
+} from "./lib/review-profile.mjs";
+import {
   countPriorStaffReviews,
   filterCommentsForMode,
+  getEffectiveMaxComments,
   getMaxFeedbackRounds,
   getReviewMode,
 } from "./lib/rounds.mjs";
@@ -40,7 +46,7 @@ test("shouldSkipPath ignores generated token exports", () => {
 });
 
 test("selectReviewableFiles caps and filters", () => {
-  const files = selectReviewableFiles([
+  const { files } = selectReviewableFiles([
     {
       filename: "package-lock.json",
       status: "modified",
@@ -55,6 +61,38 @@ test("selectReviewableFiles caps and filters", () => {
 
   assert.equal(files.length, 1);
   assert.equal(files[0].filename, "packages/design-system/src/Button.tsx");
+});
+
+test("selectReviewableFiles reports skipped files in default profile", () => {
+  const manyFiles = Array.from({ length: 45 }, (_, index) => ({
+    filename: `src/file-${index}.ts`,
+    status: "modified",
+    patch: "@@ -1,1 +1,2 @@\n line\n+added",
+  }));
+
+  const { files, skipped } = selectReviewableFiles(manyFiles, DEFAULT_PROFILE);
+  assert.equal(files.length, 40);
+  assert.equal(skipped.length, 5);
+});
+
+test("selectReviewableFiles includes all files in thorough profile", () => {
+  const manyFiles = Array.from({ length: 45 }, (_, index) => ({
+    filename: `src/file-${index}.ts`,
+    status: "modified",
+    patch: "@@ -1,1 +1,2 @@\n line\n+added",
+  }));
+
+  const { files, skipped } = selectReviewableFiles(manyFiles, THOROUGH_PROFILE);
+  assert.equal(files.length, 45);
+  assert.equal(skipped.length, 0);
+});
+
+test("resolveReviewProfile selects thorough when label present", () => {
+  assert.equal(resolveReviewProfile([]).name, "default");
+  assert.equal(
+    resolveReviewProfile([{ name: "pr-review:thorough" }]).name,
+    "thorough",
+  );
 });
 
 test("parseReviewJson accepts fenced JSON", () => {
@@ -90,10 +128,23 @@ test("isGitHubRateLimited detects 429 and exhausted quota", () => {
 
 test("getReviewMode caps feedback rounds then switches to critical", () => {
   const max = getMaxFeedbackRounds(2);
-  assert.equal(getReviewMode(0, max), "initial");
-  assert.equal(getReviewMode(1, max), "followup");
-  assert.equal(getReviewMode(2, max), "critical");
-  assert.equal(getReviewMode(5, max), "critical");
+  const profile = { ...DEFAULT_PROFILE, maxFeedbackRounds: max };
+  assert.equal(getReviewMode(0, profile), "initial");
+  assert.equal(getReviewMode(1, profile), "followup");
+  assert.equal(getReviewMode(2, profile), "critical");
+  assert.equal(getReviewMode(5, profile), "critical");
+});
+
+test("getReviewMode keeps follow-up in thorough profile", () => {
+  assert.equal(getReviewMode(0, THOROUGH_PROFILE), "initial");
+  assert.equal(getReviewMode(1, THOROUGH_PROFILE), "followup");
+  assert.equal(getReviewMode(5, THOROUGH_PROFILE), "followup");
+  assert.equal(getReviewMode(20, THOROUGH_PROFILE), "followup");
+});
+
+test("getEffectiveMaxComments is uncapped in thorough profile", () => {
+  assert.equal(getEffectiveMaxComments("initial", THOROUGH_PROFILE), Infinity);
+  assert.equal(getEffectiveMaxComments("followup", DEFAULT_PROFILE), 8);
 });
 
 test("filterCommentsForMode keeps blockers only in critical mode", () => {

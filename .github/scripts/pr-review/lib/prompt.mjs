@@ -17,6 +17,12 @@ const BASE_CONTEXT = `You are a Staff-level engineer reviewing a pull request fo
 - Comment only on lines present in the provided diff hunks
 - Prefer fewer, higher-signal comments over exhaustive coverage`;
 
+const THOROUGH_CONTEXT_APPENDIX = `
+
+## Thorough review mode
+
+This PR is labelled for full automated review coverage. Review **all** provided files in depth. Post inline comments wherever warranted — there is no comment budget.`;
+
 const OUTPUT_FORMAT = `## Output format
 
 Respond with **valid JSON only** (no markdown fences). Schema:
@@ -60,15 +66,47 @@ const MODE_INSTRUCTIONS = {
 - Maximum 5 inline comments, blockers only`,
 };
 
+const THOROUGH_MODE_INSTRUCTIONS = {
+  initial: `## Round policy — thorough initial review (round 1)
+
+- Provide an in-depth first-pass review across **all** files in the diff
+- Include blockers, suggestions, and nits where warranted — no comment limit`,
+
+  followup: `## Round policy — thorough follow-up review (round 2+)
+
+- The author has already received automated review(s) on this PR — avoid repeating earlier feedback
+- Focus on **new or changed lines** and whether prior concerns were addressed
+- Continue full feedback (blockers, suggestions, nits) — no comment limit`,
+};
+
 /**
  * @param {ReviewMode} mode
+ * @param {import('./review-profile.mjs').ReviewProfile} profile
  */
-export function buildSystemPrompt(mode) {
-  return [BASE_CONTEXT, MODE_INSTRUCTIONS[mode], OUTPUT_FORMAT].join("\n\n");
+export function buildSystemPrompt(mode, profile) {
+  const context =
+    profile.name === "thorough"
+      ? BASE_CONTEXT + THOROUGH_CONTEXT_APPENDIX
+      : BASE_CONTEXT;
+  const instructions =
+    profile.name === "thorough"
+      ? THOROUGH_MODE_INSTRUCTIONS[mode === "critical" ? "followup" : mode]
+      : MODE_INSTRUCTIONS[mode];
+
+  return [context, instructions, OUTPUT_FORMAT].join("\n\n");
 }
 
 /** @deprecated use buildSystemPrompt */
-export const SYSTEM_PROMPT = buildSystemPrompt("initial");
+export const SYSTEM_PROMPT = buildSystemPrompt("initial", {
+  name: "default",
+  maxFiles: 40,
+  maxPatchCharsPerFile: 12_000,
+  maxTotalPatchChars: 150_000,
+  maxInlineComments: 25,
+  maxCommentsByMode: { initial: 15, followup: 8, critical: 5 },
+  maxFeedbackRounds: 2,
+  keepFullFeedbackRounds: false,
+});
 
 /**
  * @param {{
@@ -79,7 +117,7 @@ export const SYSTEM_PROMPT = buildSystemPrompt("initial");
  *   head: string;
  *   mode: ReviewMode;
  *   roundNumber: number;
- *   maxFeedbackRounds: number;
+ *   profile: import('./review-profile.mjs').ReviewProfile;
  *   priorReviewSummary?: string | null;
  *   files: Array<{ filename: string; patch?: string; status: string }>;
  * }} input
@@ -102,9 +140,11 @@ ${input.priorReviewSummary}
     : "";
 
   const modeNote =
-    input.mode === "critical"
-      ? `**Review mode:** Critical scan only — round ${input.roundNumber} (feedback capped at ${input.maxFeedbackRounds} full rounds).\n\n`
-      : `**Review mode:** ${input.mode} — round ${input.roundNumber} of ${input.maxFeedbackRounds}.\n\n`;
+    input.profile.name === "thorough"
+      ? `**Review mode:** Thorough ${input.mode} — round ${input.roundNumber} (all reviewable files, no caps).\n\n`
+      : input.mode === "critical"
+        ? `**Review mode:** Critical scan only — round ${input.roundNumber} (feedback capped at ${input.profile.maxFeedbackRounds} full rounds).\n\n`
+        : `**Review mode:** ${input.mode} — round ${input.roundNumber} of ${input.profile.maxFeedbackRounds}.\n\n`;
 
   return `${modeNote}Review this pull request.
 
