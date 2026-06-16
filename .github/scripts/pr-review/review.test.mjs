@@ -6,8 +6,17 @@ import { parseReviewableLines } from "./lib/diff.mjs";
 import { isGitHubRateLimited } from "./lib/github.mjs";
 import { parseReviewJson } from "./lib/parse-review.mjs";
 import {
+  DEFAULT_PROFILE,
+  THOROUGH_PROFILE,
+  findMisconfiguredReviewLabels,
+  hasThoroughLabel,
+  resolveReviewProfile,
+} from "./lib/review-profile.mjs";
+import {
   countPriorStaffReviews,
   filterCommentsForMode,
+  formatReviewRunLog,
+  getEffectiveMaxComments,
   getMaxFeedbackRounds,
   getReviewMode,
 } from "./lib/rounds.mjs";
@@ -40,7 +49,7 @@ test("shouldSkipPath ignores generated token exports", () => {
 });
 
 test("selectReviewableFiles caps and filters", () => {
-  const files = selectReviewableFiles([
+  const { files } = selectReviewableFiles([
     {
       filename: "package-lock.json",
       status: "modified",
@@ -55,6 +64,141 @@ test("selectReviewableFiles caps and filters", () => {
 
   assert.equal(files.length, 1);
   assert.equal(files[0].filename, "packages/design-system/src/Button.tsx");
+});
+
+test("selectReviewableFiles reports skipped files in default profile", () => {
+  const manyFiles = Array.from({ length: 45 }, (_, index) => ({
+    filename: `src/file-${index}.ts`,
+    status: "modified",
+    patch: "@@ -1,1 +1,2 @@\n line\n+added",
+  }));
+
+  const { files, skipped } = selectReviewableFiles(manyFiles, DEFAULT_PROFILE);
+  assert.equal(files.length, 40);
+  assert.equal(skipped.length, 5);
+});
+
+test("selectReviewableFiles includes all files in thorough profile", () => {
+  const manyFiles = Array.from({ length: 45 }, (_, index) => ({
+    filename: `src/file-${index}.ts`,
+    status: "modified",
+    patch: "@@ -1,1 +1,2 @@\n line\n+added",
+  }));
+
+  const { files, skipped, excluded } = selectReviewableFiles(manyFiles, THOROUGH_PROFILE);
+  assert.equal(files.length, 45);
+  assert.equal(skipped.length, 0);
+  assert.equal(excluded, 0);
+});
+
+test("selectReviewableFiles counts path-filtered files as excluded", () => {
+  const { files, skipped, excluded } = selectReviewableFiles([
+    {
+      filename: "package-lock.json",
+      status: "modified",
+      patch: "@@ +1,1 @@\n+1",
+    },
+    {
+      filename: "src/a.ts",
+      status: "modified",
+      patch: "@@ -1,1 +1,2 @@\n line\n+added",
+    },
+  ]);
+
+  assert.equal(files.length, 1);
+  assert.equal(skipped.length, 0);
+  assert.equal(excluded, 1);
+});
+
+test("hasThoroughLabel reflects current PR label state", () => {
+  assert.equal(hasThoroughLabel([{ name: "pr-review:thorough" }]), true);
+  assert.equal(hasThoroughLabel([{ name: "bug" }]), false);
+  assert.equal(hasThoroughLabel([]), false);
+});
+
+test("resolveReviewProfile switches when thorough label is removed", () => {
+  assert.equal(resolveReviewProfile([{ name: "pr-review:thorough" }]).name, "thorough");
+  assert.equal(resolveReviewProfile([{ name: "bug" }]).name, "default");
+  assert.equal(resolveReviewProfile([]).name, "default");
+});
+
+test("resolveReviewProfile falls back to default for malformed labels", () => {
+  assert.equal(resolveReviewProfile(undefined).name, "default");
+  assert.equal(resolveReviewProfile(null).name, "default");
+  assert.equal(resolveReviewProfile({}).name, "default");
+  assert.equal(resolveReviewProfile([null, {}, { name: 42 }]).name, "default");
+  assert.equal(
+    resolveReviewProfile([{ name: "other" }, { name: "pr-review:thorough" }])
+      .name,
+    "thorough",
+  );
+});
+
+test("resolveReviewProfile warns on misconfigured pr-review labels", () => {
+  const warnings = [];
+  const originalWarn = console.warn;
+  console.warn = (message) => warnings.push(String(message));
+
+  try {
+    assert.equal(
+      resolveReviewProfile([{ name: "pr-review:thoroughh" }]).name,
+      "default",
+    );
+    assert.match(warnings[0], /Unrecognised pr-review label/);
+    assert.match(warnings[0], /pr-review:thoroughh/);
+  } finally {
+    console.warn = originalWarn;
+  }
+});
+
+test("findMisconfiguredReviewLabels detects pr-review typos", () => {
+  assert.deepEqual(
+    findMisconfiguredReviewLabels([{ name: "pr-review:thoroughh" }]),
+    ["pr-review:thoroughh"],
+  );
+  assert.deepEqual(findMisconfiguredReviewLabels([{ name: "pr-review:thorough" }]), []);
+});
+
+test("getMaxFeedbackRounds accepts valid integers and warns on invalid input", () => {
+  assert.equal(getMaxFeedbackRounds(undefined), 2);
+  assert.equal(getMaxFeedbackRounds(""), 2);
+  assert.equal(getMaxFeedbackRounds("3"), 3);
+  assert.equal(getMaxFeedbackRounds(5), 5);
+
+  const warnings = [];
+  const originalWarn = console.warn;
+  console.warn = (message) => warnings.push(String(message));
+
+  try {
+    assert.equal(getMaxFeedbackRounds("abc"), 2);
+    assert.match(warnings[0], /Invalid PR_REVIEW_MAX_FEEDBACK_ROUNDS "abc"/);
+    warnings.length = 0;
+    assert.equal(getMaxFeedbackRounds("2.5"), 2);
+    assert.match(warnings[0], /Invalid PR_REVIEW_MAX_FEEDBACK_ROUNDS "2.5"/);
+    warnings.length = 0;
+    assert.equal(getMaxFeedbackRounds(0), 2);
+    assert.match(warnings[0], /Invalid PR_REVIEW_MAX_FEEDBACK_ROUNDS/);
+  } finally {
+    console.warn = originalWarn;
+  }
+});
+
+test("formatReviewRunLog includes profile and comment caps", () => {
+  const log = formatReviewRunLog({
+    repo: "decodedcreative/jigsaw",
+    pullNumber: 51,
+    provider: "openai",
+    profile: THOROUGH_PROFILE,
+    mode: "followup",
+    roundNumber: 2,
+    maxComments: Number.POSITIVE_INFINITY,
+    thoroughLabelActive: true,
+  });
+
+  assert.match(log, /profile=thorough/);
+  assert.match(log, /maxInlineComments=uncapped/);
+  assert.match(log, /maxFeedbackRounds=uncapped/);
+  assert.match(log, /pr-review:thorough label=present/);
 });
 
 test("parseReviewJson accepts fenced JSON", () => {
@@ -90,10 +234,23 @@ test("isGitHubRateLimited detects 429 and exhausted quota", () => {
 
 test("getReviewMode caps feedback rounds then switches to critical", () => {
   const max = getMaxFeedbackRounds(2);
-  assert.equal(getReviewMode(0, max), "initial");
-  assert.equal(getReviewMode(1, max), "followup");
-  assert.equal(getReviewMode(2, max), "critical");
-  assert.equal(getReviewMode(5, max), "critical");
+  const profile = { ...DEFAULT_PROFILE, maxFeedbackRounds: max };
+  assert.equal(getReviewMode(0, profile), "initial");
+  assert.equal(getReviewMode(1, profile), "followup");
+  assert.equal(getReviewMode(2, profile), "critical");
+  assert.equal(getReviewMode(5, profile), "critical");
+});
+
+test("getReviewMode keeps follow-up in thorough profile", () => {
+  assert.equal(getReviewMode(0, THOROUGH_PROFILE), "initial");
+  assert.equal(getReviewMode(1, THOROUGH_PROFILE), "followup");
+  assert.equal(getReviewMode(5, THOROUGH_PROFILE), "followup");
+  assert.equal(getReviewMode(20, THOROUGH_PROFILE), "followup");
+});
+
+test("getEffectiveMaxComments is uncapped in thorough profile", () => {
+  assert.equal(getEffectiveMaxComments("initial", THOROUGH_PROFILE), Infinity);
+  assert.equal(getEffectiveMaxComments("followup", DEFAULT_PROFILE), 8);
 });
 
 test("filterCommentsForMode keeps blockers only in critical mode", () => {
