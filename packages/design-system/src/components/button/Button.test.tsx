@@ -40,7 +40,7 @@ describe('Button', () => {
     expect(screen.getByRole('button')).toHaveClass('bg-surface-muted');
   });
 
-  it('renders outline variant', () => {
+  it('renders outline-solid variant', () => {
     render(<Button variant="outline">Outline</Button>);
     expect(screen.getByRole('button')).toHaveClass('bg-transparent');
   });
@@ -104,7 +104,7 @@ describe('Button', () => {
   it('applies mediaOnly styles when mediaOnly is true', () => {
     render(<Button variant="ghost" mediaOnly aria-label="Settings" media="⚙" />);
     const button = screen.getByRole('button', { name: 'Settings' });
-    expect(button).toHaveClass('rounded-full', 'p-0', '!px-0', '!py-0');
+    expect(button).toHaveClass('rounded-full', 'p-0', 'px-0!', 'py-0!');
     expect(button).not.toHaveClass('px-4', 'py-2');
     expect(button.querySelectorAll(':scope > span')).toHaveLength(1);
   });

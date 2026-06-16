@@ -24,6 +24,6 @@ export const formStyles = {
   ]),
   /** Aligns block content with the control column (label width + gap). */
   sideLabelControlStart: cva([
-    "group-data-[label-position=side]/form-label:ml-[8.5rem]",
+    "group-data-[label-position=side]/form-label:ml-34",
   ]),
 };

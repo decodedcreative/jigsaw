@@ -1,11 +1,11 @@
 import { cva } from "class-variance-authority";
 
 export const checkboxStyles = {
-  wrapper: cva(["group flex items-start gap-3 cursor-pointer data-[disabled]:cursor-not-allowed"]),
+  wrapper: cva(["group flex items-start gap-3 cursor-pointer data-disabled:cursor-not-allowed"]),
   box: cva(
     [
       "relative flex items-center justify-center shrink-0 border-2 rounded transition-colors",
-      "group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed",
+      "group-data-disabled:opacity-50 group-data-disabled:cursor-not-allowed",
     ],
     {
       variants: {
@@ -17,13 +17,13 @@ export const checkboxStyles = {
         state: {
           default: [
             "border-border-strong bg-surface-default",
-            "group-data-[selected]:bg-interactive-primary group-data-[selected]:border-interactive-primary",
-            "group-data-[indeterminate]:bg-interactive-primary group-data-[indeterminate]:border-interactive-primary",
+            "group-data-selected:bg-interactive-primary group-data-selected:border-interactive-primary",
+            "group-data-indeterminate:bg-interactive-primary group-data-indeterminate:border-interactive-primary",
           ],
           error: [
             "border-state-error bg-surface-default",
-            "group-data-[selected]:bg-state-error group-data-[selected]:border-state-error",
-            "group-data-[indeterminate]:bg-state-error group-data-[indeterminate]:border-state-error",
+            "group-data-selected:bg-state-error group-data-selected:border-state-error",
+            "group-data-indeterminate:bg-state-error group-data-indeterminate:border-state-error",
           ],
         },
       },
@@ -31,7 +31,7 @@ export const checkboxStyles = {
     }
   ),
   icon: cva(["absolute text-foreground-inverse"]),
-  label: cva(["select-none transition-colors group-data-[disabled]:text-foreground-muted"], {
+  label: cva(["select-none transition-colors group-data-disabled:text-foreground-muted"], {
     variants: {
       size: {
         sm: "text-xs",

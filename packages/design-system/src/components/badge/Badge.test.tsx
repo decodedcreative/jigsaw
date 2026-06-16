@@ -42,7 +42,7 @@ describe('Badge', () => {
     expect(container.firstChild).toHaveClass('bg-brand-accent');
   });
 
-  it('renders outline variant', () => {
+  it('renders outline-solid variant', () => {
     const { container } = render(<Badge variant="outline">Outline</Badge>);
     expect(container.firstChild).toHaveClass('bg-transparent');
   });

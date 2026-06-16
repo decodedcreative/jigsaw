@@ -80,7 +80,7 @@ describe("Form", () => {
     );
     expect(container.querySelector("form")).toHaveAttribute("data-label-position", "side");
     expect(screen.getByRole("heading", { name: "Account details" }).className).toContain(
-      "group-data-[label-position=side]/form-label:ml-[8.5rem]"
+      "group-data-[label-position=side]/form-label:ml-34"
     );
   });
 });

@@ -9,7 +9,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "primary", "secondary", "accent", "outline", "success", "warning", "error"],
+      options: ["default", "primary", "secondary", "accent", "outline-solid", "success", "warning", "error"],
     },
     size: { control: "select", options: ["sm", "md", "lg"] },
   },
@@ -26,7 +26,7 @@ export const Error: Story = { args: { variant: "error", children: "Error" } };
 export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-2">
-      {(["default", "primary", "secondary", "accent", "outline", "success", "warning", "error"] as const).map((v) => (
+      {(["default", "primary", "secondary", "accent", "outline-solid", "success", "warning", "error"] as const).map((v) => (
         <Badge key={v} variant={v}>{v}</Badge>
       ))}
     </div>

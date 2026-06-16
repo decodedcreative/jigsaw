@@ -1,9 +1,227 @@
-@import "@jigsaw/tokens/shared/base.css";
-@import "@jigsaw/theme-default/base.css";
-@import "@jigsaw/theme-default/semantic-light.css";
-@import "@jigsaw/theme-default/semantic-dark.css";
-@import "@jigsaw/tokens/themes/portfolio/base.css";
-@import "@jigsaw/tokens/themes/portfolio/semantic.css";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '@jigsaw/tokens/shared/base.css' layer(base);
+@import '@jigsaw/theme-default/base.css' layer(base);
+@import '@jigsaw/theme-default/semantic-light.css' layer(base);
+@import '@jigsaw/theme-default/semantic-dark.css' layer(base);
+@import '@jigsaw/tokens/themes/portfolio/base.css' layer(base);
+@import '@jigsaw/tokens/themes/portfolio/semantic.css' layer(base);
+@import 'tailwindcss';
+
+@source '../../packages/design-system/src/**/*.{js,ts,jsx,tsx,mdx}';
+
+@custom-variant dark (&:is([data-theme="dark"] *));
+
+@theme {
+  --color-navy-50: rgb(var(--color-navy-50));
+  --color-navy-100: rgb(var(--color-navy-100));
+  --color-navy-200: rgb(var(--color-navy-200));
+  --color-navy-300: rgb(var(--color-navy-300));
+  --color-navy-400: rgb(var(--color-navy-400));
+  --color-navy-500: rgb(var(--color-navy-500));
+  --color-navy-600: rgb(var(--color-navy-600));
+  --color-navy-700: rgb(var(--color-navy-700));
+  --color-navy-800: rgb(var(--color-navy-800));
+  --color-navy-900: rgb(var(--color-navy-900));
+  --color-navy-950: rgb(var(--color-navy-950));
+
+  --color-orange-50: rgb(var(--color-orange-50));
+  --color-orange-100: rgb(var(--color-orange-100));
+  --color-orange-200: rgb(var(--color-orange-200));
+  --color-orange-300: rgb(var(--color-orange-300));
+  --color-orange-400: rgb(var(--color-orange-400));
+  --color-orange-500: rgb(var(--color-orange-500));
+  --color-orange-600: rgb(var(--color-orange-600));
+  --color-orange-700: rgb(var(--color-orange-700));
+  --color-orange-800: rgb(var(--color-orange-800));
+  --color-orange-900: rgb(var(--color-orange-900));
+  --color-orange-950: rgb(var(--color-orange-950));
+
+  --color-grey-50: rgb(var(--color-grey-50));
+  --color-grey-100: rgb(var(--color-grey-100));
+  --color-grey-200: rgb(var(--color-grey-200));
+  --color-grey-300: rgb(var(--color-grey-300));
+  --color-grey-400: rgb(var(--color-grey-400));
+  --color-grey-500: rgb(var(--color-grey-500));
+  --color-grey-600: rgb(var(--color-grey-600));
+  --color-grey-700: rgb(var(--color-grey-700));
+  --color-grey-800: rgb(var(--color-grey-800));
+  --color-grey-900: rgb(var(--color-grey-900));
+  --color-grey-950: rgb(var(--color-grey-950));
+
+  --color-white: rgb(var(--color-white));
+  --color-black: rgb(var(--color-black));
+
+  --color-surface-primary: rgb(var(--color-surface-primary));
+  --color-surface-secondary: rgb(var(--color-surface-secondary));
+  --color-surface-tertiary: rgb(var(--color-surface-tertiary));
+  --color-surface: rgb(var(--color-surface-default));
+  --color-surface-default: rgb(var(--color-surface-default));
+  --color-surface-raised: rgb(var(--color-surface-raised));
+  --color-surface-overlay: rgb(var(--color-surface-overlay));
+  --color-surface-muted: rgb(var(--color-surface-muted));
+  --color-surface-subtle: rgb(var(--color-surface-subtle));
+  --color-surface-hover: rgb(var(--color-surface-hover));
+  --color-surface-inverse: rgb(var(--color-surface-inverse));
+
+  --color-foreground-primary: rgb(var(--color-foreground-primary));
+  --color-foreground-secondary: rgb(var(--color-foreground-secondary));
+  --color-foreground-tertiary: rgb(var(--color-foreground-tertiary));
+  --color-foreground-muted: rgb(var(--color-foreground-muted));
+  --color-foreground-disabled: rgb(var(--color-foreground-disabled));
+  --color-foreground-placeholder: rgb(var(--color-foreground-placeholder));
+  --color-foreground-inverse: rgb(var(--color-foreground-inverse));
+  --color-foreground-on-primary: rgb(var(--color-foreground-on-primary));
+  --color-foreground-on-accent: rgb(var(--color-foreground-on-accent));
+
+  --color-border: rgb(var(--color-border-default));
+  --color-border-default: rgb(var(--color-border-default));
+  --color-border-primary: rgb(var(--color-border-primary));
+  --color-border-strong: rgb(var(--color-border-strong));
+  --color-border-hover: rgb(var(--color-border-hover));
+  --color-border-subtle: rgb(var(--color-border-subtle));
+  --color-border-focus: rgb(var(--color-border-focus));
+  --color-border-disabled: rgb(var(--color-border-disabled));
+
+  --color-interactive-primary: rgb(var(--color-interactive-primary));
+  --color-interactive-primary-hover: rgb(
+    var(--color-interactive-primary-hover)
+  );
+  --color-interactive-primary-active: rgb(
+    var(--color-interactive-primary-active)
+  );
+  --color-interactive-primary-disabled: rgb(
+    var(--color-interactive-primary-disabled)
+  );
+
+  --color-interactive-accent: rgb(var(--color-interactive-accent));
+  --color-interactive-accent-hover: rgb(var(--color-interactive-accent-hover));
+  --color-interactive-accent-active: rgb(
+    var(--color-interactive-accent-active)
+  );
+  --color-interactive-accent-disabled: rgb(
+    var(--color-interactive-accent-disabled)
+  );
+
+  --color-interactive-secondary: rgb(var(--color-interactive-secondary));
+  --color-interactive-secondary-hover: rgb(
+    var(--color-interactive-secondary-hover)
+  );
+  --color-interactive-secondary-active: rgb(
+    var(--color-interactive-secondary-active)
+  );
+
+  --color-interactive-destructive: rgb(var(--color-interactive-destructive));
+  --color-interactive-destructive-hover: rgb(
+    var(--color-interactive-destructive-hover)
+  );
+
+  --color-interactive-focus: rgb(var(--color-interactive-focus));
+
+  --color-state-error: rgb(var(--color-state-error));
+  --color-state-error-text: rgb(var(--color-state-error-text));
+  --color-state-error-bg: rgb(var(--color-state-error-bg));
+  --color-state-error-border: rgb(var(--color-state-error-border));
+
+  --color-state-success: rgb(var(--color-state-success));
+  --color-state-success-text: rgb(var(--color-state-success-text));
+  --color-state-success-bg: rgb(var(--color-state-success-bg));
+  --color-state-success-border: rgb(var(--color-state-success-border));
+
+  --color-state-warning: rgb(var(--color-state-warning));
+  --color-state-warning-text: rgb(var(--color-state-warning-text));
+  --color-state-warning-bg: rgb(var(--color-state-warning-bg));
+  --color-state-warning-border: rgb(var(--color-state-warning-border));
+
+  --color-state-info: rgb(var(--color-state-info));
+  --color-state-info-bg: rgb(var(--color-state-info-bg));
+  --color-state-info-border: rgb(var(--color-state-info-border));
+
+  --color-brand-primary: rgb(var(--color-brand-primary));
+  --color-brand-secondary: rgb(var(--color-brand-secondary));
+  --color-brand-accent: rgb(var(--color-brand-accent));
+
+  --color-link: rgb(var(--color-link-default));
+  --color-link-hover: rgb(var(--color-link-hover));
+  --color-link-visited: rgb(var(--color-link-visited));
+  --color-link-active: rgb(var(--color-link-active));
+
+  --spacing-0: 0;
+  --spacing-px: 1px;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono',
+    monospace;
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  --radius-none: 0;
+  --radius-sm: 0.125rem;
+  --radius-default: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-full: 9999px;
+
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --shadow-none: none;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}

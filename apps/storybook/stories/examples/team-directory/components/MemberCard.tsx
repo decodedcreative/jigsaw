@@ -17,7 +17,7 @@ export const MemberCard = ({ member }: { member: Member }) => {
       classNameOverrides={{ component: "flex flex-col gap-0 overflow-hidden", content: "pt-0 pb-5 px-5" }}
     >
       {/* Top strip */}
-      <div className="h-12 bg-gradient-to-r from-navy-800 to-navy-700" />
+      <div className="h-12 bg-linear-to-r from-navy-800 to-navy-700" />
 
         {/* Avatar overlapping the strip */}
         <div className="-mt-6 mb-3">

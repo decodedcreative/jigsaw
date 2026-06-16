@@ -20,9 +20,9 @@ export const selectStyles = {
   trigger: cva(
     [
       "group inline-flex items-center justify-between w-full rounded-default border bg-surface-default text-foreground-primary transition-colors",
-      "focus:outline-none focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
-      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted",
-      "data-[placeholder]:text-foreground-muted",
+      "focus:outline-hidden focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
+      "data-disabled:cursor-not-allowed data-disabled:bg-surface-muted data-disabled:text-foreground-muted",
+      "data-placeholder:text-foreground-muted",
     ],
     {
       variants: {
@@ -41,19 +41,19 @@ export const selectStyles = {
       defaultVariants: { size: "md", state: "default" },
     }
   ),
-  chevron: cva(["text-foreground-muted transition-transform group-data-[open]:rotate-180"]),
+  chevron: cva(["text-foreground-muted transition-transform group-data-open:rotate-180"]),
   popover: cva([
-    "w-[--trigger-width] bg-surface-default border border-border-default rounded-md shadow-lg",
+    "w-(--trigger-width) bg-surface-default border border-border-default rounded-md shadow-lg",
     "entering:animate-in entering:fade-in entering:slide-in-from-top-2",
     "exiting:animate-out exiting:fade-out exiting:slide-out-to-top-2",
     "overflow-hidden",
   ]),
-  listbox: cva(["outline-none p-1 max-h-60 overflow-auto"]),
+  listbox: cva(["outline-hidden p-1 max-h-60 overflow-auto"]),
   item: cva([
-    "relative flex items-center px-3 py-2 text-sm text-foreground-primary rounded cursor-pointer outline-none",
-    "data-[focused]:bg-surface-muted",
-    "data-[selected]:bg-interactive-primary data-[selected]:text-foreground-inverse",
-    "data-[disabled]:text-foreground-muted data-[disabled]:cursor-not-allowed",
+    "relative flex items-center px-3 py-2 text-sm text-foreground-primary rounded cursor-pointer outline-hidden",
+    "data-focused:bg-surface-muted",
+    "data-selected:bg-interactive-primary data-selected:text-foreground-inverse",
+    "data-disabled:text-foreground-muted data-disabled:cursor-not-allowed",
   ]),
   description: cva(["mt-1.5 text-xs"], {
     variants: {

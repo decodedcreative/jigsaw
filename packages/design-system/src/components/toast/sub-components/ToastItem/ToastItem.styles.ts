@@ -21,7 +21,7 @@ export const toastItemStyles = {
       defaultVariants: { variant: "default" },
     }
   ),
-  icon: cva("flex-shrink-0 w-5 h-5", {
+  icon: cva("shrink-0 w-5 h-5", {
     variants: {
       variant: {
         default: "text-foreground-secondary",
@@ -37,9 +37,9 @@ export const toastItemStyles = {
   title: cva("text-sm font-medium text-foreground-primary"),
   description: cva("text-sm text-foreground-secondary mt-1"),
   close: cva([
-    "flex-shrink-0 p-1 rounded-md",
+    "shrink-0 p-1 rounded-md",
     "text-foreground-tertiary hover:text-foreground-primary hover:bg-surface-hover",
-    "transition-colors outline-none",
+    "transition-colors outline-hidden",
     "focus-visible:ring-2 focus-visible:ring-interactive-focus",
   ]),
   action: cva([
