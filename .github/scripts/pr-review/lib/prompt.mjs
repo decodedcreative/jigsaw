@@ -38,7 +38,9 @@ The monorepo uses Tailwind CSS v4 (\`@import "tailwindcss"\`, \`@theme\`, \`@tai
 
 **Focus pattern:** \`focus:outline-hidden\` paired with \`focus-visible:ring-*\` is intentional for keyboard focus — do not flag as missing focus styles.
 
-If a hunk only applies v4 renames from the table above, **do not comment** unless there is a separate correctness issue.`;
+If a hunk only applies v4 renames from the table above, **do not comment** unless there is a separate correctness issue.
+
+This appendix applies to all PRs reviewed after merge — not only dedicated Tailwind migration branches.`;
 
 const THOROUGH_CONTEXT_APPENDIX = `
 

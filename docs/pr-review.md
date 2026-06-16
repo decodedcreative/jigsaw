@@ -71,6 +71,8 @@ Path filters (lockfiles, generated assets, etc.) still apply. Default PRs are un
 
 **Tailwind v4:** The review prompt includes canonical v3→v4 utility renames (`outline-hidden`, `bg-linear-to-*`, `data-disabled:`, etc.) so the bot does not flag intentional migration changes as blockers.
 
+This guidance is injected into **every** automated PR review once merged to `main` — not only Tailwind migration PRs (e.g. JSW-95). Any PR that touches `className` strings after the v4 upgrade benefits; unrelated PRs are unaffected aside from a slightly longer system prompt.
+
 **When to use:**
 
 - Cross-cutting refactors spanning multiple packages (`design-system`, `tokens`, `apps/*`)
