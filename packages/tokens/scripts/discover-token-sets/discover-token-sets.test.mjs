@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { discoverFigmaFilenames } from "../figma/discovery/discover-outputs/index.mjs";
 import {
   baseCssSelector,
   capitalize,
@@ -115,11 +116,28 @@ describe("filesystem discovery", () => {
   it("discovers Figma themes from packages/themes", () => {
     expect(discoverExternalThemes()).toEqual(["default", "portfolio"]);
     expect(discoverFigmaThemes()).toEqual(["default", "portfolio"]);
+    expect(discoverFigmaThemes()).toEqual(discoverExternalThemes());
   });
 
   it("discovers semantic modes for default and portfolio", () => {
     expect(discoverSemanticModes("default")).toEqual(["dark", "light"]);
     expect(discoverSemanticModes("portfolio")).toEqual(["portfolio"]);
+  });
+
+  it("returns no semantic modes for unknown theme ids", () => {
+    expect(discoverSemanticModes("nonexistent")).toEqual([]);
+  });
+});
+
+describe("Figma export alignment", () => {
+  it("includes a Figma token file for every discovered theme", () => {
+    const filenames = discoverFigmaFilenames();
+
+    for (const themeId of discoverFigmaThemes()) {
+      expect(
+        filenames.some((filename) => filename.startsWith(`${themeId}-`) || filename === `${themeId}.tokens.json`),
+      ).toBe(true);
+    }
   });
 });
 

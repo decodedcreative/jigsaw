@@ -74,31 +74,23 @@ Docs: [Tokens Studio GitHub sync](https://docs.tokens.studio/token-storage/remot
 
 ## Local workflow (code → Figma)
 
-1. Edit token sources:
-   - Shared tokens → `packages/tokens/src/tokens/shared/`
-   - Default theme colours → `packages/themes/default/src/`
-   - Portfolio theme colours → `packages/themes/portfolio/src/`
-2. Rebuild exports:
+1. Edit token sources (examples for the current themes):
+   - Shared → `packages/tokens/src/tokens/shared/` (e.g. `spacing.json`, `radius.json`)
+   - Default → `packages/themes/default/src/base/colors.json`, `src/semantic/colors-light.json`, `src/semantic/colors-dark.json`
+   - Portfolio → `packages/themes/portfolio/src/base/colors.json`, `src/semantic/colors.json`
+2. Rebuild and verify (same commands as CI `test-tokens`):
 
    ```bash
-   npm run build:tokens -w @jigsaw/tokens
+   npm run build:tokens --workspace=@jigsaw/tokens
+   npm run verify:figma-tokens --workspace=@jigsaw/tokens
+   npm run check:figma-drift --workspace=@jigsaw/tokens
    ```
 
-   This runs Style Dictionary and regenerates `figma/*.tokens.json`, `$themes.json`, and `$metadata.json` from the paths above.
+   `build:tokens` regenerates `figma/*.tokens.json`, `$themes.json`, and `$metadata.json` from the paths above. Commit any changed files under `packages/tokens/figma/`.
 
-3. Verify and check drift:
+3. In Tokens Studio: **Pull from remote** to load the latest from GitHub.
 
-   ```bash
-   npm run verify:figma-tokens -w @jigsaw/tokens
-   npm run check:figma-drift -w @jigsaw/tokens
-   ```
-
-4. Commit the updated `packages/tokens/figma/` files (if changed).
-5. In Tokens Studio: **Pull from remote** to load the latest from GitHub.
-
-CI runs the same build, verify, and drift checks on every PR.
-
-`check:figma-drift` requires a git checkout — it compares committed `figma/` to the build output via `git status`.
+CI runs these three commands on every PR; `check:figma-drift` requires a git checkout and compares committed `figma/` to the build output via `git status`.
 
 ## After merge
 
@@ -113,7 +105,7 @@ CI runs the same build, verify, and drift checks on every PR.
 3. Rebuild Figma exports — see [How automatic discovery works](#how-automatic-discovery-works) above. Output names come from `discoverFigmaOutputs()`; Style Dictionary config is in `sd.config.mjs` (`buildThemeFigmaConfig`).
 
 ```bash
-npm run build:tokens -w @jigsaw/tokens
+npm run build:tokens --workspace=@jigsaw/tokens
 git add packages/tokens/figma/
 ```
 
