@@ -1,3 +1,5 @@
+import { DEFAULT_PROFILE } from "./review-profile.mjs";
+
 /** @typedef {{ filename: string; patch?: string; status: string }} PrFile */
 
 export const SKIP_PATH_PATTERNS = [
@@ -9,11 +11,6 @@ export const SKIP_PATH_PATTERNS = [
   /^dist\//,
   /\/node_modules\//,
 ];
-
-export const MAX_FILES = 40;
-export const MAX_PATCH_CHARS_PER_FILE = 12_000;
-export const MAX_TOTAL_PATCH_CHARS = 150_000;
-export const MAX_INLINE_COMMENTS = 25;
 
 /** @typedef {'openai' | 'anthropic'} ReviewProvider */
 
@@ -71,24 +68,42 @@ export function shouldSkipPath(path) {
 
 /**
  * @param {PrFile[]} files
+ * @param {import('./review-profile.mjs').ReviewProfile} [profile]
+ * @returns {{ files: PrFile[]; skipped: string[]; excluded: number }}
  */
-export function selectReviewableFiles(files) {
+export function selectReviewableFiles(files, profile = DEFAULT_PROFILE) {
   const selected = [];
+  const skipped = [];
+  let excluded = 0;
 
   for (const file of files) {
-    if (file.status === "removed") continue;
-    if (shouldSkipPath(file.filename)) continue;
-    if (!file.patch) continue;
+    if (file.status === "removed") {
+      excluded += 1;
+      continue;
+    }
+    if (shouldSkipPath(file.filename)) {
+      excluded += 1;
+      continue;
+    }
+    if (!file.patch) {
+      excluded += 1;
+      continue;
+    }
+
+    if (selected.length >= profile.maxFiles) {
+      skipped.push(file.filename);
+      continue;
+    }
+
+    const patch =
+      file.patch.length > profile.maxPatchCharsPerFile
+        ? `${file.patch.slice(0, profile.maxPatchCharsPerFile)}\n… [truncated]`
+        : file.patch;
 
     selected.push({
       ...file,
-      patch:
-        file.patch.length > MAX_PATCH_CHARS_PER_FILE
-          ? `${file.patch.slice(0, MAX_PATCH_CHARS_PER_FILE)}\n… [truncated]`
-          : file.patch,
+      patch,
     });
-
-    if (selected.length >= MAX_FILES) break;
   }
 
   let total = 0;
@@ -96,10 +111,13 @@ export function selectReviewableFiles(files) {
 
   for (const file of selected) {
     const patchLen = file.patch?.length ?? 0;
-    if (total + patchLen > MAX_TOTAL_PATCH_CHARS) break;
+    if (total + patchLen > profile.maxTotalPatchChars) {
+      skipped.push(file.filename);
+      continue;
+    }
     total += patchLen;
     capped.push(file);
   }
 
-  return capped;
+  return { files: capped, skipped, excluded };
 }

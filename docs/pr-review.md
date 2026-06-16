@@ -2,7 +2,7 @@
 
 Staff-level automated code review on pull requests using **OpenAI** (default) or Anthropic. Posts a summary comment and inline feedback on changed files.
 
-**Ticket:** [JSW-93](https://decodedcreative.atlassian.net/browse/JSW-93)
+**Ticket:** [JSW-93](https://decodedcreative.atlassian.net/browse/JSW-93) · Thorough mode: [JSW-96](https://decodedcreative.atlassian.net/browse/JSW-96)
 
 ## How it works
 
@@ -42,7 +42,8 @@ To use Claude instead, set `PR_REVIEW_PROVIDER` to `anthropic` and add `ANTHROPI
 
 - **Skips:** draft PRs, fork PRs (no secrets on untrusted forks)
 - **Path filters:** `package-lock.json`, generated `packages/tokens/figma/*.json`, snapshots, `dist/`, etc. (see `.github/scripts/pr-review/lib/config.mjs`)
-- **Limits:** 40 files, ~150k chars of diff, max 25 inline comments
+- **Limits (default):** 40 files, ~150k chars of diff, max 25 inline comments
+- **Thorough mode:** add label `pr-review:thorough` to relax all caps (see below)
 - **Re-runs:** each push triggers a review run; round policy below limits noise
 - **Feedback rounds** (default `PR_REVIEW_MAX_FEEDBACK_ROUNDS=2`):
 
@@ -53,6 +54,32 @@ To use Claude instead, set `PR_REVIEW_PROVIDER` to `anthropic` and add `ANTHROPI
 | 3+ | Critical | Blockers only on every push; **no review posted** if all clear |
 
 The model still runs on round 3+ to scan for critical issues, but skips posting when none are found.
+
+### Thorough mode (`pr-review:thorough`)
+
+For large or high-risk PRs (migrations, cross-cutting refactors, many files), add the GitHub label **`pr-review:thorough`** to the pull request. This opts into a relaxed review profile:
+
+| Setting | Default | Thorough |
+|---------|---------|----------|
+| Files per run | 40 | All reviewable files |
+| Diff size | ~150k chars | No cap |
+| Per-file patch truncation | 12k chars | No truncation |
+| Inline comments | 15 / 8 / 5 by round | No cap |
+| Feedback rounds | 2, then critical-only | Full follow-up continues (no critical-only switch) |
+
+Path filters (lockfiles, generated assets, etc.) still apply. Default PRs are unchanged.
+
+**When to use:**
+
+- Cross-cutting refactors spanning multiple packages (`design-system`, `tokens`, `apps/*`)
+- Major dependency upgrades (e.g. Tailwind v4, React major versions)
+- Token pipeline or theme changes that ripple through many components
+- Tailwind/className migrations across the monorepo
+- Any PR touching **30+ meaningful files** where default caps would drop coverage
+
+**When not to use:** Small, focused PRs — default mode is faster and cheaper.
+
+**Cost note:** Thorough runs use more API tokens and may post more inline comments.
 
 - **Address replies:** on follow-up pushes, the bot replies on prior inline threads when **that push** touches nearby lines (via `github.event.before`…`after` compare). Replies include commit subject(s) and a diff snippet. Skips threads you already replied to manually. Disable with `PR_REVIEW_REPLY_ON_ADDRESS=false`.
 
