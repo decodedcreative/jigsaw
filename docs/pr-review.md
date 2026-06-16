@@ -69,6 +69,8 @@ For large or high-risk PRs (migrations, cross-cutting refactors, many files), ad
 
 Path filters (lockfiles, generated assets, etc.) still apply. Default PRs are unchanged.
 
+**Tailwind v4:** The review prompt includes canonical v3→v4 utility renames (`outline-hidden`, `bg-linear-to-*`, `data-disabled:`, etc.) so the bot does not flag intentional migration changes as blockers.
+
 **When to use:**
 
 - Cross-cutting refactors spanning multiple packages (`design-system`, `tokens`, `apps/*`)
