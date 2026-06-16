@@ -69,7 +69,15 @@ For large or high-risk PRs (migrations, cross-cutting refactors, many files), ad
 
 Path filters (lockfiles, generated assets, etc.) still apply. Default PRs are unchanged.
 
-**When to use:** Tailwind migrations, token pipeline changes, anything touching 30+ meaningful files where dropped coverage is risky.
+**When to use:**
+
+- Cross-cutting refactors spanning multiple packages (`design-system`, `tokens`, `apps/*`)
+- Major dependency upgrades (e.g. Tailwind v4, React major versions)
+- Token pipeline or theme changes that ripple through many components
+- Tailwind/className migrations across the monorepo
+- Any PR touching **30+ meaningful files** where default caps would drop coverage
+
+**When not to use:** Small, focused PRs — default mode is faster and cheaper.
 
 **Cost note:** Thorough runs use more API tokens and may post more inline comments.
 

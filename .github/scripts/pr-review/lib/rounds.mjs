@@ -35,6 +35,26 @@ export function getEffectiveMaxComments(mode, profile) {
 }
 
 /**
+ * @param {{
+ *   repo: string;
+ *   pullNumber: number;
+ *   provider: string;
+ *   profile: import('./review-profile.mjs').ReviewProfile;
+ *   mode: ReviewMode;
+ *   roundNumber: number;
+ *   maxComments: number;
+ * }} ctx
+ */
+export function formatReviewRunLog(ctx) {
+  const maxInline = Number.isFinite(ctx.maxComments) ? ctx.maxComments : "uncapped";
+  const maxRounds = Number.isFinite(ctx.profile.maxFeedbackRounds)
+    ? ctx.profile.maxFeedbackRounds
+    : "uncapped";
+
+  return `Reviewing ${ctx.repo}#${ctx.pullNumber} via ${ctx.provider} — profile=${ctx.profile.name}, mode=${ctx.mode}, round=${ctx.roundNumber}, maxFeedbackRounds=${maxRounds}, maxInlineComments=${maxInline}`;
+}
+
+/**
  * @param {Array<{ user?: { login?: string }; body?: string }>} reviews
  */
 export function countPriorStaffReviews(reviews) {

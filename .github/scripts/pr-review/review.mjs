@@ -20,6 +20,7 @@ import { resolveReviewProfile } from "./lib/review-profile.mjs";
 import {
   countPriorStaffReviews,
   filterCommentsForMode,
+  formatReviewRunLog,
   getEffectiveMaxComments,
   getLatestStaffReviewSummary,
   getReviewMode,
@@ -110,7 +111,15 @@ async function main() {
   const maxComments = getEffectiveMaxComments(mode, profile);
 
   console.log(
-    `Reviewing ${repo}#${pullNumber} via ${provider} — profile=${profile.name}, mode=${mode}, round=${roundNumber}, maxFeedbackRounds=${profile.maxFeedbackRounds}`,
+    formatReviewRunLog({
+      repo,
+      pullNumber,
+      provider,
+      profile,
+      mode,
+      roundNumber,
+      maxComments,
+    }),
   );
 
   const afterSha = AFTER_SHA || pr.head.sha;

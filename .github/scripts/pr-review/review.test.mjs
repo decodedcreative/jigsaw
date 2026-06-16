@@ -8,11 +8,13 @@ import { parseReviewJson } from "./lib/parse-review.mjs";
 import {
   DEFAULT_PROFILE,
   THOROUGH_PROFILE,
+  findMisconfiguredReviewLabels,
   resolveReviewProfile,
 } from "./lib/review-profile.mjs";
 import {
   countPriorStaffReviews,
   filterCommentsForMode,
+  formatReviewRunLog,
   getEffectiveMaxComments,
   getMaxFeedbackRounds,
   getReviewMode,
@@ -105,6 +107,71 @@ test("resolveReviewProfile falls back to default for malformed labels", () => {
       .name,
     "thorough",
   );
+});
+
+test("resolveReviewProfile warns on misconfigured pr-review labels", () => {
+  const warnings = [];
+  const originalWarn = console.warn;
+  console.warn = (message) => warnings.push(String(message));
+
+  try {
+    assert.equal(
+      resolveReviewProfile([{ name: "pr-review:thoroughh" }]).name,
+      "default",
+    );
+    assert.match(warnings[0], /Unrecognised pr-review label/);
+    assert.match(warnings[0], /pr-review:thoroughh/);
+  } finally {
+    console.warn = originalWarn;
+  }
+});
+
+test("findMisconfiguredReviewLabels detects pr-review typos", () => {
+  assert.deepEqual(
+    findMisconfiguredReviewLabels([{ name: "pr-review:thoroughh" }]),
+    ["pr-review:thoroughh"],
+  );
+  assert.deepEqual(findMisconfiguredReviewLabels([{ name: "pr-review:thorough" }]), []);
+});
+
+test("getMaxFeedbackRounds accepts valid integers and warns on invalid input", () => {
+  assert.equal(getMaxFeedbackRounds(undefined), 2);
+  assert.equal(getMaxFeedbackRounds(""), 2);
+  assert.equal(getMaxFeedbackRounds("3"), 3);
+  assert.equal(getMaxFeedbackRounds(5), 5);
+
+  const warnings = [];
+  const originalWarn = console.warn;
+  console.warn = (message) => warnings.push(String(message));
+
+  try {
+    assert.equal(getMaxFeedbackRounds("abc"), 2);
+    assert.match(warnings[0], /Invalid PR_REVIEW_MAX_FEEDBACK_ROUNDS "abc"/);
+    warnings.length = 0;
+    assert.equal(getMaxFeedbackRounds("2.5"), 2);
+    assert.match(warnings[0], /Invalid PR_REVIEW_MAX_FEEDBACK_ROUNDS "2.5"/);
+    warnings.length = 0;
+    assert.equal(getMaxFeedbackRounds(0), 2);
+    assert.match(warnings[0], /Invalid PR_REVIEW_MAX_FEEDBACK_ROUNDS/);
+  } finally {
+    console.warn = originalWarn;
+  }
+});
+
+test("formatReviewRunLog includes profile and comment caps", () => {
+  const log = formatReviewRunLog({
+    repo: "decodedcreative/jigsaw",
+    pullNumber: 51,
+    provider: "openai",
+    profile: THOROUGH_PROFILE,
+    mode: "followup",
+    roundNumber: 2,
+    maxComments: Number.POSITIVE_INFINITY,
+  });
+
+  assert.match(log, /profile=thorough/);
+  assert.match(log, /maxInlineComments=uncapped/);
+  assert.match(log, /maxFeedbackRounds=uncapped/);
 });
 
 test("parseReviewJson accepts fenced JSON", () => {
