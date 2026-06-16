@@ -14,13 +14,19 @@ Publish the file as a team library via **Assets → Publish** (file-level, not p
 
 ## Source of truth (always read first)
 
+Paths below match the repo layout after JSW-90/91 (theme packages). Colour JSON lives only under `packages/themes/` — not under `packages/tokens/src/tokens/themes/`.
+
 | What | Where |
 |------|--------|
 | Component implementation | `packages/design-system/src/components/{name}/` |
-| Variant styles | `{Name}.styles.ts` |
-| Storybook reference | `{Name}.stories.tsx` |
+| Variant styles | `packages/design-system/src/components/{name}/{Name}.styles.ts` |
+| Storybook reference | `apps/storybook/stories/design-system/` or `apps/storybook/stories/examples/` |
 | Visual regression | Chromatic (`apps/storybook`) — not local screenshots |
-| Figma token JSON | `packages/tokens/figma/` |
+| Shared token JSON | `packages/tokens/src/tokens/shared/` (spacing, radius, typography, …) |
+| Default theme JSON | `packages/themes/default/src/base/colors.json`, `src/semantic/colors-light.json`, `src/semantic/colors-dark.json` |
+| Portfolio theme JSON | `packages/themes/portfolio/src/base/colors.json`, `src/semantic/colors.json` |
+| Theme CSS (runtime) | `@jigsaw/theme-default`, `@jigsaw/theme-portfolio` (`packages/themes/{id}/dist/css/`) |
+| Figma token JSON (generated) | `packages/tokens/figma/` (`*.tokens.json`, `$themes.json`) |
 
 Do **not** use Claude Design mockups or ad-hoc frames as reference.
 

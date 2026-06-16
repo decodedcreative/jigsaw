@@ -12,7 +12,6 @@
       "require": "./dist/index.js"
     },
     "./shared/*": "./dist/css/shared/*",
-    "./themes/*": "./dist/css/themes/*",
     "./tailwind-theme.css": "./dist/css/tailwind-theme.css",
     "./docs-tokens": {
       "types": "./docs-tokens.d.ts",

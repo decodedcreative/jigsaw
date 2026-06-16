@@ -1,10 +1,35 @@
 # Figma / Tokens Studio sync
 
-Design tokens for Figma are exported from source JSON under `src/tokens/` into **git-tracked** files in `packages/tokens/figma/`. Tokens Studio pulls from this folder via GitHub sync.
+Design tokens for Figma are exported from source JSON into **git-tracked** files in `packages/tokens/figma/`. Tokens Studio pulls from this folder via GitHub sync.
 
-**Source of truth:** `src/tokens/` — never edit generated files in `figma/` by hand.
+**Never edit generated files in `figma/` by hand.**
 
-## Folder contents
+## Source layout
+
+| Source | Path | Figma output |
+|--------|------|--------------|
+| Shared (spacing, radius, typography, …) | `packages/tokens/src/tokens/shared/` | `shared.tokens.json` |
+| Default theme palette + semantics | `packages/themes/default/src/` | `default-base.tokens.json`, `default-light.tokens.json`, `default-dark.tokens.json` |
+| Portfolio theme (palette + semantics) | `packages/themes/portfolio/src/` | `portfolio.tokens.json` |
+
+Brand theme **CSS** is built in each `@jigsaw/theme-*` package. `@jigsaw/tokens` only builds shared CSS, Tailwind theme, and **Figma JSON** for all themes (via `discoverFigmaThemes()` reading `packages/themes/{id}/src/`).
+
+Colour JSON must not be duplicated under `packages/tokens/` — theme packages are the single source for brand colours.
+
+## How automatic discovery works
+
+Figma filenames and Tokens Studio manifests are derived from theme package sources — no hand-maintained file lists.
+
+| Step | Module | Role |
+|------|--------|------|
+| 1 | [`scripts/discover-token-sets/discover-token-sets.mjs`](../scripts/discover-token-sets/discover-token-sets.mjs) | Scans `packages/themes/{id}/src/`, reads semantic mode keys, applies export rules (see module header) |
+| 2 | [`scripts/figma/discovery/discover-outputs/discover-outputs.mjs`](../scripts/figma/discovery/discover-outputs/discover-outputs.mjs) | `discoverFigmaOutputs()` — canonical list of `*.tokens.json` filenames and `$themes.json` entries |
+| 3 | [`sd.config.mjs`](../sd.config.mjs) | `buildThemeFigmaConfig()` — Style Dictionary sources/globs and destinations; must match step 2 |
+| 4 | Post-build scripts in `scripts/figma/` | Write `$themes.json` and `$metadata.json` from discovery output |
+
+Brand theme **CSS** is not built here — each `@jigsaw/theme-*` package runs its own Style Dictionary config. `@jigsaw/tokens` only exports Figma JSON for themes.
+
+## Folder contents (`packages/tokens/figma/`)
 
 | File | Purpose |
 |------|---------|
@@ -49,28 +74,23 @@ Docs: [Tokens Studio GitHub sync](https://docs.tokens.studio/token-storage/remot
 
 ## Local workflow (code → Figma)
 
-1. Edit token sources under `src/tokens/`.
-2. Rebuild exports:
+1. Edit token sources (examples for the current themes):
+   - Shared → `packages/tokens/src/tokens/shared/` (e.g. `spacing.json`, `radius.json`)
+   - Default → `packages/themes/default/src/base/colors.json`, `src/semantic/colors-light.json`, `src/semantic/colors-dark.json`
+   - Portfolio → `packages/themes/portfolio/src/base/colors.json`, `src/semantic/colors.json`
+2. Rebuild and verify (same commands as CI `test-tokens`):
 
    ```bash
-   npm run build:tokens -w @jigsaw/tokens
+   npm run build:tokens --workspace=@jigsaw/tokens
+   npm run verify:figma-tokens --workspace=@jigsaw/tokens
+   npm run check:figma-drift --workspace=@jigsaw/tokens
    ```
 
-   This runs Style Dictionary and regenerates `figma/*.tokens.json`, `$themes.json`, and `$metadata.json`.
+   `build:tokens` regenerates `figma/*.tokens.json`, `$themes.json`, and `$metadata.json` from the paths above. Commit any changed files under `packages/tokens/figma/`.
 
-3. Verify and check drift:
+3. In Tokens Studio: **Pull from remote** to load the latest from GitHub.
 
-   ```bash
-   npm run verify:figma-tokens -w @jigsaw/tokens
-   npm run check:figma-drift -w @jigsaw/tokens
-   ```
-
-4. Commit the updated `packages/tokens/figma/` files.
-5. In Tokens Studio: **Pull from remote** to load the latest from GitHub.
-
-CI runs the same build, verify, and drift checks on every PR.
-
-`check:figma-drift` requires a git checkout — it compares committed `figma/` to the build output via `git status`.
+CI runs these three commands on every PR; `check:figma-drift` requires a git checkout and compares committed `figma/` to the build output via `git status`.
 
 ## After merge
 
@@ -80,12 +100,12 @@ CI runs the same build, verify, and drift checks on every PR.
 
 ## Adding a new theme
 
-Create the source layout under `src/tokens/themes/{id}/` — discovery drives CSS, Figma, `$themes.json`, and `$metadata.json`. Filenames are defined in `discoverFigmaOutputs()` (`scripts/figma/discovery/`); `sd.config.mjs` must stay aligned. See the header comment in `scripts/discover-token-sets/` for export rules.
-
-After adding sources:
+1. Create `packages/themes/{id}/` with `src/base/` and `src/semantic/` JSON (see `@jigsaw/theme-default` or `@jigsaw/theme-portfolio`).
+2. Add a CSS build in that package (`sd.config.mjs` + `@jigsaw/theme-build`).
+3. Rebuild Figma exports — see [How automatic discovery works](#how-automatic-discovery-works) above. Output names come from `discoverFigmaOutputs()`; Style Dictionary config is in `sd.config.mjs` (`buildThemeFigmaConfig`).
 
 ```bash
-npm run build:tokens -w @jigsaw/tokens
+npm run build:tokens --workspace=@jigsaw/tokens
 git add packages/tokens/figma/
 ```
 
@@ -93,7 +113,7 @@ No manual edits to `sd.config.mjs` file lists are required for standard theme sh
 
 ## Direction of sync (v1)
 
-**One-way: code → Figma.** Designers pull from GitHub after engineers (or the build) update `figma/`. Bi-directional sync (edit in Figma, push to repo) is possible with a write-enabled PAT but is not the default workflow — source JSON in `src/tokens/` should remain authoritative.
+**One-way: code → Figma.** Designers pull from GitHub after engineers (or the build) update `figma/`. Bi-directional sync (edit in Figma, push to repo) is possible with a write-enabled PAT but is not the default workflow — source JSON in the paths above should remain authoritative.
 
 ## Troubleshooting
 

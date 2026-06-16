@@ -1,7 +1,6 @@
 import {
   capitalize,
   discoverSemanticModes,
-  discoverThemes,
   discoverFigmaThemes,
   isStandaloneSemantic,
   mergeFigmaBaseAndSemantic,
