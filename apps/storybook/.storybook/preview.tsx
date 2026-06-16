@@ -1,22 +1,13 @@
 import { useEffect } from "react";
 import type { Decorator, Preview } from "@storybook/react";
+import { applyAppTheme } from "./apply-app-theme.mjs";
 import "../style.css";
 
 const withAppTheme: Decorator = (Story, { globals }) => {
   const theme = globals.appTheme as string | undefined;
 
   useEffect(() => {
-    const root = document.documentElement;
-
-    if (!theme || theme === "light") {
-      root.removeAttribute("data-theme");
-    } else {
-      root.setAttribute("data-theme", theme);
-    }
-
-    return () => {
-      root.removeAttribute("data-theme");
-    };
+    applyAppTheme(document.documentElement, theme);
   }, [theme]);
 
   return <Story />;
@@ -27,7 +18,6 @@ const preview: Preview = {
     appTheme: {
       name: "Theme",
       description: "Runtime theme switch via data-theme",
-      defaultValue: "light",
       toolbar: {
         icon: "paintbrush",
         items: [
@@ -38,6 +28,9 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+  },
+  initialGlobals: {
+    appTheme: "light",
   },
   decorators: [withAppTheme],
   parameters: {
