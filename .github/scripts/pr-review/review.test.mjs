@@ -95,6 +95,18 @@ test("resolveReviewProfile selects thorough when label present", () => {
   );
 });
 
+test("resolveReviewProfile falls back to default for malformed labels", () => {
+  assert.equal(resolveReviewProfile(undefined).name, "default");
+  assert.equal(resolveReviewProfile(null).name, "default");
+  assert.equal(resolveReviewProfile({}).name, "default");
+  assert.equal(resolveReviewProfile([null, {}, { name: 42 }]).name, "default");
+  assert.equal(
+    resolveReviewProfile([{ name: "other" }, { name: "pr-review:thorough" }])
+      .name,
+    "thorough",
+  );
+});
+
 test("parseReviewJson accepts fenced JSON", () => {
   const parsed = parseReviewJson(
     '```json\n{"summary":"ok","comments":[{"path":"a.ts","line":1,"severity":"nit","body":"note"}]}\n```',

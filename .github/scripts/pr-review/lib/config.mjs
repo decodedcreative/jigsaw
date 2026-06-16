@@ -12,15 +12,6 @@ export const SKIP_PATH_PATTERNS = [
   /\/node_modules\//,
 ];
 
-/** @deprecated use ReviewProfile.maxFiles */
-export const MAX_FILES = DEFAULT_PROFILE.maxFiles;
-/** @deprecated use ReviewProfile.maxPatchCharsPerFile */
-export const MAX_PATCH_CHARS_PER_FILE = DEFAULT_PROFILE.maxPatchCharsPerFile;
-/** @deprecated use ReviewProfile.maxTotalPatchChars */
-export const MAX_TOTAL_PATCH_CHARS = DEFAULT_PROFILE.maxTotalPatchChars;
-/** @deprecated use ReviewProfile.maxInlineComments */
-export const MAX_INLINE_COMMENTS = DEFAULT_PROFILE.maxInlineComments;
-
 /** @typedef {'openai' | 'anthropic'} ReviewProvider */
 
 const DEFAULT_MODELS = {

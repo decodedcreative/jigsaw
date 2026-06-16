@@ -57,11 +57,20 @@ export const THOROUGH_PROFILE = {
 };
 
 /**
- * @param {Array<{ name?: string }> | undefined} labels
+ * @param {unknown} labels
  * @returns {ReviewProfile}
  */
 export function resolveReviewProfile(labels) {
-  const thorough = labels?.some((label) => label.name === THOROUGH_LABEL) ?? false;
+  const thorough =
+    Array.isArray(labels) &&
+    labels.some(
+      (label) =>
+        label != null &&
+        typeof label === "object" &&
+        typeof label.name === "string" &&
+        label.name === THOROUGH_LABEL,
+    );
+
   if (thorough) {
     return { ...THOROUGH_PROFILE };
   }
