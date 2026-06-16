@@ -5,7 +5,7 @@ const BASE_CONTEXT = `You are a Staff-level engineer reviewing a pull request fo
 ## Repository context
 
 - Turborepo with npm workspaces: \`@jigsaw/design-system\`, \`@jigsaw/tokens\`, \`apps/web\`, \`apps/storybook\`, \`packages/db\`
-- React 19, React Aria Components, CVA for variants, Tailwind CSS, design tokens from \`@jigsaw/tokens\`
+- React 19, React Aria Components, CVA for variants, Tailwind CSS v4, design tokens from \`@jigsaw/tokens\`
 - Components follow folder conventions: \`*.types.ts\`, \`sub-components/\`, co-located tests
 - Token source of truth: \`packages/tokens/src/tokens/\`; generated \`packages/tokens/figma/\` is build output
 
@@ -16,6 +16,31 @@ const BASE_CONTEXT = `You are a Staff-level engineer reviewing a pull request fo
 - No praise-only comments, no bikeshedding, no style nits already covered by formatters
 - Comment only on lines present in the provided diff hunks
 - Prefer fewer, higher-signal comments over exhaustive coverage`;
+
+const TAILWIND_V4_APPENDIX = `
+
+## Tailwind CSS v4 — intentional renames (not blockers)
+
+The monorepo uses Tailwind CSS v4 (\`@import "tailwindcss"\`, \`@theme\`, \`@tailwindcss/postcss\`). The official \`@tailwindcss/upgrade\` tool renames many v3 utilities. **These v4 names are correct** — do not suggest reverting to v3 aliases:
+
+| v3 (removed) | v4 (canonical) |
+|--------------|----------------|
+| \`outline-none\` | \`outline-hidden\` |
+| \`bg-gradient-to-*\` | \`bg-linear-to-*\` |
+| \`backdrop-blur-sm\` | \`backdrop-blur-xs\` (same 4px) |
+| \`blur-sm\` | \`blur-xs\` |
+| \`shadow-sm\` | \`shadow-xs\` |
+| \`flex-shrink-0\` / \`flex-grow\` | \`shrink-0\` / \`grow\` |
+| \`data-[disabled]:\` | \`data-disabled:\` (React Aria) |
+| \`data-[pressed]:\` | \`data-pressed:\` (React Aria) |
+
+**Component API vs Tailwind utilities:** CVA \`variant\` prop values (e.g. Button \`outline\`, Badge \`outline\`) are **not** Tailwind classes. Only flag a variant name if it does not match the component's \`*.styles.ts\` variants (e.g. Storybook \`outline-solid\` when the API is \`outline\`).
+
+**Focus pattern:** \`focus:outline-hidden\` paired with \`focus-visible:ring-*\` is intentional for keyboard focus — do not flag as missing focus styles.
+
+If a hunk only applies v4 renames from the table above, **do not comment** unless there is a separate correctness issue.
+
+This appendix applies to all PRs reviewed after merge — not only dedicated Tailwind migration branches.`;
 
 const THOROUGH_CONTEXT_APPENDIX = `
 
@@ -62,6 +87,7 @@ const MODE_INSTRUCTIONS = {
 
 - Full feedback rounds are complete; scan only for **blockers**: correctness bugs, security issues, data loss, broken builds, or merge-risk regressions
 - Do **not** post suggestions or nits
+- Do **not** flag Tailwind v4 canonical renames from the table above (e.g. \`outline-hidden\`, \`bg-linear-to-r\`) — those are not blockers
 - If no blockers exist, return an empty \`comments\` array and a one-sentence all-clear summary
 - Maximum 5 inline comments, blockers only`,
 };
@@ -86,8 +112,8 @@ const THOROUGH_MODE_INSTRUCTIONS = {
 export function buildSystemPrompt(mode, profile) {
   const context =
     profile.name === "thorough"
-      ? BASE_CONTEXT + THOROUGH_CONTEXT_APPENDIX
-      : BASE_CONTEXT;
+      ? BASE_CONTEXT + TAILWIND_V4_APPENDIX + THOROUGH_CONTEXT_APPENDIX
+      : BASE_CONTEXT + TAILWIND_V4_APPENDIX;
   const instructions =
     profile.name === "thorough"
       ? THOROUGH_MODE_INSTRUCTIONS[mode === "critical" ? "followup" : mode]
