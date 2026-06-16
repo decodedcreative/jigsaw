@@ -18,7 +18,7 @@ export const cardStyles = {
           true: [
             "cursor-pointer",
             "hover:shadow-lg hover:border-border-hover",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface-primary",
+            "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface-primary",
           ],
           false: "",
         },

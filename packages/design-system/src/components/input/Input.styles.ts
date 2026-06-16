@@ -21,8 +21,8 @@ export const inputStyles = {
     [
       "w-full rounded-default border bg-surface-default text-foreground-primary transition-colors",
       "placeholder:text-foreground-muted",
-      "focus:outline-none focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
-      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted data-[disabled]:border-border-default",
+      "focus:outline-hidden focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
+      "data-disabled:cursor-not-allowed data-disabled:bg-surface-muted data-disabled:text-foreground-muted data-disabled:border-border-default",
     ],
     {
       variants: {

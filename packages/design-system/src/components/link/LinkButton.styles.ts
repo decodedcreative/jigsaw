@@ -4,9 +4,9 @@ export const linkButtonStyles = {
   component: cva(
     [
       "inline-flex items-center justify-center font-medium border transition-colors rounded-default",
-      "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:ring-offset-2",
-      "data-[disabled]:opacity-50 data-[disabled]:pointer-events-none",
-      "data-[pressed]:scale-[0.98]",
+      "focus:outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:ring-offset-2",
+      "data-disabled:opacity-50 data-disabled:pointer-events-none",
+      "data-pressed:scale-[0.98]",
     ],
     {
       variants: {

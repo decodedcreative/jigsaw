@@ -21,8 +21,8 @@ export const textareaStyles = {
     [
       "w-full rounded-default border bg-surface-default text-foreground-primary transition-colors resize-y min-h-[80px]",
       "placeholder:text-foreground-muted",
-      "focus:outline-none focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
-      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted data-[disabled]:border-border-default data-[disabled]:resize-none",
+      "focus:outline-hidden focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
+      "data-disabled:cursor-not-allowed data-disabled:bg-surface-muted data-disabled:text-foreground-muted data-disabled:border-border-default data-disabled:resize-none",
     ],
     {
       variants: {

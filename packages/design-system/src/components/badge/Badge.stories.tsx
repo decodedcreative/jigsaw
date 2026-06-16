@@ -4,7 +4,15 @@ import { Badge } from "./Badge";
 const meta = {
   title: "Design System/Badge",
   component: Badge,
-  parameters: { layout: "centered" },
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component:
+          "Badge variants are unchanged in the public API (`outline` remains the bordered style). Tailwind v4 renamed the *utility* `outline-none` → `outline-hidden` in component styles — not this variant prop.",
+      },
+    },
+  },
   tags: ["autodocs"],
   argTypes: {
     variant: {

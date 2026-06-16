@@ -7,20 +7,20 @@ export const navigationStyles = {
   brand: cva([
     "flex items-center gap-2",
     "text-lg font-semibold text-foreground-primary",
-    "outline-none focus-visible:ring-2 focus-visible:ring-interactive-focus rounded",
+    "outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-focus rounded",
   ]),
   nav: cva("hidden md:flex items-center gap-1"),
   navItem: cva([
     "px-3 py-2 text-sm font-medium rounded-md transition-colors",
     "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",
-    "outline-none focus-visible:ring-2 focus-visible:ring-interactive-focus",
-    "data-[current]:text-interactive-primary data-[current]:bg-interactive-secondary",
+    "outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-focus",
+    "data-current:text-interactive-primary data-current:bg-interactive-secondary",
   ]),
   actions: cva("flex items-center gap-2"),
   mobileMenuButton: cva([
     "md:hidden p-2 rounded-md",
     "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",
-    "outline-none focus-visible:ring-2 focus-visible:ring-interactive-focus",
+    "outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-focus",
   ]),
   mobileMenu: cva([
     "fixed inset-0 z-50 bg-surface-primary flex flex-col",
@@ -35,6 +35,6 @@ export const navigationStyles = {
   mobileNavItem: cva([
     "flex items-center px-4 py-3 text-lg font-medium rounded-lg transition-colors",
     "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",
-    "data-[current]:text-interactive-primary data-[current]:bg-interactive-secondary",
+    "data-current:text-interactive-primary data-current:bg-interactive-secondary",
   ]),
 };

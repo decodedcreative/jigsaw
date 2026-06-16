@@ -147,7 +147,7 @@ export default function ActivityPage() {
                       <div key={e.id} className="flex items-center gap-3 px-4 py-3">
                         {/* Actor avatar */}
                         <TooltipTrigger delay={300}>
-                          <button className="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent rounded-full">
+                          <button className="shrink-0 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-accent rounded-full">
                             <Avatar size="sm" initials={e.initials} />
                           </button>
                           <Tooltip>{e.actor}</Tooltip>

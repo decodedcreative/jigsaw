@@ -23,8 +23,8 @@ export const searchFieldStyles = {
     [
       "w-full rounded-default border bg-surface-default text-foreground-primary transition-colors",
       "placeholder:text-foreground-muted",
-      "focus:outline-none focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
-      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted data-[disabled]:border-border-default",
+      "focus:outline-hidden focus:ring-2 focus:ring-interactive-accent/20 focus:border-interactive-accent",
+      "data-disabled:cursor-not-allowed data-disabled:bg-surface-muted data-disabled:text-foreground-muted data-disabled:border-border-default",
     ],
     {
       variants: {
@@ -46,8 +46,8 @@ export const searchFieldStyles = {
   clearButton: cva(
     [
       "absolute right-2 p-1 rounded text-foreground-muted hover:text-foreground-primary hover:bg-surface-muted transition-colors",
-      "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent",
-      "data-[empty]:hidden",
+      "focus:outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-accent",
+      "data-empty:hidden",
     ],
     {
       variants: {
