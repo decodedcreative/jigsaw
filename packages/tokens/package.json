@@ -13,6 +13,7 @@
     },
     "./shared/*": "./dist/css/shared/*",
     "./themes/*": "./dist/css/themes/*",
+    "./tailwind-theme.css": "./dist/css/tailwind-theme.css",
     "./theme": "./dist/theme.mjs",
     "./semantic-colors": {
       "types": "./dist/semantic-colors.d.ts",

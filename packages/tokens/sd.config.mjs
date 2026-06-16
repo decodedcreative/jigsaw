@@ -18,6 +18,7 @@ import {
   themeSemanticSourceGlob,
   themeSourceGlob,
 } from "./scripts/index.mjs";
+import { tailwindThemeCss } from "./scripts/formats/tailwind-theme-css/index.mjs";
 import { tailwindColorVarRef } from "./scripts/utils/tailwind-theme-color.mjs";
 
 /** Tailwind theme.mjs format */
@@ -235,8 +236,24 @@ const tailwindThemeConfig = sdConfig(
         },
       ],
     },
+    tailwindCss: {
+      transformGroup: "js",
+      buildPath: CSS_BUILD_PATH,
+      files: [
+        {
+          destination: "tailwind-theme.css",
+          format: "tailwind/theme-css",
+          options: { showFileHeader: true },
+        },
+      ],
+    },
   },
-  { formats: { "tailwind/theme": tailwindTheme } },
+  {
+    formats: {
+      "tailwind/theme": tailwindTheme,
+      "tailwind/theme-css": tailwindThemeCss,
+    },
+  },
 );
 
 const figmaSharedConfig = sdConfig(
