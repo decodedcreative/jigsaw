@@ -13,7 +13,12 @@ const isColorToken = (node) =>
   isPlainObject(node) && typeof node.value === "string" && node.type === "color";
 
 /**
- * Flatten a semantic colour tree to CSS variable suffixes (e.g. surface-primary).
+ * Walk a Tokens Studio semantic colour tree and emit CSS variable suffixes.
+ *
+ * Each leaf `color` token becomes one suffix by joining ancestor keys with `-`
+ * (e.g. `{ surface: { primary: { value, type: "color" } } }` → `surface-primary`).
+ * Non-colour branches are recursed; invalid nodes are skipped.
+ *
  * @param {unknown} node
  * @param {string[]} prefix
  * @returns {string[]}

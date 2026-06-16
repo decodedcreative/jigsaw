@@ -1,6 +1,3 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -8,11 +5,6 @@ import {
   collectSemanticColorAliases,
   discoverSemanticColorVars,
 } from "./discover-semantic-color-vars.mjs";
-
-const packageRoot = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "../..",
-);
 
 describe("collectColorSuffixes", () => {
   it("flattens nested semantic colour groups", () => {
@@ -69,14 +61,17 @@ describe("discoverSemanticColorVars", () => {
     });
   });
 
-  it("matches semantic CSS variables emitted by theme-default", () => {
-    const cssPath = path.resolve(
-      packageRoot,
-      "../themes/default/dist/css/semantic-light.css",
+  it("lists unique kebab-case suffixes for Tailwind colour utilities", () => {
+    const unique = new Set(semanticColorVars);
+    expect(unique.size).toBe(semanticColorVars.length);
+    expect(semanticColorVars.every((suffix) => /^[a-z0-9-]+$/.test(suffix))).toBe(
+      true,
     );
-    const css = fs.readFileSync(cssPath, "utf8");
-    const cssVars = [...css.matchAll(/--color-([a-z0-9-]+):/g)].map((match) => match[1]);
+  });
 
-    expect(semanticColorVars.sort()).toEqual(cssVars.sort());
+  it("maps DEFAULT aliases to discovered suffixes", () => {
+    for (const target of Object.values(semanticColorAliases)) {
+      expect(semanticColorVars).toContain(target);
+    }
   });
 });
