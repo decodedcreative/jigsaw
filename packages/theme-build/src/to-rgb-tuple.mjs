@@ -1,7 +1,7 @@
 /**
  * Convert a CSS color value to a space-separated RGB tuple for CSS variables
- * (e.g. "#ff6b1a" → "255 107 26") so Tailwind's `<alpha-value>` placeholder
- * pattern can apply opacity modifiers like `/20`.
+ * (e.g. "#ff6b1a" → "255 107 26") for use inside `rgb(var(--color-*))` so
+ * Tailwind opacity modifiers like `bg-surface-primary/20` resolve correctly.
  */
 export const toRgbTuple = (value) => {
   if (typeof value !== "string") return value;

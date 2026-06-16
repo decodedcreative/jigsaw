@@ -2,12 +2,12 @@ import { cva } from "class-variance-authority";
 
 export const radioStyles = {
   wrapper: cva([
-    "group flex items-start gap-3 cursor-pointer data-[disabled]:cursor-not-allowed",
+    "group flex items-start gap-3 cursor-pointer data-disabled:cursor-not-allowed",
   ]),
   circle: cva(
     [
       "flex items-center justify-center shrink-0 rounded-full border-2 transition-colors",
-      "group-data-[disabled]:opacity-50 group-data-[disabled]:cursor-not-allowed",
+      "group-data-disabled:opacity-50 group-data-disabled:cursor-not-allowed",
     ],
     {
       variants: {
@@ -18,15 +18,15 @@ export const radioStyles = {
         },
         state: {
           default:
-            "border-border-strong group-data-[selected]:border-interactive-primary",
-          error: "border-state-error group-data-[selected]:border-state-error",
+            "border-border-strong group-data-selected:border-interactive-primary",
+          error: "border-state-error group-data-selected:border-state-error",
         },
       },
       defaultVariants: { size: "md", state: "default" },
     }
   ),
   dot: cva(
-    ["rounded-full opacity-0 group-data-[selected]:opacity-100 transition-opacity"],
+    ["rounded-full opacity-0 group-data-selected:opacity-100 transition-opacity"],
     {
       variants: {
         size: {
@@ -42,7 +42,7 @@ export const radioStyles = {
       defaultVariants: { size: "md", state: "default" },
     }
   ),
-  label: cva(["select-none transition-colors group-data-[disabled]:text-foreground-muted"], {
+  label: cva(["select-none transition-colors group-data-disabled:text-foreground-muted"], {
     variants: {
       size: {
         sm: "text-xs",

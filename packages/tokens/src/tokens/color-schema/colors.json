@@ -1,6 +1,6 @@
 {
   "$schema": "https://tokens.studio/schemas/$metadata.json",
-  "description": "Path-only palette schema for Tailwind theme.mjs. Hex values are placeholders; real colours live in packages/themes/default.",
+  "description": "Path-only palette schema for tailwind-theme.css @theme inline. Hex values are placeholders; real colours live in theme packages.",
   "color": {
     "navy": {
       "50": { "value": "#000000", "type": "color" },

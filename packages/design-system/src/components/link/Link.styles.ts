@@ -4,8 +4,8 @@ export const linkStyles = {
   component: cva(
     [
       "inline-flex items-center gap-1 font-medium transition-colors",
-      "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:ring-offset-2 rounded-sm",
-      "data-[disabled]:opacity-50 data-[disabled]:pointer-events-none",
+      "focus:outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:ring-offset-2 rounded-sm",
+      "data-disabled:opacity-50 data-disabled:pointer-events-none",
     ],
     {
       variants: {

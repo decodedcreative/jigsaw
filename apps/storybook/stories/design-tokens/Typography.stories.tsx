@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import theme from "../../../../packages/tokens/dist/theme.mjs";
+import docsTokens from "@jigsaw/tokens/docs-tokens";
 import { TokenPage, TokenSection, TypeSample } from "./_components";
 
 const textSizeClass = {
@@ -40,7 +40,7 @@ const letterSpacingClass = {
 } as const;
 
 function TypographyContent() {
-  const { font } = theme;
+  const { font } = docsTokens;
 
   return (
     <TokenPage>

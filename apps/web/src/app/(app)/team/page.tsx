@@ -149,7 +149,8 @@ function TeamInner() {
               key={m.id}
               classNameOverrides={{ component: "flex flex-col overflow-hidden", content: "pt-0 pb-5 px-5" }}
             >
-              <div className="h-10 bg-gradient-to-r from-navy-800 to-navy-700" />
+              {/* Tailwind v4: bg-gradient-to-r → bg-linear-to-r */}
+              <div className="h-10 bg-linear-to-r from-navy-800 to-navy-700" />
                 <div className="-mt-5 mb-3">
                   <Avatar size="lg" initials={m.initials} status={m.status} />
                 </div>

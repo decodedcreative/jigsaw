@@ -24,10 +24,10 @@ const toneVariants = {
  * Fallback is currentColor (mono icons or inherited tone on the svg).
  */
 const customPathFills = [
-  "[&_[data-fill=primary]]:fill-[var(--icon-fill-primary,currentColor)]",
-  "[&_[data-fill=secondary]]:fill-[var(--icon-fill-secondary,currentColor)]",
-  "[&_[data-fill=tertiary]]:fill-[var(--icon-fill-tertiary,currentColor)]",
-  "[&_[data-fill=quaternary]]:fill-[var(--icon-fill-quaternary,currentColor)]",
+  "data-[fill=primary]:**:fill-(--icon-fill-primary,currentColor)",
+  "data-[fill=secondary]:**:fill-(--icon-fill-secondary,currentColor)",
+  "data-[fill=tertiary]:**:fill-(--icon-fill-tertiary,currentColor)",
+  "data-[fill=quaternary]:**:fill-(--icon-fill-quaternary,currentColor)",
 ] as const;
 
 /** Phosphor icons — single colour via tone / currentColor. */

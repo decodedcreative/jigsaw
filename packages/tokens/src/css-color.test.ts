@@ -1,18 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  formatCssRgbTupleForDisplay,
-  readCssVariableColor,
-  tailwindColorVarRef,
-} from "./tailwind-theme-color.mjs";
-
-describe("tailwindColorVarRef", () => {
-  it("maps a colour token path to a Tailwind var reference", () => {
-    expect(tailwindColorVarRef(["color", "navy", "500"])).toBe(
-      "rgb(var(--color-navy-500) / <alpha-value>)",
-    );
-  });
-});
+import { formatCssRgbTupleForDisplay, readCssVariableColor } from "./css-color";
 
 describe("formatCssRgbTupleForDisplay", () => {
   it("formats valid RGB tuples", () => {

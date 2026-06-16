@@ -114,7 +114,7 @@ function InviteButton() {
       <input
         type="email"
         placeholder="colleague@example.com"
-        className="w-full text-sm px-3 py-2 rounded-md border border-border-default bg-surface-default text-foreground-primary placeholder:text-foreground-placeholder focus:outline-none focus:ring-2 focus:ring-interactive-accent/40 focus:border-interactive-accent"
+        className="w-full text-sm px-3 py-2 rounded-md border border-border-default bg-surface-default text-foreground-primary placeholder:text-foreground-placeholder focus:outline-hidden focus:ring-2 focus:ring-interactive-accent/40 focus:border-interactive-accent"
       />
     </Modal>
   );

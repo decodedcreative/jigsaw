@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import theme from "../../../../packages/tokens/dist/theme.mjs";
+import docsTokens from "@jigsaw/tokens/docs-tokens";
 import { SpacingSample, TokenPage, TokenSection } from "./_components";
 
 function SpacingContent() {
-  const spacing = theme.spacing as Record<string, string>;
+  const spacing = docsTokens.spacing;
 
   return (
     <TokenPage>
