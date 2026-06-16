@@ -14,11 +14,14 @@
     "./shared/*": "./dist/css/shared/*",
     "./themes/*": "./dist/css/themes/*",
     "./tailwind-theme.css": "./dist/css/tailwind-theme.css",
-    "./theme": "./dist/theme.mjs",
-    "./semantic-colors": {
-      "types": "./dist/semantic-colors.d.ts",
-      "import": "./dist/semantic-colors.mjs",
-      "require": "./dist/semantic-colors.js"
+    "./docs-tokens": {
+      "types": "./docs-tokens.d.ts",
+      "import": "./dist/docs-tokens.mjs"
+    },
+    "./css-color": {
+      "types": "./dist/css-color.d.ts",
+      "import": "./dist/css-color.mjs",
+      "require": "./dist/css-color.js"
     }
   },
   "scripts": {

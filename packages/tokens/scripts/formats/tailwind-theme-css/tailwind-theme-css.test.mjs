@@ -24,6 +24,7 @@ describe("tailwind-theme.css build output", () => {
     expect(css).toContain("--color-surface-primary: rgb(var(--color-surface-primary));");
     expect(css).toContain("--color-surface: rgb(var(--color-surface-default));");
     expect(css).toContain("--color-border: rgb(var(--color-border-default));");
+    expect(css).toContain("--color-focus-ring: rgb(var(--color-focus-ring));");
     expect(css).toContain("--color-link: rgb(var(--color-link-default));");
   });
 });

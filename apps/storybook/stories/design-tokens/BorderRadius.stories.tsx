@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import theme from "../../../../packages/tokens/dist/theme.mjs";
+import docsTokens from "@jigsaw/tokens/docs-tokens";
 import { RadiusSample, TokenPage, TokenRow, TokenSection } from "./_components";
 
 function BorderRadiusContent() {
-  const radii = theme.borderRadius as Record<string, string>;
+  const radii = docsTokens.borderRadius;
 
   return (
     <TokenPage>

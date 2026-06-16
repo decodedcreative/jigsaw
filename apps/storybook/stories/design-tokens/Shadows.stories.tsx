@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import theme from "../../../../packages/tokens/dist/theme.mjs";
+import docsTokens from "@jigsaw/tokens/docs-tokens";
 import { ShadowSample, TokenPage, TokenRow, TokenSection } from "./_components";
 
 function ShadowsContent() {
-  const shadows = theme.shadow as Record<string, string>;
+  const shadows = docsTokens.shadow;
 
   return (
     <TokenPage>
