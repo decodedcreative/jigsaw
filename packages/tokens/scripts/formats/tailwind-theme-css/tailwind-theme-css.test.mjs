@@ -20,11 +20,20 @@ describe("tailwind-theme.css build output", () => {
   });
 
   it("bridges palette and semantic colours to runtime CSS variables", () => {
-    expect(css).toContain("--color-navy-500: rgb(var(--color-navy-500));");
-    expect(css).toContain("--color-surface-primary: rgb(var(--color-surface-primary));");
-    expect(css).toContain("--color-surface: rgb(var(--color-surface-default));");
-    expect(css).toContain("--color-border: rgb(var(--color-border-default));");
-    expect(css).toContain("--color-focus-ring: rgb(var(--color-focus-ring));");
-    expect(css).toContain("--color-link: rgb(var(--color-link-default));");
+    expect(css).toMatch(/--color-navy-500:\s*rgb\(var\(--color-navy-500\)\)/);
+    expect(css).toMatch(/--color-surface-primary:\s*rgb\(var\(--color-surface-primary\)\)/);
+    expect(css).toMatch(/--color-surface:\s*rgb\(var\(--color-surface-default\)\)/);
+    expect(css).toMatch(/--color-border:\s*rgb\(var\(--color-border-default\)\)/);
+    expect(css).toMatch(/--color-focus-ring:\s*rgb\(var\(--color-focus-ring\)\)/);
+    expect(css).toMatch(/--color-link:\s*rgb\(var\(--color-link-default\)\)/);
+  });
+
+  it("uses rgb(var(...)) refs so Tailwind opacity modifiers work on semantic colours", () => {
+    const inlineBlock = css.slice(css.indexOf("@theme inline {"));
+    const semanticRefs = [...inlineBlock.matchAll(/--color-([\w-]+):\s*rgb\(var\(--color-[\w-]+\)\)/g)];
+    expect(semanticRefs.length).toBeGreaterThan(10);
+    for (const [, name] of semanticRefs) {
+      expect(name).toMatch(/^[a-z0-9-]+$/);
+    }
   });
 });

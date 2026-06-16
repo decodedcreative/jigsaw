@@ -40,7 +40,7 @@ describe('Button', () => {
     expect(screen.getByRole('button')).toHaveClass('bg-surface-muted');
   });
 
-  it('renders outline-solid variant', () => {
+  it('renders outline variant', () => {
     render(<Button variant="outline">Outline</Button>);
     expect(screen.getByRole('button')).toHaveClass('bg-transparent');
   });

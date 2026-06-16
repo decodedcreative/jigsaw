@@ -9,12 +9,18 @@ const meta = {
   component: Button,
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component:
+          "Button variants are unchanged in the public API (`outline` remains the bordered style). Tailwind v4 renamed the utility `outline-none` → `outline-hidden` in styles — not this variant prop.",
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "secondary", "accent", "outline-solid", "ghost", "destructive", "link"],
+      options: ["primary", "secondary", "accent", "outline", "ghost", "destructive", "link"],
     },
     size: {
       control: "select",
