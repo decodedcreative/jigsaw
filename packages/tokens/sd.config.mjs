@@ -41,7 +41,7 @@ const figmaPlatform = (files) => ({
 /** @param {string[]} source @param {Record<string, object>} platforms @param {object} hooks */
 const sdConfig = (source, platforms, hooks) => ({ source, platforms, hooks });
 
-// ─── Theme CSS — discovered from src/tokens/themes/{id}/ ────────────────────
+// ─── Theme CSS (legacy in-repo only) — brand themes build CSS in packages/themes/{id}/ ─
 
 const buildThemeCssConfig = (themeId) => {
   const modes = discoverSemanticModes(themeId);
@@ -108,7 +108,7 @@ const buildThemeCssConfig = (themeId) => {
   return sdConfig([themeSourceGlob(themeId)], platforms, cssHooks);
 };
 
-// ─── Figma / Tokens Studio exports (legacy value/type JSON) ─────────────────
+// ─── Figma exports — theme JSON from packages/themes/{id}/src/ via discoverFigmaThemes() ─
 // No transformGroup: css/js transforms mutate values (e.g. hex → RGB tuples).
 // Figma exports read token.original via figma/tokens for source literals.
 //

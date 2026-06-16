@@ -1,10 +1,22 @@
 # Figma / Tokens Studio sync
 
-Design tokens for Figma are exported from source JSON under `src/tokens/` into **git-tracked** files in `packages/tokens/figma/`. Tokens Studio pulls from this folder via GitHub sync.
+Design tokens for Figma are exported from source JSON into **git-tracked** files in `packages/tokens/figma/`. Tokens Studio pulls from this folder via GitHub sync.
 
-**Source of truth:** `src/tokens/` — never edit generated files in `figma/` by hand.
+**Never edit generated files in `figma/` by hand.**
 
-## Folder contents
+## Source layout
+
+| Source | Path | Figma output |
+|--------|------|--------------|
+| Shared (spacing, radius, typography, …) | `packages/tokens/src/tokens/shared/` | `shared.tokens.json` |
+| Default theme palette + semantics | `packages/themes/default/src/` | `default-base.tokens.json`, `default-light.tokens.json`, `default-dark.tokens.json` |
+| Portfolio theme (palette + semantics) | `packages/themes/portfolio/src/` | `portfolio.tokens.json` |
+
+Brand theme **CSS** is built in each `@jigsaw/theme-*` package. `@jigsaw/tokens` only builds shared CSS, Tailwind theme, and **Figma JSON** for all themes (via `discoverFigmaThemes()` reading `packages/themes/{id}/src/`).
+
+Colour JSON must not be duplicated under `packages/tokens/` — theme packages are the single source for brand colours.
+
+## Folder contents (`packages/tokens/figma/`)
 
 | File | Purpose |
 |------|---------|
@@ -49,14 +61,17 @@ Docs: [Tokens Studio GitHub sync](https://docs.tokens.studio/token-storage/remot
 
 ## Local workflow (code → Figma)
 
-1. Edit token sources under `src/tokens/`.
+1. Edit token sources:
+   - Shared tokens → `packages/tokens/src/tokens/shared/`
+   - Default theme colours → `packages/themes/default/src/`
+   - Portfolio theme colours → `packages/themes/portfolio/src/`
 2. Rebuild exports:
 
    ```bash
    npm run build:tokens -w @jigsaw/tokens
    ```
 
-   This runs Style Dictionary and regenerates `figma/*.tokens.json`, `$themes.json`, and `$metadata.json`.
+   This runs Style Dictionary and regenerates `figma/*.tokens.json`, `$themes.json`, and `$metadata.json` from the paths above.
 
 3. Verify and check drift:
 
@@ -65,7 +80,7 @@ Docs: [Tokens Studio GitHub sync](https://docs.tokens.studio/token-storage/remot
    npm run check:figma-drift -w @jigsaw/tokens
    ```
 
-4. Commit the updated `packages/tokens/figma/` files.
+4. Commit the updated `packages/tokens/figma/` files (if changed).
 5. In Tokens Studio: **Pull from remote** to load the latest from GitHub.
 
 CI runs the same build, verify, and drift checks on every PR.
@@ -80,9 +95,9 @@ CI runs the same build, verify, and drift checks on every PR.
 
 ## Adding a new theme
 
-Create the source layout under `src/tokens/themes/{id}/` — discovery drives CSS, Figma, `$themes.json`, and `$metadata.json`. Filenames are defined in `discoverFigmaOutputs()` (`scripts/figma/discovery/`); `sd.config.mjs` must stay aligned. See the header comment in `scripts/discover-token-sets/` for export rules.
-
-After adding sources:
+1. Create `packages/themes/{id}/` with `src/base/` and `src/semantic/` JSON (see `@jigsaw/theme-default` or `@jigsaw/theme-portfolio`).
+2. Add a CSS build in that package (`sd.config.mjs` + `@jigsaw/theme-build`).
+3. Rebuild Figma exports — discovery in `scripts/discover-token-sets/` drives Figma filenames, `$themes.json`, and `$metadata.json` automatically. Output names are defined in `discoverFigmaOutputs()` (`scripts/figma/discovery/`). See the header comment in `scripts/discover-token-sets/` for export rules.
 
 ```bash
 npm run build:tokens -w @jigsaw/tokens
@@ -93,7 +108,7 @@ No manual edits to `sd.config.mjs` file lists are required for standard theme sh
 
 ## Direction of sync (v1)
 
-**One-way: code → Figma.** Designers pull from GitHub after engineers (or the build) update `figma/`. Bi-directional sync (edit in Figma, push to repo) is possible with a write-enabled PAT but is not the default workflow — source JSON in `src/tokens/` should remain authoritative.
+**One-way: code → Figma.** Designers pull from GitHub after engineers (or the build) update `figma/`. Bi-directional sync (edit in Figma, push to repo) is possible with a write-enabled PAT but is not the default workflow — source JSON in the paths above should remain authoritative.
 
 ## Troubleshooting
 

@@ -20,7 +20,9 @@ Publish the file as a team library via **Assets → Publish** (file-level, not p
 | Variant styles | `{Name}.styles.ts` |
 | Storybook reference | `{Name}.stories.tsx` |
 | Visual regression | Chromatic (`apps/storybook`) — not local screenshots |
-| Figma token JSON | `packages/tokens/figma/` |
+| Shared token JSON | `packages/tokens/src/tokens/shared/` |
+| Brand theme JSON | `packages/themes/{id}/src/` (`default`, `portfolio`, …) |
+| Figma token JSON (generated) | `packages/tokens/figma/` |
 
 Do **not** use Claude Design mockups or ad-hoc frames as reference.
 

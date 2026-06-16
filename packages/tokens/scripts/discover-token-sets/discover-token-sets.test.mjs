@@ -113,15 +113,12 @@ describe("capitalize", () => {
 });
 
 describe("filesystem discovery", () => {
-  it("discovers legacy theme ids from src/tokens/themes", () => {
+  it("discovers no legacy in-repo theme ids", () => {
     expect(discoverThemes()).toEqual([]);
   });
 
-  it("discovers external themes under packages/themes", () => {
+  it("discovers Figma themes from packages/themes only", () => {
     expect(discoverExternalThemes()).toEqual(["default", "portfolio"]);
-  });
-
-  it("includes external and legacy themes in Figma discovery", () => {
     expect(discoverFigmaThemes()).toEqual(["default", "portfolio"]);
   });
 

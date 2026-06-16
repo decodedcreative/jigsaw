@@ -6,11 +6,12 @@ import { fileURLToPath } from "node:url";
  * Theme discovery for Style Dictionary export pipelines.
  *
  * Source layout:
- *   packages/tokens/src/tokens/shared/     → shared.tokens.json, shared/base.css
- *   packages/themes/{id}/src/            → extracted brand themes (CSS built in-package)
- *     base/                              → palette tokens
- *     semantic/                          → semantic tokens; mode = JSON root key
- *   packages/tokens/src/tokens/themes/{id}/ → legacy in-repo themes (prefer packages/themes/{id}/)
+ *   packages/tokens/src/tokens/shared/  → shared.tokens.json, shared/base.css
+ *   packages/themes/{id}/src/           → brand theme JSON (Figma + CSS in @jigsaw/theme-{id})
+ *     base/                             → palette tokens
+ *     semantic/                         → semantic tokens; mode = JSON root key
+ *
+ * Legacy fallback: packages/tokens/src/tokens/themes/{id}/ (unused — all themes are external)
  *
  * Semantic modes are the top-level keys in semantic/*.json (e.g. light, dark, portfolio).
  *
@@ -85,7 +86,7 @@ export const discoverSemanticModes = (themeId) => {
   return [...prefixes].sort();
 };
 
-/** @returns {string[]} Theme ids with sources under packages/tokens/src/tokens/themes/. */
+/** @returns {string[]} Theme ids with legacy in-repo sources (packages/tokens/src/tokens/themes/). */
 export const discoverThemes = () => {
   if (!fs.existsSync(legacyThemesRoot)) return [];
   return fs
