@@ -20,7 +20,7 @@ export const numberFieldStyles = {
   group: cva(
     [
       "flex w-full items-stretch overflow-hidden rounded-default border",
-      "focus-within:outline-none focus-within:ring-2 focus-within:ring-inset",
+      "focus-within:outline-hidden focus-within:ring-2 focus-within:ring-inset",
     ],
     {
       variants: {
@@ -37,9 +37,9 @@ export const numberFieldStyles = {
     [
       "min-w-0 flex-1 border-0 rounded-none bg-surface-default text-foreground-primary text-center transition-colors",
       "placeholder:text-foreground-muted",
-      "focus:outline-none focus:ring-0",
-      "data-[focus-visible]:outline-none data-[focus-visible]:ring-0",
-      "data-[disabled]:cursor-not-allowed data-[disabled]:bg-surface-muted data-[disabled]:text-foreground-muted",
+      "focus:outline-hidden focus:ring-0",
+      "data-focus-visible:outline-hidden data-focus-visible:ring-0",
+      "data-disabled:cursor-not-allowed data-disabled:bg-surface-muted data-disabled:text-foreground-muted",
       "[appearance:textfield] [-moz-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
     ],
     {
@@ -62,8 +62,8 @@ export const numberFieldStyles = {
     [
       "shrink-0 flex items-center justify-center border-0 border-r bg-surface-muted text-foreground-secondary transition-colors",
       "hover:bg-surface-subtle hover:text-foreground-primary",
-      "focus:outline-none",
-      "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-surface-muted data-[disabled]:hover:text-foreground-secondary",
+      "focus:outline-hidden",
+      "data-disabled:opacity-50 data-disabled:cursor-not-allowed data-disabled:hover:bg-surface-muted data-disabled:hover:text-foreground-secondary",
     ],
     {
       variants: {
@@ -85,8 +85,8 @@ export const numberFieldStyles = {
     [
       "shrink-0 flex items-center justify-center border-0 border-l bg-surface-muted text-foreground-secondary transition-colors",
       "hover:bg-surface-subtle hover:text-foreground-primary",
-      "focus:outline-none",
-      "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed data-[disabled]:hover:bg-surface-muted data-[disabled]:hover:text-foreground-secondary",
+      "focus:outline-hidden",
+      "data-disabled:opacity-50 data-disabled:cursor-not-allowed data-disabled:hover:bg-surface-muted data-disabled:hover:text-foreground-secondary",
     ],
     {
       variants: {

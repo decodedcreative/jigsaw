@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import theme from "../../../../packages/tokens/dist/theme.mjs";
+import docsTokens from "@jigsaw/tokens/docs-tokens";
 import { ColorSwatch, TokenPage, TokenRow, TokenSection } from "./_components";
 import { useResolvedCssColor } from "./css-color";
 
@@ -18,7 +18,7 @@ function PaletteSwatch({
 }
 
 function ColorPaletteContent() {
-  const { color } = theme;
+  const { color } = docsTokens;
 
   return (
     <TokenPage>
@@ -30,7 +30,7 @@ function ColorPaletteContent() {
       </p>
 
       {paletteScales.map((name) => {
-        const scale = color[name] as Record<string, string>;
+        const scale = color[name];
         return (
           <TokenSection
             key={name}

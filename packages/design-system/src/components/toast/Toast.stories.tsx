@@ -168,7 +168,7 @@ export const Position: Story = {
     },
   },
   render: (args) => (
-    <div className="flex min-h-[32rem] flex-col bg-surface-default p-8">
+    <div className="flex min-h-128 flex-col bg-surface-default p-8">
       <div className="min-h-28 shrink-0" aria-hidden />
       <div className="mt-auto flex flex-col gap-4">
         <p className="max-w-md text-sm text-foreground-secondary">
@@ -194,7 +194,7 @@ export const MultipleRegions: Story = {
     },
   },
   render: () => (
-    <div className="flex min-h-[32rem] flex-col items-center justify-center gap-4 bg-surface-default p-8">
+    <div className="flex min-h-128 flex-col items-center justify-center gap-4 bg-surface-default p-8">
       <p className="max-w-md text-center text-sm text-foreground-secondary">
         Two independent queues — top-right for messages, bottom-right for actions.
       </p>

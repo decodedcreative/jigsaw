@@ -130,7 +130,7 @@ describe('LinkButton', () => {
     expect(screen.getByRole('link')).toHaveClass('bg-surface-muted');
   });
 
-  it('renders outline variant', () => {
+  it('renders outline-solid variant', () => {
     render(<LinkButton href="/" variant="outline">Outline</LinkButton>);
     expect(screen.getByRole('link')).toHaveClass('border-border-strong');
   });

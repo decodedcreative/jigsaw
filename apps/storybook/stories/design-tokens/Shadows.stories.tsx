@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import theme from "../../../../packages/tokens/dist/theme.mjs";
+import docsTokens from "@jigsaw/tokens/docs-tokens";
 import { ShadowSample, TokenPage, TokenRow, TokenSection } from "./_components";
 
 function ShadowsContent() {
-  const shadows = theme.shadow as Record<string, string>;
+  const shadows = docsTokens.shadow;
 
   return (
     <TokenPage>
       <h1 className="text-3xl font-bold mb-2">Shadows</h1>
       <p className="text-foreground-secondary mb-8 max-w-2xl">
         Elevation tokens from <code className="font-mono text-sm">@jigsaw/tokens</code>. Use
-        Tailwind utilities like <code className="font-mono text-sm">shadow-sm</code>,{" "}
+        Tailwind utilities like <code className="font-mono text-sm">shadow-xs</code>,{" "}
         <code className="font-mono text-sm">shadow-md</code>,{" "}
         <code className="font-mono text-sm">shadow-xl</code>, or the CSS variable{" "}
         <code className="font-mono text-sm">var(--shadow-md)</code>.

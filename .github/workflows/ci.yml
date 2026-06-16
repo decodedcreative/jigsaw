@@ -22,7 +22,9 @@ jobs:
         run: npm run test --workspace=@jigsaw/design-system
 
       - name: Test storybook token utilities
-        run: npm run test --workspace=@jigsaw/storybook
+        run: |
+          npm run build --workspace=@jigsaw/tokens
+          npm run test --workspace=@jigsaw/storybook
 
       - name: Test theme-build and theme-default CSS output
         run: |

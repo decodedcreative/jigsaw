@@ -4,9 +4,9 @@ export const buttonStyles = {
   component: cva(
     [
       "inline-flex items-center font-medium border transition-colors",
-      "focus:outline-none focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:ring-offset-2",
-      "data-[disabled]:opacity-50 data-[disabled]:pointer-events-none",
-      "data-[pressed]:scale-[0.98]",
+      "focus:outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-accent focus-visible:ring-offset-2",
+      "data-disabled:opacity-50 data-disabled:pointer-events-none",
+      "data-pressed:scale-[0.98]",
     ],
     {
       variants: {
@@ -50,7 +50,7 @@ export const buttonStyles = {
       compoundVariants: [
         { variant: "link", class: "p-0 rounded-sm h-auto" },
         { mediaOnly: true, variant: "ghost", class: "hover:bg-transparent" },
-        { mediaOnly: true, size: ["sm", "md", "lg"], class: "!px-0 !py-0" },
+        { mediaOnly: true, size: ["sm", "md", "lg"], class: "px-0! py-0!" },
         { fullWidth: true, mediaPosition: "left", class: "justify-start" },
         { fullWidth: true, mediaPosition: "right", class: "justify-between" },
       ],
