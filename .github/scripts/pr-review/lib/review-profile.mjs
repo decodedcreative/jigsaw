@@ -108,10 +108,9 @@ export const THOROUGH_PROFILE = {
 
 /**
  * @param {unknown} labels
- * @returns {ReviewProfile}
  */
-export function resolveReviewProfile(labels) {
-  const thorough =
+export function hasThoroughLabel(labels) {
+  return (
     Array.isArray(labels) &&
     labels.some(
       (label) =>
@@ -119,7 +118,19 @@ export function resolveReviewProfile(labels) {
         typeof label === "object" &&
         typeof label.name === "string" &&
         label.name === THOROUGH_LABEL,
-    );
+    )
+  );
+}
+
+/**
+ * Re-reads live PR labels on every workflow run — removing `pr-review:thorough`
+ * immediately reverts to the default profile on the next invocation.
+ *
+ * @param {unknown} labels
+ * @returns {ReviewProfile}
+ */
+export function resolveReviewProfile(labels) {
+  const thorough = hasThoroughLabel(labels);
 
   if (!thorough) {
     const mismatches = findMisconfiguredReviewLabels(labels);

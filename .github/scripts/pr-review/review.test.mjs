@@ -9,6 +9,7 @@ import {
   DEFAULT_PROFILE,
   THOROUGH_PROFILE,
   findMisconfiguredReviewLabels,
+  hasThoroughLabel,
   resolveReviewProfile,
 } from "./lib/review-profile.mjs";
 import {
@@ -84,17 +85,41 @@ test("selectReviewableFiles includes all files in thorough profile", () => {
     patch: "@@ -1,1 +1,2 @@\n line\n+added",
   }));
 
-  const { files, skipped } = selectReviewableFiles(manyFiles, THOROUGH_PROFILE);
+  const { files, skipped, excluded } = selectReviewableFiles(manyFiles, THOROUGH_PROFILE);
   assert.equal(files.length, 45);
   assert.equal(skipped.length, 0);
+  assert.equal(excluded, 0);
 });
 
-test("resolveReviewProfile selects thorough when label present", () => {
+test("selectReviewableFiles counts path-filtered files as excluded", () => {
+  const { files, skipped, excluded } = selectReviewableFiles([
+    {
+      filename: "package-lock.json",
+      status: "modified",
+      patch: "@@ +1,1 @@\n+1",
+    },
+    {
+      filename: "src/a.ts",
+      status: "modified",
+      patch: "@@ -1,1 +1,2 @@\n line\n+added",
+    },
+  ]);
+
+  assert.equal(files.length, 1);
+  assert.equal(skipped.length, 0);
+  assert.equal(excluded, 1);
+});
+
+test("hasThoroughLabel reflects current PR label state", () => {
+  assert.equal(hasThoroughLabel([{ name: "pr-review:thorough" }]), true);
+  assert.equal(hasThoroughLabel([{ name: "bug" }]), false);
+  assert.equal(hasThoroughLabel([]), false);
+});
+
+test("resolveReviewProfile switches when thorough label is removed", () => {
+  assert.equal(resolveReviewProfile([{ name: "pr-review:thorough" }]).name, "thorough");
+  assert.equal(resolveReviewProfile([{ name: "bug" }]).name, "default");
   assert.equal(resolveReviewProfile([]).name, "default");
-  assert.equal(
-    resolveReviewProfile([{ name: "pr-review:thorough" }]).name,
-    "thorough",
-  );
 });
 
 test("resolveReviewProfile falls back to default for malformed labels", () => {
@@ -167,11 +192,13 @@ test("formatReviewRunLog includes profile and comment caps", () => {
     mode: "followup",
     roundNumber: 2,
     maxComments: Number.POSITIVE_INFINITY,
+    thoroughLabelActive: true,
   });
 
   assert.match(log, /profile=thorough/);
   assert.match(log, /maxInlineComments=uncapped/);
   assert.match(log, /maxFeedbackRounds=uncapped/);
+  assert.match(log, /pr-review:thorough label=present/);
 });
 
 test("parseReviewJson accepts fenced JSON", () => {

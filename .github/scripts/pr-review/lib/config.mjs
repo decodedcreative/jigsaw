@@ -69,16 +69,26 @@ export function shouldSkipPath(path) {
 /**
  * @param {PrFile[]} files
  * @param {import('./review-profile.mjs').ReviewProfile} [profile]
- * @returns {{ files: PrFile[]; skipped: string[] }}
+ * @returns {{ files: PrFile[]; skipped: string[]; excluded: number }}
  */
 export function selectReviewableFiles(files, profile = DEFAULT_PROFILE) {
   const selected = [];
   const skipped = [];
+  let excluded = 0;
 
   for (const file of files) {
-    if (file.status === "removed") continue;
-    if (shouldSkipPath(file.filename)) continue;
-    if (!file.patch) continue;
+    if (file.status === "removed") {
+      excluded += 1;
+      continue;
+    }
+    if (shouldSkipPath(file.filename)) {
+      excluded += 1;
+      continue;
+    }
+    if (!file.patch) {
+      excluded += 1;
+      continue;
+    }
 
     if (selected.length >= profile.maxFiles) {
       skipped.push(file.filename);
@@ -109,5 +119,5 @@ export function selectReviewableFiles(files, profile = DEFAULT_PROFILE) {
     capped.push(file);
   }
 
-  return { files: capped, skipped };
+  return { files: capped, skipped, excluded };
 }

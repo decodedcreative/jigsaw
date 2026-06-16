@@ -1,4 +1,5 @@
 import { REVIEW_MARKER } from "./config.mjs";
+import { THOROUGH_LABEL } from "./review-profile.mjs";
 
 /** @typedef {'initial' | 'followup' | 'critical'} ReviewMode */
 
@@ -43,6 +44,7 @@ export function getEffectiveMaxComments(mode, profile) {
  *   mode: ReviewMode;
  *   roundNumber: number;
  *   maxComments: number;
+ *   thoroughLabelActive: boolean;
  * }} ctx
  */
 export function formatReviewRunLog(ctx) {
@@ -50,8 +52,9 @@ export function formatReviewRunLog(ctx) {
   const maxRounds = Number.isFinite(ctx.profile.maxFeedbackRounds)
     ? ctx.profile.maxFeedbackRounds
     : "uncapped";
+  const labelState = ctx.thoroughLabelActive ? "present" : "absent";
 
-  return `Reviewing ${ctx.repo}#${ctx.pullNumber} via ${ctx.provider} — profile=${ctx.profile.name}, mode=${ctx.mode}, round=${ctx.roundNumber}, maxFeedbackRounds=${maxRounds}, maxInlineComments=${maxInline}`;
+  return `Reviewing ${ctx.repo}#${ctx.pullNumber} via ${ctx.provider} — profile=${ctx.profile.name}, mode=${ctx.mode}, round=${ctx.roundNumber}, maxFeedbackRounds=${maxRounds}, maxInlineComments=${maxInline}, ${THOROUGH_LABEL} label=${labelState}`;
 }
 
 /**

@@ -16,7 +16,7 @@ import {
   parseReviewJson,
 } from "./lib/parse-review.mjs";
 import { buildSystemPrompt, buildUserPrompt } from "./lib/prompt.mjs";
-import { resolveReviewProfile } from "./lib/review-profile.mjs";
+import { resolveReviewProfile, hasThoroughLabel } from "./lib/review-profile.mjs";
 import {
   countPriorStaffReviews,
   filterCommentsForMode,
@@ -119,6 +119,7 @@ async function main() {
       mode,
       roundNumber,
       maxComments,
+      thoroughLabelActive: hasThoroughLabel(pr.labels),
     }),
   );
 
@@ -138,12 +139,16 @@ async function main() {
     console.log(`Posted ${acknowledged} addressed reply(ies) on prior inline comments.`);
   }
 
-  const { files, skipped } = selectReviewableFiles(allFiles, profile);
+  const { files, skipped, excluded } = selectReviewableFiles(allFiles, profile);
 
   if (files.length === 0) {
     console.log("No reviewable files after filters — skipping.");
     return;
   }
+
+  console.log(
+    `File selection (${profile.name}): ${files.length} reviewable, ${skipped.length} skipped by profile caps, ${excluded} excluded by path filters or missing patch`,
+  );
 
   console.log(`Selected ${files.length} reviewable file(s):`);
   for (const file of files) {
@@ -151,9 +156,7 @@ async function main() {
   }
 
   if (skipped.length > 0) {
-    console.warn(
-      `Skipped ${skipped.length} file(s) due to profile limits (${profile.name}):`,
-    );
+    console.warn(`Skipped ${skipped.length} file(s) due to profile limits:`);
     for (const filename of skipped) {
       console.warn(`  - ${filename}`);
     }
