@@ -33,6 +33,10 @@ npm run dev
 npm run lint
 ```
 
+## Using Jigsaw in another app
+
+See [docs/consumer-integration.md](docs/consumer-integration.md) for installing `@jigsaw/*` packages from npm and wiring them into a Next.js + Tailwind v4 app.
+
 ## Phases
 
 - **Phase 1 (done)** — Turborepo scaffold, apps and packages created
