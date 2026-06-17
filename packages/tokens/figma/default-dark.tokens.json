@@ -6,7 +6,7 @@
         "type": "color"
       },
       "secondary": {
-        "value": "#102a43",
+        "value": "#1a3a52",
         "type": "color"
       },
       "tertiary": {
@@ -174,7 +174,7 @@
         "type": "color"
       },
       "error-text": {
-        "value": "#ef4444",
+        "value": "#fca5a5",
         "type": "color"
       },
       "error-bg": {
@@ -190,7 +190,7 @@
         "type": "color"
       },
       "success-text": {
-        "value": "#22c55e",
+        "value": "#86efac",
         "type": "color"
       },
       "success-bg": {
@@ -206,7 +206,7 @@
         "type": "color"
       },
       "warning-text": {
-        "value": "#f59e0b",
+        "value": "#fcd34d",
         "type": "color"
       },
       "warning-bg": {
