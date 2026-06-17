@@ -17,9 +17,9 @@ Packages will be published to the [npm registry](https://www.npmjs.com/) under t
 
 ## Prerequisites
 
-- Node.js >= 20
+- Node.js >= 20 (same requirement as this monorepo; React 18 and 19 are both supported)
 - React 18 or 19
-- Tailwind CSS v4 with `@tailwindcss/postcss`
+- Tailwind CSS v4: the `tailwindcss` package (for `@import "tailwindcss"` in CSS) and `@tailwindcss/postcss` (PostCSS plugin — configured in step 2)
 
 ## 1. Install
 
@@ -194,6 +194,8 @@ Before debugging styling issues, confirm:
 | `npm install @jigsaw/...` 404 | Package not published yet | Use local `file:` deps (below) or wait for v1 release |
 
 ## Local development without publishing
+
+> `file:` dependencies are for local development and pre-release testing only — use published npm packages in production.
 
 To develop against a local Jigsaw checkout before packages are on npm:
 
