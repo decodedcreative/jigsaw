@@ -30,4 +30,8 @@ test("semantic CSS files use the same selectors and mode values as the former @j
   assert.match(light, /--color-foreground-primary: 16 42 67;/);
   assert.match(dark, /--color-surface-primary: 10 25 41;/);
   assert.match(dark, /--color-foreground-primary: 250 250 250;/);
+  assert.match(dark, /--color-surface-secondary: 26 58 82;/);
+  assert.match(dark, /--color-state-success-text: 134 239 172;/);
+  assert.match(dark, /--color-state-warning-text: 252 211 77;/);
+  assert.match(dark, /--color-state-error-text: 252 165 165;/);
 });
