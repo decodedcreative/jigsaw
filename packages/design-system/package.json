@@ -10,14 +10,15 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
-    }
+    },
+    "./tailwind.css": "./tailwind.css"
   },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint .",
     "clean": "rm -rf dist",
-    "test": "vitest run",
+    "test": "vitest run && node --test scripts/tailwind-css.test.mjs",
     "test:watch": "vitest"
   },
   "dependencies": {

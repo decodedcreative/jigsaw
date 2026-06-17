@@ -90,12 +90,7 @@ All theme stylesheets are bundled up front. Switching themes at runtime only cha
 ```css
 @import "tailwindcss";
 @import "@jigsaw/tokens/tailwind-theme.css";
-
-/*
-  Scan compiled component output for Tailwind utility class names.
-  Adjust the path if globals.css is not in app/.
-*/
-@source "../node_modules/@jigsaw/design-system/dist/**/*.{js,mjs}";
+@import "@jigsaw/design-system/tailwind.css";
 
 /* Dark mode follows data-theme (matches apps/web and Storybook) */
 @custom-variant dark (&:is([data-theme="dark"] *));
@@ -115,11 +110,9 @@ All theme stylesheets are bundled up front. Switching themes at runtime only cha
 }
 ```
 
-### Why `@source` points at `dist/`
+`@jigsaw/design-system/tailwind.css` registers Tailwind content paths for the component library. You do not need a separate `@source` directive in your app — the package owns that configuration.
 
-Jigsaw components define Tailwind classes via `cva()` in the compiled bundle. The published `@jigsaw/design-system` package ships `dist/` only, so Tailwind must scan those files — not TypeScript source.
-
-If your `globals.css` lives somewhere other than `app/globals.css`, adjust the relative path to `node_modules`. From `src/app/globals.css` in a typical Next.js app, `../node_modules/...` is correct.
+If your app uses Tailwind utilities in its own source files, add an `@source` for your app code (for example `@source "./**/*.{js,ts,jsx,tsx}"` relative to `globals.css`).
 
 ## 5. Use components
 
@@ -185,8 +178,7 @@ Portfolio tokens are scoped to `[data-theme='portfolio']` and do not replace the
 Before debugging styling issues, confirm:
 
 - [ ] Theme CSS imports are in `layout.tsx`, above `globals.css`
-- [ ] `globals.css` imports `tailwindcss` and `@jigsaw/tokens/tailwind-theme.css`
-- [ ] `@source` points at `@jigsaw/design-system/dist`
+- [ ] `globals.css` imports `tailwindcss`, `@jigsaw/tokens/tailwind-theme.css`, and `@jigsaw/design-system/tailwind.css`
 - [ ] `@custom-variant dark` is present if you use dark mode
 - [ ] `postcss.config.mjs` includes `@tailwindcss/postcss`
 - [ ] Body uses semantic utilities such as `text-foreground-primary bg-surface-primary`
@@ -195,7 +187,7 @@ Before debugging styling issues, confirm:
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
-| Components render unstyled | Tailwind not scanning component classes | Check `@source` path to `dist/` |
+| Components render unstyled | Tailwind not scanning component classes | Ensure `@jigsaw/design-system/tailwind.css` is imported; run `npm run build` in the design-system package if using `file:` deps |
 | Colours missing / all black | Theme CSS not loaded | Add imports in `layout.tsx` |
 | `dark:` utilities never apply | Missing variant or attribute | Add `@custom-variant dark` and set `data-theme="dark"` |
 | Icons missing | Transitive dep not installed | Reinstall `@jigsaw/design-system`; `@phosphor-icons/react` should be present |
@@ -230,13 +222,7 @@ cd ../your-app
 npm install
 ```
 
-While using `file:` dependencies, you can point `@source` at the Jigsaw source tree instead of `node_modules` if you prefer live class scanning during DS development:
-
-```css
-@source "../jigsaw/packages/design-system/src/**/*.{js,ts,jsx,tsx}";
-```
-
-Switch back to the `node_modules/dist` path when testing the published-package experience.
+The `@jigsaw/design-system/tailwind.css` import works the same with `file:` dependencies — build the design-system package first so `dist/` exists.
 
 ## Versioning
 
