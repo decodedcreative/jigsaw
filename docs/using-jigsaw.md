@@ -1,4 +1,4 @@
-# Consuming Jigsaw in an external app
+# Using Jigsaw in your app
 
 This guide explains how to install Jigsaw packages and wire them into a **Next.js 15 (App Router) + Tailwind CSS v4** application. The reference implementation in this repo is [`apps/web`](../apps/web).
 
