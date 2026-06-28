@@ -37,3 +37,5 @@ npm run lint
 ## Using Jigsaw in another app
 
 See [docs/using-jigsaw.md](docs/using-jigsaw.md) for installing `@jigsaw/*` packages from npm and wiring them into a Next.js + Tailwind v4 app.
+
+Maintainers: see [docs/publication.md](docs/publication.md) for npm namespace decisions and the planned release process.
