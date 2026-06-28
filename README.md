@@ -6,12 +6,14 @@ Turborepo monorepo for **Jigsaw**, a React design system, plus apps that exercis
 
 - **apps/web** — Next.js 15 (App Router) app used to dogfood Jigsaw
 - **apps/storybook** — Storybook for Jigsaw documentation
-- **packages/design-system** — **Jigsaw** — shared React components (`@jigsaw/design-system`)
-- **packages/tokens** — Design tokens via Style Dictionary (`@jigsaw/tokens`, Phase 2)
+- **packages/design-system** — React components (`@jigsaw/design-system`)
+- **packages/tokens** — Shared tokens and Tailwind v4 theme CSS (`@jigsaw/tokens`)
+- **packages/themes/default** — Default light/dark theme (`@jigsaw/theme-default`)
+- **packages/themes/portfolio** — Portfolio theme (`@jigsaw/theme-portfolio`)
 
 ## Prerequisites
 
-- Node.js >= 20
+- Node.js **≥ 20.19** (see `.nvmrc`; matches CI and test tooling such as Vitest/jsdom)
 - npm
 
 ## Commands
@@ -32,15 +34,6 @@ npm run dev
 npm run lint
 ```
 
-## Phases
+## Using Jigsaw in another app
 
-- **Phase 1 (done)** — Turborepo scaffold, apps and packages created
-- **Phase 2 (done)** — Style Dictionary tokens → CSS variables + Tailwind theme JS
-- Phase 3 — Jigsaw components + Tailwind
-- Phase 4 — Storybook wired to Jigsaw
-- Phase 5 — Dogfood / example pages in apps/web
-- Phase 6 — Chromatic + GitHub Actions
-- Phase 7 — Figma MCP documentation
-- Phase 8 — Vercel deployment
-
-Type **proceed** to move to the next phase.
+See [docs/using-jigsaw.md](docs/using-jigsaw.md) for installing `@jigsaw/*` packages from npm and wiring them into a Next.js + Tailwind v4 app.

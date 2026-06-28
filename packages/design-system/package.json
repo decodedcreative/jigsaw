@@ -10,7 +10,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
-    }
+    },
+    "./tailwind.css": "./tailwind.css"
   },
   "scripts": {
     "build": "tsup",

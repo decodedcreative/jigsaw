@@ -1,7 +1,6 @@
 @import 'tailwindcss';
 @import '@jigsaw/tokens/tailwind-theme.css';
-
-@source '../../../../packages/design-system/src/**/*.{js,ts,jsx,tsx,mdx}';
+@import '@jigsaw/design-system/tailwind.css';
 
 @custom-variant dark (&:is([data-theme="dark"] *));
 

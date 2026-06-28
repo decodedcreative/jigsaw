@@ -36,5 +36,5 @@ chromatic.log
 build-storybook.log
 chromatic-build-*.log
 
-# Prisma
 .vscode/*
+.worktrees/
