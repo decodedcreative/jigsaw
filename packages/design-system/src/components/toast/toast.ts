@@ -26,7 +26,7 @@ function warnIfRegionNotMounted(region: string) {
 
   if (!isToastRegionMounted()) {
     console.warn(
-      "[@jigsaw/design-system] toast() called with no <ToastRegion /> mounted. " +
+      "[@jigsaw-ds/design-system] toast() called with no <ToastRegion /> mounted. " +
         "Add <ToastRegion /> to your app layout."
     );
     return;
@@ -34,7 +34,7 @@ function warnIfRegionNotMounted(region: string) {
 
   if (!isToastRegionMounted(region)) {
     console.warn(
-      `[@jigsaw/design-system] toast() posted to region "${region}" but no ` +
+      `[@jigsaw-ds/design-system] toast() posted to region "${region}" but no ` +
         `<ToastRegion region="${region}" /> is mounted. The toast will not be visible.`
     );
   }

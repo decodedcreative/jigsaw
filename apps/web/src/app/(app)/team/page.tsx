@@ -14,7 +14,7 @@ import {
   toast,
   type AvatarStatus,
   type BadgeVariant,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 
 // ---------------------------------------------------------------------------
 // Data

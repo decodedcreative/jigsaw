@@ -17,7 +17,7 @@ import {
   Text,
   Textarea,
   toast,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 
 // ---------------------------------------------------------------------------
 // Profile tab

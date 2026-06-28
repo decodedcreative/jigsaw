@@ -7,7 +7,7 @@ import {
   Select,
   Text,
   toast,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import { ROLE_VARIANT } from "../TeamDirectory.stories.constants";
 import type { Member } from "../TeamDirectory.stories.types";
 

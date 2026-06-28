@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Text, ToastRegion } from "@jigsaw/design-system";
+import { Text, ToastRegion } from "@jigsaw-ds/design-system";
 import {
   NotificationFAQ,
   NotificationFeed,

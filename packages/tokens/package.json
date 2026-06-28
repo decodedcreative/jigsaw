@@ -1,5 +1,5 @@
 {
-  "name": "@jigsaw/tokens",
+  "name": "@jigsaw-ds/tokens",
   "version": "0.0.1",
   "private": true,
   "main": "./dist/index.js",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
-    "@jigsaw/theme-build": "*",
+    "@jigsaw-ds/theme-build": "*",
     "eslint": "^9.16.0",
     "globals": "^14.0.0",
     "style-dictionary": "^4.1.1",

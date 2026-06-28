@@ -3,7 +3,7 @@ import {
   Form,
   Select,
   toast,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import { DATE_FORMATS, LANGUAGES, TIMEZONES } from "../AccountSettings.stories.constants";
 
 export const AppearanceTab = () => (

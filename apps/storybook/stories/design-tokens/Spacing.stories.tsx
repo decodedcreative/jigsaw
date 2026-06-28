@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import docsTokens from "@jigsaw/tokens/docs-tokens";
+import docsTokens from "@jigsaw-ds/tokens/docs-tokens";
 import { SpacingSample, TokenPage, TokenSection } from "./_components";
 
 function SpacingContent() {
@@ -9,7 +9,7 @@ function SpacingContent() {
     <TokenPage>
       <h1 className="text-3xl font-bold mb-2">Spacing scale</h1>
       <p className="text-foreground-secondary mb-8 max-w-2xl">
-        Spacing tokens from <code className="font-mono text-sm">@jigsaw/tokens</code>. Use
+        Spacing tokens from <code className="font-mono text-sm">@jigsaw-ds/tokens</code>. Use
         Tailwind utilities such as <code className="font-mono text-sm">p-4</code>,{" "}
         <code className="font-mono text-sm">gap-2</code>,{" "}
         <code className="font-mono text-sm">mt-8</code>, or the CSS custom property{" "}

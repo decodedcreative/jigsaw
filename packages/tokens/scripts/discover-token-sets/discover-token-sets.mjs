@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
  *
  * Source layout:
  *   packages/tokens/src/tokens/shared/  → shared.tokens.json, shared/base.css
- *   packages/themes/{id}/src/           → brand theme JSON (Figma + CSS in @jigsaw/theme-{id})
+ *   packages/themes/{id}/src/           → brand theme JSON (Figma + CSS in @jigsaw-ds/theme-{id})
  *     base/                             → palette tokens
  *     semantic/                         → semantic tokens; mode = JSON root key
  *

@@ -1,4 +1,4 @@
-import type { ToastVariant } from "@jigsaw/design-system";
+import type { ToastVariant } from "@jigsaw-ds/design-system";
 
 export type ToastExample = {
   label: string;

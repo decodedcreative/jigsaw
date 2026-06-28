@@ -34,7 +34,7 @@ export function registerToastRegion(region: string = DEFAULT_TOAST_REGION) {
     const count = mountCounts.get(region) ?? 0;
     if (count > 0) {
       console.warn(
-        `[@jigsaw/design-system] Multiple <ToastRegion region="${region}" /> instances are mounted. ` +
+        `[@jigsaw-ds/design-system] Multiple <ToastRegion region="${region}" /> instances are mounted. ` +
           "Each toast posted to this region will render once per instance."
       );
     }

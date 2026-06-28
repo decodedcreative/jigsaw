@@ -9,7 +9,7 @@ import {
   Modal,
   Text,
   toast,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import {
   ArrowClockwiseIcon,
   ArrowSquareOutIcon,

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import {
   formatCssRgbTupleForDisplay,
   readCssVariableColor,
-} from "@jigsaw/tokens/css-color";
+} from "@jigsaw-ds/tokens/css-color";
 
 const THEME_ATTRIBUTE_FILTER = ["class", "style", "data-theme"];
 

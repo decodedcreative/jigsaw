@@ -46,7 +46,7 @@ describe("collectSemanticColorAliases", () => {
 describe("discoverSemanticColorVars", () => {
   const { semanticColorVars, semanticColorAliases } = discoverSemanticColorVars();
 
-  it("discovers semantic suffixes from @jigsaw/theme-default JSON", () => {
+  it("discovers semantic suffixes from @jigsaw-ds/theme-default JSON", () => {
     expect(semanticColorVars).toContain("surface-primary");
     expect(semanticColorVars).toContain("interactive-accent");
     expect(semanticColorVars).toContain("focus-ring");

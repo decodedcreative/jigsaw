@@ -1,4 +1,4 @@
-import type { AvatarStatus } from "@jigsaw/design-system";
+import type { AvatarStatus } from "@jigsaw-ds/design-system";
 
 export type Role = "Admin" | "Editor" | "Viewer" | "Owner";
 

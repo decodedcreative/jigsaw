@@ -1,4 +1,4 @@
-import { Icon } from "@jigsaw/design-system";
+import { Icon } from "@jigsaw-ds/design-system";
 import { SquaresFourIcon } from "@phosphor-icons/react";
 
 export const BrandMark = () => (

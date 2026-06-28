@@ -6,7 +6,7 @@ import {
   Select,
   Text,
   ToastRegion,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import { MEMBERS } from "./TeamDirectory.stories.constants";
 import { MemberCard } from "./components";
 

@@ -1,5 +1,5 @@
 {
-  "name": "@jigsaw/theme-build",
+  "name": "@jigsaw-ds/theme-build",
   "version": "0.0.1",
   "private": true,
   "type": "module",

@@ -25,7 +25,7 @@ Paths below match the repo layout after JSW-90/91 (theme packages). Colour JSON 
 | Shared token JSON | `packages/tokens/src/tokens/shared/` (spacing, radius, typography, …) |
 | Default theme JSON | `packages/themes/default/src/base/colors.json`, `src/semantic/colors-light.json`, `src/semantic/colors-dark.json` |
 | Portfolio theme JSON | `packages/themes/portfolio/src/base/colors.json`, `src/semantic/colors.json` |
-| Theme CSS (runtime) | `@jigsaw/theme-default`, `@jigsaw/theme-portfolio` (`packages/themes/{id}/dist/css/`) |
+| Theme CSS (runtime) | `@jigsaw-ds/theme-default`, `@jigsaw-ds/theme-portfolio` (`packages/themes/{id}/dist/css/`) |
 | Figma token JSON (generated) | `packages/tokens/figma/` (`*.tokens.json`, `$themes.json`) |
 
 Do **not** use Claude Design mockups or ad-hoc frames as reference.

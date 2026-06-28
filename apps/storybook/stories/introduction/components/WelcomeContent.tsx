@@ -14,7 +14,7 @@ export const WelcomeContent = () => (
       {/* Hero */}
       <div className="max-w-2xl mb-12">
         <div className="inline-flex items-center gap-2 bg-surface-muted text-foreground-secondary text-xs font-mono px-3 py-1 rounded-full mb-4">
-          @jigsaw/design-system
+          @jigsaw-ds/design-system
         </div>
         <h1 className="text-4xl font-bold text-foreground-primary mb-3">Jigsaw</h1>
         <p className="text-lg text-foreground-secondary leading-relaxed">

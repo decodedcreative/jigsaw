@@ -5,7 +5,7 @@ import {
   CheckboxGroup,
   Form,
   toast,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 
 const NOTIFICATION_OPTIONS = [
   { value: "digest", label: "Weekly digest", description: "A summary of activity from the past week." },

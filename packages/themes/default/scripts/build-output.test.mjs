@@ -20,7 +20,7 @@ test("base.css matches legacy default palette output", () => {
   assert.doesNotMatch(base, /#[0-9a-f]{3,8}/i);
 });
 
-test("semantic CSS files use the same selectors and mode values as the former @jigsaw/tokens build", () => {
+test("semantic CSS files use the same selectors and mode values as the former @jigsaw-ds/tokens build", () => {
   const light = readFileSync(path.join(distCss, "semantic-light.css"), "utf8");
   const dark = readFileSync(path.join(distCss, "semantic-dark.css"), "utf8");
 

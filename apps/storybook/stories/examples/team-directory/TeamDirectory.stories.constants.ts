@@ -1,4 +1,4 @@
-import type { BadgeVariant } from "@jigsaw/design-system";
+import type { BadgeVariant } from "@jigsaw-ds/design-system";
 import type { Member, Role } from "./TeamDirectory.stories.types";
 
 export const MEMBERS: Member[] = [

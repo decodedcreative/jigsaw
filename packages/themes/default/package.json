@@ -1,5 +1,5 @@
 {
-  "name": "@jigsaw/theme-default",
+  "name": "@jigsaw-ds/theme-default",
   "version": "0.0.1",
   "private": true,
   "exports": {
@@ -14,7 +14,7 @@
     "test": "node --test scripts/build-output.test.mjs"
   },
   "devDependencies": {
-    "@jigsaw/theme-build": "*",
+    "@jigsaw-ds/theme-build": "*",
     "style-dictionary": "^4.1.1"
   }
 }

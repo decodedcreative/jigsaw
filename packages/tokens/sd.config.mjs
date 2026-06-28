@@ -1,4 +1,4 @@
-import { cssHooks, cssPlatform } from "@jigsaw/theme-build";
+import { cssHooks, cssPlatform } from "@jigsaw-ds/theme-build";
 import {
   capitalize,
   discoverFigmaThemes,

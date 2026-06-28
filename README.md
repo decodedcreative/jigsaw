@@ -6,10 +6,10 @@ Turborepo monorepo for **Jigsaw**, a React design system, plus apps that exercis
 
 - **apps/web** — Next.js 15 (App Router) app used to dogfood Jigsaw
 - **apps/storybook** — Storybook for Jigsaw documentation
-- **packages/design-system** — React components (`@jigsaw/design-system`)
-- **packages/tokens** — Shared tokens and Tailwind v4 theme CSS (`@jigsaw/tokens`)
-- **packages/themes/default** — Default light/dark theme (`@jigsaw/theme-default`)
-- **packages/themes/portfolio** — Portfolio theme (`@jigsaw/theme-portfolio`)
+- **packages/design-system** — React components (`@jigsaw-ds/design-system`)
+- **packages/tokens** — Shared tokens and Tailwind v4 theme CSS (`@jigsaw-ds/tokens`)
+- **packages/themes/default** — Default light/dark theme (`@jigsaw-ds/theme-default`)
+- **packages/themes/portfolio** — Portfolio theme (`@jigsaw-ds/theme-portfolio`)
 
 ## Prerequisites
 
@@ -36,4 +36,6 @@ npm run lint
 
 ## Using Jigsaw in another app
 
-See [docs/using-jigsaw.md](docs/using-jigsaw.md) for installing `@jigsaw/*` packages from npm and wiring them into a Next.js + Tailwind v4 app.
+See [docs/using-jigsaw.md](docs/using-jigsaw.md) for installing `@jigsaw-ds/*` packages from npm and wiring them into a Next.js + Tailwind v4 app.
+
+For npm org scope and publication planning, see [docs/publication.md](docs/publication.md).
