@@ -14,7 +14,7 @@ Turborepo monorepo for **Jigsaw**, a React design system, plus apps that exercis
 
 ## Prerequisites
 
-- Node.js >= 20
+- Node.js **≥ 20.19** (see `.nvmrc`; matches CI and test tooling such as Vitest/jsdom)
 - npm
 
 ## Commands

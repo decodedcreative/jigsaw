@@ -17,8 +17,8 @@ Packages will be published to the [npm registry](https://www.npmjs.com/) under t
 
 ## Prerequisites
 
-- Node.js >= 20 (same requirement as this monorepo; React 18 and 19 are both supported)
-- React 18 or 19
+- Node.js **≥ 20.9** (20 LTS recommended). Tailwind CSS v4's Oxide engine (`@tailwindcss/oxide`) requires Node 20+, and [Next.js 15](https://nextjs.org/docs/app/getting-started/installation) specifies a minimum of 20.9. Node 18 is not supported.
+- React 18 or 19 (no Node version conflict — both run on Node 20)
 - Tailwind CSS v4: the `tailwindcss` package (for `@import "tailwindcss"` in CSS) and `@tailwindcss/postcss` (PostCSS plugin — configured in step 2)
 
 ## 1. Install
