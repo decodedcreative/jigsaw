@@ -7,7 +7,6 @@ Turborepo monorepo for **Jigsaw**, a React design system, plus apps that exercis
 - **apps/web** — Next.js 15 (App Router) app used to dogfood Jigsaw
 - **apps/storybook** — Storybook for Jigsaw documentation
 - **packages/design-system** — **Jigsaw** — shared React components (`@jigsaw/design-system`)
-- **packages/db** — Prisma schema and client (Phase 5)
 - **packages/tokens** — Design tokens via Style Dictionary (`@jigsaw/tokens`, Phase 2)
 
 ## Prerequisites
@@ -39,10 +38,9 @@ npm run lint
 - **Phase 2 (done)** — Style Dictionary tokens → CSS variables + Tailwind theme JS
 - Phase 3 — Jigsaw components + Tailwind
 - Phase 4 — Storybook wired to Jigsaw
-- Phase 5 — Prisma in packages/db
-- Phase 6 — Dogfood / example pages in apps/web
-- Phase 7 — Chromatic + GitHub Actions
-- Phase 8 — Figma MCP documentation
-- Phase 9 — Vercel deployment
+- Phase 5 — Dogfood / example pages in apps/web
+- Phase 6 — Chromatic + GitHub Actions
+- Phase 7 — Figma MCP documentation
+- Phase 8 — Vercel deployment
 
 Type **proceed** to move to the next phase.

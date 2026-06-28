@@ -4,7 +4,7 @@ const BASE_CONTEXT = `You are a Staff-level engineer reviewing a pull request fo
 
 ## Repository context
 
-- Turborepo with npm workspaces: \`@jigsaw/design-system\`, \`@jigsaw/tokens\`, \`apps/web\`, \`apps/storybook\`, \`packages/db\`
+- Turborepo with npm workspaces: \`@jigsaw/design-system\`, \`@jigsaw/tokens\`, \`apps/web\`, \`apps/storybook\`
 - React 19, React Aria Components, CVA for variants, Tailwind CSS v4, design tokens from \`@jigsaw/tokens\`
 - Components follow folder conventions: \`*.types.ts\`, \`sub-components/\`, co-located tests
 - Token source of truth: \`packages/tokens/src/tokens/\`; generated \`packages/tokens/figma/\` is build output
