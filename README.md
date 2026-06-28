@@ -10,7 +10,6 @@ Turborepo monorepo for **Jigsaw**, a React design system, plus apps that exercis
 - **packages/tokens** — Shared tokens and Tailwind v4 theme CSS (`@jigsaw/tokens`)
 - **packages/themes/default** — Default light/dark theme (`@jigsaw/theme-default`)
 - **packages/themes/portfolio** — Portfolio theme (`@jigsaw/theme-portfolio`)
-- **packages/db** — Prisma schema and client (`@jigsaw/db`)
 
 ## Prerequisites
 
