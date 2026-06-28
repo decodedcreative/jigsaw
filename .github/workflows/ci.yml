@@ -18,6 +18,13 @@ jobs:
 
       - run: npm ci
 
+      - name: Verify no stale @jigsaw/ scope references
+        run: |
+          if rg --pcre2 '@jigsaw/(?!ds/)' --glob '!.worktrees/**' --glob '!node_modules/**' .; then
+            echo 'Found stale @jigsaw/ references — use @jigsaw-ds/ instead.'
+            exit 1
+          fi
+
       - name: Test design-system
         run: npm run test --workspace=@jigsaw-ds/design-system
 

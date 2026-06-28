@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   // parent directory (e.g. when this checkout is a git worktree nested
   // inside another clone). Prevents duplicate React resolution.
   outputFileTracingRoot: path.join(__dirname, "../.."),
+  // Transpile the workspace package so Next.js compiles its TypeScript/JSX.
   transpilePackages: ["@jigsaw-ds/design-system"],
 };
 

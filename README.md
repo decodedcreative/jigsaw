@@ -36,6 +36,12 @@ npm run lint
 
 ## Using Jigsaw in another app
 
-See [docs/using-jigsaw.md](docs/using-jigsaw.md) for installing `@jigsaw-ds/*` packages from npm and wiring them into a Next.js + Tailwind v4 app.
+Once published, install the npm packages under the `@jigsaw-ds` scope:
+
+```bash
+npm install @jigsaw-ds/design-system @jigsaw-ds/tokens @jigsaw-ds/theme-default
+```
+
+See [docs/using-jigsaw.md](docs/using-jigsaw.md) for full setup (PostCSS, CSS imports, and Tailwind v4 wiring) in a Next.js app.
 
 For npm org scope and publication planning, see [docs/publication.md](docs/publication.md).
