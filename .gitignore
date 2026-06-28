@@ -39,4 +39,4 @@ chromatic-build-*.log
 # Prisma
 packages/db/generated
 
-.vscode/*
+.vscode/*.worktrees/
