@@ -12,7 +12,7 @@ import {
   Select,
   toast,
   type IconTone,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import {
   ArrowClockwiseIcon,
   AtIcon,

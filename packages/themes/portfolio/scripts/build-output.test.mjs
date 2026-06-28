@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
-import { toRgbTuple } from "@jigsaw/theme-build";
+import { toRgbTuple } from "@jigsaw-ds/theme-build";
 
 const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const distCss = path.join(packageRoot, "dist/css");

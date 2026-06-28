@@ -8,7 +8,7 @@ import {
   Input,
   Link,
   Text,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import {
   BrandMark,
   GitHubIcon,

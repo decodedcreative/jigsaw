@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import docsTokens from "@jigsaw/tokens/docs-tokens";
+import docsTokens from "@jigsaw-ds/tokens/docs-tokens";
 import { ShadowSample, TokenPage, TokenRow, TokenSection } from "./_components";
 
 function ShadowsContent() {
@@ -9,7 +9,7 @@ function ShadowsContent() {
     <TokenPage>
       <h1 className="text-3xl font-bold mb-2">Shadows</h1>
       <p className="text-foreground-secondary mb-8 max-w-2xl">
-        Elevation tokens from <code className="font-mono text-sm">@jigsaw/tokens</code>. Use
+        Elevation tokens from <code className="font-mono text-sm">@jigsaw-ds/tokens</code>. Use
         Tailwind utilities like <code className="font-mono text-sm">shadow-xs</code>,{" "}
         <code className="font-mono text-sm">shadow-md</code>,{" "}
         <code className="font-mono text-sm">shadow-xl</code>, or the CSS variable{" "}

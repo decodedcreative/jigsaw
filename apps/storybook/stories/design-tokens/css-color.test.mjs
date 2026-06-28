@@ -4,7 +4,7 @@ import test from "node:test";
 import {
   formatCssRgbTupleForDisplay,
   readCssVariableColor,
-} from "@jigsaw/tokens/css-color";
+} from "@jigsaw-ds/tokens/css-color";
 
 test("formatCssRgbTupleForDisplay rejects malformed tuples", () => {
   assert.equal(formatCssRgbTupleForDisplay(""), "");

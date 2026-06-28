@@ -22,10 +22,10 @@ jobs:
 
       - name: Build design-system
         run: |
-          npm run build --workspace=@jigsaw/theme-default
-          npm run build --workspace=@jigsaw/theme-portfolio
-          npm run build --workspace=@jigsaw/tokens
-          npm run build --workspace=@jigsaw/design-system
+          npm run build --workspace=@jigsaw-ds/theme-default
+          npm run build --workspace=@jigsaw-ds/theme-portfolio
+          npm run build --workspace=@jigsaw-ds/tokens
+          npm run build --workspace=@jigsaw-ds/design-system
 
       - name: Publish to Chromatic
         uses: chromaui/action@latest

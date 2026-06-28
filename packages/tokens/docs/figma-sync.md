@@ -12,7 +12,7 @@ Design tokens for Figma are exported from source JSON into **git-tracked** files
 | Default theme palette + semantics | `packages/themes/default/src/` | `default-base.tokens.json`, `default-light.tokens.json`, `default-dark.tokens.json` |
 | Portfolio theme (palette + semantics) | `packages/themes/portfolio/src/` | `portfolio.tokens.json` |
 
-Brand theme **CSS** is built in each `@jigsaw/theme-*` package. `@jigsaw/tokens` only builds shared CSS, Tailwind theme, and **Figma JSON** for all themes (via `discoverFigmaThemes()` reading `packages/themes/{id}/src/`).
+Brand theme **CSS** is built in each `@jigsaw-ds/theme-*` package. `@jigsaw-ds/tokens` only builds shared CSS, Tailwind theme, and **Figma JSON** for all themes (via `discoverFigmaThemes()` reading `packages/themes/{id}/src/`).
 
 Colour JSON must not be duplicated under `packages/tokens/` — theme packages are the single source for brand colours.
 
@@ -27,7 +27,7 @@ Figma filenames and Tokens Studio manifests are derived from theme package sourc
 | 3 | [`sd.config.mjs`](../sd.config.mjs) | `buildThemeFigmaConfig()` — Style Dictionary sources/globs and destinations; must match step 2 |
 | 4 | Post-build scripts in `scripts/figma/` | Write `$themes.json` and `$metadata.json` from discovery output |
 
-Brand theme **CSS** is not built here — each `@jigsaw/theme-*` package runs its own Style Dictionary config. `@jigsaw/tokens` only exports Figma JSON for themes.
+Brand theme **CSS** is not built here — each `@jigsaw-ds/theme-*` package runs its own Style Dictionary config. `@jigsaw-ds/tokens` only exports Figma JSON for themes.
 
 ## Folder contents (`packages/tokens/figma/`)
 
@@ -81,9 +81,9 @@ Docs: [Tokens Studio GitHub sync](https://docs.tokens.studio/token-storage/remot
 2. Rebuild and verify (same commands as CI `test-tokens`):
 
    ```bash
-   npm run build:tokens --workspace=@jigsaw/tokens
-   npm run verify:figma-tokens --workspace=@jigsaw/tokens
-   npm run check:figma-drift --workspace=@jigsaw/tokens
+   npm run build:tokens --workspace=@jigsaw-ds/tokens
+   npm run verify:figma-tokens --workspace=@jigsaw-ds/tokens
+   npm run check:figma-drift --workspace=@jigsaw-ds/tokens
    ```
 
    `build:tokens` regenerates `figma/*.tokens.json`, `$themes.json`, and `$metadata.json` from the paths above. Commit any changed files under `packages/tokens/figma/`.
@@ -100,12 +100,12 @@ CI runs these three commands on every PR; `check:figma-drift` requires a git che
 
 ## Adding a new theme
 
-1. Create `packages/themes/{id}/` with `src/base/` and `src/semantic/` JSON (see `@jigsaw/theme-default` or `@jigsaw/theme-portfolio`).
-2. Add a CSS build in that package (`sd.config.mjs` + `@jigsaw/theme-build`).
+1. Create `packages/themes/{id}/` with `src/base/` and `src/semantic/` JSON (see `@jigsaw-ds/theme-default` or `@jigsaw-ds/theme-portfolio`).
+2. Add a CSS build in that package (`sd.config.mjs` + `@jigsaw-ds/theme-build`).
 3. Rebuild Figma exports — see [How automatic discovery works](#how-automatic-discovery-works) above. Output names come from `discoverFigmaOutputs()`; Style Dictionary config is in `sd.config.mjs` (`buildThemeFigmaConfig`).
 
 ```bash
-npm run build:tokens --workspace=@jigsaw/tokens
+npm run build:tokens --workspace=@jigsaw-ds/tokens
 git add packages/tokens/figma/
 ```
 

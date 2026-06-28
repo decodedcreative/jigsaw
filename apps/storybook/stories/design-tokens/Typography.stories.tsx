@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import docsTokens from "@jigsaw/tokens/docs-tokens";
+import docsTokens from "@jigsaw-ds/tokens/docs-tokens";
 import { TokenPage, TokenSection, TypeSample } from "./_components";
 
 const textSizeClass = {

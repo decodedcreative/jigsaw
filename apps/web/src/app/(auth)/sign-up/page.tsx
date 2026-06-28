@@ -7,7 +7,7 @@ import {
   Checkbox,
   Form,
   Input,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import NextLink from "next/link";
 import { BrandMark } from "@/components/BrandMark";
 

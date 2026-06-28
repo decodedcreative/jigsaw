@@ -6,7 +6,7 @@ import {
   Tabs,
   Text,
   ToastRegion,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import {
   AppearanceTab,
   DangerZoneTab,

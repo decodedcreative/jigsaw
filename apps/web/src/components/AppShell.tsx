@@ -12,7 +12,7 @@ import {
   NavigationLink,
   NavigationLinks,
   ToastRegion,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 
 const NAV_LINKS = [
   { href: "/dashboard",     label: "Dashboard"     },

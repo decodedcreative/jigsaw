@@ -2,18 +2,18 @@
 
 This guide explains how to install Jigsaw packages and wire them into a **Next.js 15 (App Router) + Tailwind CSS v4** application. The reference implementation in this repo is [`apps/web`](../apps/web).
 
-Packages will be published to the [npm registry](https://www.npmjs.com/) under the `@jigsaw` scope. Until the first release is published, use the [local development](#local-development-without-publishing) section at the bottom.
+Packages will be published to the [npm registry](https://www.npmjs.com/) under the `@jigsaw-ds` scope. Until the first release is published, use the [local development](#local-development-without-publishing) section at the bottom.
 
 ## Packages
 
 | Package | Required | Purpose |
 |---------|----------|---------|
-| `@jigsaw/design-system` | Yes | React components |
-| `@jigsaw/tokens` | Yes | Shared primitives + Tailwind v4 theme CSS |
-| `@jigsaw/theme-default` | Yes | Default light/dark semantic colours |
-| `@jigsaw/theme-portfolio` | No | Portfolio theme (`[data-theme='portfolio']`) |
+| `@jigsaw-ds/design-system` | Yes | React components |
+| `@jigsaw-ds/tokens` | Yes | Shared primitives + Tailwind v4 theme CSS |
+| `@jigsaw-ds/theme-default` | Yes | Default light/dark semantic colours |
+| `@jigsaw-ds/theme-portfolio` | No | Portfolio theme (`[data-theme='portfolio']`) |
 
-`@jigsaw/theme-build` is an internal build tool and is not published.
+`@jigsaw-ds/theme-build` is an internal build tool and is not published.
 
 ## Prerequisites
 
@@ -24,13 +24,13 @@ Packages will be published to the [npm registry](https://www.npmjs.com/) under t
 ## 1. Install
 
 ```bash
-npm install @jigsaw/design-system @jigsaw/tokens @jigsaw/theme-default
+npm install @jigsaw-ds/design-system @jigsaw-ds/tokens @jigsaw-ds/theme-default
 ```
 
 Add the portfolio theme only if you need it:
 
 ```bash
-npm install @jigsaw/theme-portfolio
+npm install @jigsaw-ds/theme-portfolio
 ```
 
 Install Tailwind v4 if your app does not already have it:
@@ -39,7 +39,7 @@ Install Tailwind v4 if your app does not already have it:
 npm install tailwindcss @tailwindcss/postcss
 ```
 
-`@jigsaw/design-system` installs its own runtime dependencies (`react-aria-components`, `@phosphor-icons/react`, `class-variance-authority`, `tailwind-merge`). You must provide `react` and `react-dom` as peers.
+`@jigsaw-ds/design-system` installs its own runtime dependencies (`react-aria-components`, `@phosphor-icons/react`, `class-variance-authority`, `tailwind-merge`). You must provide `react` and `react-dom` as peers.
 
 ## 2. PostCSS
 
@@ -63,13 +63,13 @@ Import theme CSS in your root layout **before** your Tailwind entry file. Load o
 `app/layout.tsx`:
 
 ```tsx
-import "@jigsaw/tokens/shared/base.css";
-import "@jigsaw/theme-default/base.css";
-import "@jigsaw/theme-default/semantic-light.css";
-import "@jigsaw/theme-default/semantic-dark.css";
+import "@jigsaw-ds/tokens/shared/base.css";
+import "@jigsaw-ds/theme-default/base.css";
+import "@jigsaw-ds/theme-default/semantic-light.css";
+import "@jigsaw-ds/theme-default/semantic-dark.css";
 // Optional portfolio theme:
-// import "@jigsaw/theme-portfolio/base.css";
-// import "@jigsaw/theme-portfolio/semantic.css";
+// import "@jigsaw-ds/theme-portfolio/base.css";
+// import "@jigsaw-ds/theme-portfolio/semantic.css";
 import "./globals.css";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -89,8 +89,8 @@ All theme stylesheets are bundled up front. Switching themes at runtime only cha
 
 ```css
 @import "tailwindcss";
-@import "@jigsaw/tokens/tailwind-theme.css";
-@import "@jigsaw/design-system/tailwind.css";
+@import "@jigsaw-ds/tokens/tailwind-theme.css";
+@import "@jigsaw-ds/design-system/tailwind.css";
 
 /* Dark mode follows data-theme (matches apps/web and Storybook) */
 @custom-variant dark (&:is([data-theme="dark"] *));
@@ -110,14 +110,14 @@ All theme stylesheets are bundled up front. Switching themes at runtime only cha
 }
 ```
 
-`@jigsaw/design-system/tailwind.css` registers Tailwind content paths for the component library. You do not need a separate `@source` directive in your app — the package owns that configuration.
+`@jigsaw-ds/design-system/tailwind.css` registers Tailwind content paths for the component library. You do not need a separate `@source` directive in your app — the package owns that configuration.
 
 If your app uses Tailwind utilities in its own source files, add an `@source` for your app code (for example `@source "./**/*.{js,ts,jsx,tsx}"` relative to `globals.css`).
 
 ## 5. Use components
 
 ```tsx
-import { Button, Badge, Card, Text } from "@jigsaw/design-system";
+import { Button, Badge, Card, Text } from "@jigsaw-ds/design-system";
 
 export function Example() {
   return (
@@ -130,7 +130,7 @@ export function Example() {
 }
 ```
 
-Import components from `@jigsaw/design-system` only. Do not deep-import from internal paths inside the package.
+Import components from `@jigsaw-ds/design-system` only. Do not deep-import from internal paths inside the package.
 
 ## 6. Theme switching
 
@@ -167,7 +167,7 @@ Components that use the `dark:` variant (e.g. `dark:bg-surface-secondary`) respo
 
 If you use the portfolio theme:
 
-1. Install `@jigsaw/theme-portfolio`.
+1. Install `@jigsaw-ds/theme-portfolio`.
 2. Import its CSS in `layout.tsx` (see step 3).
 3. Set `data-theme="portfolio"` on `<html>`.
 
@@ -178,7 +178,7 @@ Portfolio tokens are scoped to `[data-theme='portfolio']` and do not replace the
 Before debugging styling issues, confirm:
 
 - [ ] Theme CSS imports are in `layout.tsx`, above `globals.css`
-- [ ] `globals.css` imports `tailwindcss`, `@jigsaw/tokens/tailwind-theme.css`, and `@jigsaw/design-system/tailwind.css`
+- [ ] `globals.css` imports `tailwindcss`, `@jigsaw-ds/tokens/tailwind-theme.css`, and `@jigsaw-ds/design-system/tailwind.css`
 - [ ] `@custom-variant dark` is present if you use dark mode
 - [ ] `postcss.config.mjs` includes `@tailwindcss/postcss`
 - [ ] Body uses semantic utilities such as `text-foreground-primary bg-surface-primary`
@@ -187,11 +187,11 @@ Before debugging styling issues, confirm:
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
-| Components render unstyled | Tailwind not scanning component classes | Ensure `@jigsaw/design-system/tailwind.css` is imported; run `npm run build` in the design-system package if using `file:` deps |
+| Components render unstyled | Tailwind not scanning component classes | Ensure `@jigsaw-ds/design-system/tailwind.css` is imported; run `npm run build` in the design-system package if using `file:` deps |
 | Colours missing / all black | Theme CSS not loaded | Add imports in `layout.tsx` |
 | `dark:` utilities never apply | Missing variant or attribute | Add `@custom-variant dark` and set `data-theme="dark"` |
-| Icons missing | Transitive dep not installed | Reinstall `@jigsaw/design-system`; `@phosphor-icons/react` should be present |
-| `npm install @jigsaw/...` 404 | Package not published yet | Use local `file:` deps (below) or wait for v1 release |
+| Icons missing | Transitive dep not installed | Reinstall `@jigsaw-ds/design-system`; `@phosphor-icons/react` should be present |
+| `npm install @jigsaw-ds/...` 404 | Package not published yet | Use local `file:` deps (below) or wait for v1 release |
 
 ## Local development without publishing
 
@@ -202,9 +202,9 @@ To develop against a local Jigsaw checkout before packages are on npm:
 ```json
 {
   "dependencies": {
-    "@jigsaw/design-system": "file:../jigsaw/packages/design-system",
-    "@jigsaw/tokens": "file:../jigsaw/packages/tokens",
-    "@jigsaw/theme-default": "file:../jigsaw/packages/themes/default"
+    "@jigsaw-ds/design-system": "file:../jigsaw/packages/design-system",
+    "@jigsaw-ds/tokens": "file:../jigsaw/packages/tokens",
+    "@jigsaw-ds/theme-default": "file:../jigsaw/packages/themes/default"
   }
 }
 ```
@@ -224,7 +224,7 @@ cd ../your-app
 npm install
 ```
 
-The `@jigsaw/design-system/tailwind.css` import works the same with `file:` dependencies — build the design-system package first so `dist/` exists.
+The `@jigsaw-ds/design-system/tailwind.css` import works the same with `file:` dependencies — build the design-system package first so `dist/` exists.
 
 ## Versioning
 

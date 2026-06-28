@@ -3,7 +3,7 @@ import {
   Card,
   Text,
   toast,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import { TOAST_EXAMPLES } from "../Notifications.stories.constants";
 
 export const ToastPanel = () => (

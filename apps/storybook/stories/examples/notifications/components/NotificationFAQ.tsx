@@ -1,4 +1,4 @@
-import { Card, Disclosure, DisclosureGroup, Text } from "@jigsaw/design-system";
+import { Card, Disclosure, DisclosureGroup, Text } from "@jigsaw-ds/design-system";
 
 export const NotificationFAQ = () => (
     <Card classNameOverrides={{ content: "p-6" }}>

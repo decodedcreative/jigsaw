@@ -4,7 +4,7 @@ import {
   Modal,
   Text,
   toast,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 
 export const DangerZoneTab = () => (
     <div className="flex flex-col gap-4">

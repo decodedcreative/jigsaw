@@ -18,7 +18,7 @@ import {
   Tabs,
   Text,
   Textarea,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import { Preview } from "./Preview";
 import type { PreviewMap } from "../Introduction.stories.types";
 

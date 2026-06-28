@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Badge, Button, Card, Text } from "@jigsaw/design-system";
+import { Badge, Button, Card, Text } from "@jigsaw-ds/design-system";
 import { FEED, TYPE_COLOR } from "../Notifications.stories.constants";
 import { NotificationTypeIcon } from "./NotificationTypeIcon";
 

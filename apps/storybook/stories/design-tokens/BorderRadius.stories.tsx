@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import docsTokens from "@jigsaw/tokens/docs-tokens";
+import docsTokens from "@jigsaw-ds/tokens/docs-tokens";
 import { RadiusSample, TokenPage, TokenRow, TokenSection } from "./_components";
 
 function BorderRadiusContent() {
@@ -9,7 +9,7 @@ function BorderRadiusContent() {
     <TokenPage>
       <h1 className="text-3xl font-bold mb-2">Border radius</h1>
       <p className="text-foreground-secondary mb-8 max-w-2xl">
-        Corner-radius tokens from <code className="font-mono text-sm">@jigsaw/tokens</code>.
+        Corner-radius tokens from <code className="font-mono text-sm">@jigsaw-ds/tokens</code>.
         Use Tailwind utilities like <code className="font-mono text-sm">rounded-md</code>,{" "}
         <code className="font-mono text-sm">rounded-xl</code>,{" "}
         <code className="font-mono text-sm">rounded-full</code>, or the CSS variable{" "}

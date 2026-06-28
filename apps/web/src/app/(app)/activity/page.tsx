@@ -12,7 +12,7 @@ import {
   Tooltip,
   TooltipTrigger,
   type BadgeVariant,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import {
   CloudArrowUpIcon,
   GearIcon,

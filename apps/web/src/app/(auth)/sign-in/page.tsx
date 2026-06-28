@@ -8,7 +8,7 @@ import {
   Form,
   Input,
   Link,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 import NextLink from "next/link";
 import { BrandMark } from "@/components/BrandMark";
 import { GitHubIcon } from "@/components/oauth/GitHubIcon";

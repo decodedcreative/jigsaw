@@ -1,9 +1,9 @@
-import { cssHooks, cssPlatform } from "@jigsaw/theme-build";
+import { cssHooks, cssPlatform } from "@jigsaw-ds/theme-build";
 
 /**
- * Style Dictionary config for @jigsaw/theme-default (CSS only).
+ * Style Dictionary config for @jigsaw-ds/theme-default (CSS only).
  *
- * Selectors match the previous @jigsaw/tokens default theme outputs:
+ * Selectors match the previous @jigsaw-ds/tokens default theme outputs:
  * - base.css → :root
  * - semantic-light.css → :root, [data-theme='light']
  * - semantic-dark.css → [data-theme='dark'], .dark

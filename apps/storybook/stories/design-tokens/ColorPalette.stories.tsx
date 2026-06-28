@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import docsTokens from "@jigsaw/tokens/docs-tokens";
+import docsTokens from "@jigsaw-ds/tokens/docs-tokens";
 import { ColorSwatch, TokenPage, TokenRow, TokenSection } from "./_components";
 import { useResolvedCssColor } from "./css-color";
 
@@ -24,7 +24,7 @@ function ColorPaletteContent() {
     <TokenPage>
       <h1 className="text-3xl font-bold mb-2">Color palette</h1>
       <p className="text-foreground-secondary mb-8 max-w-2xl">
-        Base palette tokens from <code className="font-mono text-sm">@jigsaw/tokens</code>. Use Tailwind
+        Base palette tokens from <code className="font-mono text-sm">@jigsaw-ds/tokens</code>. Use Tailwind
         classes such as <code className="font-mono text-sm">bg-navy-500</code> or CSS variables like{" "}
         <code className="font-mono text-sm">var(--color-navy-500)</code>.
       </p>

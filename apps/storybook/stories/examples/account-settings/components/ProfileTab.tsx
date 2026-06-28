@@ -5,7 +5,7 @@ import {
   Input,
   Textarea,
   toast,
-} from "@jigsaw/design-system";
+} from "@jigsaw-ds/design-system";
 
 export const ProfileTab = () => (
   <Form

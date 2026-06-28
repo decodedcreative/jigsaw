@@ -1,5 +1,5 @@
 {
-  "name": "@jigsaw/storybook",
+  "name": "@jigsaw-ds/storybook",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -13,10 +13,10 @@
     "test": "node --test stories/design-tokens/css-color.test.mjs .storybook/apply-app-theme.test.mjs"
   },
   "dependencies": {
-    "@jigsaw/design-system": "*",
-    "@jigsaw/theme-default": "*",
-    "@jigsaw/theme-portfolio": "*",
-    "@jigsaw/tokens": "*",
+    "@jigsaw-ds/design-system": "*",
+    "@jigsaw-ds/theme-default": "*",
+    "@jigsaw-ds/theme-portfolio": "*",
+    "@jigsaw-ds/tokens": "*",
     "@phosphor-icons/react": "^2.1.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

@@ -1,9 +1,9 @@
-import { cssHooks, cssPlatform } from "@jigsaw/theme-build";
+import { cssHooks, cssPlatform } from "@jigsaw-ds/theme-build";
 
 /**
- * Style Dictionary config for @jigsaw/theme-portfolio (CSS only).
+ * Style Dictionary config for @jigsaw-ds/theme-portfolio (CSS only).
  *
- * Selectors match the previous @jigsaw/tokens portfolio theme outputs:
+ * Selectors match the previous @jigsaw-ds/tokens portfolio theme outputs:
  * - base.css → [data-theme='portfolio'] (all src/base JSON sources)
  * - semantic.css → [data-theme='portfolio'] with portfolio prefix stripped
  *

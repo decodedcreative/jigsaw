@@ -20,7 +20,7 @@ if (status) {
   } catch {
     // no diff output
   }
-  console.error(`\nRun: npm run build:tokens -w @jigsaw/tokens — then commit ${figmaPath}`);
+  console.error(`\nRun: npm run build:tokens -w @jigsaw-ds/tokens — then commit ${figmaPath}`);
   process.exit(1);
 }
 
