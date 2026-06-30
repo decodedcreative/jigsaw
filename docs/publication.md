@@ -27,9 +27,9 @@ Private / not published:
 - `@jigsaw-ds/storybook` — internal Storybook app
 - Root `jigsaw` workspace — monorepo orchestration only
 
-## Remaining setup (JSW-102–106)
+## Remaining setup (JSW-103–106)
 
-- [ ] Changesets for versioning
+- [x] Changesets for versioning (see [CONTRIBUTING.md](../CONTRIBUTING.md#versioning-changesets))
 - [ ] Remove `"private": true` and add publish metadata (`files`, `repository`, etc.)
 - [ ] Pre-publish validation (`publint`, `@arethetypeswrong/cli`)
 - [ ] GitHub Actions publish workflow + `NPM_TOKEN`
