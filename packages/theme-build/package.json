@@ -1,10 +1,33 @@
 {
   "name": "@jigsaw-ds/theme-build",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.1.0",
+  "description": "Style Dictionary build helpers used by the Jigsaw theme packages.",
+  "license": "MIT",
+  "author": "James Howell",
+  "homepage": "https://github.com/decodedcreative/jigsaw/tree/main/packages/theme-build#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decodedcreative/jigsaw.git",
+    "directory": "packages/theme-build"
+  },
+  "bugs": {
+    "url": "https://github.com/decodedcreative/jigsaw/issues"
+  },
+  "keywords": [
+    "style-dictionary",
+    "design-tokens",
+    "css-variables",
+    "build"
+  ],
   "type": "module",
   "exports": {
     ".": "./src/index.mjs"
+  },
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "node -e \"process.exit(0)\"",

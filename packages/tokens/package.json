@@ -1,7 +1,24 @@
 {
   "name": "@jigsaw-ds/tokens",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.1.0",
+  "description": "Design tokens and Tailwind CSS v4 theme (CSS variables) for the Jigsaw design system.",
+  "license": "MIT",
+  "author": "James Howell",
+  "homepage": "https://github.com/decodedcreative/jigsaw/tree/main/packages/tokens#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decodedcreative/jigsaw.git",
+    "directory": "packages/tokens"
+  },
+  "bugs": {
+    "url": "https://github.com/decodedcreative/jigsaw/issues"
+  },
+  "keywords": [
+    "design-tokens",
+    "tailwindcss",
+    "css-variables",
+    "style-dictionary"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -23,6 +40,13 @@
       "require": "./dist/css-color.js"
     }
   },
+  "files": [
+    "dist",
+    "docs-tokens.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "npm run build:tokens && tsup",
     "build:tokens": "node scripts/build-tokens.mjs",
@@ -36,7 +60,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
-    "@jigsaw-ds/theme-build": "*",
+    "@jigsaw-ds/theme-build": "^0.1.0",
     "eslint": "^9.16.0",
     "globals": "^14.0.0",
     "style-dictionary": "^4.1.1",

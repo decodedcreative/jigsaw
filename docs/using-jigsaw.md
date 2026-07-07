@@ -13,7 +13,7 @@ Packages will be published to the [npm registry](https://www.npmjs.com/) under t
 | `@jigsaw-ds/theme-default` | Yes | Default light/dark semantic colours |
 | `@jigsaw-ds/theme-portfolio` | No | Portfolio theme (`[data-theme='portfolio']`) |
 
-`@jigsaw-ds/theme-build` is an internal build tool and is not published.
+`@jigsaw-ds/theme-build` is also published, but it is a build-time helper for authoring custom themes — most apps do not need it.
 
 ## Prerequisites
 
@@ -228,4 +228,4 @@ The `@jigsaw-ds/design-system/tailwind.css` import works the same with `file:` d
 
 ## Versioning
 
-Published packages will share a single semver (starting at `1.0.0`). Pin with `^1.0.0` in production apps.
+Published packages follow semver, starting at `0.1.0`. While the API stabilises on `0.x`, minor releases (`0.2.0`, `0.3.0`) may include breaking changes — pin with `~0.1.0` if you need stability. `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` are always released at the same version.

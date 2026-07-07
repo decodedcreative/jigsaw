@@ -1,10 +1,32 @@
 {
   "name": "@jigsaw-ds/theme-portfolio",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.1.0",
+  "description": "Portfolio theme (CSS variables) for the Jigsaw design system.",
+  "license": "MIT",
+  "author": "James Howell",
+  "homepage": "https://github.com/decodedcreative/jigsaw/tree/main/packages/themes/portfolio#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decodedcreative/jigsaw.git",
+    "directory": "packages/themes/portfolio"
+  },
+  "bugs": {
+    "url": "https://github.com/decodedcreative/jigsaw/issues"
+  },
+  "keywords": [
+    "design-tokens",
+    "theme",
+    "css-variables"
+  ],
   "exports": {
     "./base.css": "./dist/css/base.css",
     "./semantic.css": "./dist/css/semantic.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "node scripts/build-tokens.mjs",
@@ -13,7 +35,7 @@
     "test": "node --test scripts/build-output.test.mjs"
   },
   "devDependencies": {
-    "@jigsaw-ds/theme-build": "*",
+    "@jigsaw-ds/theme-build": "^0.1.0",
     "style-dictionary": "^4.1.1"
   }
 }
