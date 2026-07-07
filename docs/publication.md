@@ -27,9 +27,24 @@ Private / not published:
 - `@jigsaw-ds/storybook` — internal Storybook app
 - Root `jigsaw` workspace — monorepo orchestration only
 
-## Remaining setup (JSW-102–106)
+## Versioning
 
-- [ ] Changesets for versioning
+**First publish uses `0.1.0` — never `1.0.0`.** The public API is not yet stable, and `0.x` signals that under semver. `1.0.0` is reserved for a later, deliberate stability commitment.
+
+- Baseline `0.1.0` is set in JSW-103 (when `"private": true` is removed); packages sit at `0.0.1` until then.
+- `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` are a Changesets `fixed` group — always the same version.
+- Changesets then drives `0.1.0 → 0.2.0` (minor) / `0.1.1` (patch).
+
+If we want external testing before a `latest`-tagged `0.1.0`, use Changesets prerelease mode to publish under an `alpha`/`beta` dist-tag first:
+
+```bash
+npx changeset pre enter alpha   # or beta -> 0.1.0-alpha.0, .1, ...
+npx changeset pre exit          # return to normal releases
+```
+
+## Remaining setup (JSW-103–106)
+
+- [x] Changesets for versioning (see [CONTRIBUTING.md](../CONTRIBUTING.md#versioning-changesets))
 - [ ] Remove `"private": true` and add publish metadata (`files`, `repository`, etc.)
 - [ ] Pre-publish validation (`publint`, `@arethetypeswrong/cli`)
 - [ ] GitHub Actions publish workflow + `NPM_TOKEN`

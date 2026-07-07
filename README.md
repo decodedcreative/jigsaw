@@ -32,6 +32,9 @@ npm run dev
 
 # Lint
 npm run lint
+
+# Add a changeset (required for publishable package changes)
+npm run changeset
 ```
 
 ## Using Jigsaw in another app
