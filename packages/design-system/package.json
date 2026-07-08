@@ -1,7 +1,26 @@
 {
   "name": "@jigsaw-ds/design-system",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.1.0",
+  "description": "React component library for the Jigsaw design system, built on React Aria Components and Tailwind CSS v4.",
+  "license": "MIT",
+  "author": "James Howell",
+  "homepage": "https://github.com/decodedcreative/jigsaw/tree/main/packages/design-system#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decodedcreative/jigsaw.git",
+    "directory": "packages/design-system"
+  },
+  "bugs": {
+    "url": "https://github.com/decodedcreative/jigsaw/issues"
+  },
+  "keywords": [
+    "design-system",
+    "react",
+    "components",
+    "react-aria",
+    "tailwindcss",
+    "ui"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -13,6 +32,13 @@
     },
     "./tailwind.css": "./tailwind.css"
   },
+  "files": [
+    "dist",
+    "tailwind.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -22,7 +48,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@jigsaw-ds/tokens": "*",
+    "@jigsaw-ds/tokens": "^0.1.0",
     "@phosphor-icons/react": "^2.1.10",
     "class-variance-authority": "^0.7.1",
     "react-aria-components": "^1.17.0",

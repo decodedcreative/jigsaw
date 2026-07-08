@@ -1,6 +1,7 @@
 {
   "name": "jigsaw",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -9,7 +10,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build && changeset publish"
+    "release": "turbo run build && changeset publish",
+    "verify:packages": "npm run build --workspace=@jigsaw-ds/design-system --workspace=@jigsaw-ds/tokens --workspace=@jigsaw-ds/theme-default --workspace=@jigsaw-ds/theme-portfolio && node scripts/verify-publishable-packages.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
