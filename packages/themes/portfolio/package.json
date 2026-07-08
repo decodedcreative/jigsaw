@@ -29,7 +29,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "node scripts/build-tokens.mjs",
+    "build": "npm run clean && node scripts/build-tokens.mjs",
     "clean": "rm -rf dist",
     "lint": "node -e \"process.exit(0)\"",
     "test": "node --test scripts/build-output.test.mjs"

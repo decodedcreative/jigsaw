@@ -48,7 +48,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "npm run build:tokens && tsup",
+    "build": "npm run clean && npm run build:tokens && tsup",
     "build:tokens": "node scripts/build-tokens.mjs",
     "verify:figma-tokens": "node scripts/verify-figma-tokens.mjs",
     "check:figma-drift": "node scripts/check-figma-drift.mjs",
