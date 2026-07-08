@@ -10,7 +10,11 @@ npm install @jigsaw-ds/theme-portfolio
 
 ## Usage
 
-Import the theme CSS in your root layout, after the default theme:
+Import the theme CSS in your root layout, **after** the default theme and **before** your Tailwind entry file. Load order matters — portfolio tokens layer on top of the default theme:
+
+1. Shared + default theme sheets (see `@jigsaw-ds/theme-default`)
+2. `@jigsaw-ds/theme-portfolio/base.css`
+3. `@jigsaw-ds/theme-portfolio/semantic.css`
 
 ```tsx
 import "@jigsaw-ds/theme-portfolio/base.css";

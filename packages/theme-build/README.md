@@ -20,6 +20,10 @@ import { buildStyleDictionary, toRgbTuple } from "@jigsaw-ds/theme-build";
 
 These helpers configure the CSS-variable platform, themed-variable output, and color transforms used to generate theme CSS from token sources.
 
+## What ships
+
+This package publishes plain ESM source (`src/*.mjs`) — there is no compile step. That is intentional: the modules are small build-time helpers consumed by Style Dictionary configs, not runtime app code. Install as a dev dependency alongside `style-dictionary`.
+
 ## License
 
 [MIT](./LICENSE) © James Howell

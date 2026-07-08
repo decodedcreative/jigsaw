@@ -10,7 +10,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build && changeset publish"
+    "release": "turbo run build && changeset publish",
+    "verify:packages": "node scripts/verify-publishable-packages.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",

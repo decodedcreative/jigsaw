@@ -10,7 +10,11 @@ npm install @jigsaw-ds/theme-default
 
 ## Usage
 
-Import the theme CSS in your root layout, **before** your Tailwind entry file:
+Import the theme CSS in your root layout, **before** your Tailwind entry file. Load order matters — later sheets override earlier ones where selectors overlap:
+
+1. `@jigsaw-ds/tokens/shared/base.css` (shared primitives)
+2. `@jigsaw-ds/theme-default/base.css` (theme base)
+3. Semantic sheets (`semantic-light.css`, then `semantic-dark.css`)
 
 ```tsx
 import "@jigsaw-ds/tokens/shared/base.css";

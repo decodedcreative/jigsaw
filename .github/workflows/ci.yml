@@ -41,6 +41,12 @@ jobs:
           npm run build --workspace=@jigsaw-ds/theme-portfolio
           npm run test --workspace=@jigsaw-ds/theme-portfolio
 
+      - name: Verify publishable package exports and tarballs
+        run: |
+          npm run build --workspace=@jigsaw-ds/design-system
+          npm run build --workspace=@jigsaw-ds/tokens
+          npm run verify:packages
+
   test-tokens:
     runs-on: ubuntu-latest
     steps:
