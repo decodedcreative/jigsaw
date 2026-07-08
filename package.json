@@ -11,7 +11,7 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "turbo run build && changeset publish",
-    "verify:packages": "node scripts/verify-publishable-packages.mjs"
+    "verify:packages": "npm run build --workspace=@jigsaw-ds/design-system --workspace=@jigsaw-ds/tokens --workspace=@jigsaw-ds/theme-default --workspace=@jigsaw-ds/theme-portfolio && node scripts/verify-publishable-packages.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",

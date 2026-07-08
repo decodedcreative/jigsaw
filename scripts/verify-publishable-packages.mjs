@@ -124,6 +124,13 @@ function verifyPackage(packageRel) {
 
   for (const exportPath of exportPaths) {
     if (exportPath.includes("*")) {
+      const prefix = exportPath.replace(/\/\*.*$/, "").replace(/^\.\//, "");
+      const hasMatch = [...packed].some((file) => file.startsWith(`${prefix}/`) || file === prefix);
+      if (!hasMatch) {
+        fail(
+          `${packageRel}: export glob ${exportPath} has no matching files in npm pack output`,
+        );
+      }
       continue;
     }
     const normalized = exportPath.replace(/^\.\//, "");
