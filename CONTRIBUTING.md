@@ -29,7 +29,11 @@ git checkout wip/design-system-overhaul-backup -- path/to/relevant/files
 
 ## Versioning (Changesets)
 
-Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets). Add a changeset with every PR that changes a publishable package in a way consumers will notice (new components, token renames, theme CSS changes, breaking API changes, etc.).
+Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets).
+
+### Contributors
+
+Add a changeset with every PR that changes a publishable package in a way consumers will notice (new components, token renames, theme CSS changes, breaking API changes, etc.).
 
 ```bash
 # From repo root — interactive prompt
@@ -38,8 +42,21 @@ npm run changeset
 
 This creates a markdown file under `.changeset/`. Commit it with your PR.
 
-Maintainers run `npm run version-packages` on `main` to consume pending changesets, bump `package.json` versions, update internal dependency ranges, and write per-package `CHANGELOG.md` files. CI (JSW-104) will run `npm run release` to build and `changeset publish` to npm.
-
-**First npm release:** packages are at `0.0.1` in the repo today; target `0.1.0` (or `1.0.0`) when removing `"private": true` in JSW-103.
-
 **Linked packages:** `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` share the same semver (Changesets `fixed` group) — they are always versioned together.
+
+### Releasing to npm
+
+After changeset PRs merge to `main`:
+
+1. The [Release workflow](.github/workflows/release.yml) opens a **Version packages** PR when pending changesets exist. It runs `changeset version` to bump `package.json` versions, update internal dependency ranges, and write `CHANGELOG.md` entries. **No version bump happens on `main` without pending changesets.**
+2. Review and merge the Version packages PR.
+3. The Release workflow runs again and executes `npm run release` (`validate:packages` then `changeset publish`) to publish all bumped packages to npm under `@jigsaw-ds`.
+
+CI requires the repository secret `NPM_TOKEN` (npm automation token with publish access to `@jigsaw-ds/*`).
+
+To verify a release locally before merge:
+
+```bash
+npm run validate:packages
+npx changeset publish --dry-run
+```

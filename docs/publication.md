@@ -52,7 +52,9 @@ The repository is MIT licensed (`LICENSE` at the repo root). Each publishable pa
 - [x] Remove `"private": true` and add publish metadata (`files`, `repository`, etc.)
 - [x] Export / tarball integrity check (`npm run verify:packages` in CI)
 - [x] Pre-publish validation (`publint`, `@arethetypeswrong/cli`) — `npm run validate:packages` in CI
-- [ ] GitHub Actions publish workflow + `NPM_TOKEN` — JSW-104
+- [x] GitHub Actions publish workflow + `NPM_TOKEN` — JSW-104
 - [ ] Finalize consumer docs in [using-jigsaw.md](./using-jigsaw.md) — JSW-106
 
 See epic [JSW-99](https://decodedcreative.atlassian.net/browse/JSW-99) for the full backlog.
+
+Releases are automated via [Changesets](https://github.com/changesets/changesets) and [`.github/workflows/release.yml`](../.github/workflows/release.yml). See [CONTRIBUTING.md — Releasing to npm](../CONTRIBUTING.md#releasing-to-npm) for the contributor and maintainer workflow.
