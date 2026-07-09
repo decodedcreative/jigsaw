@@ -48,9 +48,12 @@ This creates a markdown file under `.changeset/`. Commit it with your PR.
 
 After changeset PRs merge to `main`:
 
-1. The [Release workflow](.github/workflows/release.yml) opens a **Version packages** PR when pending changesets exist. It runs `changeset version` to bump `package.json` versions, update internal dependency ranges, and write `CHANGELOG.md` entries. **No version bump happens on `main` without pending changesets.**
+1. The [Version packages workflow](.github/workflows/version-packages.yml) opens a **Version packages** PR when pending changesets exist. It runs `changeset version` to bump `package.json` versions, update internal dependency ranges, and write `CHANGELOG.md` entries.
 2. Review and merge the Version packages PR.
-3. The Release workflow runs again and executes `npm run release` (`validate:packages` then `changeset publish`) to publish all bumped packages to npm under `@jigsaw-ds`.
+3. The [Draft GitHub release workflow](.github/workflows/draft-github-release.yml) opens a **draft** [GitHub Release](https://github.com/decodedcreative/jigsaw/releases) for `v{version}` with notes aggregated from package changelogs. Review and edit the draft on GitHub.
+4. **Publish the GitHub Release** — that publishes the release page and triggers the [Publish to npm workflow](.github/workflows/publish-npm.yml) (`validate:packages` then `changeset publish`).
+
+Publishing the GitHub Release is the deliberate gate: npm publish only runs after release notes exist on GitHub.
 
 CI requires the repository secret `NPM_TOKEN` (npm automation token with publish access to `@jigsaw-ds/*`).
 
