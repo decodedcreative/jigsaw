@@ -1,5 +1,6 @@
 /* Theme CSS: shared → default (light/dark) → portfolio. Load unlayered (like apps/web
-   layout.tsx) so semantic --color-* RGB tuples are not overridden by @layer theme. */
+   layout.tsx) so semantic --color-* RGB tuples are not overridden by @layer theme.
+   See docs/using-jigsaw.md § "Do not wrap theme imports in @layer base". */
 @import '@jigsaw-ds/tokens/shared/base.css';
 @import '@jigsaw-ds/theme-default/base.css';
 @import '@jigsaw-ds/theme-default/semantic-light.css';

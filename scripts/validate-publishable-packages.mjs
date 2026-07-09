@@ -29,18 +29,44 @@ const ATTW_CHECKS = [
   },
 ];
 
-function run(command, args) {
-  execFileSync(command, args, { cwd: repoRoot, stdio: "inherit" });
+/**
+ * Expected attw findings we intentionally accept. Document the reason when adding
+ * a rule — see `attw --help` for rule names.
+ */
+const ATTW_IGNORE_RULES = [];
+
+/** When true, publint warnings fail the build (enable once the tree is warning-free). */
+const PUBLINT_STRICT = false;
+
+function runStep(label, command, args) {
+  const cmdLine = [command, ...args].join(" ");
+  try {
+    execFileSync(command, args, { cwd: repoRoot, stdio: "inherit" });
+  } catch (error) {
+    console.error(`\nvalidate-publishable-packages: ${label} failed`);
+    console.error(`  command: ${cmdLine}`);
+    if (error && typeof error.status === "number" && error.status !== 0) {
+      process.exit(error.status);
+    }
+    if (error && error.message) {
+      console.error(`  error: ${error.message}`);
+    }
+    process.exit(1);
+  }
 }
 
 for (const packageRel of PUBLISHABLE_PACKAGES) {
   console.log(`\npublint: ${packageRel}`);
-  run("npx", ["publint", packageRel]);
+  const publintArgs = ["publint", packageRel];
+  if (PUBLINT_STRICT) {
+    publintArgs.push("--strict");
+  }
+  runStep(`publint ${packageRel}`, "npx", publintArgs);
 }
 
 for (const { packageRel, excludeEntrypoints } of ATTW_CHECKS) {
   console.log(`\nattw: ${packageRel}`);
-  run("npx", [
+  const attwArgs = [
     "attw",
     "--pack",
     packageRel,
@@ -48,7 +74,11 @@ for (const { packageRel, excludeEntrypoints } of ATTW_CHECKS) {
     "node16",
     "--exclude-entrypoints",
     ...excludeEntrypoints,
-  ]);
+  ];
+  if (ATTW_IGNORE_RULES.length > 0) {
+    attwArgs.push("--ignore-rules", ...ATTW_IGNORE_RULES);
+  }
+  runStep(`attw ${packageRel}`, "npx", attwArgs);
 }
 
 console.log(

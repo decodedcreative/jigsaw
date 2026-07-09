@@ -85,6 +85,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 All theme stylesheets are bundled up front. Switching themes at runtime only changes which `data-theme` selector matches — no rebuild is required.
 
+### Do not wrap theme imports in `@layer base`
+
+Theme CSS files set raw RGB channel tuples on `:root` (for example `--color-foreground-primary: 16 42 67`). Utilities such as `text-foreground-primary` resolve these via `rgb(var(--color-foreground-primary))`.
+
+Tailwind's `@theme inline` block in `tailwind-theme.css` lives in `@layer theme`, which has **higher cascade priority** than `@layer base`. If you wrap theme imports in `layer(base)`, the inline theme definitions overwrite the semantic tuples with circular `rgb(var(--color-*))` references, and colour utilities stop working.
+
+Import theme sheets **unlayered** (plain `@import` or JS `import`), as shown above. Storybook's `apps/storybook/style.css` follows the same pattern.
+
 ## 4. Tailwind entry (`globals.css`)
 
 ```css
