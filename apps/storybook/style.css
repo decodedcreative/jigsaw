@@ -1,10 +1,11 @@
-@import '@jigsaw-ds/tokens/shared/base.css' layer(base);
-/* Theme CSS: shared → default (light/dark) → portfolio. All load up front; data-theme selects the active sheet. */
-@import '@jigsaw-ds/theme-default/base.css' layer(base);
-@import '@jigsaw-ds/theme-default/semantic-light.css' layer(base);
-@import '@jigsaw-ds/theme-default/semantic-dark.css' layer(base);
-@import '@jigsaw-ds/theme-portfolio/base.css' layer(base);
-@import '@jigsaw-ds/theme-portfolio/semantic.css' layer(base);
+/* Theme CSS: shared → default (light/dark) → portfolio. Load unlayered (like apps/web
+   layout.tsx) so semantic --color-* RGB tuples are not overridden by @layer theme. */
+@import '@jigsaw-ds/tokens/shared/base.css';
+@import '@jigsaw-ds/theme-default/base.css';
+@import '@jigsaw-ds/theme-default/semantic-light.css';
+@import '@jigsaw-ds/theme-default/semantic-dark.css';
+@import '@jigsaw-ds/theme-portfolio/base.css';
+@import '@jigsaw-ds/theme-portfolio/semantic.css';
 @import 'tailwindcss';
 @import '@jigsaw-ds/tokens/tailwind-theme.css';
 @import '@jigsaw-ds/design-system/tailwind.css';
