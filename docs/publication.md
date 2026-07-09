@@ -52,7 +52,45 @@ The repository is MIT licensed (`LICENSE` at the repo root). Each publishable pa
 - [x] Remove `"private": true` and add publish metadata (`files`, `repository`, etc.)
 - [x] Export / tarball integrity check (`npm run verify:packages` in CI)
 - [x] Pre-publish validation (`publint`, `@arethetypeswrong/cli`) — `npm run validate:packages` in CI
-- [ ] GitHub Actions publish workflow + `NPM_TOKEN` — JSW-104
+- [x] GitHub Actions publish workflow + `NPM_TOKEN` — JSW-104
 - [ ] Finalize consumer docs in [using-jigsaw.md](./using-jigsaw.md) — JSW-106
 
 See epic [JSW-99](https://decodedcreative.atlassian.net/browse/JSW-99) for the full backlog.
+
+## Automated release (JSW-104)
+
+Releases are driven by [Changesets](https://github.com/changesets/changesets) and the [`.github/workflows/release.yml`](../.github/workflows/release.yml) workflow.
+
+### One-time setup: `NPM_TOKEN`
+
+1. Sign in to [npmjs.com](https://www.npmjs.com/) as a member of the **`@jigsaw-ds`** organisation with permission to publish.
+2. Create an **Automation** access token (Account → Access Tokens → Generate New Token → **Granular Access Token** or classic **Automation**).
+   - Scope: publish to `@jigsaw-ds/*` packages.
+   - **Publish** must not require OTP for CI — use an automation/granular token with bypass 2FA for publish, or disable 2FA on publish for the org bot account.
+3. In GitHub: **Settings → Secrets and variables → Actions → New repository secret**
+   - Name: `NPM_TOKEN`
+   - Value: the npm token
+
+The workflow appends scoped registry auth to `.npmrc` at publish time (the committed `.npmrc` only sets `legacy-peer-deps` for local installs).
+
+### Release flow
+
+1. **Contributor** — add a changeset in a feature PR (`npm run changeset`) when a publishable package changes in a consumer-visible way.
+2. **Merge to `main`** — the Release workflow runs.
+3. **Version PR** — if pending changesets exist, the workflow opens (or updates) a **Version packages** PR that runs `changeset version`, bumps versions, and updates changelogs.
+4. **Merge the Version PR** — the workflow runs again; with no pending changesets it executes `npm run release` (`validate:packages` then `changeset publish`) and publishes to npm.
+
+### First publish (`0.1.0`)
+
+Packages are already at `0.1.0` in the repo but not yet on the registry. To publish:
+
+1. Ensure `NPM_TOKEN` is configured (above).
+2. Add a changeset (even a patch note such as “Initial public release”) and merge to `main`.
+3. Merge the resulting **Version packages** PR — the workflow will publish `0.1.0` (or the versioned bump if the changeset triggered one).
+
+For a dry run locally (requires npm login or `NPM_TOKEN` in the environment):
+
+```bash
+npm run validate:packages
+npx changeset publish --dry-run
+```

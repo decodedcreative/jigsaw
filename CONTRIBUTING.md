@@ -38,8 +38,8 @@ npm run changeset
 
 This creates a markdown file under `.changeset/`. Commit it with your PR.
 
-Maintainers run `npm run version-packages` on `main` to consume pending changesets, bump `package.json` versions, update internal dependency ranges, and write per-package `CHANGELOG.md` files. CI (JSW-104) will run `npm run release` to build and `changeset publish` to npm.
+Maintainers merge the **Version packages** PR that CI opens on `main`; the [Release workflow](.github/workflows/release.yml) then runs `npm run release` (`validate:packages` + `changeset publish`) to push to npm. See [docs/publication.md](docs/publication.md#automated-release-jsw-104) for `NPM_TOKEN` setup.
 
-**First npm release:** packages are at `0.0.1` in the repo today; target `0.1.0` (or `1.0.0`) when removing `"private": true` in JSW-103.
+**Current versions:** publishable packages are at `0.1.0` (JSW-103). The first npm publish is triggered by merging a Version packages PR after adding a changeset.
 
 **Linked packages:** `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` share the same semver (Changesets `fixed` group) — they are always versioned together.
