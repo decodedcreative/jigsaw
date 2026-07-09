@@ -9,9 +9,6 @@ concurrency:
   group: version-packages-${{ github.ref }}
   cancel-in-progress: false
 
-permissions:
-  contents: read
-
 jobs:
   version:
     name: Open Version packages PR

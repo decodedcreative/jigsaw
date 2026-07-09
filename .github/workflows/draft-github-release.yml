@@ -12,9 +12,6 @@ concurrency:
   group: draft-github-release-${{ github.ref }}
   cancel-in-progress: false
 
-permissions:
-  contents: read
-
 jobs:
   draft:
     name: Draft GitHub release
@@ -34,10 +31,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          node scripts/github-release-notes.mjs > release.json
-          TAG=$(jq -r .tag release.json)
-          TITLE=$(jq -r .tag release.json)
-          jq -r .body release.json > release-notes.md
+          node scripts/github-release-notes.mjs --notes-file release-notes.md --tag-file tag.txt
+          TAG=$(cat tag.txt)
+          TITLE=$(cat tag.txt)
 
           if gh release view "$TAG" >/dev/null 2>&1; then
             IS_DRAFT=$(gh release view "$TAG" --json isDraft --jq .isDraft)

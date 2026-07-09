@@ -40,6 +40,10 @@ jobs:
             echo "Release tag $TAG does not match @jigsaw-ds/design-system version $PKG_VERSION"
             exit 1
           fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Verify changelog entry exists for release version
+        run: node scripts/github-release-notes.mjs --require-changelog --version "$VERSION"
 
       - name: Configure npm for @jigsaw-ds
         run: |
