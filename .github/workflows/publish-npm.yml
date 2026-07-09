@@ -1,0 +1,54 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: publish-npm-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish @jigsaw-ds packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify release tag matches package version
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+          PKG_VERSION=$(node -p "require('./packages/design-system/package.json').version")
+          if [ "$PKG_VERSION" != "$VERSION" ]; then
+            echo "Release tag $TAG does not match @jigsaw-ds/design-system version $PKG_VERSION"
+            exit 1
+          fi
+
+      - name: Configure npm for @jigsaw-ds
+        run: |
+          echo "@jigsaw-ds:registry=https://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Validate and publish
+        run: npm run release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

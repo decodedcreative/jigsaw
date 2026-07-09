@@ -57,4 +57,4 @@ The repository is MIT licensed (`LICENSE` at the repo root). Each publishable pa
 
 See epic [JSW-99](https://decodedcreative.atlassian.net/browse/JSW-99) for the full backlog.
 
-Releases are automated via [Changesets](https://github.com/changesets/changesets) and [`.github/workflows/release.yml`](../.github/workflows/release.yml). See [CONTRIBUTING.md — Releasing to npm](../CONTRIBUTING.md#releasing-to-npm) for the contributor and maintainer workflow.
+Releases appear on [GitHub Releases](https://github.com/decodedcreative/jigsaw/releases). **Publishing a GitHub Release** triggers npm publish — see [CONTRIBUTING.md — Releasing to npm](../CONTRIBUTING.md#releasing-to-npm).
