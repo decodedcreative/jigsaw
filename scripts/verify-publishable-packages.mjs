@@ -4,6 +4,9 @@
  * - LICENSE matches repo root (identical MIT text in every tarball)
  * - Every export / main / module / types target exists on disk
  * - npm pack --dry-run includes export targets and no known stale paths
+ *
+ * For publint/attw validation (including ignored findings), see
+ * scripts/validate-publishable-packages.mjs.
  */
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
@@ -106,6 +109,18 @@ function verifyPackage(packageRel) {
   for (const field of ["README.md", "LICENSE"]) {
     if (!existsSync(path.join(packageDir, field))) {
       fail(`${packageRel}: missing ${field}`);
+    }
+  }
+
+  for (const field of ["dependencies", "peerDependencies", "optionalDependencies"]) {
+    const deps = pkg[field];
+    if (!deps) continue;
+    for (const [name, range] of Object.entries(deps)) {
+      if (range === "*") {
+        fail(
+          `${packageRel}: ${field}["${name}"] is "*" — published packages need a semver range`,
+        );
+      }
     }
   }
 

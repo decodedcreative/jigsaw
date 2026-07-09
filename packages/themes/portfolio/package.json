@@ -18,6 +18,9 @@
     "theme",
     "css-variables"
   ],
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "exports": {
     "./base.css": "./dist/css/base.css",
     "./semantic.css": "./dist/css/semantic.css"

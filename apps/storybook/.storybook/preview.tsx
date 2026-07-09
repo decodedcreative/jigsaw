@@ -34,6 +34,9 @@ const preview: Preview = {
   },
   decorators: [withAppTheme],
   parameters: {
+    backgrounds: {
+      disable: true,
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

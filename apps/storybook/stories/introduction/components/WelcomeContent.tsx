@@ -10,7 +10,7 @@ import { TokenCard } from "./TokenCard";
 import { previews } from "./previews";
 
 export const WelcomeContent = () => (
-    <div data-theme="dark" className="font-sans text-foreground-primary bg-surface-default min-h-screen p-8 md:p-12">
+    <div className="font-sans text-foreground-primary bg-surface-default min-h-screen p-8 md:p-12">
       {/* Hero */}
       <div className="max-w-2xl mb-12">
         <div className="inline-flex items-center gap-2 bg-surface-muted text-foreground-secondary text-xs font-mono px-3 py-1 rounded-full mb-4">
