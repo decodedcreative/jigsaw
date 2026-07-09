@@ -109,6 +109,18 @@ function verifyPackage(packageRel) {
     }
   }
 
+  for (const field of ["dependencies", "peerDependencies", "optionalDependencies"]) {
+    const deps = pkg[field];
+    if (!deps) continue;
+    for (const [name, range] of Object.entries(deps)) {
+      if (range === "*") {
+        fail(
+          `${packageRel}: ${field}["${name}"] is "*" — published packages need a semver range`,
+        );
+      }
+    }
+  }
+
   const exportPaths = collectFilePaths(pkg.exports ?? {});
   for (const field of ["main", "module", "types"]) {
     if (pkg[field]) {

@@ -22,11 +22,20 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
     },
     "./shared/*": "./dist/css/shared/*",
     "./tailwind-theme.css": "./dist/css/tailwind-theme.css",
@@ -35,9 +44,14 @@
       "import": "./dist/docs-tokens.mjs"
     },
     "./css-color": {
-      "types": "./dist/css-color.d.ts",
-      "import": "./dist/css-color.mjs",
-      "require": "./dist/css-color.js"
+      "import": {
+        "types": "./dist/css-color.d.mts",
+        "default": "./dist/css-color.mjs"
+      },
+      "require": {
+        "types": "./dist/css-color.d.ts",
+        "default": "./dist/css-color.js"
+      }
     }
   },
   "files": [

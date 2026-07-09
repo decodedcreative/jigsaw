@@ -51,7 +51,7 @@ The repository is MIT licensed (`LICENSE` at the repo root). Each publishable pa
 - [x] Changesets for versioning (see [CONTRIBUTING.md](../CONTRIBUTING.md#versioning-changesets))
 - [x] Remove `"private": true` and add publish metadata (`files`, `repository`, etc.)
 - [x] Export / tarball integrity check (`npm run verify:packages` in CI)
-- [ ] Pre-publish validation (`publint`, `@arethetypeswrong/cli`) — JSW-105
+- [x] Pre-publish validation (`publint`, `@arethetypeswrong/cli`) — `npm run validate:packages` in CI
 - [ ] GitHub Actions publish workflow + `NPM_TOKEN` — JSW-104
 - [ ] Finalize consumer docs in [using-jigsaw.md](./using-jigsaw.md) — JSW-106
 

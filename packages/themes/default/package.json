@@ -19,6 +19,9 @@
     "css-variables",
     "dark-mode"
   ],
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "exports": {
     "./base.css": "./dist/css/base.css",
     "./semantic-light.css": "./dist/css/semantic-light.css",
