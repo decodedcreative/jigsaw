@@ -82,11 +82,19 @@ The workflow appends scoped registry auth to `.npmrc` at publish time (the commi
 
 ### First publish (`0.1.0`)
 
-Packages are already at `0.1.0` in the repo but not yet on the registry. To publish:
+Packages are at `0.1.0` in the repo but not yet on the registry (confirmed: `npm view @jigsaw-ds/design-system` returns 404).
 
-1. Ensure `NPM_TOKEN` is configured (above).
-2. Add a changeset (even a patch note such as “Initial public release”) and merge to `main`.
-3. Merge the resulting **Version packages** PR — the workflow will publish `0.1.0` (or the versioned bump if the changeset triggered one).
+**Recommended — publish `0.1.0` without a version bump:**
+
+1. Merge [JSW-104](https://github.com/decodedcreative/jigsaw/pull/63) (release workflow).
+2. Add `NPM_TOKEN` (below).
+3. GitHub → **Actions** → **Release** → **Run workflow** → check **Publish current package versions without versioning** → Run.
+4. Confirm on npm: `npm view @jigsaw-ds/design-system version` → `0.1.0`.
+
+**Alternative — changeset-driven (bumps to `0.1.1`):**
+
+1. Add a changeset (`npm run changeset`) and merge to `main`.
+2. Merge the **Version packages** PR the workflow opens.
 
 For a dry run locally (requires npm login or `NPM_TOKEN` in the environment):
 
