@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useMemo, FC } from "react";
 import type { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";

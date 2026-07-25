@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import type { RootClassName } from "@jsw-types/component-props";
@@ -7,6 +9,8 @@ import { useThemeProvider } from "./useThemeProvider";
 /**
  * Memoised root className merge for JSW-7 components.
  * Use after `useGetClassNames` to compose the `component` slot with `className`.
+ *
+ * Calls `useThemeProvider()` (React context) — only usable from Client Components.
  */
 export function useRootClassName<P extends { defaultClassName?: string }>(
   slotClassName: string,

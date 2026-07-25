@@ -140,6 +140,12 @@ export function Example() {
 
 Import components from `@jigsaw-ds/design-system` only. Do not deep-import from internal paths inside the package.
 
+### Next.js App Router / React Server Components
+
+Almost all Jigsaw components call `useGetClassNames` → `useThemeProvider()` (`useContext`). That is a Client Component API, so the published package entry includes `"use client"`.
+
+You can still import components from Server Components (Next creates a client boundary at the import). You cannot call Jigsaw hooks such as `useGetClassNames` or `useThemeProvider` inside a Server Component file.
+
 ## 6. Theme switching
 
 Themes are selected with the `data-theme` attribute on `<html>` (or a wrapper element that contains your app).

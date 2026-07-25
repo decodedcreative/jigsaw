@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { useGetClassNames } from "@hooks";
 import { textStyles } from "./Text.styles";

@@ -1,3 +1,5 @@
+"use client";
+
 import { getClassNames } from "@utils";
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
@@ -6,6 +8,8 @@ import { useThemeProvider } from "./useThemeProvider";
 
 /**
  * React hook for getClassNames to memoize the result.
+ *
+ * Calls `useThemeProvider()` (React context) — only usable from Client Components.
  */
 export function useGetClassNames<
   TStyles extends Record<string, (props?: Record<string, unknown>) => string>,
