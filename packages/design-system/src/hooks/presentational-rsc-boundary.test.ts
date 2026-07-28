@@ -4,25 +4,13 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 /**
- * Allowlist of modules that must remain Server-Component-safe:
- * no theme hooks (useContext) and no `"use client"` directive.
+ * Folders that define the presentational (RSC-safe) surface.
+ * Every production `.tsx` under these folders is discovered automatically —
+ * add a new primitive here and the checks below cover it without updating a
+ * separate file list.
  *
- * Avatar is excluded on purpose — it needs client state for image `onError`.
- * When a new presentational primitive is added under one of these folders,
- * include it here (or the scan test below will fail).
+ * Avatar lives outside this set on purpose (client image `onError` state).
  */
-const presentationalModules = [
-  "badge/Badge.tsx",
-  "text/Text.tsx",
-  "heading/Heading.tsx",
-  "heading/Heading.aliases.tsx",
-  "skeleton/Skeleton.tsx",
-  "icon/Icon.tsx",
-  "card/Card.tsx",
-  "card/CardHeader.tsx",
-];
-
-/** Folders whose production `.tsx` files are expected to be presentational. */
 const presentationalFolders = [
   "badge",
   "text",
@@ -59,30 +47,43 @@ function listProductionTsx(dir: string, relativeDir: string): string[] {
   return files;
 }
 
+function discoverPresentationalModules(): string[] {
+  return presentationalFolders.flatMap((folder) =>
+    listProductionTsx(path.join(componentsRoot, folder), folder)
+  );
+}
+
 describe("presentational components stay server-safe", () => {
-  it("does not use theme hooks or \"use client\"", () => {
-    const offenders: string[] = [];
-
-    for (const relative of presentationalModules) {
-      const source = readFileSync(path.join(componentsRoot, relative), "utf8");
-      for (const hook of bannedHookImports) {
-        if (new RegExp(`\\b${hook}\\b`).test(source)) {
-          offenders.push(`${relative} imports ${hook}`);
-        }
-      }
-      if (/["']use client["']/.test(source)) {
-        offenders.push(`${relative} still has "use client"`);
-      }
+  it("discovers at least one module per presentational folder", () => {
+    for (const folder of presentationalFolders) {
+      const modules = listProductionTsx(
+        path.join(componentsRoot, folder),
+        folder
+      );
+      expect(
+        modules.length,
+        `expected production .tsx under components/${folder}`
+      ).toBeGreaterThan(0);
     }
-
-    expect(offenders).toEqual([]);
   });
 
-  it("allowlist matches every production module in presentational folders", () => {
-    const discovered = presentationalFolders.flatMap((folder) =>
-      listProductionTsx(path.join(componentsRoot, folder), folder)
-    );
+  it("does not use theme hooks or \"use client\"", () => {
+    const modules = discoverPresentationalModules();
 
-    expect(discovered.sort()).toEqual([...presentationalModules].sort());
+    for (const relative of modules) {
+      const source = readFileSync(path.join(componentsRoot, relative), "utf8");
+
+      for (const hook of bannedHookImports) {
+        expect(
+          source,
+          `${relative} must not import or reference ${hook} (theme hooks pull in React context and force a Client Component)`
+        ).not.toMatch(new RegExp(`\\b${hook}\\b`));
+      }
+
+      expect(
+        source,
+        `${relative} must not include a "use client" directive`
+      ).not.toMatch(/["']use client["']/);
+    }
   });
 });

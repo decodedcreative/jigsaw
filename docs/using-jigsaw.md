@@ -144,7 +144,7 @@ Import components from `@jigsaw-ds/design-system` only. Do not deep-import from 
 
 Presentational Jigsaw components resolve class names with plain `getClassNames` — no React context, no event handlers that require a client bundle. That means you can import them in a Server Component and render them as static HTML without a `"use client"` wrapper file.
 
-RSC-safe today:
+RSC-safe today (this list can grow or shrink as components are added or refactored):
 
 `Badge`, `Text`, `Heading` / `H1`–`H6`, `Skeleton`, `Icon`, `Card`
 
