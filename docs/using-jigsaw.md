@@ -140,6 +140,41 @@ export function Example() {
 
 Import components from `@jigsaw-ds/design-system` only. Do not deep-import from internal paths inside the package.
 
+### Custom `twMerge` (App Router / RSC-safe)
+
+For app-wide class-name merge customisation (for example `extendTailwindMerge` for custom class groups), call `configureTwMerge` once per runtime. This uses a module-level config — **no React context** — so it works from a Server Component root layout and from a client providers file.
+
+```ts
+// lib/jigsaw-theme.ts — import this from root layout (server) and from your client providers entry
+import { configureTwMerge } from "@jigsaw-ds/design-system";
+import { extendTailwindMerge } from "tailwind-merge";
+
+export const twMerge = extendTailwindMerge({
+  // extend class groups for your design tokens as needed
+});
+
+configureTwMerge(twMerge);
+```
+
+```tsx
+// app/layout.tsx (Server Component)
+import "./lib/jigsaw-theme"; // side-effect: configureTwMerge on the server runtime
+```
+
+```tsx
+// app/providers.tsx (Client Component) — same module so the client runtime is configured too
+"use client";
+import "./lib/jigsaw-theme";
+```
+
+`configureTheme({ twMerge })` is equivalent when you only need to set merge today; it exists so future non-CSS theme values can share one config API.
+
+### When to use `ThemeProvider`
+
+`ThemeProvider` is **optional**. Use it only for **nested client-subtree** `twMerge` overrides (interactive islands that need a different merge than the app default). Presentational / RSC-safe class merging should rely on `configureTwMerge`, not context.
+
+Visual light/dark/portfolio theming continues to use `data-theme` (see below) — that is separate from JS merge config.
+
 ## 6. Theme switching
 
 Themes are selected with the `data-theme` attribute on `<html>` (or a wrapper element that contains your app).
