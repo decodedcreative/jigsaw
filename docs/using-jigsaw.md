@@ -140,6 +140,14 @@ export function Example() {
 
 Import components from `@jigsaw-ds/design-system` only. Do not deep-import from internal paths inside the package.
 
+### Server Components
+
+These presentational components use plain `getClassNames` (no React context) and can be imported directly from Server Components — no client wrapper file needed:
+
+`Badge`, `Text`, `Heading` / `H1`–`H6`, `Skeleton`, `Icon`, `Card`
+
+`Avatar` still needs a client boundary (image error state). Interactive / React Aria components (`Button`, `Modal`, `Select`, …) remain Client Components.
+
 ### Custom `twMerge` (App Router / RSC-safe)
 
 For app-wide class-name merge customisation (for example `extendTailwindMerge` for custom class groups), call `configureTwMerge` once per runtime. This uses a module-level config — **no React context** — so it works from a Server Component root layout and from a client providers file.

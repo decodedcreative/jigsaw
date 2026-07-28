@@ -1,7 +1,5 @@
-"use client";
-
 import { type HTMLAttributes, type CSSProperties } from "react";
-import { useGetClassNames } from "@hooks";
+import { getClassNames } from "@utils";
 import { skeletonStyles } from "./Skeleton.styles";
 import type { SkeletonVariant } from "./Skeleton.types";
 import type { ClassNameOverrides } from "@jsw-types/component-props";
@@ -21,7 +19,7 @@ export const Skeleton = ({
   style,
   ...props
 }: SkeletonProps) => {
-  const classNames = useGetClassNames(skeletonStyles, classNameOverrides, {
+  const classNames = getClassNames(skeletonStyles, classNameOverrides, {
     component: { variant },
   });
 

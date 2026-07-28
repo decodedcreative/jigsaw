@@ -1,10 +1,8 @@
-"use client";
-
 import {
   type ComponentPropsWithoutRef,
   type ElementType,
 } from "react";
-import { useGetClassNames } from "@hooks";
+import { getClassNames } from "@utils";
 import { isClickable } from "@utils";
 import { cardStyles } from "./Card.styles";
 import type { CardProps } from "./Card.types";
@@ -39,7 +37,7 @@ export const Card = (props: CardProps) => {
     );
   }
 
-  const classNames = useGetClassNames(cardStyles, classNameOverrides, {
+  const classNames = getClassNames(cardStyles, classNameOverrides, {
     component: {
       variant,
       interactiveState: variant === "interactive" && interactive,
