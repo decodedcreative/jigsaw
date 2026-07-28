@@ -142,11 +142,20 @@ Import components from `@jigsaw-ds/design-system` only. Do not deep-import from 
 
 ### Server Components
 
-These presentational components use plain `getClassNames` (no React context) and can be imported directly from Server Components — no client wrapper file needed:
+Presentational Jigsaw components resolve class names with plain `getClassNames` — no React context, no event handlers that require a client bundle. That means you can import them in a Server Component and render them as static HTML without a `"use client"` wrapper file.
+
+RSC-safe today:
 
 `Badge`, `Text`, `Heading` / `H1`–`H6`, `Skeleton`, `Icon`, `Card`
 
-`Avatar` still needs a client boundary (image error state). Interactive / React Aria components (`Button`, `Modal`, `Select`, …) remain Client Components.
+Benefits: less client JS for static UI, and no pressure to invent tiny client shells around badges/headings just to satisfy the App Router boundary.
+
+Still client:
+
+- `Avatar` — keeps image `onError` / fallback state on the client
+- Interactive / React Aria components (`Button`, `Modal`, `Select`, …)
+
+Custom `twMerge` for the RSC-safe set still works via `configureTwMerge` (below).
 
 ### Custom `twMerge` (App Router / RSC-safe)
 
