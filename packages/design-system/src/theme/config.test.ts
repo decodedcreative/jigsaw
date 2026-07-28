@@ -40,6 +40,13 @@ describe("configureTheme / configureTwMerge", () => {
     expect(getTwMerge()).toBe(custom);
   });
 
+  it("configureTheme with an empty partial leaves the current config unchanged", () => {
+    const custom = extendTailwindMerge({});
+    configureTwMerge(custom);
+    configureTheme({});
+    expect(getTwMerge()).toBe(custom);
+  });
+
   it("getClassNames uses the configured twMerge by default", () => {
     const calls: string[][] = [];
     const trackingMerge: TwMergeFn = ((...classes: (string | undefined)[]) => {
