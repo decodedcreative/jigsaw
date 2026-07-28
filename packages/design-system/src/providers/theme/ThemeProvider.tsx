@@ -11,10 +11,12 @@ export type ThemeContextValue = {
 };
 
 /**
- * Client-only theme context for **nested** overrides in interactive trees.
+ * Optional client-only provider for **nested** `twMerge` overrides.
  *
- * App-wide custom `twMerge` should use `configureTwMerge` / `configureTheme`
- * instead — those work in Server Components. `ThemeProvider` is optional.
+ * Do **not** wrap the whole app in this for default usage. Prefer
+ * `configureTwMerge` / `configureTheme` for app-wide merge config (RSC-safe).
+ * Use `ThemeProvider` only when a client subtree needs a different merge than
+ * the module default.
  */
 export const ThemeContext = createContext<ThemeContextValue | undefined>(
   undefined

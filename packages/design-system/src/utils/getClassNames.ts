@@ -4,8 +4,10 @@ import { getTwMerge } from "../theme/config";
 /**
  * Merges default class names from CVA with any user-provided `classNameOverrides`.
  *
- * Defaults to the app-wide merge from `configureTwMerge` / `configureTheme`
- * (stock `tailwind-merge` when unset). Pass `twMergeFn` to override per call.
+ * @param twMergeFn - Optional per-call merge override. When omitted, uses
+ *   `getTwMerge()` (module `configureTwMerge` / stock `tailwind-merge`).
+ *   Prefer app-wide `configureTwMerge` over passing this everywhere; reserve
+ *   the argument for one-off merges (tests, rare call sites).
  */
 export const getClassNames = <
   TStyles extends Record<string, (props?: Record<string, unknown>) => string>,

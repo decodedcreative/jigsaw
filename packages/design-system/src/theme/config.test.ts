@@ -82,4 +82,10 @@ describe("configureTheme / configureTwMerge", () => {
     resetThemeConfig();
     expect(getTwMerge()("px-2 px-4")).toBe("px-4");
   });
+
+  it("configureTwMerge throws when given a non-function", () => {
+    expect(() =>
+      configureTwMerge("not-a-fn" as unknown as TwMergeFn)
+    ).toThrow(TypeError);
+  });
 });

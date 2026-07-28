@@ -18,8 +18,16 @@ let config: ThemeConfig = {
  * Set the app-wide `twMerge` used by `getClassNames` and (as a fallback) by
  * theme hooks. Safe to call from a Server Component root layout or a client
  * providers module — no React context required.
+ *
+ * Last call wins (intentional for app-wide config). Not for per-subtree
+ * overrides — use `ThemeProvider` on the client for that.
  */
 export function configureTwMerge(twMergeFn: TwMergeFn): void {
+  if (typeof twMergeFn !== "function") {
+    throw new TypeError(
+      "configureTwMerge expected a function (e.g. twMerge or extendTailwindMerge(...))"
+    );
+  }
   config = { ...config, twMerge: twMergeFn };
 }
 
@@ -28,9 +36,11 @@ export function configureTwMerge(twMergeFn: TwMergeFn): void {
  * Extensible for future non-CSS theme values beyond `twMerge`.
  */
 export function configureTheme(partial: Partial<ThemeConfig>): void {
-  config = {
-    twMerge: partial.twMerge ?? config.twMerge,
-  };
+  if (partial.twMerge !== undefined) {
+    configureTwMerge(partial.twMerge);
+    return;
+  }
+  // No-op when called with an empty partial — keeps current config.
 }
 
 /** Current app-wide merge function (defaults to stock `tailwind-merge`). */
