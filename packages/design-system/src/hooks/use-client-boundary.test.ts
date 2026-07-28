@@ -3,6 +3,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
+/**
+ * Guard for interactive components that still use theme/className hooks.
+ *
+ * Those hooks call `useContext`, so any production component that references
+ * them must declare `"use client"`. Companion to
+ * `presentational-rsc-boundary.test.ts`, which asserts the inverse for
+ * Server-safe primitives.
+ *
+ * Intentionally a lightweight source scan (same approach as the presentational
+ * guard) — false positives are rare because the hook names are package-specific.
+ */
 const hooksThatRequireClient = [
   "useGetClassNames",
   "useRootClassName",

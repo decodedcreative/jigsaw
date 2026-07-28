@@ -22,6 +22,27 @@ const aliasRoots: Record<string, string> = {
   "@jsw-types": path.join(srcRoot, "types"),
 };
 
+for (const [alias, target] of Object.entries(aliasRoots)) {
+  if (!fs.existsSync(target)) {
+    throw new Error(
+      `tsup aliasRoots["${alias}"] points at missing path: ${target}`
+    );
+  }
+}
+
+function resolveExistingModule(absolute: string): string | null {
+  if (fs.existsSync(absolute) && fs.statSync(absolute).isFile()) {
+    return absolute;
+  }
+  for (const ext of [".ts", ".tsx", "/index.ts", "/index.tsx"]) {
+    const candidate = absolute + ext;
+    if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+      return candidate;
+    }
+  }
+  return null;
+}
+
 function resolveAliasImport(
   importer: string,
   request: string
@@ -34,15 +55,11 @@ function resolveAliasImport(
       const absolute = rest
         ? path.join(target.replace(/\.tsx?$/, ""), rest)
         : target;
-      let resolved = absolute;
-      if (!fs.existsSync(resolved)) {
-        for (const ext of [".ts", ".tsx", "/index.ts", "/index.tsx"]) {
-          const candidate = absolute + ext;
-          if (fs.existsSync(candidate)) {
-            resolved = candidate;
-            break;
-          }
-        }
+      const resolved = resolveExistingModule(absolute);
+      if (!resolved) {
+        throw new Error(
+          `Failed to resolve alias import "${request}" from ${importer} (looked under ${absolute})`
+        );
       }
       const importerDir = path.dirname(importer);
       let relative = path.relative(importerDir, resolved).replace(/\\/g, "/");

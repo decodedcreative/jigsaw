@@ -156,7 +156,7 @@ Still client:
 
 - `Avatar` — keeps image `onError` / fallback state on the client
 - Interactive / React Aria components (`Button`, `Modal`, `Select`, …)
-- Theme hooks / `ThemeProvider` (they use React context)
+- Theme hooks (`useGetClassNames`, `useRootClassName`, `useThemeProvider`) and `ThemeProvider` — they use React context, so Next will treat any module that imports them as a Client Component. Prefer `getClassNames` / `configureTwMerge` from Server Components.
 
 Custom `twMerge` for the RSC-safe set still works via `configureTwMerge` (below).
 
