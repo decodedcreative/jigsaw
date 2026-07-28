@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useGetClassNames } from "@hooks";
+import { getClassNames } from "@utils";
 import { avatarStyles } from "./Avatar.styles";
 import type { AvatarProps, AvatarStatus } from "./Avatar.types";
 
@@ -31,7 +31,7 @@ export const Avatar = ({
   const showImage = Boolean(src && !hasError);
   const showFallback = Boolean(initials && (!src || hasError));
 
-  const classNames = useGetClassNames(avatarStyles, classNameOverrides, {
+  const classNames = getClassNames(avatarStyles, classNameOverrides, {
     component: { size },
     image: {},
     fallback: {},

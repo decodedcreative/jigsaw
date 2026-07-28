@@ -1,10 +1,8 @@
-"use client";
-
 import { type HTMLAttributes } from "react";
-import { useGetClassNames } from "@hooks";
+import { getClassNames } from "@utils";
 import { badgeStyles } from "./Badge.styles";
 import type { BadgeVariant, BadgeSize } from "./Badge.types";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
   variant?: BadgeVariant;
@@ -19,7 +17,7 @@ export const Badge = ({
   children,
   ...props
 }: BadgeProps) => {
-  const classNames = useGetClassNames(badgeStyles, classNameOverrides, {
+  const classNames = getClassNames(badgeStyles, classNameOverrides, {
     component: { variant, size },
   });
 

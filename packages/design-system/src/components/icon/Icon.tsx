@@ -1,6 +1,4 @@
-"use client";
-
-import { useGetClassNames } from "@hooks";
+import { getClassNames } from "@utils";
 import { customIconStyles, iconStyles } from "./Icon.styles";
 import { isCustomIconProps, type IconProps } from "./Icon.types";
 
@@ -15,7 +13,7 @@ export function Icon(props: IconProps) {
   if (isCustomIconProps(props)) {
     const { viewBox, children, ...svgProps } = props;
 
-    const classNames = useGetClassNames(customIconStyles, classNameOverrides, {
+    const classNames = getClassNames(customIconStyles, classNameOverrides, {
       component: { size, tone },
     });
 
@@ -35,7 +33,7 @@ export function Icon(props: IconProps) {
 
   const { icon: PhosphorIcon, weight = "bold", ...phosphorProps } = props;
 
-  const classNames = useGetClassNames(iconStyles, classNameOverrides, {
+  const classNames = getClassNames(iconStyles, classNameOverrides, {
     component: { size, tone },
   });
 

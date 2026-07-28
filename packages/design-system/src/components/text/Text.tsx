@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useGetClassNames } from "@hooks";
+import { getClassNames } from "@utils";
 import { textStyles } from "./Text.styles";
 import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
@@ -23,7 +23,7 @@ export const Text = ({
   children,
   ...props
 }: TextProps) => {
-  const classNames = useGetClassNames(
+  const classNames = getClassNames(
     textStyles,
     classNameOverrides ?? {},
     { component: { size, weight, muted } }
@@ -34,6 +34,6 @@ export const Text = ({
       {children}
     </Component>
   );
-}
+};
 
-Text.displayName = 'DS_Text';
+Text.displayName = "DS_Text";

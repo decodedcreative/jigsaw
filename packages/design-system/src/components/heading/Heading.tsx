@@ -1,6 +1,4 @@
-"use client";
-
-import { useGetClassNames } from "@hooks";
+import { getClassNames } from "@utils";
 import { headingStyles } from "./Heading.styles";
 import type { HeadingProps } from "./Heading.types";
 
@@ -14,7 +12,7 @@ export const Heading = ({
 }: HeadingProps) => {
   const visualSize = size ?? Component;
 
-  const classNames = useGetClassNames(headingStyles, classNameOverrides ?? {}, {
+  const classNames = getClassNames(headingStyles, classNameOverrides ?? {}, {
     component: { size: visualSize, muted },
   });
 

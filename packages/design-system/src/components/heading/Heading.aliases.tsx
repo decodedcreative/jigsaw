@@ -1,5 +1,3 @@
-"use client";
-
 import { Heading } from "./Heading";
 import type { HeadingAliasProps, HeadingLevel } from "./Heading.types";
 

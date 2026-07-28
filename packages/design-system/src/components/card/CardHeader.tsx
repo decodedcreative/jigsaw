@@ -1,7 +1,5 @@
-"use client";
-
 import type { ReactNode } from "react";
-import { useGetClassNames } from "@hooks";
+import { getClassNames } from "@utils";
 import { H3 } from "../heading/Heading.aliases";
 import { cardStyles } from "./Card.styles";
 import type { ClassNameOverrides } from "@jsw-types/component-props";
@@ -21,7 +19,7 @@ const CardHeader = ({
   actions,
   header,
 }: CardHeaderProps) => {
-  const classNames = useGetClassNames(cardStyles, classNameOverrides, {
+  const classNames = getClassNames(cardStyles, classNameOverrides, {
     header: { hasActions: header == null && Boolean(actions) },
   });
 
