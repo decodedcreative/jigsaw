@@ -25,7 +25,7 @@ let config: ThemeConfig = {
 export function configureTwMerge(twMergeFn: TwMergeFn): void {
   if (typeof twMergeFn !== "function") {
     throw new TypeError(
-      "configureTwMerge expected a function (e.g. twMerge or extendTailwindMerge(...))"
+      `configureTwMerge expected a function (e.g. twMerge or extendTailwindMerge(...)), received ${typeof twMergeFn}`
     );
   }
   config = { ...config, twMerge: twMergeFn };
