@@ -3,6 +3,17 @@ export const designSystemVersion = "0.0.1";
 // Shared prop types
 export type { ClassNameOverrides, RootClassName, WithoutClassName } from "@jsw-types/component-props";
 
+// Theme JS config (RSC-safe) + optional client ThemeProvider for nested overrides
+export {
+  configureTheme,
+  configureTwMerge,
+  getThemeConfig,
+  getTwMerge,
+} from "./theme";
+export type { ThemeConfig, TwMergeFn } from "./theme";
+export { ThemeProvider, ThemeContext } from "./providers";
+export type { ThemeContextValue } from "./providers";
+
 // Button
 export { Button } from "@components/button";
 export type {

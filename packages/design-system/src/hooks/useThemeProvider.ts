@@ -1,14 +1,10 @@
 import { useContext } from "react";
 import { ThemeContext } from "@providers/theme";
 
+/**
+ * Reads optional client `ThemeProvider` context.
+ * When absent, callers should fall back to `getTwMerge()` — ThemeProvider is not required.
+ */
 export const useThemeProvider = () => {
-  const context = useContext(ThemeContext);
-
-  if (!context) {
-    console.error(
-      'No ThemeProvider has been found in this application. Using components without this provider may lead to unexpected behavior.'
-    );
-  }
-
-  return context;
+  return useContext(ThemeContext);
 };
