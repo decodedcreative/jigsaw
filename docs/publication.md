@@ -95,11 +95,13 @@ Requires repository secret `NPM_TOKEN`.
 
 ```bash
 # Which packages would be included in the next version?
-npm run generate-changeset -- --dry-run --force
+npm run generate-changeset -- --dry-run
 
 npm run validate:packages
 npx changeset publish --dry-run
 ```
+
+`generate-changeset` is normally invoked by `version-and-tag`. Pass `--force` only if a pending `auto-*.md` already exists and you need to regenerate it (e.g. changing bump). Pass `--since <ref>` if there is no `v*` tag yet (bootstrap).
 
 ## npm organization
 
@@ -109,6 +111,6 @@ npx changeset publish --dry-run
 | `@jsw` | Not available |
 | `@jigsaw-ds` | **Claimed** — use this scope |
 
-## Related tickets
+## See also
 
-Epic [JSW-99](https://decodedcreative.atlassian.net/browse/JSW-99). Auto-changeset / release docs: [JSW-112](https://decodedcreative.atlassian.net/browse/JSW-112). Consumer install guide: [using-jigsaw.md](./using-jigsaw.md).
+- [using-jigsaw.md](./using-jigsaw.md) — consumer install guide

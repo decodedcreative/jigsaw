@@ -8,6 +8,7 @@ import {
 import {
   buildChangesetMarkdown,
   changesetFileName,
+  chooseSinceRef,
   parseBump,
   planChangeset,
 } from "./generate-changeset-from-changes.mjs";
@@ -106,6 +107,47 @@ describe("planChangeset", () => {
     assert.match(plan.markdown, /preserve per-module use client boundaries/);
     assert.match(plan.markdown, /totally unstructured commit message/);
     assert.equal(plan.fileName, changesetFileName(plan.markdown));
+  });
+});
+
+describe("chooseSinceRef", () => {
+  it("prefers the newer of tag vs version commit", () => {
+    assert.equal(
+      chooseSinceRef({
+        tag: "v0.1.0",
+        versionCommit: "abc",
+        tagTime: 100,
+        commitTime: 200,
+      }),
+      "abc"
+    );
+    assert.equal(
+      chooseSinceRef({
+        tag: "v0.1.0",
+        versionCommit: "abc",
+        tagTime: 300,
+        commitTime: 200,
+      }),
+      "v0.1.0"
+    );
+  });
+
+  it("falls back to whichever baseline exists", () => {
+    assert.equal(
+      chooseSinceRef({ tag: "v0.1.0", versionCommit: "" }),
+      "v0.1.0"
+    );
+    assert.equal(
+      chooseSinceRef({ tag: "", versionCommit: "abc" }),
+      "abc"
+    );
+  });
+
+  it("errors with bootstrap guidance when neither baseline exists", () => {
+    assert.throws(
+      () => chooseSinceRef({ tag: "", versionCommit: "" }),
+      /Cannot determine a release baseline[\s\S]*--since/
+    );
   });
 });
 

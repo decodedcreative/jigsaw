@@ -101,44 +101,55 @@ function runGit(args, { allowFailure = false } = {}) {
   }
 }
 
+export function missingBaselineError() {
+  return new Error(
+    [
+      "Cannot determine a release baseline.",
+      "Expected a `v*` git tag (from `version-and-tag`)",
+      "or a prior `chore: version packages` commit.",
+      "Bootstrap with `--since <git-ref>` (e.g. the initial commit),",
+      "or create an initial `v*` tag after the first version commit.",
+    ].join(" ")
+  );
+}
+
+/**
+ * Pick the release baseline from tag / version-commit candidates.
+ * Prefer the newer of the two when both exist so a local version commit
+ * that is ahead of the last published tag does not re-include already-versioned diffs.
+ */
+export function chooseSinceRef({ tag, versionCommit, tagTime = 0, commitTime = 0 }) {
+  if (tag && versionCommit) {
+    return commitTime >= tagTime ? versionCommit : tag;
+  }
+  if (tag) return tag;
+  if (versionCommit) return versionCommit;
+  throw missingBaselineError();
+}
+
 export function resolveSinceRef(explicitSince) {
   if (explicitSince) return explicitSince;
 
   const tag = runGit(["describe", "--tags", "--abbrev=0", "--match", "v*"], {
     allowFailure: true,
   });
-  // Prefer the latest Version packages commit when it is newer than the tag,
-  // otherwise every post-version package.json bump would re-open a Version PR
-  // before a GitHub Release tag exists.
   const versionCommit = runGit(
     ["log", "-1", "--format=%H", "--grep", "^chore: version packages"],
     { allowFailure: true }
   );
 
-  if (tag && versionCommit) {
-    const tagTime = Number(
-      runGit(["log", "-1", "--format=%ct", tag], { allowFailure: true }) || 0
-    );
-    const commitTime = Number(
-      runGit(["log", "-1", "--format=%ct", versionCommit], {
-        allowFailure: true,
-      }) || 0
-    );
-    return commitTime >= tagTime ? versionCommit : tag;
-  }
+  const tagTime = tag
+    ? Number(runGit(["log", "-1", "--format=%ct", tag], { allowFailure: true }) || 0)
+    : 0;
+  const commitTime = versionCommit
+    ? Number(
+        runGit(["log", "-1", "--format=%ct", versionCommit], {
+          allowFailure: true,
+        }) || 0
+      )
+    : 0;
 
-  if (tag) return tag;
-  if (versionCommit) return versionCommit;
-
-  throw new Error(
-    [
-      "Cannot determine a release baseline.",
-      "Expected a `v*` git tag (created when a GitHub Release is published)",
-      "or a prior `chore: version packages` commit.",
-      "On a brand-new repo, create and publish an initial release tag first,",
-      "or pass an explicit baseline: --since <git-ref>.",
-    ].join(" ")
-  );
+  return chooseSinceRef({ tag, versionCommit, tagTime, commitTime });
 }
 
 function commitSubjectsForPackages(sinceRef, packagePaths) {
