@@ -163,10 +163,79 @@ function verifyPackage(packageRel) {
   }
 }
 
+function hasUseClientDirective(source) {
+  return source.includes('"use client"') || source.includes("'use client'");
+}
+
+/**
+ * After the presentational RSC migration, the design-system package must not
+ * force a blanket client boundary on the entry. Leaf modules that need client
+ * APIs keep their own `"use client"` directive.
+ */
+function verifyDesignSystemClientBoundaries() {
+  const packageRel = "packages/design-system";
+  const dist = path.join(repoRoot, packageRel, "dist");
+
+  const mustStayServer = [
+    "index.mjs",
+    "theme/config.mjs",
+    "utils/getClassNames.mjs",
+    "components/badge/Badge.mjs",
+    "components/text/Text.mjs",
+    "components/heading/Heading.mjs",
+    "components/card/Card.mjs",
+    "components/icon/Icon.mjs",
+    "components/skeleton/Skeleton.mjs",
+  ];
+
+  const mustStayClient = [
+    "components/button/Button.mjs",
+    "components/avatar/Avatar.mjs",
+    "hooks/useGetClassNames.mjs",
+    "providers/theme/ThemeProvider.mjs",
+  ];
+
+  for (const rel of mustStayServer) {
+    const full = path.join(dist, rel);
+    if (!existsSync(full)) {
+      fail(`${packageRel}: missing built module ${rel}`);
+      continue;
+    }
+    if (hasUseClientDirective(readFileSync(full, "utf8"))) {
+      fail(
+        `${packageRel}: ${rel} must not include "use client" (RSC-safe entry/module)`,
+      );
+    }
+  }
+
+  for (const rel of mustStayClient) {
+    const full = path.join(dist, rel);
+    if (!existsSync(full)) {
+      fail(`${packageRel}: missing built module ${rel}`);
+      continue;
+    }
+    const source = readFileSync(full, "utf8");
+    if (!hasUseClientDirective(source)) {
+      fail(`${packageRel}: ${rel} must include "use client"`);
+    }
+  }
+
+  const buttonCjs = path.join(dist, "components/button/Button.js");
+  if (existsSync(buttonCjs)) {
+    const source = readFileSync(buttonCjs, "utf8");
+    if (!source.startsWith('"use client";\n"use strict";')) {
+      fail(
+        `${packageRel}: components/button/Button.js must start with "use client" before "use strict"`,
+      );
+    }
+  }
+}
+
 verifyLicenseConsistency();
 for (const packageRel of PUBLISHABLE_PACKAGES) {
   verifyPackage(packageRel);
 }
+verifyDesignSystemClientBoundaries();
 
 if (errors.length > 0) {
   console.error("verify-publishable-packages failed:\n");

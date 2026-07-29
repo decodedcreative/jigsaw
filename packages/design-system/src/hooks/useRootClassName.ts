@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo } from "react";
 import type { RootClassName } from "@jsw-types/component-props";
 import { mergeRootClassName } from "@utils/mergeRootClassName";

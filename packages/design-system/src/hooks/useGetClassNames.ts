@@ -1,3 +1,5 @@
+"use client";
+
 import { getClassNames } from "@utils";
 import { useMemo } from "react";
 import type { ClassNameOverrides } from "@jsw-types/component-props";
