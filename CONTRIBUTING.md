@@ -29,12 +29,17 @@ git checkout wip/design-system-overhaul-backup -- path/to/relevant/files
 
 ## Versioning & releasing
 
-Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets). **Feature PRs must not include `.changeset/*.md` files** — CI generates them on `main` from package file changes (default **patch** bump).
+Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets) behind a small maintainer script. **Feature PRs must not include `.changeset/*.md` files.**
 
-For a minor or major release, run `npm run release:minor` / `npm run release:major` on `main`, or use the Version packages workflow_dispatch bump input.
+When you are ready to cut a release from `main`:
+
+```bash
+npm run version-and-tag:patch   # or :minor / :major
+git push && git push origin vX.Y.Z
+```
+
+Then publish the draft GitHub Release for that tag — that is what publishes to npm.
 
 **Linked packages:** `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` share the same semver (Changesets `fixed` group).
 
-Full maintainer flow: [docs/publication.md](docs/publication.md).
-
-CI requires the repository secret `NPM_TOKEN` (npm automation token with publish access to `@jigsaw-ds/*`).
+Full flow: [docs/publication.md](docs/publication.md). Requires repository secret `NPM_TOKEN`.

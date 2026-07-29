@@ -1,9 +1,7 @@
 # Changesets
 
-Pending release notes for publishable `@jigsaw-ds/*` packages live here as markdown files.
+Pending release notes for publishable `@jigsaw-ds/*` packages live here briefly during `npm run version-and-tag:*`.
 
-**Do not add changeset files in feature PRs.** On pushes to `main`, CI runs `npm run generate-changeset` (default **patch**). Publishable packages come from `turbo ls` (minus `private` / Changesets `ignore`); changed packages come from `turbo run build --filter=[since] --dry-run=json`, then Changesets `fixed` groups are applied.
+**Do not add changeset files in feature PRs.** Maintainers run `version-and-tag:patch|minor|major` on `main`, which synthesizes an `auto-*.md` file, runs `changeset version`, commits, and tags. Publishing to npm happens when you publish the GitHub Release for that tag.
 
-For minor/major bumps use `npm run release:minor` / `npm run release:major`, or the Version packages workflow_dispatch input.
-
-See [docs/publication.md](../docs/publication.md) for the full release flow.
+See [docs/publication.md](../docs/publication.md).

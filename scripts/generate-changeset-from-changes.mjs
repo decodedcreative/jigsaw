@@ -7,9 +7,8 @@
  * (ignore / fixed groups). Changed packages use
  * `turbo run build --filter=[since] --dry-run=json` (direct changes only).
  *
- * Bump type is **explicit** (default `patch`). Maintainers choose minor/major via:
- *   npm run release:minor | release:major
- *   or the Version packages workflow_dispatch `bump` input
+ * Prefer the maintainer entrypoint `npm run version-and-tag:*`, which calls this
+ * script then runs `changeset version` and creates a git tag.
  *
  * Usage:
  *   node scripts/generate-changeset-from-changes.mjs

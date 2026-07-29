@@ -36,7 +36,8 @@ jobs:
           done < <(git diff --name-only "origin/${{ github.base_ref }}"...HEAD -- .changeset/ || true)
           if [ "$disallowed" -ne 0 ]; then
             echo "Feature PRs must not add release metadata under .changeset/"
-            echo "Only README.md and config.json are allowed. CI generates auto-*.md on main."
+            echo "Only README.md and config.json are allowed."
+            echo "Cut releases with: npm run version-and-tag:patch|minor|major"
             echo "See docs/publication.md"
             exit 1
           fi
