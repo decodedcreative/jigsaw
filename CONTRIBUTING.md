@@ -29,12 +29,12 @@ git checkout wip/design-system-overhaul-backup -- path/to/relevant/files
 
 ## Versioning & releasing
 
-Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets). **Feature PRs must not include `.changeset/*.md` files** — CI generates them on `main` from package file changes and conventional commits.
+Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets). **Feature PRs must not include `.changeset/*.md` files** — CI generates them on `main` from package file changes (default **patch** bump).
 
-Prefer conventional commit subjects (`feat:`, `fix:`, `feat!:`, …) so bump type is inferred correctly.
-
-Full maintainer flow (auto-changeset → Version packages PR → draft GitHub Release → publish Release → npm): see [docs/publication.md](docs/publication.md).
+For a minor or major release, run `npm run release:minor` / `npm run release:major` on `main`, or use the Version packages workflow_dispatch bump input.
 
 **Linked packages:** `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` share the same semver (Changesets `fixed` group).
+
+Full maintainer flow: [docs/publication.md](docs/publication.md).
 
 CI requires the repository secret `NPM_TOKEN` (npm automation token with publish access to `@jigsaw-ds/*`).

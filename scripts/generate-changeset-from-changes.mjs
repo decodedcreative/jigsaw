@@ -1,28 +1,32 @@
 #!/usr/bin/env node
 /**
  * Generate a Changeset from publishable-package file changes since the last
- * release tag (or an explicit --since ref).
+ * release baseline (latest `v*` tag or `chore: version packages` commit).
  *
  * Used on `main` by the Version packages workflow so feature PRs do not need
  * hand-written `.changeset/*.md` files.
  *
- * Bump type is inferred from conventional commit subjects in the range:
- *   major  — `type!:` or body/footer containing BREAKING CHANGE
- *   minor  — `feat`
- *   patch  — everything else (fix, perf, refactor, chore, …)
+ * Bump type is **explicit** (default `patch`) — not inferred from commit
+ * messages — so we do not need a conventional-commit linter. Maintainers
+ * choose minor/major via:
+ *   npm run release:minor | release:major
+ *   or the Version packages workflow_dispatch `bump` input
  *
  * Usage:
  *   node scripts/generate-changeset-from-changes.mjs
- *   node scripts/generate-changeset-from-changes.mjs --since v0.1.0
- *   node scripts/generate-changeset-from-changes.mjs --dry-run
+ *   node scripts/generate-changeset-from-changes.mjs --bump minor
+ *   node scripts/generate-changeset-from-changes.mjs --since v0.1.0 --dry-run
  *   node scripts/generate-changeset-from-changes.mjs --force
+ *
+ * --force overwrites / regenerates even when pending changesets already exist
+ * (used by release:* scripts and workflow_dispatch when changing bump type).
  */
 import { execFileSync } from "node:child_process";
 import {
   existsSync,
   mkdirSync,
   readdirSync,
-  readFileSync,
+  unlinkSync,
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
@@ -32,7 +36,18 @@ import { createHash } from "node:crypto";
 const repoRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const changesetDir = path.join(repoRoot, ".changeset");
 
-/** Longest path prefix first so themes/default wins over packages/. */
+const VALID_BUMPS = new Set(["patch", "minor", "major"]);
+
+/**
+ * Publishable package → path prefix under the monorepo.
+ *
+ * Order matters: longer / more specific prefixes first so
+ * `packages/themes/default/` matches before a hypothetical `packages/themes/`
+ * (and never falls through to a shorter sibling prefix).
+ *
+ * Keep this list in sync with docs/publication.md — it is the intentional
+ * publish-set source of truth (not discovered dynamically).
+ */
 export const PACKAGE_PATHS = [
   {
     name: "@jigsaw-ds/theme-default",
@@ -68,8 +83,6 @@ const IGNORE_FILE_PATTERNS = [
   /(^|\/)test-setup\.[^/]+$/,
 ];
 
-const BUMP_RANK = { patch: 1, minor: 2, major: 3 };
-
 export function getArg(args, flag) {
   const index = args.indexOf(flag);
   return index === -1 ? undefined : args[index + 1];
@@ -77,6 +90,16 @@ export function getArg(args, flag) {
 
 export function hasFlag(args, flag) {
   return args.includes(flag);
+}
+
+export function parseBump(value) {
+  const bump = (value ?? "patch").toLowerCase();
+  if (!VALID_BUMPS.has(bump)) {
+    throw new Error(
+      `Invalid --bump "${value}". Expected one of: ${[...VALID_BUMPS].join(", ")}`
+    );
+  }
+  return bump;
 }
 
 export function listPendingChangesetFiles(dir = changesetDir) {
@@ -114,30 +137,6 @@ export function applyFixedGroup(packages) {
   return next;
 }
 
-/**
- * Infer the highest bump from conventional-commit subjects (and optional
- * full messages when checking for BREAKING CHANGE).
- */
-export function inferBumpType(commitSubjects, commitBodies = []) {
-  let bump = "patch";
-  for (const subject of commitSubjects) {
-    const trimmed = subject.trim();
-    if (/^(\w+)(\([^)]*\))?!:/.test(trimmed)) {
-      bump = "major";
-      break;
-    }
-    if (/^feat(\([^)]*\))?:/.test(trimmed)) {
-      if (BUMP_RANK.minor > BUMP_RANK[bump]) bump = "minor";
-    }
-  }
-  for (const body of commitBodies) {
-    if (/BREAKING CHANGE/i.test(body)) {
-      return "major";
-    }
-  }
-  return bump;
-}
-
 export function buildChangesetMarkdown({ packages, bump, summaryLines }) {
   const frontmatter = [...packages]
     .sort()
@@ -155,6 +154,14 @@ export function buildChangesetMarkdown({ packages, bump, summaryLines }) {
 export function changesetFileName(content) {
   const hash = createHash("sha1").update(content).digest("hex").slice(0, 8);
   return `auto-${hash}.md`;
+}
+
+function log(message) {
+  console.log(`generate-changeset: ${message}`);
+}
+
+function logError(message) {
+  console.error(`generate-changeset: error: ${message}`);
 }
 
 function runGit(args, { allowFailure = false } = {}) {
@@ -199,7 +206,13 @@ export function resolveSinceRef(explicitSince) {
   if (versionCommit) return versionCommit;
 
   throw new Error(
-    "No --since ref, no v* tag, and no 'chore: version packages' commit found. Pass --since <ref>."
+    [
+      "Cannot determine a release baseline.",
+      "Expected a `v*` git tag (created when a GitHub Release is published)",
+      "or a prior `chore: version packages` commit.",
+      "On a brand-new repo, create and publish an initial release tag first,",
+      "or pass an explicit baseline: --since <git-ref>.",
+    ].join(" ")
   );
 }
 
@@ -213,7 +226,10 @@ function commitsTouchingPackages(sinceRef, packageNames) {
     packageNames.has(entry.name)
   ).map((entry) => entry.prefix.replace(/\/$/, ""));
 
-  if (prefixes.length === 0) return { subjects: [], bodies: [] };
+  if (prefixes.length === 0) {
+    log("no package path prefixes matched the changed package set");
+    return { subjects: [] };
+  }
 
   const subjects = runGit([
     "log",
@@ -222,32 +238,30 @@ function commitsTouchingPackages(sinceRef, packageNames) {
     "--",
     ...prefixes,
   ]);
-  const bodies = runGit([
-    "log",
-    "--format=%B",
-    `${sinceRef}...HEAD`,
-    "--",
-    ...prefixes,
-  ]);
 
-  return {
-    subjects: subjects ? subjects.split("\n").filter(Boolean) : [],
-    bodies: bodies ? [bodies] : [],
-  };
+  const list = subjects ? subjects.split("\n").filter(Boolean) : [];
+  if (list.length === 0) {
+    log(
+      `no commits touching ${[...packageNames].join(", ")} since ${sinceRef} (summary will use a fallback line)`
+    );
+  }
+
+  return { subjects: list };
 }
 
-export function planChangeset({
-  sinceRef,
-  files,
-  commitSubjects,
-  commitBodies,
-}) {
+function clearPendingChangesets() {
+  for (const name of listPendingChangesetFiles()) {
+    unlinkSync(path.join(changesetDir, name));
+    log(`removed pending changeset ${name}`);
+  }
+}
+
+export function planChangeset({ sinceRef, files, commitSubjects, bump }) {
   const packages = applyFixedGroup(packagesForChangedFiles(files));
   if (packages.size === 0) {
     return null;
   }
 
-  const bump = inferBumpType(commitSubjects, commitBodies);
   const summaryLines = [];
   const seen = new Set();
   for (const subject of commitSubjects) {
@@ -277,39 +291,54 @@ function main(argv = process.argv.slice(2)) {
   const dryRun = hasFlag(argv, "--dry-run");
   const force = hasFlag(argv, "--force");
   const sinceArg = getArg(argv, "--since");
+  const bump = parseBump(getArg(argv, "--bump"));
 
   const pending = listPendingChangesetFiles();
   if (pending.length > 0 && !force) {
-    console.log(
-      `generate-changeset: ${pending.length} pending changeset(s) already exist — skipping`
+    log(
+      `${pending.length} pending changeset(s) already exist — skipping (pass --force to regenerate)`
     );
     for (const name of pending) console.log(`  - ${name}`);
     return { skipped: true, reason: "pending-changesets" };
   }
 
+  if (pending.length > 0 && force && !dryRun) {
+    clearPendingChangesets();
+  }
+
   const sinceRef = resolveSinceRef(sinceArg);
+  log(`baseline ${sinceRef}; bump ${bump}`);
+
   const files = changedFilesSince(sinceRef);
+  if (files.length === 0) {
+    log(`no file changes since ${sinceRef}`);
+  } else {
+    log(`${files.length} changed file(s) since ${sinceRef}`);
+  }
+
   const packages = applyFixedGroup(packagesForChangedFiles(files));
-  const { subjects, bodies } = commitsTouchingPackages(sinceRef, packages);
+  if (packages.size === 0) {
+    log(
+      `no publishable package paths matched those files (publish set: ${PACKAGE_PATHS.map((p) => p.name).join(", ")})`
+    );
+  }
+
+  const { subjects } = commitsTouchingPackages(sinceRef, packages);
   const plan = planChangeset({
     sinceRef,
     files,
     commitSubjects: subjects,
-    commitBodies: bodies,
+    bump,
   });
 
   if (!plan) {
-    console.log(
-      `generate-changeset: no publishable package changes since ${sinceRef}`
-    );
+    log(`no publishable package changes since ${sinceRef}`);
     return { skipped: true, reason: "no-package-changes", sinceRef };
   }
 
   const outPath = path.join(changesetDir, plan.fileName);
-  console.log(
-    `generate-changeset: ${plan.bump} for ${plan.packages.join(", ")} since ${sinceRef}`
-  );
-  console.log(`  → ${path.relative(repoRoot, outPath)}`);
+  log(`${plan.bump} for ${plan.packages.join(", ")}`);
+  log(`→ ${path.relative(repoRoot, outPath)}`);
 
   if (dryRun) {
     console.log(plan.markdown);
@@ -329,7 +358,7 @@ if (isDirectRun) {
   try {
     main();
   } catch (error) {
-    console.error(`generate-changeset: ${error.message}`);
+    logError(error.message);
     process.exit(1);
   }
 }

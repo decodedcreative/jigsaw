@@ -22,11 +22,22 @@ jobs:
         if: github.event_name == 'pull_request' && github.head_ref != 'changeset-release/main'
         run: |
           git fetch --no-tags origin "${{ github.base_ref }}" --depth=1
-          CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}"...HEAD -- '.changeset/*.md' | grep -v '/README.md$' || true)
-          if [ -n "$CHANGED" ]; then
-            echo "Feature PRs must not add .changeset/*.md files."
-            echo "CI generates changesets on main — see docs/publication.md"
-            echo "$CHANGED"
+          # Explicit allowlist — only these paths may change under .changeset/ on feature PRs.
+          disallowed=0
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            case "$file" in
+              .changeset/README.md|.changeset/config.json) ;;
+              *)
+                echo "Disallowed .changeset change: $file"
+                disallowed=1
+                ;;
+            esac
+          done < <(git diff --name-only "origin/${{ github.base_ref }}"...HEAD -- .changeset/ || true)
+          if [ "$disallowed" -ne 0 ]; then
+            echo "Feature PRs must not add release metadata under .changeset/"
+            echo "Only README.md and config.json are allowed. CI generates auto-*.md on main."
+            echo "See docs/publication.md"
             exit 1
           fi
 

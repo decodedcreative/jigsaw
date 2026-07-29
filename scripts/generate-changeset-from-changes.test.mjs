@@ -4,8 +4,8 @@ import {
   applyFixedGroup,
   buildChangesetMarkdown,
   changesetFileName,
-  inferBumpType,
   packagesForChangedFiles,
+  parseBump,
   planChangeset,
   shouldIgnoreChangedFile,
 } from "./generate-changeset-from-changes.mjs";
@@ -26,6 +26,17 @@ describe("packagesForChangedFiles", () => {
         "@jigsaw-ds/theme-default",
         "@jigsaw-ds/tokens",
       ].sort()
+    );
+  });
+
+  it("prefers theme package prefixes over broader paths", () => {
+    const packages = packagesForChangedFiles([
+      "packages/themes/default/src/index.ts",
+      "packages/themes/portfolio/src/index.ts",
+    ]);
+    assert.deepEqual(
+      [...packages].sort(),
+      ["@jigsaw-ds/theme-default", "@jigsaw-ds/theme-portfolio"].sort()
     );
   });
 
@@ -55,28 +66,18 @@ describe("applyFixedGroup", () => {
   });
 });
 
-describe("inferBumpType", () => {
+describe("parseBump", () => {
   it("defaults to patch", () => {
-    assert.equal(inferBumpType(["fix: button padding"]), "patch");
+    assert.equal(parseBump(undefined), "patch");
   });
 
-  it("uses minor for feat", () => {
-    assert.equal(inferBumpType(["feat(design-system): add Badge"]), "minor");
+  it("accepts patch minor major", () => {
+    assert.equal(parseBump("minor"), "minor");
+    assert.equal(parseBump("MAJOR"), "major");
   });
 
-  it("uses major for breaking marker", () => {
-    assert.equal(inferBumpType(["feat!: rename API"]), "major");
-    assert.equal(
-      inferBumpType(["feat: rename"], ["BREAKING CHANGE: props renamed"]),
-      "major"
-    );
-  });
-
-  it("takes the highest bump across commits", () => {
-    assert.equal(
-      inferBumpType(["fix: typo", "feat: new thing", "chore: lint"]),
-      "minor"
-    );
+  it("rejects invalid values", () => {
+    assert.throws(() => parseBump("banana"), /Invalid --bump/);
   });
 });
 
@@ -87,33 +88,54 @@ describe("planChangeset", () => {
         sinceRef: "v0.1.0",
         files: ["docs/publication.md"],
         commitSubjects: ["docs: update publication"],
-        commitBodies: [],
+        bump: "patch",
       }),
       null
     );
   });
 
-  it("builds markdown for package changes", () => {
+  it("uses the explicit bump even when commit subjects look like feat", () => {
     const plan = planChangeset({
       sinceRef: "v0.1.0",
       files: ["packages/design-system/src/hooks/useGetClassNames.ts"],
       commitSubjects: [
         "feat(design-system): preserve per-module use client boundaries (JSW-111) (#68)",
+        "totally unstructured commit message",
+        "",
       ],
-      commitBodies: [],
+      bump: "patch",
     });
 
     assert.ok(plan);
-    assert.equal(plan.bump, "minor");
+    assert.equal(plan.bump, "patch");
     assert.deepEqual(plan.packages, [
       "@jigsaw-ds/design-system",
       "@jigsaw-ds/tokens",
     ]);
-    assert.match(plan.markdown, /"@jigsaw-ds\/design-system": minor/);
-    assert.match(plan.markdown, /"@jigsaw-ds\/tokens": minor/);
+    assert.match(plan.markdown, /"@jigsaw-ds\/design-system": patch/);
     assert.match(plan.markdown, /preserve per-module use client boundaries/);
+    assert.match(plan.markdown, /totally unstructured commit message/);
     assert.equal(plan.fileName, changesetFileName(plan.markdown));
     assert.match(plan.fileName, /^auto-[a-f0-9]{8}\.md$/);
+  });
+
+  it("honours minor and major bumps", () => {
+    const minor = planChangeset({
+      sinceRef: "v0.1.0",
+      files: ["packages/theme-build/src/index.ts"],
+      commitSubjects: ["update build helper"],
+      bump: "minor",
+    });
+    assert.equal(minor.bump, "minor");
+
+    const major = planChangeset({
+      sinceRef: "v0.1.0",
+      files: ["packages/theme-build/src/index.ts"],
+      commitSubjects: [],
+      bump: "major",
+    });
+    assert.equal(major.bump, "major");
+    assert.match(major.markdown, /Automated changeset/);
   });
 });
 

@@ -23,7 +23,7 @@ Private / not published:
 
 Public packages start at **`0.1.0`**. The API is not yet stable; `0.x` signals that under semver. `1.0.0` is reserved for a later, deliberate stability commitment.
 
-Changesets then drives `0.1.0 → 0.2.0` (minor) / `0.1.1` (patch) from release tags and conventional commits (see below).
+Semver bumps are **chosen explicitly** (default `patch`). File diffs decide *which* packages change; maintainers decide *how far* to bump via npm scripts or a workflow input — no conventional-commit linter required.
 
 Optional prereleases before promoting `latest`:
 
@@ -43,7 +43,7 @@ Feature PRs **do not** include `.changeset/*.md` files. Release metadata is gene
 ```mermaid
 flowchart TD
   A[Merge feature PR to main] --> B[Version packages workflow]
-  B --> C[Generate changeset from package diffs since last v* tag]
+  B --> C["Generate changeset from package diffs (default patch)"]
   C --> D[changesets/action opens Version packages PR]
   D --> E[Review and merge Version packages PR]
   E --> F[Draft GitHub release workflow]
@@ -55,21 +55,13 @@ flowchart TD
 
 Open a normal feature PR. Touch files under the publish set as needed. **Do not** run `npm run changeset` and **do not** commit anything under `.changeset/` except `config.json` / `README.md`.
 
-CI fails feature PRs that add hand-written changeset markdown (see [ci.yml](../.github/workflows/ci.yml)).
-
-Prefer [conventional commits](https://www.conventionalcommits.org/) so bump type can be inferred:
-
-| Commit style | Bump |
-|--------------|------|
-| `feat:` / `feat(scope):` | minor |
-| `feat!:` / `fix!:` / `BREAKING CHANGE` | major |
-| `fix:`, `perf:`, `refactor:`, `chore:`, … | patch |
+CI fails feature PRs that add other files under `.changeset/` (see [ci.yml](../.github/workflows/ci.yml)).
 
 ### 2. Auto-changeset + Version packages PR
 
 On every push to `main`, [version-packages.yml](../.github/workflows/version-packages.yml):
 
-1. Runs `npm run generate-changeset` ([scripts/generate-changeset-from-changes.mjs](../scripts/generate-changeset-from-changes.mjs))
+1. Runs `npm run generate-changeset -- --bump patch` ([scripts/generate-changeset-from-changes.mjs](../scripts/generate-changeset-from-changes.mjs))
 2. Diffs from the newer of the latest `v*` tag and the latest `chore: version packages` commit → `HEAD`
 3. Maps changed files to publishable packages (honouring the design-system/tokens fixed group)
 4. Writes a single `.changeset/auto-*.md` when packages changed and no pending changesets already exist
@@ -78,6 +70,21 @@ On every push to `main`, [version-packages.yml](../.github/workflows/version-pac
 That baseline choice means merging the Version packages PR does not immediately open another one before a release tag exists.
 
 Review that PR like any other, then merge it.
+
+### Choosing minor or major
+
+Push-to-`main` always prepares a **patch** unless you ask for more:
+
+```bash
+# On main (or any checkout that includes the package diffs) — regenerates the pending changeset
+npm run release:patch   # same as the default CI bump
+npm run release:minor
+npm run release:major
+```
+
+Or run **Version packages → Run workflow** in GitHub Actions and pick `patch` / `minor` / `major`. That path passes `--force` so an existing auto-changeset is replaced with the chosen bump.
+
+`--force` means: delete pending `.changeset/*.md` (except README) and write a fresh auto-changeset. Use it when changing bump type; everyday push-to-main CI does **not** pass `--force`, so it will not clobber a changeset you already prepared with `release:minor`.
 
 ### 3. Draft GitHub Release
 
@@ -97,8 +104,11 @@ Requires repository secret `NPM_TOKEN` (npm automation token with publish access
 ### Local checks
 
 ```bash
-# After package changes on a branch — optional dry-run of auto-changeset
+# Preview which packages would be included (default patch)
 npm run generate-changeset -- --since v0.1.0 --dry-run
+
+# Preview a minor bump without writing files
+npm run generate-changeset -- --since v0.1.0 --bump minor --dry-run --force
 
 # Before merging a Version packages PR / cutting a release
 npm run validate:packages

@@ -4,6 +4,17 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Semver bump for changed publishable packages
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: patch
 
 concurrency:
   group: version-packages-${{ github.ref }}
@@ -33,9 +44,17 @@ jobs:
         run: npm ci
 
       # Feature PRs do not carry .changeset/*.md — synthesize one from package
-      # diffs since the latest v* tag (skipped when pending changesets exist).
+      # diffs. Push-to-main defaults to patch; workflow_dispatch / release:*
+      # scripts choose minor or major explicitly (--force regenerates).
       - name: Generate changeset from package changes
-        run: npm run generate-changeset
+        env:
+          BUMP: ${{ github.event.inputs.bump || 'patch' }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            npm run generate-changeset -- --bump "$BUMP" --force
+          else
+            npm run generate-changeset -- --bump "$BUMP"
+          fi
 
       - name: Create Version packages pull request
         uses: changesets/action@v1
