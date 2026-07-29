@@ -40,11 +40,10 @@ Feature PRs stay focused on code — **no** `.changeset/*.md` files. Versioning 
 ```mermaid
 flowchart TD
   A[Merge feature PRs to main] --> B["npm run version-and-tag:patch|minor|major"]
-  B --> C[Changeset + package.json bumps + git tag]
-  C --> D[git push && git push --tags]
-  D --> E[Draft GitHub Release opened for the tag]
-  E --> F[Review and publish the GitHub Release]
-  F --> G[release.yml publishes to npm]
+  B --> C[Changeset + bumps + tag + push to origin]
+  C --> D[Draft GitHub Release opened for the tag]
+  D --> E[Review and publish the GitHub Release]
+  E --> F[release.yml publishes to npm]
 ```
 
 ### 1. Land package changes on `main`
@@ -58,7 +57,6 @@ On a clean `main` checkout:
 ```bash
 git checkout main && git pull
 npm run version-and-tag:patch   # or :minor / :major
-git push && git push origin vX.Y.Z
 ```
 
 `version-and-tag` ([scripts/version-and-tag.mjs](../scripts/version-and-tag.mjs)):
@@ -66,7 +64,7 @@ git push && git push origin vX.Y.Z
 1. Detects which publishable packages changed since the last `v*` tag (`turbo` + Changesets `fixed` groups)
 2. Writes a temporary Changeset with your chosen bump
 3. Runs `changeset version` (updates `package.json` + `CHANGELOG.md`)
-4. Commits `chore: version packages` and creates annotated tag `v{version}`
+4. Commits `chore: version packages`, creates annotated tag `v{version}`, and pushes both to `origin`
 
 Preview without writing:
 
@@ -74,15 +72,15 @@ Preview without writing:
 npm run version-and-tag:minor -- --dry-run
 ```
 
-Push commit + tag in one step with `--push`:
+Leave the commit/tag local (skip push):
 
 ```bash
-npm run version-and-tag:patch -- --push
+npm run version-and-tag:patch -- --no-push
 ```
 
 ### 3. Publish the GitHub Release (npm)
 
-Pushing the `v*` tag opens a **draft** [GitHub Release](https://github.com/decodedcreative/jigsaw/releases) with notes from package changelogs.
+The pushed `v*` tag opens a **draft** [GitHub Release](https://github.com/decodedcreative/jigsaw/releases) with notes from package changelogs.
 
 Publishing that release triggers [release.yml](../.github/workflows/release.yml), which:
 

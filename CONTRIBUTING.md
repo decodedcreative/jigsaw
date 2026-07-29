@@ -35,10 +35,9 @@ When you are ready to cut a release from `main`:
 
 ```bash
 npm run version-and-tag:patch   # or :minor / :major
-git push && git push origin vX.Y.Z
 ```
 
-Then publish the draft GitHub Release for that tag — that is what publishes to npm.
+That bumps packages, commits, tags, and pushes to `origin`. Then publish the draft GitHub Release for that tag — that is what publishes to npm.
 
 **Linked packages:** `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` share the same semver (Changesets `fixed` group).
 

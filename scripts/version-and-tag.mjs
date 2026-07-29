@@ -9,10 +9,13 @@
  * Publishing to npm is a separate, manual step: create/publish a GitHub Release
  * for that tag (see `.github/workflows/release.yml`).
  *
+ * By default the version commit and `v*` tag are pushed to `origin`. Pass
+ * `--no-push` to leave them local (e.g. to inspect before pushing).
+ *
  * Usage:
  *   node scripts/version-and-tag.mjs --bump patch
  *   node scripts/version-and-tag.mjs --bump minor --dry-run
- *   node scripts/version-and-tag.mjs --bump major --push
+ *   node scripts/version-and-tag.mjs --bump major --no-push
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -76,7 +79,7 @@ function assertSafeRepo({ allowDirty, allowBranch }) {
 function main(argv = process.argv.slice(2)) {
   const bump = parseBump(getArg(argv, "--bump"));
   const dryRun = hasFlag(argv, "--dry-run");
-  const push = hasFlag(argv, "--push");
+  const push = !hasFlag(argv, "--no-push");
   const allowDirty = hasFlag(argv, "--allow-dirty");
   const allowBranch = hasFlag(argv, "--allow-branch");
 
@@ -128,8 +131,9 @@ function main(argv = process.argv.slice(2)) {
     log("pushing commit and tag");
     runGit(["push"]);
     runGit(["push", "origin", tag]);
+    log(`pushed ${tag} — publish the GitHub Release for that tag to npm`);
   } else {
-    log("next steps:");
+    log("skipped push (--no-push); next steps:");
     console.log(`  git push && git push origin ${tag}`);
     console.log(
       `  Create/publish a GitHub Release for ${tag} to publish to npm.`
