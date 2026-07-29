@@ -70,12 +70,12 @@ Prefer [conventional commits](https://www.conventionalcommits.org/) so bump type
 On every push to `main`, [version-packages.yml](../.github/workflows/version-packages.yml):
 
 1. Runs `npm run generate-changeset` ([scripts/generate-changeset-from-changes.mjs](../scripts/generate-changeset-from-changes.mjs))
-2. Diffs `v*` (latest release tag) → `HEAD`
+2. Diffs from the newer of the latest `v*` tag and the latest `chore: version packages` commit → `HEAD`
 3. Maps changed files to publishable packages (honouring the design-system/tokens fixed group)
 4. Writes a single `.changeset/auto-*.md` when packages changed and no pending changesets already exist
 5. Runs [changesets/action](https://github.com/changesets/action), which opens (or updates) a **Version packages** PR that bumps `package.json` versions, internal dependency ranges, and `CHANGELOG.md` files
 
-The diff baseline is the newer of the latest `v*` tag and the latest `chore: version packages` commit, so merging the Version packages PR does not immediately open another one before a release tag exists.
+That baseline choice means merging the Version packages PR does not immediately open another one before a release tag exists.
 
 Review that PR like any other, then merge it.
 
