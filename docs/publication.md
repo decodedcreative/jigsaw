@@ -2,17 +2,9 @@
 
 Jigsaw packages are published to the [npm registry](https://www.npmjs.com/) under the **`@jigsaw-ds`** organization.
 
-## npm organization
-
-| Candidate | Result |
-|-----------|--------|
-| `@jigsaw` | Org already exists (~46 packages, unrelated) |
-| `@jsw` | Not available |
-| `@jigsaw-ds` | **Claimed** — use this scope |
-
 ## Publish set
 
-These five packages are intended for public npm release:
+Publishable packages are discovered automatically (`turbo ls`, minus `private` and `.changeset` `ignore`):
 
 | Package | Description |
 |---------|-------------|
@@ -22,39 +14,103 @@ These five packages are intended for public npm release:
 | `@jigsaw-ds/theme-portfolio` | Portfolio theme |
 | `@jigsaw-ds/theme-build` | Style Dictionary build helpers (shared by themes/tokens) |
 
-Private / not published:
+Private / not published: `@jigsaw-ds/storybook`, root `jigsaw`, `web`.
 
-- `@jigsaw-ds/storybook` — internal Storybook app
-- Root `jigsaw` workspace — monorepo orchestration only
+`@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` are a Changesets **fixed** group — they always share the same version.
 
 ## Versioning
 
-**First publish uses `0.1.0` — never `1.0.0`.** The public API is not yet stable, and `0.x` signals that under semver. `1.0.0` is reserved for a later, deliberate stability commitment.
+Public packages start at **`0.1.0`**. The API is not yet stable; `0.x` signals that under semver. `1.0.0` is reserved for a later, deliberate stability commitment.
 
-- Baseline `0.1.0` is set in JSW-103.
-- `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` are a Changesets `fixed` group — always the same version.
-- Changesets then drives `0.1.0 → 0.2.0` (minor) / `0.1.1` (patch).
-
-If we want external testing before a `latest`-tagged `0.1.0`, use Changesets prerelease mode to publish under an `alpha`/`beta` dist-tag first:
+Optional prereleases before promoting `latest`:
 
 ```bash
-npx changeset pre enter alpha   # or beta -> 0.1.0-alpha.0, .1, ...
-npx changeset pre exit          # return to normal releases
+npx changeset pre enter alpha   # or beta → 0.1.0-alpha.0, .1, …
+npx changeset pre exit
 ```
 
 ## License
 
-The repository is MIT licensed (`LICENSE` at the repo root). Each publishable package includes an **identical copy** of that file so npm tarballs satisfy registry licensing requirements — there are no per-package exceptions. CI (`npm run verify:packages`) asserts every package `LICENSE` matches the root text byte-for-byte.
+The repository is MIT licensed (`LICENSE` at the repo root). Each publishable package includes an **identical copy** of that file. CI (`npm run verify:packages`) asserts every package `LICENSE` matches the root text byte-for-byte.
 
-## Remaining setup (JSW-103–106)
+## Release flow
 
-- [x] Changesets for versioning (see [CONTRIBUTING.md](../CONTRIBUTING.md#versioning-changesets))
-- [x] Remove `"private": true` and add publish metadata (`files`, `repository`, etc.)
-- [x] Export / tarball integrity check (`npm run verify:packages` in CI)
-- [x] Pre-publish validation (`publint`, `@arethetypeswrong/cli`) — `npm run validate:packages` in CI
-- [x] GitHub Actions publish workflow + `NPM_TOKEN` — JSW-104
-- [ ] Finalize consumer docs in [using-jigsaw.md](./using-jigsaw.md) — JSW-106
+Feature PRs stay focused on code — **no** `.changeset/*.md` files. Versioning is a deliberate maintainer command; npm publish is a separate GitHub Release click.
 
-See epic [JSW-99](https://decodedcreative.atlassian.net/browse/JSW-99) for the full backlog.
+```mermaid
+flowchart TD
+  A[Merge feature PRs to main] --> B["npm run version-and-tag:patch|minor|major"]
+  B --> C[Changeset + bumps + tag + push to origin]
+  C --> D[Draft GitHub Release opened for the tag]
+  D --> E[Review and publish the GitHub Release]
+  E --> F[release.yml publishes to npm]
+```
 
-Releases appear on [GitHub Releases](https://github.com/decodedcreative/jigsaw/releases). **Publishing a GitHub Release** triggers npm publish — see [CONTRIBUTING.md — Releasing to npm](../CONTRIBUTING.md#releasing-to-npm).
+### 1. Land package changes on `main`
+
+Open normal feature PRs. **Do not** commit anything under `.changeset/` except `config.json` / `README.md` (CI enforces this).
+
+### 2. Version and tag
+
+On a clean `main` checkout:
+
+```bash
+git checkout main && git pull
+npm run version-and-tag:patch   # or :minor / :major
+```
+
+`version-and-tag` ([scripts/version-and-tag.mjs](../scripts/version-and-tag.mjs)):
+
+1. Detects which publishable packages changed since the last `v*` tag (`turbo` + Changesets `fixed` groups)
+2. Writes a temporary Changeset with your chosen bump
+3. Runs `changeset version` (updates `package.json` + `CHANGELOG.md`)
+4. Commits `chore: version packages`, creates annotated tag `v{version}`, and pushes both to `origin`
+
+Preview without writing:
+
+```bash
+npm run version-and-tag:minor -- --dry-run
+```
+
+Leave the commit/tag local (skip push):
+
+```bash
+npm run version-and-tag:patch -- --no-push
+```
+
+### 3. Publish the GitHub Release (npm)
+
+The pushed `v*` tag opens a **draft** [GitHub Release](https://github.com/decodedcreative/jigsaw/releases) with notes from package changelogs.
+
+Publishing that release triggers [release.yml](../.github/workflows/release.yml), which:
+
+1. Checks out the tag
+2. Confirms the tag matches `@jigsaw-ds/design-system`
+3. Confirms changelog sections exist
+4. Runs `npm run publish` (`validate:packages` then `changeset publish`)
+
+Requires repository secret `NPM_TOKEN`.
+
+### Local checks
+
+```bash
+# Which packages would be included in the next version?
+npm run generate-changeset -- --dry-run
+
+npm run validate:packages
+npx changeset publish --dry-run
+```
+
+`generate-changeset` is normally invoked by `version-and-tag`. Pass `--force` only if a pending `auto-*.md` already exists and you need to regenerate it (e.g. changing bump). Pass `--since <ref>` if there is no `v*` tag yet (bootstrap).
+
+## npm organization
+
+| Candidate | Result |
+|-----------|--------|
+| `@jigsaw` | Org already exists (~46 packages, unrelated) |
+| `@jsw` | Not available |
+| `@jigsaw-ds` | **Claimed** — use this scope |
+
+## See also
+
+- [using-jigsaw.md](./using-jigsaw.md) — consumer install guide

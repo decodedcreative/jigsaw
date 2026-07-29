@@ -32,10 +32,9 @@ npm run dev
 
 # Lint
 npm run lint
-
-# Add a changeset (required for publishable package changes)
-npm run changeset
 ```
+
+Feature PRs do not include Changesets. Maintainers cut releases from `main` with `npm run version-and-tag:patch|minor|major`, then publish the GitHub Release to push to npm — see [docs/publication.md](docs/publication.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Using Jigsaw in another app
 
@@ -46,5 +45,3 @@ npm install @jigsaw-ds/design-system @jigsaw-ds/tokens @jigsaw-ds/theme-default
 ```
 
 See [docs/using-jigsaw.md](docs/using-jigsaw.md) for full setup (PostCSS, CSS imports, and Tailwind v4 wiring) in a Next.js app.
-
-For npm org scope and publication planning, see [docs/publication.md](docs/publication.md).

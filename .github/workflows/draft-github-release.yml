@@ -1,12 +1,11 @@
 name: Draft GitHub release
 
+# After `version-and-tag` pushes a `v*` tag, open a draft Release so publishing
+# to npm is a deliberate "Publish release" click (see release.yml).
 on:
   push:
-    branches:
-      - main
-    paths:
-      - "packages/**/package.json"
-      - "packages/**/CHANGELOG.md"
+    tags:
+      - "v*"
 
 concurrency:
   group: draft-github-release-${{ github.ref }}
@@ -31,9 +30,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          node scripts/github-release-notes.mjs --notes-file release-notes.md --tag-file tag.txt
-          TAG=$(cat tag.txt)
-          TITLE=$(cat tag.txt)
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          node scripts/github-release-notes.mjs --version "$VERSION" --notes-file release-notes.md
+          TITLE="$TAG"
 
           if gh release view "$TAG" >/dev/null 2>&1; then
             IS_DRAFT=$(gh release view "$TAG" --json isDraft --jq .isDraft)
@@ -45,5 +45,5 @@ jobs:
             gh release edit "$TAG" --draft --title "$TITLE" --notes-file release-notes.md
           else
             echo "Creating draft release $TAG"
-            gh release create "$TAG" --draft --title "$TITLE" --notes-file release-notes.md
+            gh release create "$TAG" --draft --title "$TITLE" --notes-file release-notes.md --target "$GITHUB_SHA"
           fi

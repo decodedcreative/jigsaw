@@ -6,16 +6,11 @@
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { publishablePackagePaths } from "./lib/publishable-packages.mjs";
 
 const repoRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
-const PUBLISHABLE_PACKAGES = [
-  "packages/design-system",
-  "packages/tokens",
-  "packages/theme-build",
-  "packages/themes/default",
-  "packages/themes/portfolio",
-];
+const PUBLISHABLE_PACKAGES = publishablePackagePaths(repoRoot);
 
 /** attw on packages with TypeScript exports. CSS-only subpaths are excluded. */
 const ATTW_CHECKS = [

@@ -11,16 +11,11 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { publishablePackagePaths } from "./lib/publishable-packages.mjs";
 
 const repoRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
-const PUBLISHABLE_PACKAGES = [
-  "packages/design-system",
-  "packages/tokens",
-  "packages/theme-build",
-  "packages/themes/default",
-  "packages/themes/portfolio",
-];
+const PUBLISHABLE_PACKAGES = publishablePackagePaths(repoRoot);
 
 function getArg(args, flag) {
   const index = args.indexOf(flag);

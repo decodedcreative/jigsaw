@@ -27,39 +27,18 @@ git checkout wip/design-system-overhaul-backup -- path/to/relevant/files
 
 `feat/jsw-XX-short-description` — matches the Jira ticket key.
 
-## Versioning (Changesets)
+## Versioning & releasing
 
-Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets).
+Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets) behind a small maintainer script. **Feature PRs must not include `.changeset/*.md` files.**
 
-### Contributors
-
-Add a changeset with every PR that changes a publishable package in a way consumers will notice (new components, token renames, theme CSS changes, breaking API changes, etc.).
+When you are ready to cut a release from `main`:
 
 ```bash
-# From repo root — interactive prompt
-npm run changeset
+npm run version-and-tag:patch   # or :minor / :major
 ```
 
-This creates a markdown file under `.changeset/`. Commit it with your PR.
+That bumps packages, commits, tags, and pushes to `origin`. Then publish the draft GitHub Release for that tag — that is what publishes to npm.
 
-**Linked packages:** `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` share the same semver (Changesets `fixed` group) — they are always versioned together.
+**Linked packages:** `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` share the same semver (Changesets `fixed` group).
 
-### Releasing to npm
-
-After changeset PRs merge to `main`:
-
-1. The [Version packages workflow](.github/workflows/version-packages.yml) opens a **Version packages** PR when pending changesets exist. It runs `changeset version` to bump `package.json` versions, update internal dependency ranges, and write `CHANGELOG.md` entries.
-2. Review and merge the Version packages PR.
-3. The [Draft GitHub release workflow](.github/workflows/draft-github-release.yml) opens a **draft** [GitHub Release](https://github.com/decodedcreative/jigsaw/releases) for `v{version}` with notes aggregated from package changelogs. Review and edit the draft on GitHub.
-4. **Publish the GitHub Release** — that publishes the release page and triggers the [Publish to npm workflow](.github/workflows/publish-npm.yml) (`validate:packages` then `changeset publish`).
-
-Publishing the GitHub Release is the deliberate gate: npm publish only runs after release notes exist on GitHub.
-
-CI requires the repository secret `NPM_TOKEN` (npm automation token with publish access to `@jigsaw-ds/*`).
-
-To verify a release locally before merge:
-
-```bash
-npm run validate:packages
-npx changeset publish --dry-run
-```
+Full flow: [docs/publication.md](docs/publication.md). Requires repository secret `NPM_TOKEN`.
