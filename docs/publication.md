@@ -62,8 +62,8 @@ CI fails feature PRs that add other files under `.changeset/` (see [ci.yml](../.
 On every push to `main`, [version-packages.yml](../.github/workflows/version-packages.yml):
 
 1. Runs `npm run generate-changeset -- --bump patch` ([scripts/generate-changeset-from-changes.mjs](../scripts/generate-changeset-from-changes.mjs))
-2. Diffs from the newer of the latest `v*` tag and the latest `chore: version packages` commit → `HEAD`
-3. Maps changed files to publishable packages (honouring the design-system/tokens fixed group)
+2. Discovers publishable packages via `turbo ls` (skipping `private` and `.changeset` `ignore`) and detects which changed since the newer of the latest `v*` tag / `chore: version packages` commit (`turbo run build --filter=[since] --dry-run=json`)
+3. Applies Changesets `fixed` groups (design-system + tokens)
 4. Writes a single `.changeset/auto-*.md` when packages changed and no pending changesets already exist
 5. Runs [changesets/action](https://github.com/changesets/action), which opens (or updates) a **Version packages** PR that bumps `package.json` versions, internal dependency ranges, and `CHANGELOG.md` files
 
