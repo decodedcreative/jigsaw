@@ -18,6 +18,23 @@ jobs:
 
       - run: npm ci
 
+      - name: Disallow hand-written changesets on feature PRs
+        if: github.event_name == 'pull_request' && github.head_ref != 'changeset-release/main'
+        run: |
+          git fetch --no-tags origin "${{ github.base_ref }}" --depth=1
+          CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}"...HEAD -- '.changeset/*.md' | grep -v '/README.md$' || true)
+          if [ -n "$CHANGED" ]; then
+            echo "Feature PRs must not add .changeset/*.md files."
+            echo "CI generates changesets on main — see docs/publication.md"
+            echo "$CHANGED"
+            exit 1
+          fi
+
+      - name: Test release scripts
+        run: |
+          npm run test:release-notes
+          npm run test:generate-changeset
+
       - name: Verify no stale @jigsaw/ scope references
         run: |
           if rg --pcre2 '@jigsaw/(?!ds/)' --glob '!.worktrees/**' --glob '!node_modules/**' .; then

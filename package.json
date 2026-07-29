@@ -9,11 +9,13 @@
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
+    "generate-changeset": "node scripts/generate-changeset-from-changes.mjs",
     "version-packages": "changeset version",
     "release": "npm run validate:packages && changeset publish",
     "verify:packages": "npm run build --workspace=@jigsaw-ds/design-system --workspace=@jigsaw-ds/tokens --workspace=@jigsaw-ds/theme-default --workspace=@jigsaw-ds/theme-portfolio && node scripts/verify-publishable-packages.mjs",
     "validate:packages": "npm run verify:packages && node scripts/validate-publishable-packages.mjs",
-    "test:release-notes": "node --test scripts/github-release-notes.test.mjs"
+    "test:release-notes": "node --test scripts/github-release-notes.test.mjs",
+    "test:generate-changeset": "node --test scripts/generate-changeset-from-changes.test.mjs"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.4",

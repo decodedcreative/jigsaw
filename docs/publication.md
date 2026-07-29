@@ -2,17 +2,7 @@
 
 Jigsaw packages are published to the [npm registry](https://www.npmjs.com/) under the **`@jigsaw-ds`** organization.
 
-## npm organization
-
-| Candidate | Result |
-|-----------|--------|
-| `@jigsaw` | Org already exists (~46 packages, unrelated) |
-| `@jsw` | Not available |
-| `@jigsaw-ds` | **Claimed** — use this scope |
-
 ## Publish set
-
-These five packages are intended for public npm release:
 
 | Package | Description |
 |---------|-------------|
@@ -27,34 +17,102 @@ Private / not published:
 - `@jigsaw-ds/storybook` — internal Storybook app
 - Root `jigsaw` workspace — monorepo orchestration only
 
+`@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` are a Changesets **fixed** group — they always share the same version.
+
 ## Versioning
 
-**First publish uses `0.1.0` — never `1.0.0`.** The public API is not yet stable, and `0.x` signals that under semver. `1.0.0` is reserved for a later, deliberate stability commitment.
+Public packages start at **`0.1.0`**. The API is not yet stable; `0.x` signals that under semver. `1.0.0` is reserved for a later, deliberate stability commitment.
 
-- Baseline `0.1.0` is set in JSW-103.
-- `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` are a Changesets `fixed` group — always the same version.
-- Changesets then drives `0.1.0 → 0.2.0` (minor) / `0.1.1` (patch).
+Changesets then drives `0.1.0 → 0.2.0` (minor) / `0.1.1` (patch) from release tags and conventional commits (see below).
 
-If we want external testing before a `latest`-tagged `0.1.0`, use Changesets prerelease mode to publish under an `alpha`/`beta` dist-tag first:
+Optional prereleases before promoting `latest`:
 
 ```bash
-npx changeset pre enter alpha   # or beta -> 0.1.0-alpha.0, .1, ...
+npx changeset pre enter alpha   # or beta → 0.1.0-alpha.0, .1, …
 npx changeset pre exit          # return to normal releases
 ```
 
 ## License
 
-The repository is MIT licensed (`LICENSE` at the repo root). Each publishable package includes an **identical copy** of that file so npm tarballs satisfy registry licensing requirements — there are no per-package exceptions. CI (`npm run verify:packages`) asserts every package `LICENSE` matches the root text byte-for-byte.
+The repository is MIT licensed (`LICENSE` at the repo root). Each publishable package includes an **identical copy** of that file so npm tarballs satisfy registry licensing requirements. CI (`npm run verify:packages`) asserts every package `LICENSE` matches the root text byte-for-byte.
 
-## Remaining setup (JSW-103–106)
+## Release flow (current)
 
-- [x] Changesets for versioning (see [CONTRIBUTING.md](../CONTRIBUTING.md#versioning-changesets))
-- [x] Remove `"private": true` and add publish metadata (`files`, `repository`, etc.)
-- [x] Export / tarball integrity check (`npm run verify:packages` in CI)
-- [x] Pre-publish validation (`publint`, `@arethetypeswrong/cli`) — `npm run validate:packages` in CI
-- [x] GitHub Actions publish workflow + `NPM_TOKEN` — JSW-104
-- [ ] Finalize consumer docs in [using-jigsaw.md](./using-jigsaw.md) — JSW-106
+Feature PRs **do not** include `.changeset/*.md` files. Release metadata is generated on `main` by CI.
 
-See epic [JSW-99](https://decodedcreative.atlassian.net/browse/JSW-99) for the full backlog.
+```mermaid
+flowchart TD
+  A[Merge feature PR to main] --> B[Version packages workflow]
+  B --> C[Generate changeset from package diffs since last v* tag]
+  C --> D[changesets/action opens Version packages PR]
+  D --> E[Review and merge Version packages PR]
+  E --> F[Draft GitHub release workflow]
+  F --> G[Edit and publish GitHub Release]
+  G --> H[Publish to npm workflow]
+```
 
-Releases appear on [GitHub Releases](https://github.com/decodedcreative/jigsaw/releases). **Publishing a GitHub Release** triggers npm publish — see [CONTRIBUTING.md — Releasing to npm](../CONTRIBUTING.md#releasing-to-npm).
+### 1. Land consumer-facing package changes on `main`
+
+Open a normal feature PR. Touch files under the publish set as needed. **Do not** run `npm run changeset` and **do not** commit anything under `.changeset/` except `config.json` / `README.md`.
+
+CI fails feature PRs that add hand-written changeset markdown (see [ci.yml](../.github/workflows/ci.yml)).
+
+Prefer [conventional commits](https://www.conventionalcommits.org/) so bump type can be inferred:
+
+| Commit style | Bump |
+|--------------|------|
+| `feat:` / `feat(scope):` | minor |
+| `feat!:` / `fix!:` / `BREAKING CHANGE` | major |
+| `fix:`, `perf:`, `refactor:`, `chore:`, … | patch |
+
+### 2. Auto-changeset + Version packages PR
+
+On every push to `main`, [version-packages.yml](../.github/workflows/version-packages.yml):
+
+1. Runs `npm run generate-changeset` ([scripts/generate-changeset-from-changes.mjs](../scripts/generate-changeset-from-changes.mjs))
+2. Diffs `v*` (latest release tag) → `HEAD`
+3. Maps changed files to publishable packages (honouring the design-system/tokens fixed group)
+4. Writes a single `.changeset/auto-*.md` when packages changed and no pending changesets already exist
+5. Runs [changesets/action](https://github.com/changesets/action), which opens (or updates) a **Version packages** PR that bumps `package.json` versions, internal dependency ranges, and `CHANGELOG.md` files
+
+The diff baseline is the newer of the latest `v*` tag and the latest `chore: version packages` commit, so merging the Version packages PR does not immediately open another one before a release tag exists.
+
+Review that PR like any other, then merge it.
+
+### 3. Draft GitHub Release
+
+After version bumps land on `main`, [draft-github-release.yml](../.github/workflows/draft-github-release.yml) creates or updates a **draft** [GitHub Release](https://github.com/decodedcreative/jigsaw/releases) for `v{version}` with notes aggregated from package changelogs ([scripts/github-release-notes.mjs](../scripts/github-release-notes.mjs)).
+
+### 4. Publish the GitHub Release → npm
+
+Publishing the GitHub Release is the deliberate gate. That event triggers [publish-npm.yml](../.github/workflows/publish-npm.yml), which:
+
+1. Checks out the release tag
+2. Confirms the tag matches `@jigsaw-ds/design-system`’s version
+3. Confirms changelog sections exist for that version
+4. Runs `npm run release` (`validate:packages` then `changeset publish`)
+
+Requires repository secret `NPM_TOKEN` (npm automation token with publish access to `@jigsaw-ds/*`).
+
+### Local checks
+
+```bash
+# After package changes on a branch — optional dry-run of auto-changeset
+npm run generate-changeset -- --since v0.1.0 --dry-run
+
+# Before merging a Version packages PR / cutting a release
+npm run validate:packages
+npx changeset publish --dry-run
+```
+
+## npm organization
+
+| Candidate | Result |
+|-----------|--------|
+| `@jigsaw` | Org already exists (~46 packages, unrelated) |
+| `@jsw` | Not available |
+| `@jigsaw-ds` | **Claimed** — use this scope |
+
+## Related tickets
+
+Epic [JSW-99](https://decodedcreative.atlassian.net/browse/JSW-99) covered the initial publish pipeline. Auto-changeset generation: [JSW-112](https://decodedcreative.atlassian.net/browse/JSW-112). Consumer install guide: [using-jigsaw.md](./using-jigsaw.md).
