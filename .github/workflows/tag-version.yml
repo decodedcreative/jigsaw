@@ -29,9 +29,14 @@ jobs:
         run: |
           set -euo pipefail
 
+          if [[ "${GITHUB_REF:-}" != "refs/heads/main" ]]; then
+            echo "skip: wrong branch (ref=${GITHUB_REF:-unset}, expected refs/heads/main)"
+            exit 0
+          fi
+
           SUBJECT=$(git log -1 --pretty=%s)
           if ! [[ "$SUBJECT" =~ ^chore:\ version\ packages ]]; then
-            echo "Latest commit subject does not match version packages; skipping tag"
+            echo "skip: subject mismatch (expected '^chore: version packages…')"
             echo "subject: $SUBJECT"
             exit 0
           fi
@@ -40,17 +45,18 @@ jobs:
           TAG="v${VERSION}"
 
           if git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
-            echo "Tag ${TAG} already exists locally; skipping"
+            echo "skip: tag ${TAG} already exists locally"
             exit 0
           fi
 
           if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
-            echo "Tag ${TAG} already exists on origin; skipping"
+            echo "skip: tag ${TAG} already exists on origin"
             exit 0
           fi
 
-          echo "Creating annotated tag ${TAG}"
+          echo "action: creating and pushing annotated tag ${TAG}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -a "$TAG" -m "$TAG"
           git push origin "refs/tags/${TAG}"
+          echo "success: pushed tag ${TAG}"
