@@ -85,7 +85,7 @@ npm run version-and-tag:patch -- --no-push
 
 ### 3. Publish the GitHub Release (npm)
 
-The CI-created `v*` tag opens a **draft** [GitHub Release](https://github.com/decodedcreative/jigsaw/releases) with notes from package changelogs.
+[tag-version.yml](../.github/workflows/tag-version.yml) creates the `v*` tag and a **draft** [GitHub Release](https://github.com/decodedcreative/jigsaw/releases) in the same job (GITHUB_TOKEN tag pushes do not trigger other workflows); [draft-github-release.yml](../.github/workflows/draft-github-release.yml) remains a fallback for human-pushed tags.
 
 Publishing that release triggers [release.yml](../.github/workflows/release.yml), which:
 
