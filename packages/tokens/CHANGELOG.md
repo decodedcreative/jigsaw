@@ -1,5 +1,11 @@
 # @jigsaw-ds/tokens
 
+## 0.2.1
+
+### Patch Changes
+
+- - chore: lockstep versions across the full publish set
+
 ## 0.2.0
 
 ### Minor Changes
