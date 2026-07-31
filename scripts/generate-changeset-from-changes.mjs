@@ -105,7 +105,7 @@ export function missingBaselineError() {
   return new Error(
     [
       "Cannot determine a release baseline.",
-      "Expected a `v*` git tag (from `version-and-tag`)",
+      "Expected a `v*` git tag (from the release tag workflow)",
       "or a prior `chore: version packages` commit.",
       "Bootstrap with `--since <git-ref>` (e.g. the initial commit),",
       "or create an initial `v*` tag after the first version commit.",
