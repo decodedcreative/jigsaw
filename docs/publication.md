@@ -16,7 +16,7 @@ Publishable packages are discovered automatically (`turbo ls`, minus `private` a
 
 Private / not published: `@jigsaw-ds/storybook`, root `jigsaw`, `web`.
 
-`@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` are a Changesets **fixed** group — they always share the same version.
+All five publishable `@jigsaw-ds/*` packages are a Changesets **fixed** group — they always share the same version so consumers know which theme, tokens, and design-system releases work together.
 
 ## Versioning
 

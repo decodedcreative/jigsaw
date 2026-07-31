@@ -2,6 +2,8 @@
 
 Portfolio theme (CSS variables) for the Jigsaw design system. Tokens are scoped to `[data-theme="portfolio"]` and layer on top of the default theme rather than replacing it.
 
+This package is versioned in lockstep with the other publishable Jigsaw packages (`@jigsaw-ds/design-system`, `@jigsaw-ds/tokens`, `@jigsaw-ds/theme-default`, and `@jigsaw-ds/theme-build`).
+
 ## Install
 
 ```bash

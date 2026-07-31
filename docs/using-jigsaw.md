@@ -291,4 +291,4 @@ The `@jigsaw-ds/design-system/tailwind.css` import works the same with `file:` d
 
 ## Versioning
 
-Published packages follow semver, starting at `0.1.0`. While the API stabilises on `0.x`, minor releases (`0.2.0`, `0.3.0`) may include breaking changes — pin with `~0.1.0` if you need stability. `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` are always released at the same version.
+Published packages follow semver, starting at `0.1.0`. While the API stabilises on `0.x`, minor releases (`0.2.0`, `0.3.0`) may include breaking changes — pin with `~0.1.0` if you need stability. All publishable `@jigsaw-ds/*` packages (design-system, tokens, themes, and theme-build) are always released at the same version.
