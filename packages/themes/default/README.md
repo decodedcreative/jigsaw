@@ -2,6 +2,8 @@
 
 Default light/dark theme (CSS variables) for the Jigsaw design system.
 
+This package is versioned in lockstep with the other publishable Jigsaw packages (`@jigsaw-ds/design-system`, `@jigsaw-ds/tokens`, `@jigsaw-ds/theme-portfolio`, and `@jigsaw-ds/theme-build`).
+
 ## Install
 
 ```bash

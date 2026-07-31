@@ -4,6 +4,8 @@
 
 This is a build-time helper for authoring custom themes. Most applications consuming Jigsaw do **not** need it — they import the pre-built CSS from the theme packages instead.
 
+This package is versioned in lockstep with the other publishable Jigsaw packages (`@jigsaw-ds/design-system`, `@jigsaw-ds/tokens`, `@jigsaw-ds/theme-default`, and `@jigsaw-ds/theme-portfolio`).
+
 ## Install
 
 ```bash
