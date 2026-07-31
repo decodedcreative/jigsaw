@@ -1,6 +1,6 @@
 {
   "name": "@jigsaw-ds/tokens",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Design tokens and Tailwind CSS v4 theme (CSS variables) for the Jigsaw design system.",
   "license": "MIT",
   "author": "James Howell",
