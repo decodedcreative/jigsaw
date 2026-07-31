@@ -1,6 +1,6 @@
 {
   "name": "@jigsaw-ds/theme-portfolio",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Portfolio theme (CSS variables) for the Jigsaw design system.",
   "license": "MIT",
   "author": "James Howell",
@@ -38,7 +38,7 @@
     "test": "node --test scripts/build-output.test.mjs"
   },
   "devDependencies": {
-    "@jigsaw-ds/theme-build": "^0.1.0",
+    "@jigsaw-ds/theme-build": "^0.2.1",
     "style-dictionary": "^4.1.1"
   }
 }

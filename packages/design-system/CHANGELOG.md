@@ -1,5 +1,13 @@
 # @jigsaw-ds/design-system
 
+## 0.2.1
+
+### Patch Changes
+
+- - chore: lockstep versions across the full publish set
+- Updated dependencies
+  - @jigsaw-ds/tokens@0.2.1
+
 ## 0.2.0
 
 ### Minor Changes
