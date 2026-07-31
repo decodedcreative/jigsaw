@@ -4,9 +4,7 @@
 
 ### Minor Changes
 
-- - feat(design-system): preserve per-module use client boundaries (JSW-111)
-  - feat(design-system): presentational components RSC-safe (JSW-110)
-  - feat(design-system): configureTwMerge for RSC-safe theme injection (JSW-109)
+- Version aligned with `@jigsaw-ds/design-system@0.2.0` (Changesets fixed group). No tokens API changes in this release — see the [design-system 0.2.0 notes](../design-system/CHANGELOG.md#020) for RSC-related consumer guidance ([JSW-109](https://decodedcreative.atlassian.net/browse/JSW-109), [JSW-110](https://decodedcreative.atlassian.net/browse/JSW-110), [JSW-111](https://decodedcreative.atlassian.net/browse/JSW-111)).
 
 ## 0.1.0
 
