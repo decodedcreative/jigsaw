@@ -104,6 +104,24 @@ function prBody(version, tag) {
   ].join("\n");
 }
 
+function classifyGhPrCreateFailure(error) {
+  const detail = [error?.message, error?.stderr, error?.stdout]
+    .filter(Boolean)
+    .join("\n");
+
+  if (/auth|login|HTTP 401|HTTP 403|GH_TOKEN|not logged/i.test(detail)) {
+    return "authentication/authorization";
+  }
+  if (
+    /network|ECONNREFUSED|ENOTFOUND|ETIMEDOUT|Could not resolve|getaddrinfo/i.test(
+      detail
+    )
+  ) {
+    return "network";
+  }
+  return "generic";
+}
+
 function createPullRequest(version, tag, branch) {
   const title = `chore: version packages (v${version})`;
   try {
@@ -126,8 +144,9 @@ function createPullRequest(version, tag, branch) {
     log(`opened PR: ${url}`);
     return url;
   } catch (error) {
+    const kind = classifyGhPrCreateFailure(error);
     logError(
-      `failed to open PR with gh (${error.message}). Branch ${branch} was pushed.`
+      `failed to open PR with gh (${kind} failure: ${error.message}). Branch ${branch} was pushed.`
     );
     console.log("Create the PR manually:");
     console.log(
