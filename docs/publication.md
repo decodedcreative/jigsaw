@@ -40,17 +40,19 @@ Feature PRs stay focused on code — **no** `.changeset/*.md` files. Versioning 
 ```mermaid
 flowchart TD
   A[Merge feature PRs to main] --> B["npm run version-and-tag:patch|minor|major"]
-  B --> C[Changeset + bumps + tag + push to origin]
-  C --> D[Draft GitHub Release opened for the tag]
-  D --> E[Review and publish the GitHub Release]
-  E --> F[release.yml publishes to npm]
+  B --> C[Version PR: chore/version-X.Y.Z]
+  C --> D[Merge version PR to main]
+  D --> E[tag-version.yml creates vX.Y.Z]
+  E --> F[Draft GitHub Release opened for the tag]
+  F --> G[Review and publish the GitHub Release]
+  G --> H[release.yml publishes to npm]
 ```
 
 ### 1. Land package changes on `main`
 
 Open normal feature PRs. **Do not** commit anything under `.changeset/` except `config.json` / `README.md` (CI enforces this).
 
-### 2. Version and tag
+### 2. Version (open a PR)
 
 On a clean `main` checkout:
 
@@ -64,7 +66,10 @@ npm run version-and-tag:patch   # or :minor / :major
 1. Detects which publishable packages changed since the last `v*` tag (`turbo` + Changesets `fixed` groups)
 2. Writes a temporary Changeset with your chosen bump
 3. Runs `changeset version` (updates `package.json` + `CHANGELOG.md`)
-4. Commits `chore: version packages`, creates annotated tag `v{version}`, and pushes both to `origin`
+4. Creates branch `chore/version-{version}`, commits `chore: version packages`, pushes, and opens a PR to `main`
+5. Leaves local `main` at the pre-version tip
+
+Merge that PR (squash is fine). [tag-version.yml](../.github/workflows/tag-version.yml) then creates annotated tag `v{version}` when the merged commit subject matches `chore: version packages…`.
 
 Preview without writing:
 
@@ -72,7 +77,7 @@ Preview without writing:
 npm run version-and-tag:minor -- --dry-run
 ```
 
-Leave the commit/tag local (skip push):
+Leave the version branch local (skip push / PR):
 
 ```bash
 npm run version-and-tag:patch -- --no-push
@@ -80,7 +85,7 @@ npm run version-and-tag:patch -- --no-push
 
 ### 3. Publish the GitHub Release (npm)
 
-The pushed `v*` tag opens a **draft** [GitHub Release](https://github.com/decodedcreative/jigsaw/releases) with notes from package changelogs.
+The CI-created `v*` tag opens a **draft** [GitHub Release](https://github.com/decodedcreative/jigsaw/releases) with notes from package changelogs.
 
 Publishing that release triggers [release.yml](../.github/workflows/release.yml), which:
 

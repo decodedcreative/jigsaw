@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 /**
- * Version publishable packages and create a git tag.
+ * Version publishable packages and open a version PR.
  *
  * 1. Synthesize a Changeset for packages changed since the last release baseline
  * 2. Run `changeset version` (bumps package.json + CHANGELOG.md)
- * 3. Commit and create `v{version}` from `@jigsaw-ds/design-system`
+ * 3. Create branch `chore/version-{version}`, commit, push, and open a PR to main
  *
- * Publishing to npm is a separate, manual step: create/publish a GitHub Release
- * for that tag (see `.github/workflows/release.yml`).
+ * Do not create git tags here — squash-merge rewrites SHAs. After the PR merges,
+ * `.github/workflows/tag-version.yml` creates annotated tag `v{version}`, then
+ * `draft-github-release.yml` opens a draft Release. Publishing that release
+ * runs `release.yml` → npm.
  *
- * By default the version commit and `v*` tag are pushed to `origin`. Pass
- * `--no-push` to leave them local (e.g. to inspect before pushing).
+ * By default the version branch is pushed and a PR is opened. Pass `--no-push`
+ * to leave the branch local (e.g. to inspect before pushing).
  *
  * Usage:
  *   node scripts/version-and-tag.mjs --bump patch
@@ -76,6 +78,84 @@ function assertSafeRepo({ allowDirty, allowBranch }) {
   }
 }
 
+function assertTagAvailable(tag) {
+  if (runGit(["tag", "-l", tag], { stdio: "pipe" }).trim()) {
+    throw new Error(`Tag ${tag} already exists locally`);
+  }
+
+  const remote = runGit(["ls-remote", "--tags", "origin", tag], {
+    stdio: "pipe",
+  }).trim();
+  if (remote) {
+    throw new Error(`Tag ${tag} already exists on origin`);
+  }
+}
+
+function prBody(version, tag) {
+  return [
+    `Bumps publishable packages to **${version}**.`,
+    "",
+    "After this PR merges to `main`:",
+    `- CI creates annotated tag \`${tag}\` (if missing) from \`@jigsaw-ds/design-system\``,
+    "- A draft GitHub Release opens for that tag",
+    "- Publishing the release runs npm publish",
+    "",
+    "Do not create the tag manually — squash merge changes commit SHAs.",
+  ].join("\n");
+}
+
+function classifyGhPrCreateFailure(error) {
+  const detail = [error?.message, error?.stderr, error?.stdout]
+    .filter(Boolean)
+    .join("\n");
+
+  if (/auth|login|HTTP 401|HTTP 403|GH_TOKEN|not logged/i.test(detail)) {
+    return "authentication/authorization";
+  }
+  if (
+    /network|ECONNREFUSED|ENOTFOUND|ETIMEDOUT|Could not resolve|getaddrinfo/i.test(
+      detail
+    )
+  ) {
+    return "network";
+  }
+  return "generic";
+}
+
+function createPullRequest(version, tag, branch) {
+  const title = `chore: version packages (v${version})`;
+  try {
+    const url = run(
+      "gh",
+      [
+        "pr",
+        "create",
+        "--base",
+        "main",
+        "--head",
+        branch,
+        "--title",
+        title,
+        "--body",
+        prBody(version, tag),
+      ],
+      { stdio: "pipe" }
+    ).trim();
+    log(`opened PR: ${url}`);
+    return url;
+  } catch (error) {
+    const kind = classifyGhPrCreateFailure(error);
+    logError(
+      `failed to open PR with gh (${kind} failure: ${error.message}). Branch ${branch} was pushed.`
+    );
+    console.log("Create the PR manually:");
+    console.log(
+      `  gh pr create --base main --head ${branch} --title ${JSON.stringify(title)} --body ${JSON.stringify(prBody(version, tag))}`
+    );
+    return null;
+  }
+}
+
 function main(argv = process.argv.slice(2)) {
   const bump = parseBump(getArg(argv, "--bump"));
   const dryRun = hasFlag(argv, "--dry-run");
@@ -100,7 +180,7 @@ function main(argv = process.argv.slice(2)) {
   }
 
   if (dryRun) {
-    log("dry-run complete — no version commit or tag created");
+    log("dry-run complete — no version commit or PR created");
     return { dryRun: true, bump, packages: generated.packages };
   }
 
@@ -110,6 +190,7 @@ function main(argv = process.argv.slice(2)) {
 
   const version = readDesignSystemVersion();
   const tag = `v${version}`;
+  const branch = `chore/version-${version}`;
 
   if (version === versionBefore) {
     throw new Error(
@@ -117,30 +198,50 @@ function main(argv = process.argv.slice(2)) {
     );
   }
 
-  if (runGit(["tag", "-l", tag], { stdio: "pipe" }).trim()) {
-    throw new Error(`Tag ${tag} already exists`);
-  }
+  assertTagAvailable(tag);
+
+  log(`creating branch ${branch}`);
+  runGit(["checkout", "-b", branch]);
 
   log(`committing version ${version}`);
   runGit(["add", "-A", ".changeset", "packages"]);
   runGit(["commit", "-m", "chore: version packages"]);
-  runGit(["tag", "-a", tag, "-m", tag]);
-  log(`created tag ${tag}`);
 
+  let prUrl = null;
   if (push) {
-    log("pushing commit and tag");
-    runGit(["push"]);
-    runGit(["push", "origin", tag]);
-    log(`pushed ${tag} — publish the GitHub Release for that tag to npm`);
+    log(`pushing ${branch}`);
+    runGit(["push", "-u", "origin", "HEAD"]);
+    prUrl = createPullRequest(version, tag, branch);
   } else {
     log("skipped push (--no-push); next steps:");
-    console.log(`  git push && git push origin ${tag}`);
+    console.log(`  git push -u origin ${branch}`);
     console.log(
-      `  Create/publish a GitHub Release for ${tag} to publish to npm.`
+      `  gh pr create --base main --head ${branch} --title ${JSON.stringify(`chore: version packages (v${version})`)} --body ${JSON.stringify(prBody(version, tag))}`
     );
   }
 
-  return { bump, version, tag, packages: generated.packages, pushed: push };
+  log("returning to main (pre-version tip)");
+  runGit(["checkout", "main"]);
+
+  log("next steps:");
+  console.log(
+    prUrl
+      ? `  Merge ${prUrl}`
+      : `  Merge the version PR for ${tag} once opened`
+  );
+  console.log(
+    `  After merge, CI tags ${tag} and opens a draft GitHub Release; publish that release to npm.`
+  );
+
+  return {
+    bump,
+    version,
+    tag,
+    branch,
+    packages: generated.packages,
+    pushed: push,
+    prUrl,
+  };
 }
 
 const isDirectRun =

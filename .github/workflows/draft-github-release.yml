@@ -1,7 +1,7 @@
 name: Draft GitHub release
 
-# After `version-and-tag` pushes a `v*` tag, open a draft Release so publishing
-# to npm is a deliberate "Publish release" click (see release.yml).
+# After tag-version.yml creates a `v*` tag (post version-PR merge), open a draft
+# Release so publishing to npm is a deliberate "Publish release" click (see release.yml).
 on:
   push:
     tags:

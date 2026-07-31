@@ -1,0 +1,68 @@
+name: Tag version
+
+# After a version PR merges to main, create annotated tag v{version} from
+# @jigsaw-ds/design-system so draft-github-release.yml can open a draft Release.
+# Tags are not created by version-and-tag.mjs (squash merge rewrites SHAs).
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/design-system/package.json"
+
+concurrency:
+  group: tag-version-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    name: Create version tag
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create annotated tag if needed
+        run: |
+          set -euo pipefail
+
+          # Pin every decision to the push event SHA. Checkout is already that
+          # commit; naming it explicitly keeps subject/version/tag atomic even if
+          # a later step ever moved HEAD (there is no in-job race otherwise).
+          SHA="${GITHUB_SHA:?GITHUB_SHA is required}"
+
+          if [[ "${GITHUB_REF:-}" != "refs/heads/main" ]]; then
+            echo "skip: wrong branch (ref=${GITHUB_REF:-unset}, expected refs/heads/main)"
+            exit 0
+          fi
+
+          SUBJECT=$(git log -1 --pretty=%s "$SHA")
+          if ! [[ "$SUBJECT" =~ ^chore:\ version\ packages ]]; then
+            echo "skip: subject mismatch (expected '^chore: version packages…')"
+            echo "subject: $SUBJECT"
+            echo "sha: $SHA"
+            exit 0
+          fi
+
+          VERSION=$(node -p "require('./packages/design-system/package.json').version")
+          TAG="v${VERSION}"
+
+          if git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
+            echo "skip: tag ${TAG} already exists locally"
+            exit 0
+          fi
+
+          if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
+            echo "skip: tag ${TAG} already exists on origin"
+            exit 0
+          fi
+
+          echo "action: creating and pushing annotated tag ${TAG} at ${SHA}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" "$SHA" -m "$TAG"
+          git push origin "refs/tags/${TAG}"
+          echo "success: pushed tag ${TAG}"

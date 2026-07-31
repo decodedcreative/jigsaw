@@ -37,7 +37,7 @@ When you are ready to cut a release from `main`:
 npm run version-and-tag:patch   # or :minor / :major
 ```
 
-That bumps packages, commits, tags, and pushes to `origin`. Then publish the draft GitHub Release for that tag — that is what publishes to npm.
+That bumps packages on a `chore/version-*` branch and opens a PR. After you merge it, CI creates the `v*` tag and a draft GitHub Release — publishing that release is what publishes to npm.
 
 **Linked packages:** all publishable `@jigsaw-ds/*` packages (`design-system`, `tokens`, `theme-default`, `theme-portfolio`, `theme-build`) share the same semver (Changesets `fixed` group).
 
