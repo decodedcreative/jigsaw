@@ -29,15 +29,21 @@ jobs:
         run: |
           set -euo pipefail
 
+          # Pin every decision to the push event SHA. Checkout is already that
+          # commit; naming it explicitly keeps subject/version/tag atomic even if
+          # a later step ever moved HEAD (there is no in-job race otherwise).
+          SHA="${GITHUB_SHA:?GITHUB_SHA is required}"
+
           if [[ "${GITHUB_REF:-}" != "refs/heads/main" ]]; then
             echo "skip: wrong branch (ref=${GITHUB_REF:-unset}, expected refs/heads/main)"
             exit 0
           fi
 
-          SUBJECT=$(git log -1 --pretty=%s)
+          SUBJECT=$(git log -1 --pretty=%s "$SHA")
           if ! [[ "$SUBJECT" =~ ^chore:\ version\ packages ]]; then
             echo "skip: subject mismatch (expected '^chore: version packages…')"
             echo "subject: $SUBJECT"
+            echo "sha: $SHA"
             exit 0
           fi
 
@@ -54,9 +60,9 @@ jobs:
             exit 0
           fi
 
-          echo "action: creating and pushing annotated tag ${TAG}"
+          echo "action: creating and pushing annotated tag ${TAG} at ${SHA}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git tag -a "$TAG" -m "$TAG"
+          git tag -a "$TAG" "$SHA" -m "$TAG"
           git push origin "refs/tags/${TAG}"
           echo "success: pushed tag ${TAG}"
