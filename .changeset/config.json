@@ -2,7 +2,15 @@
   "$schema": "https://unpkg.com/@changesets/config@3.1.4/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [["@jigsaw-ds/design-system", "@jigsaw-ds/tokens"]],
+  "fixed": [
+    [
+      "@jigsaw-ds/design-system",
+      "@jigsaw-ds/tokens",
+      "@jigsaw-ds/theme-default",
+      "@jigsaw-ds/theme-portfolio",
+      "@jigsaw-ds/theme-build"
+    ]
+  ],
   "linked": [],
   "access": "public",
   "baseBranch": "main",

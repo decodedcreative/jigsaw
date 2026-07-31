@@ -39,6 +39,6 @@ npm run version-and-tag:patch   # or :minor / :major
 
 That bumps packages, commits, tags, and pushes to `origin`. Then publish the draft GitHub Release for that tag — that is what publishes to npm.
 
-**Linked packages:** `@jigsaw-ds/design-system` and `@jigsaw-ds/tokens` share the same semver (Changesets `fixed` group).
+**Linked packages:** all publishable `@jigsaw-ds/*` packages (`design-system`, `tokens`, `theme-default`, `theme-portfolio`, `theme-build`) share the same semver (Changesets `fixed` group).
 
 Full flow: [docs/publication.md](docs/publication.md). Requires repository secret `NPM_TOKEN`.
