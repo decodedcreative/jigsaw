@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import type { Plugin } from "esbuild";
 import { defineConfig } from "tsup";
 import { preserveDirectivesPlugin } from "esbuild-plugin-preserve-directives";
+import { getDtsEntryRecord } from "./scripts/public-entries.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const srcRoot = path.join(root, "src");
@@ -199,8 +200,8 @@ const sharedExternal = [
  * that declare it. A single bundled entry would force one client boundary on
  * the whole package (including RSC-safe presentational components).
  *
- * Types are emitted from a second, single-entry pass so path aliases resolve
- * into one consumer-facing `index.d.ts` / `index.d.mts` without OOM.
+ * Types are emitted from a second multi-entry pass so each public subpath
+ * (`./badge`, `./theme`, …) has matching `.d.ts` / `.d.mts` files.
  */
 export default defineConfig([
   {
@@ -230,7 +231,7 @@ export default defineConfig([
     },
   },
   {
-    entry: ["src/index.ts"],
+    entry: getDtsEntryRecord(),
     format: ["cjs", "esm"],
     dts: { only: true },
     sourcemap: false,

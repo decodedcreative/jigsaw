@@ -170,12 +170,18 @@ function hasUseClientDirective(source) {
 function verifyDesignSystemClientBoundaries() {
   const packageRel = "packages/design-system";
   const dist = path.join(repoRoot, packageRel, "dist");
+  const packageJson = JSON.parse(
+    readFileSync(path.join(repoRoot, packageRel, "package.json"), "utf8"),
+  );
 
   const mustStayServer = [
     "index.mjs",
     "theme/config.mjs",
+    "theme/index.mjs",
     "utils/getClassNames.mjs",
+    "utils/index.mjs",
     "components/badge/Badge.mjs",
+    "components/badge/index.mjs",
     "components/text/Text.mjs",
     "components/heading/Heading.mjs",
     "components/card/Card.mjs",
@@ -222,6 +228,28 @@ function verifyDesignSystemClientBoundaries() {
       fail(
         `${packageRel}: components/button/Button.js must start with "use client" before "use strict"`,
       );
+    }
+  }
+
+  // Every public subpath export (except CSS) must resolve to built files.
+  for (const [exportPath, target] of Object.entries(packageJson.exports ?? {})) {
+    if (exportPath === "./tailwind.css") continue;
+    if (!target || typeof target !== "object") continue;
+    const importDefault = target.import?.default;
+    const importTypes = target.import?.types;
+    const requireDefault = target.require?.default;
+    const requireTypes = target.require?.types;
+    for (const fileRel of [
+      importDefault,
+      importTypes,
+      requireDefault,
+      requireTypes,
+    ]) {
+      if (typeof fileRel !== "string") continue;
+      const full = path.join(repoRoot, packageRel, fileRel);
+      if (!existsSync(full)) {
+        fail(`${packageRel}: export ${exportPath} missing file ${fileRel}`);
+      }
     }
   }
 }

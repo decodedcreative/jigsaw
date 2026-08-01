@@ -124,6 +124,10 @@ If your app uses Tailwind utilities in its own source files, add an `@source` fo
 
 ## 5. Use components
 
+### Client components / Vite / Storybook
+
+The root barrel is fine when the importing module is already a Client Component (or a non-RSC bundler):
+
 ```tsx
 import { Button, Badge, Card, Text } from "@jigsaw-ds/design-system";
 
@@ -138,27 +142,57 @@ export function Example() {
 }
 ```
 
-Import components from `@jigsaw-ds/design-system` only. Do not deep-import from internal paths inside the package.
-
 ### Server Components
 
-Presentational Jigsaw components resolve class names with plain `getClassNames` — no React context, no event handlers that require a client bundle. That means you can import them in a Server Component and render them as static HTML without a `"use client"` wrapper file.
+Presentational Jigsaw modules resolve class names with plain `getClassNames` — no React context. They are compiled **per module**, and `"use client"` stays only on interactive leaves.
 
-The published package is compiled **per module** (not one big client bundle). `"use client"` stays on interactive leaves only, so importing `Badge` / `Text` / `Heading` from `@jigsaw-ds/design-system` in a Server Component does not pull a package-wide client boundary.
+**Do not import presentational components from the root barrel in a Server Component.** `dist/index.mjs` re-exports interactive modules too, so Next evaluates that mixed graph and fails with `client-only` / `'use client'` boundary errors — even if you only reference `Badge`.
 
-RSC-safe today (this list can grow or shrink as components are added or refactored):
+Use the **documented package subpaths** instead (one export per public component folder):
+
+```tsx
+// app/page.tsx — Server Component
+import { Badge } from "@jigsaw-ds/design-system/badge";
+import { Text } from "@jigsaw-ds/design-system/text";
+import { Heading } from "@jigsaw-ds/design-system/heading";
+import { Card } from "@jigsaw-ds/design-system/card";
+
+export default function Page() {
+  return (
+    <Card>
+      <Heading as="h2">Status</Heading>
+      <Text as="p">Markets are open</Text>
+      <Badge variant="success">Live</Badge>
+    </Card>
+  );
+}
+```
+
+Interactive components keep their own `"use client"` directive. Import them from their subpath as well when you need them as a client leaf inside a Server Component tree (Next creates the boundary at that module):
+
+```tsx
+import { Button } from "@jigsaw-ds/design-system/button";
+```
+
+Supported subpaths mirror folder names under `components/` (for example `./badge`, `./button`, `./checkbox-group`), plus:
+
+| Subpath | Purpose |
+|---------|---------|
+| `@jigsaw-ds/design-system/theme` | `configureTwMerge` / `configureTheme` (RSC-safe) |
+| `@jigsaw-ds/design-system/utils` | `getClassNames` and related helpers |
+| `@jigsaw-ds/design-system/providers` | `ThemeProvider` (client — nested overrides only) |
+
+Do **not** deep-import internal files under `dist/components/.../Badge.mjs` — only the published `exports` subpaths are supported.
+
+RSC-safe presentational surface today (import via subpaths):
 
 `Badge`, `Text`, `Heading` / `H1`–`H6`, `Skeleton`, `Icon`, `Card`
 
-Benefits: less client JS for static UI, and no pressure to invent tiny client shells around badges/headings just to satisfy the App Router boundary.
+Still client (subpath imports create a client boundary):
 
-Still client:
-
-- `Avatar` — keeps image `onError` / fallback state on the client
+- `Avatar` — image `onError` / fallback state
 - Interactive / React Aria components (`Button`, `Modal`, `Select`, …)
-- Theme hooks (`useGetClassNames`, `useRootClassName`, `useThemeProvider`) and `ThemeProvider` — they use React context, so Next will treat any module that imports them as a Client Component. Prefer `getClassNames` / `configureTwMerge` from Server Components.
-
-Custom `twMerge` for the RSC-safe set still works via `configureTwMerge` (below).
+- Theme hooks and `ThemeProvider` — prefer `configureTwMerge` from Server Components
 
 ### Next.js + Phosphor icons (SSR)
 
@@ -203,7 +237,7 @@ For app-wide class-name merge customisation (for example `extendTailwindMerge` f
 
 ```ts
 // lib/jigsaw-theme.ts — import this from root layout (server) and from your client providers entry
-import { configureTwMerge } from "@jigsaw-ds/design-system";
+import { configureTwMerge } from "@jigsaw-ds/design-system/theme";
 import { extendTailwindMerge } from "tailwind-merge";
 
 export const twMerge = extendTailwindMerge({
