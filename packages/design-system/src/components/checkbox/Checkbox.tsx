@@ -1,6 +1,7 @@
 "use client";
 
-import { CheckIcon, MinusIcon } from "@phosphor-icons/react";
+import { CheckIcon } from "@phosphor-icons/react/Check";
+import { MinusIcon } from "@phosphor-icons/react/Minus";
 import {
   CheckboxField as ReactAriaCheckboxField,
   CheckboxButton as ReactAriaCheckboxButton,

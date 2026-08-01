@@ -112,6 +112,16 @@ describe('MobileNavigation', () => {
     expect(screen.getByRole('button', { name: 'Toggle menu' })).toBeInTheDocument();
   });
 
+  it('renders a Phosphor list icon inside the toggle (deep ESM import)', () => {
+    const { container } = render(
+      <MobileNavigation isOpen={false} onOpenChange={vi.fn()} links={links} />,
+    );
+    const toggle = screen.getByRole('button', { name: 'Toggle menu' });
+    expect(toggle.querySelector('svg')).toBeInTheDocument();
+    // Closed menu should not render the dismiss (X) icon yet.
+    expect(container.querySelectorAll('svg')).toHaveLength(1);
+  });
+
   it('does not show mobile menu when isOpen is false', () => {
     render(<MobileNavigation isOpen={false} onOpenChange={vi.fn()} links={links} />);
     expect(screen.queryByText('Home')).not.toBeInTheDocument();

@@ -188,7 +188,7 @@ const sharedExternal = [
   "react-dom",
   "react-aria-components",
   "react-aria-components/Toast",
-  "@phosphor-icons/react",
+  /^@phosphor-icons\/react(\/.*)?$/,
   "class-variance-authority",
   "tailwind-merge",
   "@jigsaw-ds/tokens",

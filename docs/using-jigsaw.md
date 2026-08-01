@@ -160,6 +160,43 @@ Still client:
 
 Custom `twMerge` for the RSC-safe set still works via `configureTwMerge` (below).
 
+### Next.js + Phosphor icons (SSR)
+
+Jigsaw components deep-import icons from Phosphor's **public** per-icon entries (for example `@phosphor-icons/react/List`), which map to the package's `./*` → `dist/csr/*.es.js` export. That pattern is part of `@phosphor-icons/react` v2's documented package exports — not an internal path.
+
+Phosphor's **root** `require` entry (`dist/index.cjs.js`) still breaks under Next.js 15 SSR: named exports like `ListIcon` can be `undefined`, which surfaces as `Element type is invalid … got: undefined` while prerendering. Design-system runtime code avoids that barrel; apps that import icons themselves (or transpile the design-system) should also steer Next toward ESM:
+
+```ts
+// next.config.ts
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  transpilePackages: ["@jigsaw-ds/design-system"],
+  experimental: {
+    optimizePackageImports: ["@phosphor-icons/react"],
+  },
+  webpack: (config) => {
+    // Prefer Phosphor's "import" (ESM) condition — its "require" targets still
+    // point at the broken root CJS barrel (JSW-114).
+    const conditions = config.resolve.conditionNames ?? [
+      "browser",
+      "module",
+      "require",
+      "default",
+    ];
+    config.resolve.conditionNames = [
+      "import",
+      ...conditions.filter((c: string) => c !== "import"),
+    ];
+    return config;
+  },
+};
+
+export default nextConfig;
+```
+
+See [`apps/web/next.config.ts`](../apps/web/next.config.ts) for the reference. Revisit if a future `@phosphor-icons/react` release ships a working CJS require map — CI guards the deep-import subpaths we rely on.
+
 ### Custom `twMerge` (App Router / RSC-safe)
 
 For app-wide class-name merge customisation (for example `extendTailwindMerge` for custom class groups), call `configureTwMerge` once per runtime. This uses a module-level config — **no React context** — so it works from a Server Component root layout and from a client providers file.
@@ -254,6 +291,7 @@ Before debugging styling issues, confirm:
 | Colours missing / all black | Theme CSS not loaded | Add imports in `layout.tsx` |
 | `dark:` utilities never apply | Missing variant or attribute | Add `@custom-variant dark` and set `data-theme="dark"` |
 | Icons missing | Transitive dep not installed | Reinstall `@jigsaw-ds/design-system`; `@phosphor-icons/react` should be present |
+| `next build` prerender: `Element type is invalid … got: undefined` on pages using Jigsaw icons | Phosphor root CJS barrel named exports are undefined in the Next SSR webpack graph | Apply the [Next.js + Phosphor](#nextjs--phosphor-icons-ssr) `next.config` settings; ensure `@phosphor-icons/react` is ≥ 2.1 |
 | `npm install @jigsaw-ds/...` 404 | Package not published yet | Use local `file:` deps (below) or wait for v1 release |
 
 ## Local development without publishing

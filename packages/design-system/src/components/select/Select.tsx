@@ -1,7 +1,7 @@
 "use client";
 
+import { CaretDownIcon } from "@phosphor-icons/react/CaretDown";
 import { useMemo } from "react";
-import { CaretDownIcon } from "@phosphor-icons/react";
 import {
   Select as ReactAriaSelect,
   Label as ReactAriaLabel,
