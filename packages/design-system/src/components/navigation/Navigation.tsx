@@ -1,7 +1,8 @@
 "use client";
 
+import { ListIcon } from "@phosphor-icons/react/List";
+import { XIcon } from "@phosphor-icons/react/X";
 import { type ReactNode, type HTMLAttributes } from "react";
-import { ListIcon, XIcon } from "@phosphor-icons/react";
 import { Link as ReactAriaLink } from "react-aria-components";
 import { useGetClassNames } from "@hooks";
 import { Icon } from "@components/icon";

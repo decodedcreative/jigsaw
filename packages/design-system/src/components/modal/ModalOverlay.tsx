@@ -1,6 +1,6 @@
 "use client";
 
-import { XIcon } from "@phosphor-icons/react";
+import { XIcon } from "@phosphor-icons/react/X";
 import {
   Dialog as ReactAriaDialog,
   Heading as ReactAriaHeading,

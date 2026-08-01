@@ -1,11 +1,11 @@
 "use client";
 
+import { XIcon } from "@phosphor-icons/react/X";
 import {
   UNSTABLE_Toast as ReactAriaToast,
   UNSTABLE_ToastContent as ReactAriaToastContent,
   Text as ReactAriaText,
 } from "react-aria-components/Toast";
-import { XIcon } from "@phosphor-icons/react";
 import { Button } from "@components/button/Button";
 import { Icon } from "@components/icon";
 import { useGetClassNames, useRootClassName } from "@hooks";

@@ -1,6 +1,7 @@
 "use client";
 
-import { MinusIcon, PlusIcon } from "@phosphor-icons/react";
+import { MinusIcon } from "@phosphor-icons/react/Minus";
+import { PlusIcon } from "@phosphor-icons/react/Plus";
 import {
   NumberField as ReactAriaNumberField,
   Label as ReactAriaLabel,

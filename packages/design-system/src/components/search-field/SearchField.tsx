@@ -1,6 +1,7 @@
 "use client";
 
-import { MagnifyingGlassIcon, XIcon } from "@phosphor-icons/react";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/MagnifyingGlass";
+import { XIcon } from "@phosphor-icons/react/X";
 import {
   SearchField as ReactAriaSearchField,
   Label as ReactAriaLabel,
