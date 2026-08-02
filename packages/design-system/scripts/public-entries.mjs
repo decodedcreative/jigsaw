@@ -53,11 +53,21 @@ export function listPublicEntries() {
     dtsEntryKey: entry.distDir + "/index",
   }));
 
+  const missing = [];
   for (const entry of [...shared, ...components]) {
     const absolute = path.join(packageRoot, entry.source);
     if (!existsSync(absolute)) {
-      throw new Error("public entry missing source file: " + entry.source);
+      missing.push(`./${entry.subpath} → ${entry.source}`);
     }
+  }
+  if (missing.length > 0) {
+    console.error(
+      "[public-entries] public entry source file(s) missing:\n" +
+        missing.map((line) => `  - ${line}`).join("\n")
+    );
+    throw new Error(
+      `public entry missing source file (${missing.length}): ${missing[0]}`
+    );
   }
 
   return [...shared, ...components];

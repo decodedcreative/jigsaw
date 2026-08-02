@@ -320,11 +320,12 @@
   },
   "scripts": {
     "sync-exports": "node scripts/sync-package-exports.mjs",
+    "sync-exports:check": "node scripts/sync-package-exports.mjs --check",
     "build": "node scripts/sync-package-exports.mjs && tsup",
     "dev": "tsup --watch",
     "lint": "eslint .",
     "clean": "rm -rf dist",
-    "test": "vitest run",
+    "test": "node scripts/sync-package-exports.mjs --check && tsup && vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {

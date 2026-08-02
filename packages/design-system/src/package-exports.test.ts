@@ -94,6 +94,37 @@ describe("public package subpath exports", () => {
     }
   });
 
+  it("resolves every public subpath through package exports (Node require)", () => {
+    if (!existsSync(path.join(distRoot, "index.js"))) {
+      expect.fail(
+        "dist/ missing — run `npm run build --workspace=@jigsaw-ds/design-system` first"
+      );
+    }
+
+    // Resolve as a consumer would: package name + subpath, from this package root.
+    const consumerRequire = createRequire(
+      path.join(packageRoot, "package.json")
+    );
+
+    for (const entry of listPublicEntries()) {
+      const id = `@jigsaw-ds/design-system/${entry.subpath}`;
+      let resolved: string;
+      try {
+        resolved = consumerRequire.resolve(id);
+      } catch (error) {
+        expect.fail(
+          `package exports failed to resolve ${id}: ${(error as Error).message}`
+        );
+      }
+      expect(existsSync(resolved), `${id} → missing file ${resolved}`).toBe(
+        true
+      );
+      expect(resolved.replaceAll("\\", "/")).toContain(
+        `/dist/${entry.distDir}/`
+      );
+    }
+  });
+
   it("keeps presentational subpath graphs free of use client modules", () => {
     if (!existsSync(path.join(distRoot, "components/badge/index.mjs"))) {
       expect.fail(
@@ -111,7 +142,10 @@ describe("public package subpath exports", () => {
     }
   });
 
-  it("shows why the root barrel is unsafe for RSC (pulls client modules)", () => {
+  // Intentional: the root barrel MUST keep exporting interactive / client modules
+  // for client apps and Storybook. RSC consumers use subpaths instead — do not
+  // strip Button/Modal/etc. from ".".
+  it("documents that the root barrel pulls client modules (unsafe for RSC)", () => {
     if (!existsSync(path.join(distRoot, "index.mjs"))) {
       expect.fail(
         "dist/ missing — run `npm run build --workspace=@jigsaw-ds/design-system` first"
