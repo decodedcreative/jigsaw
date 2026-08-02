@@ -326,6 +326,10 @@ Before debugging styling issues, confirm:
 | `dark:` utilities never apply | Missing variant or attribute | Add `@custom-variant dark` and set `data-theme="dark"` |
 | Icons missing | Transitive dep not installed | Reinstall `@jigsaw-ds/design-system`; `@phosphor-icons/react` should be present |
 | `next build` prerender: `Element type is invalid … got: undefined` on pages using Jigsaw icons | Phosphor root CJS barrel named exports are undefined in the Next SSR webpack graph | Apply the [Next.js + Phosphor](#nextjs--phosphor-icons-ssr) `next.config` settings; ensure `@phosphor-icons/react` is ≥ 2.1 |
+| Server Component build fails with `client-only` / `'use client'` when importing from `@jigsaw-ds/design-system` | Root barrel re-exports interactive modules | Switch presentational imports to subpaths (`@jigsaw-ds/design-system/badge`, …). See [Server Components](#server-components). |
+| `Cannot find module '@jigsaw-ds/design-system/badge'` (or similar subpath) | App resolves an older published version without subpath `exports`, or local `file:` package was not rebuilt | Upgrade `@jigsaw-ds/design-system` (≥ version that ships subpaths), or rebuild the workspace package (`npm run build --workspace=@jigsaw-ds/design-system`) and reinstall `file:` deps |
+| Subpath import resolves but TypeScript cannot find types | IDE/tsconfig still pointing at a stale install | Restart TS server; ensure `moduleResolution` is `bundler` or `node16`+; confirm `node_modules/@jigsaw-ds/design-system/package.json` lists the subpath under `exports` |
+| Interactive component imported from a subpath still errors in a Server Component | Accidental import of a client-only helper (hooks / `ThemeProvider`) into the same server module | Keep hooks/providers in Client Components; import only the interactive component subpath (`/button`, `/modal`, …) as a leaf |
 | `npm install @jigsaw-ds/...` 404 | Package not published yet | Use local `file:` deps (below) or wait for v1 release |
 
 ## Local development without publishing
