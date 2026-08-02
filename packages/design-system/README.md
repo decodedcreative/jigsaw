@@ -12,7 +12,9 @@ npm install @jigsaw-ds/design-system @jigsaw-ds/tokens @jigsaw-ds/theme-default
 
 ## Usage
 
-Import components from the package root:
+### Client components / Vite / Storybook
+
+Import from the package root when the module is already a Client Component:
 
 ```tsx
 import { Button, Badge, Card, Text } from "@jigsaw-ds/design-system";
@@ -28,15 +30,20 @@ export function Example() {
 }
 ```
 
-Register the library's Tailwind content paths by importing its CSS in your Tailwind entry file:
+### Server Components (App Router)
 
-```css
-@import "tailwindcss";
-@import "@jigsaw-ds/tokens/tailwind-theme.css";
-@import "@jigsaw-ds/design-system/tailwind.css";
+Import presentational components from **package subpaths** — not the root barrel.
+The root re-exports interactive modules too, which breaks Server Component imports.
+
+```tsx
+import { Badge } from "@jigsaw-ds/design-system/badge";
+import { Text } from "@jigsaw-ds/design-system/text";
 ```
 
-Do not deep-import from internal paths — the package root is the only supported entry point.
+Interactive components also have subpaths (for example `@jigsaw-ds/design-system/button`).
+Do not deep-import internal `dist/…` files — only documented `exports` subpaths are supported.
+
+Full setup (PostCSS, themes, `configureTwMerge`): see [docs/using-jigsaw.md](../../docs/using-jigsaw.md).
 
 ## Setup
 

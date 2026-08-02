@@ -15,7 +15,7 @@
     "version-and-tag:major": "node scripts/version-and-tag.mjs --bump major",
     "publish": "npm run validate:packages && changeset publish",
     "verify:packages": "npm run build --workspace=@jigsaw-ds/design-system --workspace=@jigsaw-ds/tokens --workspace=@jigsaw-ds/theme-default --workspace=@jigsaw-ds/theme-portfolio && node scripts/verify-publishable-packages.mjs",
-    "validate:packages": "npm run verify:packages && node scripts/validate-publishable-packages.mjs",
+    "validate:packages": "npm run verify:packages && node scripts/validate-publishable-packages.mjs && npm run build --workspace=web",
     "test:release-notes": "node --test scripts/github-release-notes.test.mjs",
     "test:generate-changeset": "node --test scripts/generate-changeset-from-changes.test.mjs scripts/lib/publishable-packages.test.mjs"
   },

@@ -11,7 +11,7 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { publishablePackagePaths } from "./lib/publishable-packages.mjs";
 
 const repoRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -167,15 +167,21 @@ function hasUseClientDirective(source) {
  * force a blanket client boundary on the entry. Leaf modules that need client
  * APIs keep their own `"use client"` directive.
  */
-function verifyDesignSystemClientBoundaries() {
+async function verifyDesignSystemClientBoundaries() {
   const packageRel = "packages/design-system";
   const dist = path.join(repoRoot, packageRel, "dist");
+  const packageJson = JSON.parse(
+    readFileSync(path.join(repoRoot, packageRel, "package.json"), "utf8"),
+  );
 
   const mustStayServer = [
     "index.mjs",
     "theme/config.mjs",
+    "theme/index.mjs",
     "utils/getClassNames.mjs",
+    "utils/index.mjs",
     "components/badge/Badge.mjs",
+    "components/badge/index.mjs",
     "components/text/Text.mjs",
     "components/heading/Heading.mjs",
     "components/card/Card.mjs",
@@ -224,22 +230,71 @@ function verifyDesignSystemClientBoundaries() {
       );
     }
   }
-}
 
-verifyLicenseConsistency();
-for (const packageRel of PUBLISHABLE_PACKAGES) {
-  verifyPackage(packageRel);
-}
-verifyDesignSystemClientBoundaries();
-
-if (errors.length > 0) {
-  console.error("verify-publishable-packages failed:\n");
-  for (const message of errors) {
-    console.error(`  - ${message}`);
+  // Every public subpath export (except CSS) must resolve to built files.
+  for (const [exportPath, target] of Object.entries(packageJson.exports ?? {})) {
+    if (exportPath === "./tailwind.css") continue;
+    if (!target || typeof target !== "object") continue;
+    const importDefault = target.import?.default;
+    const importTypes = target.import?.types;
+    const requireDefault = target.require?.default;
+    const requireTypes = target.require?.types;
+    for (const fileRel of [
+      importDefault,
+      importTypes,
+      requireDefault,
+      requireTypes,
+    ]) {
+      if (typeof fileRel !== "string") continue;
+      const full = path.join(repoRoot, packageRel, fileRel);
+      if (!existsSync(full)) {
+        fail(`${packageRel}: export ${exportPath} missing file ${fileRel}`);
+      }
+    }
   }
-  process.exit(1);
+
+  // package.json exports must match discovery from src/ (same check as
+  // `npm run sync-exports:check --workspace=@jigsaw-ds/design-system`).
+  try {
+    const publicEntriesUrl = pathToFileURL(
+      path.join(repoRoot, packageRel, "scripts/public-entries.mjs"),
+    ).href;
+    const { buildPackageExports } = await import(publicEntriesUrl);
+    const expected = JSON.stringify(buildPackageExports());
+    const actual = JSON.stringify(packageJson.exports ?? {});
+    if (expected !== actual) {
+      fail(
+        `${packageRel}: package.json exports out of sync with src/ — run npm run sync-exports --workspace=@jigsaw-ds/design-system`,
+      );
+    }
+  } catch (error) {
+    fail(
+      `${packageRel}: failed to verify exports sync (${error instanceof Error ? error.message : String(error)})`,
+    );
+  }
 }
 
-console.log(
-  `verify-publishable-packages: ${PUBLISHABLE_PACKAGES.length} packages OK`,
-);
+async function main() {
+  verifyLicenseConsistency();
+  for (const packageRel of PUBLISHABLE_PACKAGES) {
+    verifyPackage(packageRel);
+  }
+  await verifyDesignSystemClientBoundaries();
+
+  if (errors.length > 0) {
+    console.error("verify-publishable-packages failed:\n");
+    for (const message of errors) {
+      console.error(`  - ${message}`);
+    }
+    process.exit(1);
+  }
+
+  console.log(
+    `verify-publishable-packages: ${PUBLISHABLE_PACKAGES.length} packages OK`,
+  );
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
