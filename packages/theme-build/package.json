@@ -1,6 +1,6 @@
 {
   "name": "@jigsaw-ds/theme-build",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Style Dictionary build helpers used by the Jigsaw theme packages.",
   "license": "MIT",
   "author": "James Howell",

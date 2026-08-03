@@ -1,5 +1,17 @@
 # @jigsaw-ds/design-system
 
+## 0.3.0
+
+### Minor Changes
+
+- - feat: per-component subpath exports for RSC (JSW-113)
+  - fix: Phosphor SSR icons break apps/web prerender (JSW-114)
+
+### Patch Changes
+
+- Updated dependencies
+  - @jigsaw-ds/tokens@0.3.0
+
 ## 0.2.1
 
 ### Patch Changes
