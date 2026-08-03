@@ -1,6 +1,6 @@
 {
   "name": "@jigsaw-ds/design-system",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "React component library for the Jigsaw design system, built on React Aria Components and Tailwind CSS v4.",
   "license": "MIT",
   "author": "James Howell",
@@ -329,7 +329,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@jigsaw-ds/tokens": "^0.2.1",
+    "@jigsaw-ds/tokens": "^0.3.0",
     "@phosphor-icons/react": "^2.1.10",
     "class-variance-authority": "^0.7.1",
     "react-aria-components": "^1.17.0",
