@@ -191,6 +191,11 @@ function ensureUseClientBeforeUseStrict(distDir: string): void {
  * boundaries. esbuild keeps those relative specifiers extensionless, while
  * Node ESM requires the emitted `.mjs` filename (including `/index.mjs` for
  * directory imports).
+ *
+ * Only quoted specifiers are rewritten. A computed specifier (template
+ * literal) would be missed, and being lazy it would also escape the export
+ * smoke check; the package has none today. Anything that cannot be resolved
+ * throws rather than emitting a broken import.
  */
 function ensureNodeResolvableEsmImports(distDir: string): void {
   const stack = [distDir];
