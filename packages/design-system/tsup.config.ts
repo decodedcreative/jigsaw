@@ -184,6 +184,63 @@ function ensureUseClientBeforeUseStrict(distDir: string): void {
   }
 }
 
+/**
+ * Make emitted relative ESM specifiers resolvable by Node.
+ *
+ * The source build preserves modules to retain granular React client
+ * boundaries. esbuild keeps those relative specifiers extensionless, while
+ * Node ESM requires the emitted `.mjs` filename (including `/index.mjs` for
+ * directory imports).
+ *
+ * Only quoted specifiers are rewritten. A computed specifier (template
+ * literal) would be missed, and being lazy it would also escape the export
+ * smoke check; the package has none today. Anything that cannot be resolved
+ * throws rather than emitting a broken import.
+ */
+function ensureNodeResolvableEsmImports(distDir: string): void {
+  const stack = [distDir];
+  while (stack.length > 0) {
+    const dir = stack.pop()!;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        stack.push(full);
+        continue;
+      }
+      if (!entry.name.endsWith(".mjs")) continue;
+
+      const source = fs.readFileSync(full, "utf8");
+      const next = source.replace(
+        /(\b(?:from|import)\s*(?:\(\s*)?)(["'])(\.{1,2}\/[^"']+)\2/g,
+        (match, prefix: string, quote: string, request: string) => {
+          const resolved = path.resolve(path.dirname(full), request);
+          if (fs.existsSync(resolved) && fs.statSync(resolved).isFile()) {
+            return match;
+          }
+
+          const fileCandidate = `${resolved}.mjs`;
+          if (fs.existsSync(fileCandidate)) {
+            return `${prefix}${quote}${request}.mjs${quote}`;
+          }
+
+          const indexCandidate = path.join(resolved, "index.mjs");
+          if (fs.existsSync(indexCandidate)) {
+            return `${prefix}${quote}${request}/index.mjs${quote}`;
+          }
+
+          throw new Error(
+            `Could not resolve emitted ESM import "${request}" from ${full}`
+          );
+        }
+      );
+
+      if (next !== source) {
+        fs.writeFileSync(full, next);
+      }
+    }
+  }
+}
+
 const sharedExternal = [
   "react",
   "react-dom",
@@ -227,7 +284,9 @@ export default defineConfig([
       }),
     ],
     async onSuccess() {
-      ensureUseClientBeforeUseStrict(path.join(root, "dist"));
+      const distDir = path.join(root, "dist");
+      ensureUseClientBeforeUseStrict(distDir);
+      ensureNodeResolvableEsmImports(distDir);
     },
   },
   {
