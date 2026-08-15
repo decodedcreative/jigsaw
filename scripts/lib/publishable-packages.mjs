@@ -99,16 +99,11 @@ export function selectPackagesTouchedInGit(changedFiles, packages) {
   return names;
 }
 
-function runGit(args, { repoRoot, allowFailure = false } = {}) {
-  try {
-    return execFileSync("git", args, {
-      cwd: repoRoot,
-      encoding: "utf8",
-    }).trim();
-  } catch (error) {
-    if (allowFailure) return "";
-    throw error;
-  }
+function runGit(args, { repoRoot } = {}) {
+  return execFileSync("git", args, {
+    cwd: repoRoot,
+    encoding: "utf8",
+  }).trim();
 }
 
 function runTurbo(args, { repoRoot, env } = {}) {
