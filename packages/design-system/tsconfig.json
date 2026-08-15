@@ -11,20 +11,19 @@
     "declarationMap": true,
     "outDir": "dist",
     "rootDir": "src",
-    "baseUrl": ".",
     "paths": {
-      "@components": ["src/components"],
-      "@components/*": ["src/components/*"],
-      "@hooks": ["src/hooks"],
-      "@hooks/*": ["src/hooks/*"],
-      "@providers": ["src/providers"],
-      "@providers/theme": ["src/providers/theme/index.ts"],
-      "@providers/*": ["src/providers/*"],
-      "@utils": ["src/utils"],
-      "@utils/*": ["src/utils/*"],
+      "@components": ["./src/components"],
+      "@components/*": ["./src/components/*"],
+      "@hooks": ["./src/hooks"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@providers": ["./src/providers"],
+      "@providers/theme": ["./src/providers/theme/index.ts"],
+      "@providers/*": ["./src/providers/*"],
+      "@utils": ["./src/utils"],
+      "@utils/*": ["./src/utils/*"],
       // Not "@types" — that prefix is reserved for DefinitelyTyped and breaks DTS emit.
-      "@jsw-types": ["src/types"],
-      "@jsw-types/*": ["src/types/*"]
+      "@jsw-types": ["./src/types"],
+      "@jsw-types/*": ["./src/types/*"]
     }
   },
   "include": ["src/**/*"],
