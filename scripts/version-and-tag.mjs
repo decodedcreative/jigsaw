@@ -2,7 +2,7 @@
 /**
  * Version publishable packages and open a version PR.
  *
- * 1. Synthesize a Changeset for packages changed since the last release baseline
+ * 1. Synthesize a Changeset for packages with direct file changes since the last release baseline
  * 2. Run `changeset version` (bumps package.json + CHANGELOG.md)
  * 3. Create branch `chore/version-{version}`, commit, push, and open a PR to main
  *

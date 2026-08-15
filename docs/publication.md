@@ -63,11 +63,10 @@ npm run version-and-tag:patch   # or :minor / :major
 
 `version-and-tag` ([scripts/version-and-tag.mjs](../scripts/version-and-tag.mjs)):
 
-1. Detects which publishable packages changed since the last `v*` tag (`turbo` + Changesets `fixed` groups)
-2. Writes a temporary Changeset with your chosen bump
-3. Runs `changeset version` (updates `package.json` + `CHANGELOG.md`)
-4. Creates branch `chore/version-{version}`, commits `chore: version packages`, pushes, and opens a PR to `main`
-5. Leaves local `main` at the pre-version tip
+1. Detects which publishable packages have **direct** file changes since the last `v*` tag (git paths under each package, not a root lockfile bump)
+2. Writes a temporary Changeset for those packages only, then runs `changeset version` (updates `package.json` + `CHANGELOG.md`). The Changesets **`fixed` group** still locksteps every publishable package to the same version; untouched packages are not listed in the changeset, so they do not inherit another package's commit summaries.
+3. Creates branch `chore/version-{version}`, commits `chore: version packages`, pushes, and opens a PR to `main`
+4. Leaves local `main` at the pre-version tip
 
 Merge that PR (squash is fine). [tag-version.yml](../.github/workflows/tag-version.yml) then creates annotated tag `v{version}` when the merged commit subject matches `chore: version packages…`.
 

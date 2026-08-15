@@ -4,8 +4,11 @@
  * release baseline (latest `v*` tag or `chore: version packages` commit).
  *
  * Packages are discovered via Turborepo (`turbo ls`) + `.changeset/config.json`
- * (ignore / fixed groups). Changed packages use
- * `turbo run build --filter=[since] --dry-run=json` (direct changes only).
+ * `ignore`. Changed packages are those with git path changes under their
+ * directory since the baseline (a root lockfile change does not count).
+ * The Changesets `fixed` group still locksteps versions at `changeset version`
+ * time; this script does not list untouched peers in the changeset, so their
+ * changelogs are not filled with another package's commits.
  *
  * Prefer the maintainer entrypoint `npm run version-and-tag:*`, which calls this
  * script then runs `changeset version` and creates a git tag.
@@ -70,8 +73,8 @@ export function buildChangesetMarkdown({ packages, bump, summaryLines }) {
 
   const summary =
     summaryLines.length > 0
-      ? summaryLines.map((line) => `- ${line}`).join("\n")
-      : "- Automated changeset for publishable package updates.";
+      ? summaryLines.join("\n")
+      : "Automated changeset for publishable package updates.";
 
   return `---\n${frontmatter}\n---\n\n${summary}\n`;
 }

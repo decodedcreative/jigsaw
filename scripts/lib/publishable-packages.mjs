@@ -7,6 +7,8 @@
  * - each package.json `private` flag — must be publishable
  * - `.changeset/config.json` `ignore` — never version/publish
  * - `.changeset/config.json` `fixed` — packages that always share a version
+ *   at `changeset version` time. Direct-change detection does **not** expand
+ *   the group; that would copy one package's changelog onto the others.
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -77,6 +79,33 @@ export function selectChangedPackageNames(turboDryRunPackages, publishableNames)
   );
 }
 
+/**
+ * Map git paths to publishable packages. Longest prefix wins so
+ * `packages/themes/default/x` is theme-default, not a parent.
+ * Root files (lockfile, turbo.json) do not count as a package change.
+ */
+export function selectPackagesTouchedInGit(changedFiles, packages) {
+  const names = new Set();
+  for (const file of changedFiles) {
+    if (!file) continue;
+    const normalized = file.replace(/\\/g, "/");
+    for (const pkg of packages) {
+      if (normalized === pkg.path || normalized.startsWith(pkg.prefix)) {
+        names.add(pkg.name);
+        break;
+      }
+    }
+  }
+  return names;
+}
+
+function runGit(args, { repoRoot } = {}) {
+  return execFileSync("git", args, {
+    cwd: repoRoot,
+    encoding: "utf8",
+  }).trim();
+}
+
 function runTurbo(args, { repoRoot, env } = {}) {
   return execFileSync("npx", ["turbo", ...args], {
     cwd: repoRoot,
@@ -115,28 +144,29 @@ export function loadPublishablePackages(repoRoot = defaultRepoRoot) {
 }
 
 /**
- * Packages with direct changes since `sinceRef` (no dependent graph expansion).
- * Uses Turborepo: `turbo run build --filter=[sinceRef] --dry-run=json`.
+ * Packages with direct file changes since `sinceRef`.
+ *
+ * Membership is git paths under each package directory, not Turbo's
+ * `--filter=[since]` set: a root lockfile change makes Turbo treat every
+ * workspace as dirty, which would copy one package's changelog onto the rest.
+ * Lockstep version bumps for untouched peers are Changesets' `fixed` config
+ * at `changeset version` time.
  */
 export function loadChangedPublishablePackages(
   sinceRef,
   repoRoot = defaultRepoRoot
 ) {
   const { packages, fixedGroups } = loadPublishablePackages(repoRoot);
-  const publishableNames = packages.map((pkg) => pkg.name);
-  const dry = parseJsonFromMixedStdout(
-    runTurbo(
-      ["run", "build", `--filter=[${sinceRef}]`, "--dry-run=json"],
-      { repoRoot }
-    )
-  );
-  const changed = selectChangedPackageNames(dry.packages, publishableNames);
-  const withFixed = applyFixedGroups(changed, fixedGroups);
+  const diff = runGit(["diff", "--name-only", `${sinceRef}...HEAD`], {
+    repoRoot,
+  });
+  const changedFiles = diff ? diff.split("\n") : [];
+  const changed = selectPackagesTouchedInGit(changedFiles, packages);
   return {
     packages,
     fixedGroups,
-    changedNames: withFixed,
-    changedPackages: packages.filter((pkg) => withFixed.has(pkg.name)),
+    changedNames: changed,
+    changedPackages: packages.filter((pkg) => changed.has(pkg.name)),
   };
 }
 

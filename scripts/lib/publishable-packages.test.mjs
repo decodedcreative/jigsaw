@@ -8,6 +8,7 @@ import {
   applyFixedGroups,
   parseJsonFromMixedStdout,
   selectChangedPackageNames,
+  selectPackagesTouchedInGit,
   selectPublishablePackages,
 } from "./publishable-packages.mjs";
 
@@ -30,6 +31,33 @@ describe("selectPublishablePackages", () => {
       { ignore: [], isPrivate: () => false }
     );
     assert.equal(packages[0].name, "@jigsaw-ds/theme-default");
+  });
+});
+
+describe("selectPackagesTouchedInGit", () => {
+  const packages = selectPublishablePackages(
+    [
+      { name: "@jigsaw-ds/tokens", path: "packages/tokens" },
+      { name: "@jigsaw-ds/theme-default", path: "packages/themes/default" },
+      { name: "@jigsaw-ds/design-system", path: "packages/design-system" },
+    ],
+    { ignore: [], isPrivate: () => false }
+  );
+
+  it("maps package files and ignores root lockfile / config", () => {
+    const names = selectPackagesTouchedInGit(
+      [
+        "package-lock.json",
+        "turbo.json",
+        "packages/design-system/tsup.config.ts",
+        "packages/themes/default/src/base/colors.json",
+      ],
+      packages
+    );
+    assert.deepEqual(
+      [...names].sort(),
+      ["@jigsaw-ds/design-system", "@jigsaw-ds/theme-default"].sort()
+    );
   });
 });
 
