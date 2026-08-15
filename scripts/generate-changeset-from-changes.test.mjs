@@ -105,7 +105,6 @@ describe("planChangeset", () => {
     assert.equal(plan.bump, "patch");
     assert.match(plan.markdown, /"@jigsaw-ds\/design-system": patch/);
     assert.match(plan.markdown, /preserve per-module use client boundaries/);
-    assert.match(plan.markdown, /preserve per-module use client boundaries/);
     assert.match(plan.markdown, /totally unstructured commit message/);
     assert.equal(plan.fileName, changesetFileName(plan.markdown));
   });
