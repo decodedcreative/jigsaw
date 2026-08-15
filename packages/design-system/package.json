@@ -326,7 +326,7 @@
     "lint": "eslint .",
     "check-types": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json && tsc --noEmit -p tsconfig.stories.json",
     "clean": "rm -rf dist",
-    "test": "node scripts/sync-package-exports.mjs --check && tsup && vitest run",
+    "test": "node scripts/sync-package-exports.mjs --check && tsup && node scripts/check-node-esm-exports.mjs && vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
