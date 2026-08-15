@@ -105,8 +105,23 @@ describe("planChangeset", () => {
     assert.equal(plan.bump, "patch");
     assert.match(plan.markdown, /"@jigsaw-ds\/design-system": patch/);
     assert.match(plan.markdown, /preserve per-module use client boundaries/);
+    assert.match(plan.markdown, /preserve per-module use client boundaries/);
     assert.match(plan.markdown, /totally unstructured commit message/);
     assert.equal(plan.fileName, changesetFileName(plan.markdown));
+  });
+
+  it("lists only the packages passed in (fixed peers are not implied)", () => {
+    const plan = planChangeset({
+      sinceRef: "v0.1.0",
+      packageNames: new Set(["@jigsaw-ds/design-system"]),
+      commitSubjects: ["fix: make ESM Node-resolvable (JSW-115)"],
+      bump: "patch",
+    });
+
+    assert.ok(plan);
+    assert.match(plan.markdown, /"@jigsaw-ds\/design-system": patch/);
+    assert.doesNotMatch(plan.markdown, /"@jigsaw-ds\/tokens":/);
+    assert.match(plan.markdown, /^fix: make ESM Node-resolvable/m);
   });
 });
 
@@ -164,7 +179,7 @@ describe("buildChangesetMarkdown", () => {
 "@jigsaw-ds/theme-build": patch
 ---
 
-- chore: tweak build helper
+chore: tweak build helper
 `
     );
   });
