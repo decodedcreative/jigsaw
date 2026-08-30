@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
+import { renderToString } from 'react-dom/server';
 import userEvent from '@testing-library/user-event';
 import { SearchField } from './SearchField';
 
@@ -110,5 +111,36 @@ describe('SearchField', () => {
     const root = screen.getByTestId('search');
     expect(root).toHaveClass('mt-2');
     expect(root).toHaveClass('p-4');
+  });
+
+  it('does not forward classNameOverrides to nested icon SVG DOM elements (JSW-116)', () => {
+    const { container } = render(
+      <SearchField
+        classNameOverrides={{
+          searchIcon: 'text-brand-primary',
+        }}
+      />
+    );
+    const svgs = container.querySelectorAll('svg');
+    expect(svgs.length).toBeGreaterThan(0);
+    svgs.forEach((svg) => {
+      expect(svg).not.toHaveAttribute('classNameOverrides');
+      expect(svg).not.toHaveAttribute('classnameoverrides');
+      expect(svg).not.toHaveAttribute('size');
+      expect(svg).not.toHaveAttribute('tone');
+    });
+  });
+
+  it('does not serialize classNameOverrides into SSR HTML (JSW-116)', () => {
+    const html = renderToString(
+      <SearchField
+        classNameOverrides={{
+          searchIcon: 'text-brand-primary',
+        }}
+      />
+    );
+    expect(html).not.toContain('classNameOverrides');
+    expect(html).not.toContain('classnameoverrides');
+    expect(html).not.toContain('[object Object]');
   });
 });
