@@ -3,15 +3,16 @@ import { customIconStyles, iconStyles } from "./Icon.styles";
 import { isCustomIconProps, type IconProps } from "./Icon.types";
 
 export function Icon(props: IconProps) {
-  const {
-    size = "md",
-    tone,
-    classNameOverrides,
-    "aria-hidden": ariaHidden = true,
-  } = props;
-
   if (isCustomIconProps(props)) {
-    const { viewBox, children, ...svgProps } = props;
+    const {
+      size = "md",
+      tone,
+      classNameOverrides,
+      "aria-hidden": ariaHidden = true,
+      viewBox,
+      children,
+      ...svgProps
+    } = props;
 
     const classNames = getClassNames(customIconStyles, classNameOverrides, {
       component: { size, tone },
@@ -31,7 +32,15 @@ export function Icon(props: IconProps) {
     );
   }
 
-  const { icon: PhosphorIcon, weight = "bold", ...phosphorProps } = props;
+  const {
+    size = "md",
+    tone,
+    classNameOverrides,
+    "aria-hidden": ariaHidden = true,
+    icon: PhosphorIcon,
+    weight = "bold",
+    ...phosphorProps
+  } = props;
 
   const classNames = getClassNames(iconStyles, classNameOverrides, {
     component: { size, tone },

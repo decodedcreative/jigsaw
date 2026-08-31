@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
+import { renderToString } from "react-dom/server";
 import { GearIcon } from "@phosphor-icons/react";
 import { Icon } from "./Icon";
 
@@ -63,6 +64,38 @@ describe("Icon", () => {
     expect(svg).toHaveClass("h-6", "w-6", "text-foreground-primary");
   });
 
+  it("does not forward classNameOverrides, size, or tone to the DOM SVG element (JSW-116)", () => {
+    const { container } = render(
+      <Icon
+        icon={GearIcon}
+        size="lg"
+        tone="accent"
+        classNameOverrides={{ component: "custom-class" }}
+      />
+    );
+    const svg = container.querySelector("svg");
+    expect(svg).not.toHaveAttribute("classNameOverrides");
+    expect(svg).not.toHaveAttribute("classnameoverrides");
+    expect(svg).not.toHaveAttribute("size");
+    expect(svg).not.toHaveAttribute("tone");
+  });
+
+  it("does not render classNameOverrides in SSR HTML (JSW-116)", () => {
+    const html = renderToString(
+      <Icon
+        icon={GearIcon}
+        size="lg"
+        tone="accent"
+        classNameOverrides={{ component: "custom-class" }}
+      />
+    );
+    expect(html).not.toContain("classNameOverrides");
+    expect(html).not.toContain("classnameoverrides");
+    expect(html).not.toContain("[object Object]");
+    expect(html).not.toContain('size="lg"');
+    expect(html).not.toContain('tone="accent"');
+  });
+
   it("defaults to decorative with aria-hidden", () => {
     const { container } = render(<Icon icon={GearIcon} />);
     expect(container.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
@@ -105,6 +138,62 @@ describe("Icon", () => {
         "--icon-fill-primary": "#111",
         "--icon-fill-secondary": "#222",
       });
+    });
+
+    it("defaults to decorative with aria-hidden on custom SVG", () => {
+      const { container } = render(
+        <Icon viewBox="0 0 10 10">
+          <path data-fill="primary" d="M0 0h10v10H0z" />
+        </Icon>
+      );
+      expect(container.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("supports accessible labeling when aria-hidden is false on custom SVG", () => {
+      render(
+        <Icon viewBox="0 0 10 10" aria-hidden={false} aria-label="Custom logo">
+          <path data-fill="primary" d="M0 0h10v10H0z" />
+        </Icon>
+      );
+      expect(screen.getByLabelText("Custom logo")).toBeInTheDocument();
+    });
+
+    it("does not forward classNameOverrides, size, or tone to the custom DOM SVG element (JSW-116)", () => {
+      const { container } = render(
+        <Icon
+          viewBox="0 0 10 10"
+          size="lg"
+          tone="accent"
+          classNameOverrides={{ component: "custom-class" }}
+          aria-hidden
+        >
+          <path data-fill="primary" d="M0 0h5v5H0z" />
+        </Icon>
+      );
+      const svg = container.querySelector("svg");
+      expect(svg).not.toHaveAttribute("classNameOverrides");
+      expect(svg).not.toHaveAttribute("classnameoverrides");
+      expect(svg).not.toHaveAttribute("size");
+      expect(svg).not.toHaveAttribute("tone");
+    });
+
+    it("does not render classNameOverrides in SSR HTML for custom SVG (JSW-116)", () => {
+      const html = renderToString(
+        <Icon
+          viewBox="0 0 10 10"
+          size="lg"
+          tone="accent"
+          classNameOverrides={{ component: "custom-class" }}
+          aria-hidden
+        >
+          <path data-fill="primary" d="M0 0h5v5H0z" />
+        </Icon>
+      );
+      expect(html).not.toContain("classNameOverrides");
+      expect(html).not.toContain("classnameoverrides");
+      expect(html).not.toContain("[object Object]");
+      expect(html).not.toContain('size="lg"');
+      expect(html).not.toContain('tone="accent"');
     });
   });
 });
