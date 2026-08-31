@@ -140,6 +140,24 @@ describe("Icon", () => {
       });
     });
 
+    it("defaults to decorative with aria-hidden on custom SVG", () => {
+      const { container } = render(
+        <Icon viewBox="0 0 10 10">
+          <path data-fill="primary" d="M0 0h10v10H0z" />
+        </Icon>
+      );
+      expect(container.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("supports accessible labeling when aria-hidden is false on custom SVG", () => {
+      render(
+        <Icon viewBox="0 0 10 10" aria-hidden={false} aria-label="Custom logo">
+          <path data-fill="primary" d="M0 0h10v10H0z" />
+        </Icon>
+      );
+      expect(screen.getByLabelText("Custom logo")).toBeInTheDocument();
+    });
+
     it("does not forward classNameOverrides, size, or tone to the custom DOM SVG element (JSW-116)", () => {
       const { container } = render(
         <Icon
