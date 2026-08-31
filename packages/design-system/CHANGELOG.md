@@ -1,5 +1,12 @@
 # @jigsaw-ds/design-system
 
+## 0.3.2
+
+### Patch Changes
+
+- fix: prevent Icon forwarding classNameOverrides and props to SVG DOM (JSW-116)
+  - @jigsaw-ds/tokens@0.3.2
+
 ## 0.3.1
 
 ### Patch Changes
