@@ -175,7 +175,7 @@
           "type": "color"
         },
         "error-text": {
-          "value": "#dc2626",
+          "value": "#000000",
           "type": "color"
         },
         "error-bg": {
