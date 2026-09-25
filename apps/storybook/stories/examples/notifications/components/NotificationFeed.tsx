@@ -29,33 +29,36 @@ export const NotificationFeed = () => {
               variant="ghost"
               classNameOverrides={{
                 component:
-                  "w-full h-auto justify-start items-start gap-3 py-3 px-2 -mx-2 rounded-md text-left",
+                  "h-auto w-full justify-start rounded-md px-2 py-3 text-left font-normal",
+                text: "flex w-full min-w-0 items-start gap-3",
               }}
               onPress={() => markRead(n.id)}
             >
-              {/* Dot */}
-              <div className="mt-1 w-2 shrink-0">
-                {!n.read && <div className="w-2 h-2 rounded-full bg-interactive-accent" />}
+              <div className="flex h-8 w-2 shrink-0 items-center justify-center">
+                {!n.read && <div className="h-2 w-2 rounded-full bg-interactive-accent" />}
               </div>
-              {/* Icon */}
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${TYPE_COLOR[n.type]}`}>
+              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${TYPE_COLOR[n.type]}`}>
                 <NotificationTypeIcon type={n.type} />
               </div>
-              {/* Content */}
-              <div className="flex-1 min-w-0">
+              <div className="flex min-w-0 flex-1 flex-col items-start">
                 <Text
+                  as="span"
                   size="sm"
                   weight={n.read ? "normal" : "medium"}
-                  classNameOverrides={
-                    n.read ? { component: "text-foreground-secondary" } : undefined
-                  }
+                  classNameOverrides={{
+                    component: n.read ? "text-foreground-secondary" : "text-foreground-primary",
+                  }}
                 >
                   {n.title}
                 </Text>
-                <Text size="xs" classNameOverrides={{ component: "text-foreground-secondary truncate block" }}>
+                <Text
+                  as="span"
+                  size="xs"
+                  classNameOverrides={{ component: "max-w-full truncate text-foreground-secondary" }}
+                >
                   {n.body}
                 </Text>
-                <Text size="xs" muted classNameOverrides={{ component: "mt-0.5" }}>
+                <Text as="span" size="xs" muted classNameOverrides={{ component: "mt-0.5" }}>
                   {n.time}
                 </Text>
               </div>

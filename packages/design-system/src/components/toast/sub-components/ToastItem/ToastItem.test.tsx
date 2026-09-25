@@ -48,7 +48,10 @@ describe("ToastItem", () => {
     );
 
     await userEvent.setup().click(screen.getByRole("button", { name: "Show" }));
-    expect(screen.getByText("Your changes were saved.")).toBeInTheDocument();
+    const description = screen.getByText("Your changes were saved.");
+    expect(description).toBeInTheDocument();
+    expect(description.parentElement).toHaveClass("flex-col");
+    expect(screen.getByText("Title").parentElement).toBe(description.parentElement);
   });
 
   it("renders a close button", async () => {
