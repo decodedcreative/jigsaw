@@ -26,9 +26,10 @@ const reloadGeneratedThemeCss = (repoRoot: string): Plugin => {
         );
         if (!generated || !file.endsWith(".css")) return;
         clearTimeout(timer);
+        // One rebuild writes several CSS files a few hundred milliseconds apart.
         timer = setTimeout(() => {
           server.ws.send({ type: "full-reload" });
-        }, 80);
+        }, 400);
       };
 
       server.watcher.on("change", onChange);
