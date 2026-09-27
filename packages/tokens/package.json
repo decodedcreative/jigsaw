@@ -68,7 +68,7 @@
     "check:figma-drift": "node scripts/check-figma-drift.mjs",
     "test": "npm run build:tokens && vitest run",
     "test:watch": "vitest",
-    "dev": "npm run build:tokens && tsup --watch",
+    "dev": "node scripts/dev.mjs",
     "lint": "eslint .",
     "clean": "rm -rf dist"
   },
