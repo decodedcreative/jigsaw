@@ -78,7 +78,9 @@ Docs: [Tokens Studio GitHub sync](https://docs.tokens.studio/token-storage/remot
    - Shared → `packages/tokens/src/tokens/shared/` (e.g. `spacing.json`, `radius.json`)
    - Default → `packages/themes/default/src/base/colors.json`, `src/semantic/colors-light.json`, `src/semantic/colors-dark.json`
    - Portfolio → `packages/themes/portfolio/src/base/colors.json`, `src/semantic/colors.json`
-2. Rebuild and verify (same commands as CI `test-tokens`):
+2. With `npm run dev` running, saving those files rebuilds theme CSS (Storybook refreshes) and `packages/tokens/figma/`. Commit the `figma/` files with the source change and open a pull request so the colour can be reviewed in Storybook before it reaches `main`.
+
+   The same rebuild CI runs, for when dev is not already running:
 
    ```bash
    npm run build:tokens --workspace=@jigsaw-ds/tokens
@@ -88,7 +90,7 @@ Docs: [Tokens Studio GitHub sync](https://docs.tokens.studio/token-storage/remot
 
    `build:tokens` regenerates `figma/*.tokens.json`, `$themes.json`, and `$metadata.json` from the paths above. Commit any changed files under `packages/tokens/figma/`.
 
-3. In Tokens Studio: **Pull from remote** to load the latest from GitHub.
+3. After the pull request is merged, leave the variable-sync plugin on `main` and click **Sync variables**. That writes the merged token JSON onto the Figma variables.
 
 CI runs these three commands on every PR; `check:figma-drift` requires a git checkout and compares committed `figma/` to the build output via `git status`.
 

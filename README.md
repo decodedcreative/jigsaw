@@ -27,7 +27,8 @@ npm install
 # Build all apps and packages
 npm run build
 
-# Run all apps in dev mode (Next.js + Storybook)
+# Run all apps in dev mode (Next.js + Storybook).
+# Saving theme or token JSON rebuilds Storybook CSS and packages/tokens/figma/.
 npm run dev
 
 # Lint
