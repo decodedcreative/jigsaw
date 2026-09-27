@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0;
+        padding: 16px;
+        font: 12px/1.4 Inter, sans-serif;
+        color: var(--figma-color-text);
+      }
+      label {
+        display: block;
+        margin: 12px 0 4px;
+      }
+      input {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 8px;
+      }
+      button {
+        margin-top: 16px;
+        width: 100%;
+        padding: 8px;
+      }
+      p {
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Writes the colour tokens from GitHub onto the variables already in this file.</p>
+    <label for="token">GitHub token, Contents: Read</label>
+    <input id="token" type="password" autocomplete="off" />
+    <label for="repo">Repository</label>
+    <input id="repo" value="decodedcreative/jigsaw" />
+    <label for="branch">Branch</label>
+    <input id="branch" value="main" />
+    <button id="sync" type="button">Sync variables</button>
+    <p id="status"></p>
+    <script>
+      const tokenInput = document.getElementById("token");
+      const repoInput = document.getElementById("repo");
+      const branchInput = document.getElementById("branch");
+      const status = document.getElementById("status");
+      const files = [
+        "default-light.tokens.json",
+        "default-dark.tokens.json",
+        "portfolio.tokens.json",
+      ];
+
+      onmessage = (event) => {
+        const message = event.data.pluginMessage;
+        if (!message) return;
+        if (message.type === "init") tokenInput.value = message.token;
+        if (message.type === "result") showResult(message.result);
+      };
+
+      document.getElementById("sync").onclick = async () => {
+        const token = tokenInput.value.trim();
+        const repo = repoInput.value.trim();
+        const branch = branchInput.value.trim();
+        if (!token || !repo || !branch) {
+          status.textContent = "Add a token, repository, and branch.";
+          return;
+        }
+
+        parent.postMessage({ pluginMessage: { type: "save-token", token } }, "*");
+        status.textContent = "Reading tokens from GitHub…";
+
+        try {
+          const loaded = {};
+          for (const file of files) {
+            loaded[file] = await fetchTokenFile(token, repo, branch, file);
+          }
+          parent.postMessage({ pluginMessage: { type: "apply", files: loaded } }, "*");
+        } catch (error) {
+          status.textContent = String(error.message || error);
+        }
+      };
+
+      async function fetchTokenFile(token, repo, branch, file) {
+        const path = `packages/tokens/figma/${file}`;
+        const response = await fetch(
+          `https://api.github.com/repos/${repo}/contents/${path}?ref=${encodeURIComponent(branch)}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/vnd.github.raw",
+              "X-GitHub-Api-Version": "2022-11-28",
+            },
+          },
+        );
+        if (!response.ok) throw new Error(`${file} returned ${response.status}`);
+        return response.json();
+      }
+
+      function showResult(result) {
+        const lines = [`Updated ${result.updated} colour values.`];
+        if (result.missingCount) {
+          lines.push(`${result.missingCount} tokens had no matching variable.`);
+          lines.push(...result.missing);
+        }
+        lines.push(...result.problems);
+        status.textContent = lines.join("\n");
+      }
+    </script>
+  </body>
+</html>
