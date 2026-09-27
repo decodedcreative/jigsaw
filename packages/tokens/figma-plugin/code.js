@@ -21,7 +21,7 @@ const GITHUB_TOKEN = /^[A-Za-z0-9_-]+$/;
 figma.showUI(__html__, { width: 360, height: 460, themeColors: true });
 
 figma.clientStorage.getAsync("githubToken").then((token) => {
-  figma.ui.postMessage({ type: "init", token: acceptedToken(token) });
+  figma.ui.postMessage({ type: "init", hasToken: Boolean(acceptedToken(token)) });
 }).catch((error) => {
   figma.ui.postMessage({
     type: "storage-error",
@@ -45,6 +45,23 @@ figma.ui.onmessage = async (message) => {
       figma.ui.postMessage({
         type: "storage-error",
         message: `Could not save the GitHub token. ${error.message || error}`,
+      });
+    }
+    return;
+  }
+
+  if (message.type === "provide-token") {
+    try {
+      const token = acceptedToken(await figma.clientStorage.getAsync("githubToken"));
+      figma.ui.postMessage(
+        token
+          ? { type: "token", token }
+          : { type: "storage-error", message: "No saved GitHub token. Paste one to sync." },
+      );
+    } catch (error) {
+      figma.ui.postMessage({
+        type: "storage-error",
+        message: `Could not read the saved GitHub token. ${error.message || error}`,
       });
     }
     return;

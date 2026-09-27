@@ -33,7 +33,7 @@
   <body>
     <p>Writes the colour tokens from GitHub onto the variables already in this file.</p>
     <label for="token">GitHub token, Contents: Read</label>
-    <input id="token" type="password" autocomplete="off" />
+    <input id="token" type="password" autocomplete="off" placeholder="Paste a token, or leave blank to use the saved one" />
     <label for="repo">Repository</label>
     <input id="repo" value="decodedcreative/jigsaw" />
     <label for="branch">Branch</label>
@@ -46,6 +46,8 @@
       const branchInput = document.getElementById("branch");
       const syncButton = document.getElementById("sync");
       const status = document.getElementById("status");
+      let hasSavedToken = false;
+      let pendingSync = null;
       const files = [
         "default-light.tokens.json",
         "default-dark.tokens.json",
@@ -55,7 +57,12 @@
       onmessage = (event) => {
         const message = event.data.pluginMessage;
         if (!message) return;
-        if (message.type === "init") tokenInput.value = message.token;
+        if (message.type === "init") hasSavedToken = Boolean(message.hasToken);
+        if (message.type === "token" && pendingSync) {
+          const next = pendingSync;
+          pendingSync = null;
+          runSync(message.token, next.repo, next.branch);
+        }
         if (message.type === "result") showResult(message.result);
         if (message.type === "storage-error") status.textContent = message.message;
         updateSyncButton();
@@ -71,47 +78,54 @@
 
       syncButton.onclick = async () => {
         status.textContent = "";
-        const fields = readFields();
-        if (!fields) return;
-
-        parent.postMessage({ pluginMessage: { type: "save-token", token: fields.token } }, "*");
-        status.textContent = "Reading tokens from GitHub…";
-
-        try {
-          const loaded = {};
-          for (const file of files) {
-            loaded[file] = await fetchTokenFile(fields.token, fields.repo, fields.branch, file);
-          }
-          parent.postMessage({ pluginMessage: { type: "apply", files: loaded } }, "*");
-        } catch (error) {
-          status.textContent = String(error.message || error);
-        }
-      };
-
-      function readFields() {
-        const token = tokenInput.value.trim();
         const repo = repoInput.value.trim();
         const branch = branchInput.value.trim();
-        if (!/^[A-Za-z0-9_-]+$/.test(token)) {
-          status.textContent = "GitHub tokens use letters, numbers, underscores, and hyphens, as in github_pat_…";
-          return null;
-        }
+        const typed = tokenInput.value.trim();
         if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo)) {
           status.textContent = "Repository should look like owner/name.";
-          return null;
+          return;
         }
         if (!/^(?!.*\.\.)(?!\/)(?!.*\/$)[A-Za-z0-9._/-]+$/.test(branch)) {
           status.textContent = "That branch name cannot be used.";
-          return null;
+          return;
         }
-        return { token, repo, branch };
+        if (typed) {
+          if (!/^[A-Za-z0-9_-]+$/.test(typed)) {
+            status.textContent = "GitHub tokens use letters, numbers, underscores, and hyphens, as in github_pat_…";
+            return;
+          }
+          parent.postMessage({ pluginMessage: { type: "save-token", token: typed } }, "*");
+          hasSavedToken = true;
+          await runSync(typed, repo, branch);
+          return;
+        }
+        if (!hasSavedToken) {
+          status.textContent = "Paste a GitHub token. Contents: Read is enough.";
+          return;
+        }
+        pendingSync = { repo, branch };
+        status.textContent = "Reading tokens from GitHub…";
+        parent.postMessage({ pluginMessage: { type: "provide-token" } }, "*");
+      };
+
+      async function runSync(token, repo, branch) {
+        status.textContent = "Reading tokens from GitHub…";
+        try {
+          const loaded = {};
+          for (const file of files) {
+            loaded[file] = await fetchTokenFile(token, repo, branch, file);
+          }
+          parent.postMessage({ pluginMessage: { type: "apply", files: loaded } }, "*");
+        } catch (error) {
+          status.textContent = String(error.message || error).split(token).join("the saved token");
+        }
       }
 
       function updateSyncButton() {
-        const token = tokenInput.value.trim();
+        const typed = tokenInput.value.trim();
         const repo = repoInput.value.trim();
         const branch = branchInput.value.trim();
-        syncButton.disabled = !token || !repo || !branch;
+        syncButton.disabled = (!typed && !hasSavedToken) || !repo || !branch;
       }
 
       async function fetchTokenFile(token, repo, branch, file) {
