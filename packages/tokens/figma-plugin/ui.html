@@ -57,15 +57,20 @@
         if (!message) return;
         if (message.type === "init") tokenInput.value = message.token;
         if (message.type === "result") showResult(message.result);
+        if (message.type === "storage-error") status.textContent = message.message;
         updateSyncButton();
       };
 
       for (const input of [tokenInput, repoInput, branchInput]) {
-        input.addEventListener("input", updateSyncButton);
+        input.addEventListener("input", () => {
+          status.textContent = "";
+          updateSyncButton();
+        });
       }
       updateSyncButton();
 
       syncButton.onclick = async () => {
+        status.textContent = "";
         const fields = readFields();
         if (!fields) return;
 
@@ -87,8 +92,8 @@
         const token = tokenInput.value.trim();
         const repo = repoInput.value.trim();
         const branch = branchInput.value.trim();
-        if (!/^[A-Za-z0-9_]+$/.test(token)) {
-          status.textContent = "The GitHub token should contain only letters, numbers, and underscores.";
+        if (!/^[A-Za-z0-9_-]+$/.test(token)) {
+          status.textContent = "GitHub tokens use letters, numbers, underscores, and hyphens, as in github_pat_…";
           return null;
         }
         if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo)) {

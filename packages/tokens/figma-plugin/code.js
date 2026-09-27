@@ -16,15 +16,37 @@ const SYNCS = [
   },
 ];
 
+const GITHUB_TOKEN = /^[A-Za-z0-9_-]+$/;
+
 figma.showUI(__html__, { width: 360, height: 460, themeColors: true });
 
 figma.clientStorage.getAsync("githubToken").then((token) => {
-  figma.ui.postMessage({ type: "init", token: token || "" });
+  figma.ui.postMessage({ type: "init", token: acceptedToken(token) });
+}).catch((error) => {
+  figma.ui.postMessage({
+    type: "storage-error",
+    message: `Could not read the saved GitHub token. ${error.message || error}`,
+  });
 });
 
 figma.ui.onmessage = async (message) => {
   if (message.type === "save-token") {
-    await figma.clientStorage.setAsync("githubToken", message.token);
+    const token = acceptedToken(message.token);
+    if (!token) {
+      figma.ui.postMessage({
+        type: "storage-error",
+        message: "The GitHub token was not saved. Use letters, numbers, underscores, or hyphens.",
+      });
+      return;
+    }
+    try {
+      await figma.clientStorage.setAsync("githubToken", token);
+    } catch (error) {
+      figma.ui.postMessage({
+        type: "storage-error",
+        message: `Could not save the GitHub token. ${error.message || error}`,
+      });
+    }
     return;
   }
 
@@ -114,6 +136,12 @@ async function applyTokenFiles(files) {
     missing: missing.slice(0, 6),
     problems,
   };
+}
+
+function acceptedToken(value) {
+  if (typeof value !== "string") return "";
+  const token = value.trim();
+  return GITHUB_TOKEN.test(token) ? token : "";
 }
 
 function flattenColors(node, prefix = []) {
