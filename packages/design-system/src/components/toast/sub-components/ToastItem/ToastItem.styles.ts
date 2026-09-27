@@ -33,9 +33,9 @@ export const toastItemStyles = {
     },
     defaultVariants: { variant: "default" },
   }),
-  content: cva("flex-1 min-w-0"),
+  content: cva("flex min-w-0 flex-1 flex-col items-start"),
   title: cva("text-sm font-medium text-foreground-primary"),
-  description: cva("text-sm text-foreground-secondary mt-1"),
+  description: cva("mt-1 text-sm text-foreground-secondary"),
   close: cva([
     "shrink-0 p-1 rounded-md",
     "text-foreground-tertiary hover:text-foreground-primary hover:bg-surface-hover",
@@ -43,7 +43,7 @@ export const toastItemStyles = {
     "focus-visible:ring-2 focus-visible:ring-interactive-focus",
   ]),
   action: cva([
-    "text-sm font-medium underline-offset-4 hover:underline",
+    "mt-2 text-sm font-medium underline-offset-4 hover:underline",
     "text-interactive-primary",
   ]),
 };
