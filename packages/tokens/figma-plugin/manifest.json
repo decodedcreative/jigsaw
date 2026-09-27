@@ -1,0 +1,13 @@
+{
+  "name": "Jigsaw variable sync",
+  "id": "jigsaw-variable-sync",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["https://api.github.com"],
+    "reasoning": "Reads token JSON from the GitHub contents API. No other hosts are allowed."
+  }
+}
