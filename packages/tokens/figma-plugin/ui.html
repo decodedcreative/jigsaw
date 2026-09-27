@@ -22,6 +22,9 @@
         width: 100%;
         padding: 8px;
       }
+      button:disabled {
+        opacity: 0.5;
+      }
       p {
         white-space: pre-wrap;
       }
@@ -41,6 +44,7 @@
       const tokenInput = document.getElementById("token");
       const repoInput = document.getElementById("repo");
       const branchInput = document.getElementById("branch");
+      const syncButton = document.getElementById("sync");
       const status = document.getElementById("status");
       const files = [
         "default-light.tokens.json",
@@ -53,30 +57,57 @@
         if (!message) return;
         if (message.type === "init") tokenInput.value = message.token;
         if (message.type === "result") showResult(message.result);
+        updateSyncButton();
       };
 
-      document.getElementById("sync").onclick = async () => {
-        const token = tokenInput.value.trim();
-        const repo = repoInput.value.trim();
-        const branch = branchInput.value.trim();
-        if (!token || !repo || !branch) {
-          status.textContent = "Add a token, repository, and branch.";
-          return;
-        }
+      for (const input of [tokenInput, repoInput, branchInput]) {
+        input.addEventListener("input", updateSyncButton);
+      }
+      updateSyncButton();
 
-        parent.postMessage({ pluginMessage: { type: "save-token", token } }, "*");
+      syncButton.onclick = async () => {
+        const fields = readFields();
+        if (!fields) return;
+
+        parent.postMessage({ pluginMessage: { type: "save-token", token: fields.token } }, "*");
         status.textContent = "Reading tokens from GitHub…";
 
         try {
           const loaded = {};
           for (const file of files) {
-            loaded[file] = await fetchTokenFile(token, repo, branch, file);
+            loaded[file] = await fetchTokenFile(fields.token, fields.repo, fields.branch, file);
           }
           parent.postMessage({ pluginMessage: { type: "apply", files: loaded } }, "*");
         } catch (error) {
           status.textContent = String(error.message || error);
         }
       };
+
+      function readFields() {
+        const token = tokenInput.value.trim();
+        const repo = repoInput.value.trim();
+        const branch = branchInput.value.trim();
+        if (!/^[A-Za-z0-9_]+$/.test(token)) {
+          status.textContent = "The GitHub token should contain only letters, numbers, and underscores.";
+          return null;
+        }
+        if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo)) {
+          status.textContent = "Repository should look like owner/name.";
+          return null;
+        }
+        if (!/^(?!.*\.\.)(?!\/)(?!.*\/$)[A-Za-z0-9._/-]+$/.test(branch)) {
+          status.textContent = "That branch name cannot be used.";
+          return null;
+        }
+        return { token, repo, branch };
+      }
+
+      function updateSyncButton() {
+        const token = tokenInput.value.trim();
+        const repo = repoInput.value.trim();
+        const branch = branchInput.value.trim();
+        syncButton.disabled = !token || !repo || !branch;
+      }
 
       async function fetchTokenFile(token, repo, branch, file) {
         const path = `packages/tokens/figma/${file}`;

@@ -94,8 +94,17 @@ async function applyTokenFiles(files) {
         missing.push(`${sync.mode}: ${token.name}`);
         continue;
       }
-      variable.setValueForMode(mode.modeId, hexToFigmaColor(token.hex));
-      updated += 1;
+      const color = hexToFigmaColor(token.hex);
+      if (!color) {
+        problems.push(`${sync.mode}: ${token.name} has an invalid colour ${token.hex}`);
+        continue;
+      }
+      try {
+        variable.setValueForMode(mode.modeId, color);
+        updated += 1;
+      } catch (error) {
+        problems.push(`${sync.mode}: ${token.name} was not updated. ${error.message || error}`);
+      }
     }
   }
 
@@ -123,15 +132,17 @@ function flattenColors(node, prefix = []) {
 }
 
 function hexToFigmaColor(hex) {
-  const raw = hex.slice(1);
-  const expand = raw.length === 3 || raw.length === 4
+  const match = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.exec(String(hex).trim());
+  if (!match) return null;
+  const raw = match[1];
+  const expanded = raw.length <= 4
     ? raw.split("").map((char) => char + char).join("")
     : raw;
-  const channel = (start) => parseInt(expand.slice(start, start + 2), 16) / 255;
+  const channel = (start) => parseInt(expanded.slice(start, start + 2), 16) / 255;
   return {
     r: channel(0),
     g: channel(2),
     b: channel(4),
-    a: expand.length === 8 ? channel(6) : 1,
+    a: expanded.length === 8 ? channel(6) : 1,
   };
 }
