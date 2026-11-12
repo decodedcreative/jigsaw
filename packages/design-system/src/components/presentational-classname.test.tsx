@@ -7,7 +7,7 @@ import { Card } from "./card/Card";
 import { Heading } from "./heading/Heading";
 import { H3 } from "./heading/Heading.aliases";
 import { Icon } from "./icon/Icon";
-import { Skeleton, SkeletonText } from "./skeleton/Skeleton";
+import { Skeleton, SkeletonCard, SkeletonText } from "./skeleton/Skeleton";
 import { Text } from "./text/Text";
 
 afterEach(() => {
@@ -85,6 +85,14 @@ const cases: Case[] = [
     ),
     keeps: "animate-pulse",
     conflict: { default: "h-4", consumer: "h-6" },
+  },
+  {
+    name: "SkeletonCard",
+    render: (className, overrides) => (
+      <SkeletonCard className={className} classNameOverrides={overrides} />
+    ),
+    keeps: "space-y-3",
+    conflict: { default: "space-y-3", consumer: "space-y-6" },
   },
   {
     name: "Card",

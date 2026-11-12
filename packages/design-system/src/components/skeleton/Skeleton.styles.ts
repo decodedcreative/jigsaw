@@ -13,3 +13,8 @@ export const skeletonStyles = {
   }),
 };
 
+
+/** SkeletonCard is a preset layout; it exposes only the root slot. */
+export const skeletonCardStyles = {
+  component: cva("space-y-3"),
+};

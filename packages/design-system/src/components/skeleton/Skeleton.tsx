@@ -1,6 +1,6 @@
 import { type HTMLAttributes, type CSSProperties } from "react";
 import { getClassNames, mergeClassName } from "@utils";
-import { skeletonStyles } from "./Skeleton.styles";
+import { skeletonCardStyles, skeletonStyles } from "./Skeleton.styles";
 import type { SkeletonVariant } from "./Skeleton.types";
 import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
@@ -63,12 +63,24 @@ export const SkeletonCircle = ({
 
 SkeletonCircle.displayName = "DS_SkeletonCircle";
 
-export const SkeletonCard = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
-  <div {...props} className={mergeClassName("space-y-3", className)}>
-    <Skeleton width="100%" height={200} />
-    <SkeletonText width="80%" />
-    <SkeletonText width="60%" />
-  </div>
-);
+export type SkeletonCardProps = WithoutClassName<HTMLAttributes<HTMLDivElement>> & {
+  classNameOverrides?: ClassNameOverrides<typeof skeletonCardStyles>;
+  /**
+   * Extra classes for the root element, merged last via `twMerge` (wins conflicts).
+   */
+  className?: string;
+};
+
+export const SkeletonCard = ({ classNameOverrides, className, ...props }: SkeletonCardProps) => {
+  const classNames = getClassNames(skeletonCardStyles, classNameOverrides);
+
+  return (
+    <div {...props} className={mergeClassName(classNames.component, className)}>
+      <Skeleton width="100%" height={200} />
+      <SkeletonText width="80%" />
+      <SkeletonText width="60%" />
+    </div>
+  );
+};
 
 SkeletonCard.displayName = "DS_SkeletonCard";
