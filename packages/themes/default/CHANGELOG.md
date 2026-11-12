@@ -1,5 +1,11 @@
 # @jigsaw-ds/theme-default
 
+## 0.4.0
+
+### Minor Changes
+
+- No changes to published theme output. Version aligned with the 0.4.0 release of `@jigsaw-ds/*` (fixed version group); adds a `dev` watch script for local development.
+
 ## 0.3.2
 
 ## 0.3.1

@@ -1,5 +1,11 @@
 # @jigsaw-ds/theme-build
 
+## 0.4.0
+
+### Minor Changes
+
+- New `watchBuild`, `watchNodeScript`, `spawnNodeScript` and `isJsonChange` exports for rebuilding theme output when token JSON changes during development.
+
 ## 0.3.2
 
 ## 0.3.1

@@ -1,5 +1,12 @@
 # @jigsaw-ds/tokens
 
+## 0.4.0
+
+### Minor Changes
+
+- No changes to published token output. Version aligned with the 0.4.0 release of `@jigsaw-ds/*` (fixed version group).
+- Repo tooling (not published): Figma plugin that syncs colour variables from the token JSON, and `npm run dev` now rebuilds tokens on change.
+
 ## 0.3.2
 
 ## 0.3.1

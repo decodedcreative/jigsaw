@@ -1,5 +1,37 @@
 # @jigsaw-ds/design-system
 
+## 0.4.0
+
+### ⚠️ Breaking changes
+
+The root style slot in `classNameOverrides` is now always `component`. Rename these keys:
+
+| Component | Old key | New key |
+| --- | --- | --- |
+| Input, Select, Checkbox, NumberField, SearchField, Textarea | `wrapper` | `component` |
+| CheckboxGroup, RadioGroup | `group` | `component` |
+| Form | `form` | `component` |
+| Form.Group | `section` | `component` |
+| Tab / TabList / TabPanel | `tab` / `list` / `panel` | `component` |
+| ToastRegion | `viewport` | `component` |
+| RadioGroup `item` overrides | `wrapper` | `button` (new `component` slot on the item root) |
+| NavigationInner / Brand / Links / Link / Actions | `inner` / `brand` / `nav` / `navItem` / `actions` | `component` |
+
+Old keys are a TypeScript error, so nothing changes silently. Modal is unchanged: `component` is the dialog panel, `overlay` the backdrop.
+
+### Minor Changes
+
+- Every component accepts a root `className`, merged last via `twMerge` so it wins conflicts. Use `className` for layout from the outside and `classNameOverrides` for internal slots (JSW-118). Exceptions with no single root element: `TooltipTrigger`, `MobileNavigation`. See [Styling components: `className` vs `classNameOverrides`](https://github.com/decodedcreative/jigsaw/blob/main/docs/using-jigsaw.md#styling-components-classname-vs-classnameoverrides).
+- For custom components built on Jigsaw's styles: new RSC-safe `mergeClassName(slotClassName, className)` in `@jigsaw-ds/design-system/utils` (appends `className` with the configured `twMerge`), and `useRootClassName` returns a `string` when given a string `className`.
+
+### Patch Changes
+
+- `Text` uses the theme's `font-body` instead of the system font, so body copy follows the theme (Inter in both bundled themes) (JSW-117).
+- `className` on `Badge`, `Skeleton`, custom-SVG `Icon` and `Navigation` now merges with component styles instead of replacing them.
+- Toast title and description stack instead of sitting on one line.
+- Updated dependencies
+  - @jigsaw-ds/tokens@0.4.0
+
 ## 0.3.2
 
 ### Patch Changes
