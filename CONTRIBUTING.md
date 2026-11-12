@@ -41,4 +41,4 @@ That bumps packages on a `chore/version-*` branch and opens a PR. After you merg
 
 **Linked packages:** all publishable `@jigsaw-ds/*` packages (`design-system`, `tokens`, `theme-default`, `theme-portfolio`, `theme-build`) share the same semver (Changesets `fixed` group).
 
-Full flow: [docs/publication.md](docs/publication.md). Requires repository secret `NPM_TOKEN`.
+Full flow: [docs/publication.md](docs/publication.md). Publishing uses npm trusted publishing (no `NPM_TOKEN` secret); see that doc for the one-time npm setup.
