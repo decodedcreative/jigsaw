@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getClassNames } from "@utils";
+import { getClassNames, mergeClassName } from "@utils";
 import { avatarStyles } from "./Avatar.styles";
 import type { AvatarProps, AvatarStatus } from "./Avatar.types";
 
@@ -20,6 +20,7 @@ export const Avatar = ({
   status,
   statusLabel,
   classNameOverrides,
+  className,
   ...props
 }: AvatarProps) => {
   const [hasError, setHasError] = useState(false);
@@ -39,7 +40,7 @@ export const Avatar = ({
   });
 
   return (
-    <div className={classNames.component} {...props}>
+    <div {...props} className={mergeClassName(classNames.component, className)}>
       {showImage && (
         <img
           src={src}

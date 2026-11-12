@@ -268,21 +268,32 @@ Visual light/dark/portfolio theming continues to use `data-theme` (see below) �
 
 ### Styling components: `className` vs `classNameOverrides`
 
-Presentational components and the form-field / React Aria wrappers that support it accept both:
+Every component follows the same rule:
 
-- **`className`** — classes for the **root element**, merged last via `twMerge`, so they win conflicts. Use it for layout and positioning from the outside: margins, grid/flex placement, width.
-- **`classNameOverrides`** — classes per **style slot** (keys match the component's `*Styles` export; the root is `component`). Use it to restyle a component's internals, e.g. a Card's `header` or `footer`.
+- **`className`** — classes for the component's **root element**. Use it for layout and positioning from the outside: margins, grid/flex placement, width.
+- **`classNameOverrides`** — classes per **style slot**, for restyling a component's internals (e.g. a Card's `header`, a Modal's `panel`). The root slot is **always `component`**.
 
 ```tsx
 <Card className="col-span-2 mt-6" classNameOverrides={{ footer: "justify-end" }}>
   …
 </Card>
-<Text className="max-w-prose">Body copy</Text>
+<Input label="Email" className="max-w-sm" classNameOverrides={{ label: "sr-only" }} />
 ```
 
-On the root element the order is: component defaults → `classNameOverrides.component` → `className`.
+On the root element the merge order is: component defaults → `classNameOverrides.component` → `className` (via `twMerge`, so `className` wins conflicts).
 
-Presentational components (`Badge`, `Text`, `Heading` / `H1`–`H6`, `Skeleton`, `Icon`, `Card`) take a **string** `className` and stay RSC-safe. Interactive components that accept `className` (e.g. `Input`, `Checkbox`, `Select`, `Link`, `Disclosure`, `Tooltip`) also accept React Aria's **function** form, which receives render props such as `isHovered` and `defaultClassName`. `Avatar`, `Button`, `Form`, `Modal`, `Navigation` and `Tabs` are `classNameOverrides`-only for now.
+**`className` types.** Presentational components (`Badge`, `Text`, `Heading` / `H1`–`H6`, `Skeleton`, `Icon`, `Card`, `Avatar`) and plain-DOM parts take a **string** and stay RSC-safe. Components built on React Aria also accept React Aria's **function** form, which receives render props such as `isHovered` and `defaultClassName`.
+
+**Where the root is.** The root is the outermost element the component renders. Two cases worth knowing:
+
+- `Modal` — the root is the full-screen **backdrop**. Size or position the dialog itself with `classNameOverrides.panel`.
+- Sub-items (`Select.Item`, `RadioGroup.Item`) accept `className` for a single item. Styling shared by every item goes on the parent: `classNameOverrides.item`.
+
+**Exceptions** (no `className`, because there is no single root element to put it on):
+
+- `TooltipTrigger` — renders no DOM element of its own.
+- `MobileNavigation` — renders a fragment (toggle button + overlay); style it via its named slots.
+- `Card.Header` — internal; style it through Card's `classNameOverrides.header`.
 
 ## 6. Theme switching
 

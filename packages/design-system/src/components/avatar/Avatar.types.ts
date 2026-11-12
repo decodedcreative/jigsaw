@@ -16,6 +16,8 @@ type AvatarSharedProps = WithoutClassName<HTMLAttributes<HTMLDivElement>> & {
   /** Override the default status aria-label (e.g. "Status: Online"). */
   statusLabel?: string;
   classNameOverrides?: ClassNameOverrides<typeof avatarStyles>;
+  /** Extra classes for the root element, merged last via `twMerge` (wins conflicts). */
+  className?: string;
 };
 
 /** Image avatar — `alt` is required whenever `src` is set. */

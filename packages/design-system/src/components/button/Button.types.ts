@@ -10,7 +10,7 @@ export type ButtonMediaPosition = NonNullable<
   VariantProps<typeof buttonStyles.component>["mediaPosition"]
 >;
 
-export type ButtonProps = Omit<ReactAriaButtonProps, "className" | "children"> & {
+export type ButtonProps = Omit<ReactAriaButtonProps, "children"> & {
   children?: ReactNode;
   classNameOverrides?: ClassNameOverrides<typeof buttonStyles>;
   /** When true, the button spans the full width of its container. */

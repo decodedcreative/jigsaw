@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const checkboxStyles = {
-  wrapper: cva(["group flex items-start gap-3 cursor-pointer data-disabled:cursor-not-allowed"]),
+  component: cva(["group flex items-start gap-3 cursor-pointer data-disabled:cursor-not-allowed"]),
   box: cva(
     [
       "relative flex items-center justify-center shrink-0 border-2 rounded transition-colors",

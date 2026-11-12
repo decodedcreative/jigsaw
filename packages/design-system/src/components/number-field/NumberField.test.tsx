@@ -82,8 +82,8 @@ describe('NumberField', () => {
     expect(input).toHaveAttribute('inputmode', 'numeric');
   });
 
-  it('merges classNameOverrides.wrapper onto the field root', () => {
-    render(<NumberField label="Qty" classNameOverrides={{ wrapper: 'mt-2' }} data-testid="number-field" />);
+  it('merges classNameOverrides.component onto the field root', () => {
+    render(<NumberField label="Qty" classNameOverrides={{ component: 'mt-2' }} data-testid="number-field" />);
     expect(screen.getByTestId('number-field')).toHaveClass('mt-2');
   });
 
@@ -111,11 +111,11 @@ describe('NumberField', () => {
     expect(buttons[buttons.length - 1]).toHaveClass('bg-state-success');
   });
 
-  it('merges classNameOverrides.wrapper and className together', () => {
+  it('merges classNameOverrides.component and className together', () => {
     render(
       <NumberField
         label="Qty"
-        classNameOverrides={{ wrapper: 'mt-2' }}
+        classNameOverrides={{ component: 'mt-2' }}
         className="p-4"
         data-testid="number-field"
       />

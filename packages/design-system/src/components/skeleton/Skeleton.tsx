@@ -64,7 +64,7 @@ export const SkeletonCircle = ({
 SkeletonCircle.displayName = "DS_SkeletonCircle";
 
 export const SkeletonCard = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => (
-  <div className={`space-y-3 ${className || ""}`} {...props}>
+  <div {...props} className={mergeClassName("space-y-3", className)}>
     <Skeleton width="100%" height={200} />
     <SkeletonText width="80%" />
     <SkeletonText width="60%" />

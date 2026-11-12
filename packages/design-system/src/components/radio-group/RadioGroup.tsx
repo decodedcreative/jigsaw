@@ -30,7 +30,7 @@ export const RadioGroup = ({
   const classNames = useGetClassNames(radioGroupStyles, groupClassNameOverrides, {
     label: { state },
   });
-  const rootClassName = useRootClassName(classNames.group, className);
+  const rootClassName = useRootClassName(classNames.component, className);
 
   const contextValue = useMemo(
     () => ({ itemClassNameOverrides, groupHasError }),

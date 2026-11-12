@@ -4,23 +4,38 @@ import { ListIcon } from "@phosphor-icons/react/List";
 import { XIcon } from "@phosphor-icons/react/X";
 import { type ReactNode, type HTMLAttributes } from "react";
 import { Link as ReactAriaLink } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { Icon } from "@components/icon";
-import { navigationStyles } from "./Navigation.styles";
-import type { ClassNameOverrides } from "@jsw-types/component-props";
+import {
+  mobileNavigationStyles,
+  navigationActionsStyles,
+  navigationBrandStyles,
+  navigationInnerStyles,
+  navigationLinkStyles,
+  navigationLinksStyles,
+  navigationStyles,
+} from "./Navigation.styles";
+import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
-export type NavigationProps = HTMLAttributes<HTMLElement> & {
-  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
+/** Root `className`, merged last via `twMerge` (wins conflicts). */
+type RootClassNameProp = {
+  className?: string;
 };
 
-export const Navigation = ({ classNameOverrides, children, ...props }: NavigationProps) => {
+export type NavigationProps = WithoutClassName<HTMLAttributes<HTMLElement>> &
+  RootClassNameProp & {
+    classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
+  };
+
+export const Navigation = ({ classNameOverrides, className, children, ...props }: NavigationProps) => {
   const classNames = useGetClassNames(navigationStyles, classNameOverrides, {
     component: {},
     container: {},
   });
+  const rootClassName = useRootClassName(classNames.component, className);
 
   return (
-    <nav className={classNames.component} {...props}>
+    <nav {...props} className={rootClassName}>
       <div className={classNames.container}>{children}</div>
     </nav>
   );
@@ -28,14 +43,16 @@ export const Navigation = ({ classNameOverrides, children, ...props }: Navigatio
 
 Navigation.displayName = "DS_Navigation";
 
-export type NavigationInnerProps = HTMLAttributes<HTMLDivElement> & {
-  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
-};
+export type NavigationInnerProps = WithoutClassName<HTMLAttributes<HTMLDivElement>> &
+  RootClassNameProp & {
+    classNameOverrides?: ClassNameOverrides<typeof navigationInnerStyles>;
+  };
 
-export const NavigationInner = ({ classNameOverrides, children, ...props }: NavigationInnerProps) => {
-  const classNames = useGetClassNames(navigationStyles, classNameOverrides, { inner: {} });
+export const NavigationInner = ({ classNameOverrides, className, children, ...props }: NavigationInnerProps) => {
+  const classNames = useGetClassNames(navigationInnerStyles, classNameOverrides, { component: {} });
+  const rootClassName = useRootClassName(classNames.component, className);
   return (
-    <div className={classNames.inner} {...props}>
+    <div {...props} className={rootClassName}>
       {children}
     </div>
   );
@@ -43,20 +60,22 @@ export const NavigationInner = ({ classNameOverrides, children, ...props }: Navi
 
 NavigationInner.displayName = "DS_NavigationInner";
 
-export type NavigationBrandProps = {
+export type NavigationBrandProps = RootClassNameProp & {
   href?: string;
   children?: ReactNode;
-  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
+  classNameOverrides?: ClassNameOverrides<typeof navigationBrandStyles>;
 };
 
 export const NavigationBrand = ({
   href = "/",
   classNameOverrides,
+  className,
   children,
 }: NavigationBrandProps) => {
-  const classNames = useGetClassNames(navigationStyles, classNameOverrides, { brand: {} });
+  const classNames = useGetClassNames(navigationBrandStyles, classNameOverrides, { component: {} });
+  const rootClassName = useRootClassName(classNames.component, className);
   return (
-    <ReactAriaLink href={href} className={classNames.brand}>
+    <ReactAriaLink href={href} className={rootClassName}>
       {children}
     </ReactAriaLink>
   );
@@ -64,14 +83,16 @@ export const NavigationBrand = ({
 
 NavigationBrand.displayName = "DS_NavigationBrand";
 
-export type NavigationLinksProps = HTMLAttributes<HTMLDivElement> & {
-  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
-};
+export type NavigationLinksProps = WithoutClassName<HTMLAttributes<HTMLDivElement>> &
+  RootClassNameProp & {
+    classNameOverrides?: ClassNameOverrides<typeof navigationLinksStyles>;
+  };
 
-export const NavigationLinks = ({ classNameOverrides, children, ...props }: NavigationLinksProps) => {
-  const classNames = useGetClassNames(navigationStyles, classNameOverrides, { nav: {} });
+export const NavigationLinks = ({ classNameOverrides, className, children, ...props }: NavigationLinksProps) => {
+  const classNames = useGetClassNames(navigationLinksStyles, classNameOverrides, { component: {} });
+  const rootClassName = useRootClassName(classNames.component, className);
   return (
-    <div className={classNames.nav} {...props}>
+    <div {...props} className={rootClassName}>
       {children}
     </div>
   );
@@ -79,24 +100,26 @@ export const NavigationLinks = ({ classNameOverrides, children, ...props }: Navi
 
 NavigationLinks.displayName = "DS_NavigationLinks";
 
-export type NavigationLinkProps = {
+export type NavigationLinkProps = RootClassNameProp & {
   href: string;
   isCurrent?: boolean;
   children: ReactNode;
-  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
+  classNameOverrides?: ClassNameOverrides<typeof navigationLinkStyles>;
 };
 
 export const NavigationLink = ({
   href,
   isCurrent,
   classNameOverrides,
+  className,
   children,
 }: NavigationLinkProps) => {
-  const classNames = useGetClassNames(navigationStyles, classNameOverrides, { navItem: {} });
+  const classNames = useGetClassNames(navigationLinkStyles, classNameOverrides, { component: {} });
+  const rootClassName = useRootClassName(classNames.component, className);
   return (
     <ReactAriaLink
       href={href}
-      className={classNames.navItem}
+      className={rootClassName}
       data-current={isCurrent ? "" : undefined}
       aria-current={isCurrent ? "page" : undefined}
     >
@@ -107,14 +130,16 @@ export const NavigationLink = ({
 
 NavigationLink.displayName = "DS_NavigationLink";
 
-export type NavigationActionsProps = HTMLAttributes<HTMLDivElement> & {
-  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
-};
+export type NavigationActionsProps = WithoutClassName<HTMLAttributes<HTMLDivElement>> &
+  RootClassNameProp & {
+    classNameOverrides?: ClassNameOverrides<typeof navigationActionsStyles>;
+  };
 
-export const NavigationActions = ({ classNameOverrides, children, ...props }: NavigationActionsProps) => {
-  const classNames = useGetClassNames(navigationStyles, classNameOverrides, { actions: {} });
+export const NavigationActions = ({ classNameOverrides, className, children, ...props }: NavigationActionsProps) => {
+  const classNames = useGetClassNames(navigationActionsStyles, classNameOverrides, { component: {} });
+  const rootClassName = useRootClassName(classNames.component, className);
   return (
-    <div className={classNames.actions} {...props}>
+    <div {...props} className={rootClassName}>
       {children}
     </div>
   );
@@ -126,7 +151,8 @@ export type MobileNavigationProps = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   links: Array<{ href: string; label: string; isCurrent?: boolean }>;
-  classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
+  /** No `className`: renders a fragment (toggle + overlay) with no single root element. */
+  classNameOverrides?: ClassNameOverrides<typeof mobileNavigationStyles>;
 };
 
 export const MobileNavigation = ({
@@ -135,7 +161,7 @@ export const MobileNavigation = ({
   links,
   classNameOverrides,
 }: MobileNavigationProps) => {
-  const classNames = useGetClassNames(navigationStyles, classNameOverrides, {
+  const classNames = useGetClassNames(mobileNavigationStyles, classNameOverrides, {
     mobileMenuButton: {},
     mobileMenu: {},
     mobileMenuHeader: {},

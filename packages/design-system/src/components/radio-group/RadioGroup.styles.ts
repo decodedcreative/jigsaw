@@ -2,7 +2,7 @@ import { cva } from "class-variance-authority";
 import { formStyles } from "@components/form/Form.styles";
 
 export const radioGroupStyles = {
-  group: cva(["flex flex-col gap-1", formStyles.field()]),
+  component: cva(["flex flex-col gap-1", formStyles.field()]),
   label: cva(
     ["block text-sm font-medium mb-2 transition-colors", formStyles.fieldLabel()],
     {

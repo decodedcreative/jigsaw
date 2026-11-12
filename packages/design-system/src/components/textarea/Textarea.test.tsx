@@ -91,9 +91,9 @@ describe('Textarea', () => {
     expect(screen.getByTestId('my-textarea')).toBeInTheDocument();
   });
 
-  it('merges classNameOverrides.wrapper onto the field root', () => {
+  it('merges classNameOverrides.component onto the field root', () => {
     render(
-      <Textarea label="Field" classNameOverrides={{ wrapper: 'mt-2' }} data-testid="my-textarea" />
+      <Textarea label="Field" classNameOverrides={{ component: 'mt-2' }} data-testid="my-textarea" />
     );
     expect(screen.getByTestId('my-textarea')).toHaveClass('mt-2');
   });
@@ -104,11 +104,11 @@ describe('Textarea', () => {
     expect(screen.getByRole('textbox')).toHaveClass('ring-brand-primary');
   });
 
-  it('merges classNameOverrides.wrapper and className together', () => {
+  it('merges classNameOverrides.component and className together', () => {
     render(
       <Textarea
         label="Field"
-        classNameOverrides={{ wrapper: 'mt-2' }}
+        classNameOverrides={{ component: 'mt-2' }}
         className="p-4"
         data-testid="my-textarea"
       />

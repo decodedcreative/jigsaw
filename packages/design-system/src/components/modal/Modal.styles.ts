@@ -1,13 +1,15 @@
 import { cva } from "class-variance-authority";
 
 export const modalStyles = {
-  overlay: cva([
+  /** Root: full-screen backdrop (ModalOverlay). */
+  component: cva([
     // Tailwind v4: backdrop-blur-sm (4px) → backdrop-blur-xs
     "fixed inset-0 z-50 bg-black/50 backdrop-blur-xs",
     "entering:animate-in entering:fade-in",
     "exiting:animate-out exiting:fade-out",
   ]),
-  component: cva([
+  /** The dialog panel (ReactAria Modal). */
+  panel: cva([
     "fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2",
     "flex flex-col w-full max-w-lg max-h-[min(32rem,calc(100vh-2rem))] overflow-hidden",
     "bg-surface-default rounded-lg shadow-xl border border-border-default",

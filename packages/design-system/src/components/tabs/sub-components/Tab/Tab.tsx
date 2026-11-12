@@ -2,16 +2,17 @@
 
 import type { FC } from "react";
 import { Tab as ReactAriaTab } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { tabStyles } from "./Tab.styles";
 import type { TabProps } from "./Tab.types";
 
-export const Tab: FC<TabProps> = ({ variant = "default", classNameOverrides, children, ...props }: TabProps) => {
+export const Tab: FC<TabProps> = ({ variant = "default", classNameOverrides, className, children, ...props }: TabProps) => {
   const classNames = useGetClassNames(tabStyles, classNameOverrides, {
-    tab: { variant },
+    component: { variant },
   });
+  const rootClassName = useRootClassName(classNames.component, className);
   return (
-    <ReactAriaTab className={classNames.tab} {...props}>
+    <ReactAriaTab {...props} className={rootClassName}>
       {children}
     </ReactAriaTab>
   );

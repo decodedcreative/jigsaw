@@ -89,8 +89,8 @@ describe('SearchField', () => {
     expect(screen.getByTestId('search')).toBeInTheDocument();
   });
 
-  it('merges classNameOverrides.wrapper onto the field root', () => {
-    render(<SearchField classNameOverrides={{ wrapper: 'mt-2' }} data-testid="search" />);
+  it('merges classNameOverrides.component onto the field root', () => {
+    render(<SearchField classNameOverrides={{ component: 'mt-2' }} data-testid="search" />);
     expect(screen.getByTestId('search')).toHaveClass('mt-2');
   });
 
@@ -100,10 +100,10 @@ describe('SearchField', () => {
     expect(screen.getByRole('searchbox')).toHaveClass('ring-brand-primary');
   });
 
-  it('merges classNameOverrides.wrapper and className together', () => {
+  it('merges classNameOverrides.component and className together', () => {
     render(
       <SearchField
-        classNameOverrides={{ wrapper: 'mt-2' }}
+        classNameOverrides={{ component: 'mt-2' }}
         className="p-4"
         data-testid="search"
       />

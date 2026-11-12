@@ -2,7 +2,7 @@ import { cva } from "class-variance-authority";
 import { formStyles } from "@components/form/Form.styles";
 
 export const inputStyles = {
-  wrapper: cva(["flex flex-col", formStyles.field()]),
+  component: cva(["flex flex-col", formStyles.field()]),
   label: cva(
     ["block text-sm font-medium mb-1.5 transition-colors", formStyles.fieldLabel()],
     {

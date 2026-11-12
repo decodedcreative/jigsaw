@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const tabListStyles = {
-  list: cva(["flex border-b border-border-primary"], {
+  component: cva(["flex border-b border-border-primary"], {
     variants: {
       variant: {
         default: "gap-0",

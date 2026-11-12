@@ -84,8 +84,8 @@ describe('Checkbox', () => {
     expect(screen.getByTestId('my-checkbox')).toBeInTheDocument();
   });
 
-  it('merges classNameOverrides.wrapper onto the checkbox root', () => {
-    render(<Checkbox label="Test" classNameOverrides={{ wrapper: 'mt-2' }} data-testid="my-checkbox" />);
+  it('merges classNameOverrides.component onto the checkbox root', () => {
+    render(<Checkbox label="Test" classNameOverrides={{ component: 'mt-2' }} data-testid="my-checkbox" />);
     expect(screen.getByRole('checkbox').closest('label')).toHaveClass('mt-2');
   });
 
@@ -98,11 +98,11 @@ describe('Checkbox', () => {
     expect(box).toHaveClass('ring-brand-primary');
   });
 
-  it('merges classNameOverrides.wrapper and className together', () => {
+  it('merges classNameOverrides.component and className together', () => {
     render(
       <Checkbox
         label="Test"
-        classNameOverrides={{ wrapper: 'mt-2' }}
+        classNameOverrides={{ component: 'mt-2' }}
         className="p-4"
         data-testid="my-checkbox"
       />

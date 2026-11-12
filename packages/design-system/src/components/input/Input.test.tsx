@@ -76,8 +76,8 @@ describe('Input', () => {
     expect(screen.getByTestId('my-input')).toBeInTheDocument();
   });
 
-  it('merges classNameOverrides.wrapper onto the field root', () => {
-    render(<Input label="Field" classNameOverrides={{ wrapper: 'mt-2' }} data-testid="my-input" />);
+  it('merges classNameOverrides.component onto the field root', () => {
+    render(<Input label="Field" classNameOverrides={{ component: 'mt-2' }} data-testid="my-input" />);
     expect(screen.getByTestId('my-input')).toHaveClass('mt-2');
   });
 
@@ -87,11 +87,11 @@ describe('Input', () => {
     expect(screen.getByRole('textbox')).toHaveClass('ring-brand-primary');
   });
 
-  it('merges classNameOverrides.wrapper and className together', () => {
+  it('merges classNameOverrides.component and className together', () => {
     render(
       <Input
         label="Field"
-        classNameOverrides={{ wrapper: 'mt-2' }}
+        classNameOverrides={{ component: 'mt-2' }}
         className="p-4"
         data-testid="my-input"
       />

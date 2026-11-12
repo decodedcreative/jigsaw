@@ -1,7 +1,7 @@
 "use client";
 
 import { Form as ReactAriaForm } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { FormGroup } from "./sub-components/FormGroup";
 import { formStyles } from "./Form.styles";
 import type { FormProps } from "./Form.types";
@@ -9,12 +9,14 @@ import type { FormProps } from "./Form.types";
 export const Form = ({
   children,
   classNameOverrides,
+  className,
   labelPosition = "top",
   ...props
 }: FormProps) => {
   const classNames = useGetClassNames(formStyles, classNameOverrides);
+  const rootClassName = useRootClassName(classNames.component, className);
   return (
-    <ReactAriaForm className={classNames.form} data-label-position={labelPosition} {...props}>
+    <ReactAriaForm data-label-position={labelPosition} {...props} className={rootClassName}>
       {children}
     </ReactAriaForm>
   );

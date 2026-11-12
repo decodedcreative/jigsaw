@@ -13,6 +13,11 @@ import { useThemeProvider } from "./useThemeProvider";
  * Prefers `ThemeProvider` subtree `twMerge`, then module `configureTwMerge`,
  * then stock `tailwind-merge`.
  */
+export function useRootClassName(slotClassName: string, className?: string): string;
+export function useRootClassName<P extends { defaultClassName?: string }>(
+  slotClassName: string,
+  className?: RootClassName<P>
+): string | ((values: P) => string);
 export function useRootClassName<P extends { defaultClassName?: string }>(
   slotClassName: string,
   className?: RootClassName<P>

@@ -2,7 +2,7 @@ import type { VariantProps } from "class-variance-authority";
 import type { ClassNameOverrides } from "@jsw-types/component-props";
 import type { toastRegionStyles } from "./ToastRegion.styles";
 
-type ToastViewportVariants = VariantProps<typeof toastRegionStyles.viewport>;
+type ToastViewportVariants = VariantProps<typeof toastRegionStyles.component>;
 
 export type ToastPosition = NonNullable<ToastViewportVariants["position"]>;
 
@@ -21,4 +21,6 @@ export type ToastRegionProps = {
   region?: string;
   position?: ToastPosition;
   classNameOverrides?: ClassNameOverrides<typeof toastRegionStyles>;
+  /** Extra classes for the root region, merged last via `twMerge` (wins conflicts). */
+  className?: string;
 };

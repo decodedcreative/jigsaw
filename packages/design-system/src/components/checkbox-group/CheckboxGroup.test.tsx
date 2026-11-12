@@ -81,9 +81,9 @@ describe('CheckboxGroup', () => {
     expect(checkboxes[1]).not.toBeChecked();
   });
 
-  it('merges classNameOverrides.group onto the group root', () => {
+  it('merges classNameOverrides.component onto the group root', () => {
     render(
-      <CheckboxGroup label="Group" classNameOverrides={{ group: 'mt-2' }} data-testid="my-group">
+      <CheckboxGroup label="Group" classNameOverrides={{ component: 'mt-2' }} data-testid="my-group">
         <Checkbox label="Option A" value="a" />
       </CheckboxGroup>
     );
@@ -100,11 +100,11 @@ describe('CheckboxGroup', () => {
     expect(options).toBeInTheDocument();
   });
 
-  it('merges classNameOverrides.group and className together', () => {
+  it('merges classNameOverrides.component and className together', () => {
     render(
       <CheckboxGroup
         label="Group"
-        classNameOverrides={{ group: 'mt-2' }}
+        classNameOverrides={{ component: 'mt-2' }}
         className="p-4"
         data-testid="my-group"
       >
