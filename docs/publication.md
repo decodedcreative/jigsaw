@@ -68,7 +68,7 @@ npm run version-and-tag:patch   # or :minor / :major
 3. Creates branch `chore/version-{version}`, commits `chore: version packages`, pushes, and opens a PR to `main`
 4. Leaves local `main` at the pre-version tip
 
-Merge that PR (squash is fine). [tag-version.yml](../.github/workflows/tag-version.yml) then creates annotated tag `v{version}` when the merged commit subject matches `chore: version packages…`.
+Merge that PR with any merge method (squash, merge commit or rebase). [tag-version.yml](../.github/workflows/tag-version.yml) then creates annotated tag `v{version}` when the push changes the `@jigsaw-ds/design-system` version compared with `main` before the push. Pushes that don't change the version are skipped with a visible "No release tag" notice on the run.
 
 Preview without writing:
 
