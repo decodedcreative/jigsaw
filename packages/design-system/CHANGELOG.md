@@ -21,8 +21,8 @@ Old keys are a TypeScript error, so nothing changes silently. Modal is unchanged
 
 ### Minor Changes
 
-- Every component accepts a root `className`, merged last via `twMerge` so it wins conflicts. Use `className` for layout from the outside and `classNameOverrides` for internal slots (JSW-118). Exceptions with no single root element: `TooltipTrigger`, `MobileNavigation`.
-- New RSC-safe `mergeClassName` util; `useRootClassName` gains a string overload.
+- Every component accepts a root `className`, merged last via `twMerge` so it wins conflicts. Use `className` for layout from the outside and `classNameOverrides` for internal slots (JSW-118). Exceptions with no single root element: `TooltipTrigger`, `MobileNavigation`. See [Styling components: `className` vs `classNameOverrides`](https://github.com/decodedcreative/jigsaw/blob/main/docs/using-jigsaw.md#styling-components-classname-vs-classnameoverrides).
+- For custom components built on Jigsaw's styles: new RSC-safe `mergeClassName(slotClassName, className)` in `@jigsaw-ds/design-system/utils` (appends `className` with the configured `twMerge`), and `useRootClassName` returns a `string` when given a string `className`.
 
 ### Patch Changes
 
