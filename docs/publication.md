@@ -93,7 +93,28 @@ Publishing that release triggers [release.yml](../.github/workflows/release.yml)
 3. Confirms changelog sections exist
 4. Runs `npm run publish` (`validate:packages` then `changeset publish`)
 
-Requires repository secret `NPM_TOKEN`.
+### Authentication: npm trusted publishing
+
+`release.yml` publishes with [npm trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC). There is **no `NPM_TOKEN` secret**: GitHub Actions exchanges a short-lived OIDC token with npm at publish time, and npm attaches provenance to each package automatically.
+
+Requirements (enforced by the workflow):
+
+- `permissions: id-token: write` on the job
+- Node 24, so npm is ≥ 11.5.1 (a check step fails the job early if not)
+- No `_authToken` in `.npmrc`
+
+**One-time setup on npmjs.com**, for each of `@jigsaw-ds/design-system`, `tokens`, `theme-default`, `theme-portfolio` and `theme-build`: go to *Settings* → *Trusted publisher* and choose **GitHub Actions** with:
+
+| Field | Value |
+| --- | --- |
+| Organization or user | `decodedcreative` |
+| Repository | `jigsaw` |
+| Workflow filename | `release.yml` |
+| Environment | *(leave blank)* |
+
+The match is exact: renaming `release.yml` breaks publishing until each package is updated.
+
+**If publishing fails with `E404` / "Access token expired or revoked"**, it's almost always one of: the trusted publisher missing or mismatched on that package, `id-token: write` missing, or npm older than 11.5.1. npm reports these as a 404, not an auth error.
 
 ### Local checks
 
