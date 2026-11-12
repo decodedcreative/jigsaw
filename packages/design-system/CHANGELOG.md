@@ -2,28 +2,33 @@
 
 ## 0.4.0
 
+### ⚠️ Breaking changes
+
+The root style slot in `classNameOverrides` is now always `component`. Rename these keys:
+
+| Component | Old key | New key |
+| --- | --- | --- |
+| Input, Select, Checkbox, NumberField, SearchField, Textarea | `wrapper` | `component` |
+| CheckboxGroup, RadioGroup | `group` | `component` |
+| Form | `form` | `component` |
+| Form.Group | `section` | `component` |
+| Tab / TabList / TabPanel | `tab` / `list` / `panel` | `component` |
+| ToastRegion | `viewport` | `component` |
+| RadioGroup `item` overrides | `wrapper` | `button` (new `component` slot on the item root) |
+| NavigationInner / Brand / Links / Link / Actions | `inner` / `brand` / `nav` / `navItem` / `actions` | `component` |
+
+Old keys are a TypeScript error, so nothing changes silently. Modal is unchanged: `component` is the dialog panel, `overlay` the backdrop.
+
 ### Minor Changes
 
-- Merge branch 'main' into feat/jsw-118-presentational-classname
-  fix: make the dialog panel Modal's root, restore overlay key (JSW-118)
-  feat: give SkeletonCard a component slot and classNameOverrides (JSW-118)
-  feat!: consistent root styling contract across all components (JSW-118)
-  feat: accept className on presentational components (JSW-118)
-  fix: use theme body font in Text instead of system font (JSW-117)
-  chore: restore light error-text after the token sync road test
-  feat(dev): rebuild theme CSS and Figma JSON when token sources change
-  fix(tokens): keep the saved GitHub token out of the plugin form
-  fix(tokens): check the saved GitHub token before the plugin uses it
-  fix(tokens): harden the Figma variable sync plugin
-  feat(tokens): sync Figma colour variables from the token JSON
-  Merge branch 'main' into fix/toast-notification-layout
-  chore: set light error-text to black for the Chromatic road test
-  chore: touch error-text so Chromatic externals recapture stories
-  chore: temporarily recolour light error text for a token sync road test
-  fix: stack toast copy and notification rows
+- Every component accepts a root `className`, merged last via `twMerge` so it wins conflicts. Use `className` for layout from the outside and `classNameOverrides` for internal slots (JSW-118). Exceptions with no single root element: `TooltipTrigger`, `MobileNavigation`.
+- New RSC-safe `mergeClassName` util; `useRootClassName` gains a string overload.
 
 ### Patch Changes
 
+- `Text` uses the theme's `font-body` instead of the system font, so body copy follows the theme (Inter in both bundled themes) (JSW-117).
+- `className` on `Badge`, `Skeleton`, custom-SVG `Icon` and `Navigation` now merges with component styles instead of replacing them.
+- Toast title and description stack instead of sitting on one line.
 - Updated dependencies
   - @jigsaw-ds/tokens@0.4.0
 
