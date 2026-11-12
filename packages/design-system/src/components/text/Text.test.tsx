@@ -23,6 +23,12 @@ describe('Text', () => {
     expect(screen.getByText('Body text content')).toBeInTheDocument();
   });
 
+  it('applies the theme body font family, not the system font', () => {
+    const { container } = render(<Text>Body copy</Text>);
+    expect(container.firstChild).toHaveClass('font-body');
+    expect(container.firstChild).not.toHaveClass('font-sans');
+  });
+
   it('renders xs size', () => {
     const { container } = render(<Text size="xs">xs text</Text>);
     expect(container.firstChild).toHaveClass('text-xs');
