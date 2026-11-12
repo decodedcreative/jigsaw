@@ -2,6 +2,9 @@ name: Tag version
 
 # After a version PR merges to main, create annotated tag v{version} from
 # @jigsaw-ds/design-system and open a draft GitHub Release in this same job.
+# A release is detected by the design-system version changing in this push
+# (compared with the main tip before the push), so squash, merge-commit and
+# rebase merges all work (JSW-119).
 # Tags are not created by version-and-tag.mjs (squash merge rewrites SHAs).
 # Draft is created here (not only via draft-github-release.yml) because
 # GITHUB_TOKEN tag pushes do not trigger other workflows.
@@ -35,28 +38,46 @@ jobs:
       - name: Create annotated tag and draft release
         env:
           GH_TOKEN: ${{ github.token }}
+          BEFORE_SHA: ${{ github.event.before }}
         run: |
           set -euo pipefail
 
           # Pin every decision to the push event SHA. Checkout is already that
-          # commit; naming it explicitly keeps subject/version/tag atomic even if
-          # a later step ever moved HEAD (there is no in-job race otherwise).
+          # commit; naming it explicitly keeps version/tag atomic even if a later
+          # step ever moved HEAD (there is no in-job race otherwise).
           SHA="${GITHUB_SHA:?GITHUB_SHA is required}"
+          PKG="packages/design-system/package.json"
 
           if [[ "${GITHUB_REF:-}" != "refs/heads/main" ]]; then
-            echo "skip: wrong branch (ref=${GITHUB_REF:-unset}, expected refs/heads/main)"
+            echo "::notice title=No release tag::wrong branch (ref=${GITHUB_REF:-unset}, expected refs/heads/main)"
             exit 0
           fi
 
-          SUBJECT=$(git log -1 --pretty=%s "$SHA")
-          if ! [[ "$SUBJECT" =~ ^chore:\ version\ packages ]]; then
-            echo "skip: subject mismatch (expected '^chore: version packages…')"
-            echo "subject: $SUBJECT"
-            echo "sha: $SHA"
-            exit 0
+          # Compare against main as it was before this push (github.event.before),
+          # not the commit message, so any merge method works. A rebase merge
+          # pushes several commits; only `before` sees the version change across
+          # all of them. Fall back to the first parent when `before` is missing
+          # (new branch / force push) or unknown to this clone.
+          BASE="${BEFORE_SHA:-}"
+          if [[ -z "$BASE" || "$BASE" =~ ^0+$ ]] || ! git cat-file -e "${BASE}^{commit}" 2>/dev/null; then
+            BASE="${SHA}^1"
           fi
 
-          VERSION=$(node -p "require('./packages/design-system/package.json').version")
+          read_version() {
+            git show "$1:$PKG" 2>/dev/null | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{try{process.stdout.write(JSON.parse(d).version||"")}catch{}})'
+          }
+
+          VERSION=$(read_version "$SHA")
+          PREV_VERSION=$(read_version "$BASE")
+          if [[ -z "$VERSION" ]]; then
+            echo "::error title=No release tag::could not read version from $PKG at $SHA"
+            exit 1
+          fi
+          if [[ "$VERSION" == "$PREV_VERSION" ]]; then
+            echo "::notice title=No release tag::@jigsaw-ds/design-system version unchanged (${VERSION}) between ${BASE} and ${SHA}"
+            exit 0
+          fi
+          echo "version change detected: ${PREV_VERSION:-none} -> ${VERSION}"
           TAG="v${VERSION}"
           CREATED_TAG=false
 
@@ -79,12 +100,12 @@ jobs:
           # exists for this version commit and there is no release yet.
           TAG_SHA=$(git rev-list -n 1 "$TAG")
           if [[ "$TAG_SHA" != "$SHA" ]]; then
-            echo "skip: tag ${TAG} points to ${TAG_SHA}, not this version commit ${SHA}"
+            echo "::notice title=No release tag::tag ${TAG} points to ${TAG_SHA}, not this version commit ${SHA}"
             exit 0
           fi
 
           if [[ "$CREATED_TAG" != "true" ]] && gh release view "$TAG" >/dev/null 2>&1; then
-            echo "skip: tag ${TAG} already existed and a release is present"
+            echo "::notice title=No release tag::tag ${TAG} already existed and a release is present"
             exit 0
           fi
 
