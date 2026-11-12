@@ -1,6 +1,6 @@
 {
   "name": "@jigsaw-ds/theme-default",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Default light/dark theme (CSS variables) for the Jigsaw design system.",
   "license": "MIT",
   "author": "James Howell",
@@ -41,7 +41,7 @@
     "test": "node --test scripts/build-output.test.mjs"
   },
   "devDependencies": {
-    "@jigsaw-ds/theme-build": "^0.3.2",
+    "@jigsaw-ds/theme-build": "^0.4.0",
     "style-dictionary": "^4.1.1"
   }
 }
