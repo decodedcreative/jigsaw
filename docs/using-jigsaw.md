@@ -266,6 +266,24 @@ import "./lib/jigsaw-theme";
 
 Visual light/dark/portfolio theming continues to use `data-theme` (see below) — that is separate from JS merge config.
 
+### Styling components: `className` vs `classNameOverrides`
+
+Presentational components and the form-field / React Aria wrappers that support it accept both:
+
+- **`className`** — classes for the **root element**, merged last via `twMerge`, so they win conflicts. Use it for layout and positioning from the outside: margins, grid/flex placement, width.
+- **`classNameOverrides`** — classes per **style slot** (keys match the component's `*Styles` export; the root is `component`). Use it to restyle a component's internals, e.g. a Card's `header` or `footer`.
+
+```tsx
+<Card className="col-span-2 mt-6" classNameOverrides={{ footer: "justify-end" }}>
+  …
+</Card>
+<Text className="max-w-prose">Body copy</Text>
+```
+
+On the root element the order is: component defaults → `classNameOverrides.component` → `className`.
+
+Presentational components (`Badge`, `Text`, `Heading` / `H1`–`H6`, `Skeleton`, `Icon`, `Card`) take a **string** `className` and stay RSC-safe. Interactive components that accept `className` (e.g. `Input`, `Checkbox`, `Select`, `Link`, `Disclosure`, `Tooltip`) also accept React Aria's **function** form, which receives render props such as `isHovered` and `defaultClassName`. `Avatar`, `Button`, `Form`, `Modal`, `Navigation` and `Tabs` are `classNameOverrides`-only for now.
+
 ## 6. Theme switching
 
 Themes are selected with the `data-theme` attribute on `<html>` (or a wrapper element that contains your app).

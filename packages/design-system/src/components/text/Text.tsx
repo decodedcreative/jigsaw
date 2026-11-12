@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getClassNames } from "@utils";
+import { getClassNames, mergeClassName } from "@utils";
 import { textStyles } from "./Text.styles";
 import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
@@ -9,6 +9,12 @@ export type TextProps = WithoutClassName<
   as?: "p" | "span";
   children: React.ReactNode;
   classNameOverrides?: ClassNameOverrides<typeof textStyles>;
+  /**
+   * Extra classes for the root element, merged last via `twMerge` (wins conflicts).
+   * Intended for layout/positioning from the outside; use `classNameOverrides` for
+   * internal slots.
+   */
+  className?: string;
   muted?: boolean;
   size?: "xs" | "sm" | "base" | "lg";
   weight?: "normal" | "medium" | "semibold" | "bold";
@@ -20,6 +26,7 @@ export const Text = ({
   weight = "normal",
   muted = false,
   classNameOverrides = undefined,
+  className,
   children,
   ...props
 }: TextProps) => {
@@ -30,7 +37,7 @@ export const Text = ({
   );
 
   return (
-    <Component className={classNames.component} {...props}>
+    <Component {...props} className={mergeClassName(classNames.component, className)}>
       {children}
     </Component>
   );

@@ -1,4 +1,4 @@
-import { getClassNames } from "@utils";
+import { getClassNames, mergeClassName } from "@utils";
 import { customIconStyles, iconStyles } from "./Icon.styles";
 import { isCustomIconProps, type IconProps } from "./Icon.types";
 
@@ -8,6 +8,7 @@ export function Icon(props: IconProps) {
       size = "md",
       tone,
       classNameOverrides,
+      className,
       "aria-hidden": ariaHidden = true,
       viewBox,
       children,
@@ -23,9 +24,9 @@ export function Icon(props: IconProps) {
         xmlns="http://www.w3.org/2000/svg"
         viewBox={viewBox}
         fill="currentColor"
-        className={classNames.component}
         aria-hidden={ariaHidden}
         {...svgProps}
+        className={mergeClassName(classNames.component, className)}
       >
         {children}
       </svg>
@@ -36,6 +37,7 @@ export function Icon(props: IconProps) {
     size = "md",
     tone,
     classNameOverrides,
+    className,
     "aria-hidden": ariaHidden = true,
     icon: PhosphorIcon,
     weight = "bold",
@@ -48,10 +50,10 @@ export function Icon(props: IconProps) {
 
   return (
     <PhosphorIcon
-      className={classNames.component}
       weight={weight}
       aria-hidden={ariaHidden}
       {...phosphorProps}
+      className={mergeClassName(classNames.component, className)}
     />
   );
 }

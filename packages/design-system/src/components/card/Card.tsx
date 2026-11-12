@@ -2,7 +2,7 @@ import {
   type ComponentPropsWithoutRef,
   type ElementType,
 } from "react";
-import { getClassNames } from "@utils";
+import { getClassNames, mergeClassName } from "@utils";
 import { isClickable } from "@utils";
 import { cardStyles } from "./Card.styles";
 import type { CardProps } from "./Card.types";
@@ -19,6 +19,7 @@ export const Card = (props: CardProps) => {
     image,
     footer,
     classNameOverrides,
+    className,
     children,
     ...elementProps
   } = props;
@@ -51,9 +52,9 @@ export const Card = (props: CardProps) => {
 
   return (
     <Component
-      className={classNames.component}
       {...(element === "button" ? { type: "button" } : undefined)}
       {...(elementProps as ComponentPropsWithoutRef<typeof element>)}
+      className={mergeClassName(classNames.component, className)}
     >
       {image != null ? <div className={classNames.image}>{image}</div> : null}
       <Card.Header
