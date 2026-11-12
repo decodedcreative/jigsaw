@@ -39,7 +39,7 @@ export const Checkbox = ({
     label: { size },
     description: { size },
   });
-  const rootClassName = useRootClassName(classNames.wrapper, className);
+  const rootClassName = useRootClassName(classNames.component, className);
 
   return (
     <ReactAriaCheckboxField isInvalid={isInvalid || resolvedHasError} {...props}>

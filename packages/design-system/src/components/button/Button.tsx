@@ -1,7 +1,7 @@
 "use client";
 
 import { Button as ReactAriaButton } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { buttonStyles } from "./Button.styles";
 import type { ButtonProps } from "./Button.types";
 
@@ -15,6 +15,7 @@ export function Button({
   mediaPosition,
   media,
   classNameOverrides,
+  className,
   children,
   ...props
 }: ButtonProps) {
@@ -31,6 +32,7 @@ export function Button({
     },
     text: { fullWidth: fullWidth && children != null },
   });
+  const rootClassName = useRootClassName(classNames.component, className);
 
   const mediaSpan =
     media != null ? <span className={classNames.media}>{media}</span> : null;
@@ -38,7 +40,7 @@ export function Button({
     children != null ? <span className={classNames.text}>{children}</span> : null;
 
   return (
-    <ReactAriaButton className={classNames.component} {...props}>
+    <ReactAriaButton {...props} className={rootClassName}>
       {position === "left" && mediaSpan}
       {textSpan}
       {position === "right" && mediaSpan}

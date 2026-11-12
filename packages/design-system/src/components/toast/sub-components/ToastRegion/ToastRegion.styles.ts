@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const toastRegionStyles = {
-  viewport: cva(
+  component: cva(
     [
       "fixed z-100 flex max-h-screen gap-2 p-4 pointer-events-none",
       "w-max max-w-[min(100vw-2rem,24rem)]",

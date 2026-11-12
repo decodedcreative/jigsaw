@@ -266,6 +266,35 @@ import "./lib/jigsaw-theme";
 
 Visual light/dark/portfolio theming continues to use `data-theme` (see below) — that is separate from JS merge config.
 
+### Styling components: `className` vs `classNameOverrides`
+
+Every component follows the same rule:
+
+- **`className`** — classes for the component's **root element**. Use it for layout and positioning from the outside: margins, grid/flex placement, width.
+- **`classNameOverrides`** — classes per **style slot**, for restyling a component's internals (e.g. a Card's `header`, a Modal's `overlay`). The root slot is **always `component`**.
+
+```tsx
+<Card className="col-span-2 mt-6" classNameOverrides={{ footer: "justify-end" }}>
+  …
+</Card>
+<Input label="Email" className="max-w-sm" classNameOverrides={{ label: "sr-only" }} />
+```
+
+On the root element the merge order is: component defaults → `classNameOverrides.component` → `className` (via `twMerge`, so `className` wins conflicts).
+
+**`className` types.** Presentational components (`Badge`, `Text`, `Heading` / `H1`–`H6`, `Skeleton`, `Icon`, `Card`, `Avatar`) and plain-DOM parts take a **string** and stay RSC-safe. Components built on React Aria also accept React Aria's **function** form, which receives render props such as `isHovered` and `defaultClassName`.
+
+**Where the root is.** The root is the outermost element the component renders. Two cases worth knowing:
+
+- `Modal` — the root is the **dialog panel**, so `className` and `classNameOverrides.component` both style the dialog itself. The full-screen backdrop it renders around the dialog is `classNameOverrides.overlay`.
+- Sub-items (`Select.Item`, `RadioGroup.Item`) accept `className` for a single item. Styling shared by every item goes on the parent: `classNameOverrides.item`.
+
+**Exceptions** (no `className`, because there is no single root element to put it on):
+
+- `TooltipTrigger` — renders no DOM element of its own.
+- `MobileNavigation` — renders a fragment (toggle button + overlay); style it via its named slots.
+- `Card.Header` — internal; style it through Card's `classNameOverrides.header`.
+
 ## 6. Theme switching
 
 Themes are selected with the `data-theme` attribute on `<html>` (or a wrapper element that contains your app).

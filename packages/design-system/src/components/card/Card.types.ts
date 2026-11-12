@@ -16,6 +16,12 @@ type CardBaseProps = {
   image?: ReactNode;
   footer?: ReactNode;
   classNameOverrides?: ClassNameOverrides<typeof cardStyles>;
+  /**
+   * Extra classes for the root element, merged last via `twMerge` (wins conflicts).
+   * Intended for layout/positioning from the outside; use `classNameOverrides` for
+   * internal slots.
+   */
+  className?: string;
 };
 
 type CardPropsFor<T extends CardElement> = CardBaseProps &

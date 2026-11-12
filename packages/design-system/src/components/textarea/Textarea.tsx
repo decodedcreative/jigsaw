@@ -30,7 +30,7 @@ export const Textarea = ({
     textarea: { size, state },
     description: { state },
   });
-  const rootClassName = useRootClassName(classNames.wrapper, className);
+  const rootClassName = useRootClassName(classNames.component, className);
 
   return (
     <ReactAriaTextField

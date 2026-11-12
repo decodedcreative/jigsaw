@@ -117,9 +117,9 @@ describe('Select', () => {
     expect(onChange).toHaveBeenCalledWith('apple');
   });
 
-  it('merges classNameOverrides.wrapper onto the field root', () => {
+  it('merges classNameOverrides.component onto the field root', () => {
     render(
-      <Select label="Fruit" classNameOverrides={{ wrapper: 'mt-2' }} data-testid="my-select">
+      <Select label="Fruit" classNameOverrides={{ component: 'mt-2' }} data-testid="my-select">
         <Select.Item id="apple">Apple</Select.Item>
       </Select>
     );
@@ -136,11 +136,11 @@ describe('Select', () => {
     expect(screen.getByRole('button')).toHaveClass('ring-brand-primary');
   });
 
-  it('merges classNameOverrides.wrapper and className together', () => {
+  it('merges classNameOverrides.component and className together', () => {
     render(
       <Select
         label="Fruit"
-        classNameOverrides={{ wrapper: 'mt-2' }}
+        classNameOverrides={{ component: 'mt-2' }}
         className="p-4"
         data-testid="my-select"
       >

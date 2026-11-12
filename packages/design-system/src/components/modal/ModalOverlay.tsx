@@ -8,7 +8,7 @@ import {
   Modal as ReactAriaModal,
   ModalOverlay as ReactAriaModalOverlay,
 } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { Icon } from "@components/icon";
 import { Button } from "../button/Button";
 import { modalStyles } from "./Modal.styles";
@@ -20,6 +20,7 @@ export const ModalOverlay = ({
   cancelLabel = "Cancel",
   children,
   classNameOverrides,
+  className,
   closeLabel = "Close",
   footer,
   header,
@@ -38,12 +39,13 @@ export const ModalOverlay = ({
     content: {},
     footer: {},
   });
+  const rootClassName = useRootClassName(classNames.component, className);
   const shouldShowCancelButton = showCancelButton ?? footer != null;
   const hasFooter = shouldShowCancelButton || footer != null;
 
   return (
-    <ReactAriaModalOverlay className={classNames.overlay} {...props}>
-      <ReactAriaModal className={classNames.component}>
+    <ReactAriaModalOverlay {...props} className={classNames.overlay}>
+      <ReactAriaModal className={rootClassName}>
         <ReactAriaDialog className={classNames.dialog}>
           {({ close }) => (
             <>

@@ -34,7 +34,7 @@ export const SearchField = ({
     clearButton: { size },
     description: { state },
   });
-  const rootClassName = useRootClassName(classNames.wrapper, className);
+  const rootClassName = useRootClassName(classNames.component, className);
 
   return (
     <ReactAriaSearchField

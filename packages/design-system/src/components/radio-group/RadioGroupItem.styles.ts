@@ -1,7 +1,10 @@
 import { cva } from "class-variance-authority";
 
 export const radioStyles = {
-  wrapper: cva([
+  /** Root RadioField element. */
+  component: cva(""),
+  /** The clickable radio button row (circle + label). */
+  button: cva([
     "group flex items-start gap-3 cursor-pointer data-disabled:cursor-not-allowed",
   ]),
   circle: cva(

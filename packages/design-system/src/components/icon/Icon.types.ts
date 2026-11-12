@@ -23,6 +23,12 @@ type IconSharedProps = {
   /** Semantic foreground tone on the <svg> (currentColor for paths without data-fill). */
   tone?: IconTone;
   "aria-hidden"?: boolean;
+  /**
+   * Extra classes for the root element, merged last via `twMerge` (wins conflicts).
+   * Intended for layout/positioning from the outside; use `classNameOverrides` for
+   * internal slots.
+   */
+  className?: string;
 };
 
 /** Phosphor glyph — single colour via tone or inherited currentColor. */
@@ -50,7 +56,7 @@ export type PhosphorIconComponentProps = IconSharedProps &
  * </Icon>
  */
 export type CustomIconComponentProps = IconSharedProps &
-  Omit<SVGAttributes<SVGSVGElement>, "children" | "color" | "width" | "height" | "style"> & {
+  Omit<SVGAttributes<SVGSVGElement>, "children" | "color" | "width" | "height" | "style" | "className"> & {
     icon?: never;
     weight?: never;
     viewBox: string;

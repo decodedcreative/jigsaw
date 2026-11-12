@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const formStyles = {
-  form: cva(["flex flex-col", "group/form-label"]),
+  component: cva(["flex flex-col", "group/form-label"]),
   field: cva([
     "group-data-[label-position=side]/form-label:grid",
     "group-data-[label-position=side]/form-label:w-full",

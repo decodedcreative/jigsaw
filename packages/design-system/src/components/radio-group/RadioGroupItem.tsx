@@ -4,7 +4,7 @@ import {
   RadioField as ReactAriaRadioField,
   RadioButton as ReactAriaRadioButton,
 } from "react-aria-components";
-import { useGetClassNames } from "@hooks";
+import { useGetClassNames, useRootClassName } from "@hooks";
 import { useRadioGroupContext } from "./RadioGroupContext";
 import { radioStyles } from "./RadioGroupItem.styles";
 import type { RadioItemProps } from "./RadioGroupItem.types";
@@ -16,6 +16,7 @@ export const RadioGroupItem = ({
   hasError = false,
   value,
   children,
+  className,
   ...props
 }: RadioItemProps) => {
   const group = useRadioGroupContext();
@@ -28,10 +29,11 @@ export const RadioGroupItem = ({
     label: { size },
     itemDescription: { size },
   });
+  const rootClassName = useRootClassName(classNames.component, className);
 
   return (
-    <ReactAriaRadioField value={value} {...props}>
-      <ReactAriaRadioButton className={classNames.wrapper}>
+    <ReactAriaRadioField value={value} {...props} className={rootClassName}>
+      <ReactAriaRadioButton className={classNames.button}>
         <div className={classNames.circle}>
           <div className={classNames.dot} />
         </div>

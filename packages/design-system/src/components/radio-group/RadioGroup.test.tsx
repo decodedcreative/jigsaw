@@ -88,20 +88,20 @@ describe('RadioGroup', () => {
     expect(screen.getByRole('radio', { name: 'Option B' })).toBeChecked();
   });
 
-  it('merges classNameOverrides.group onto the group root', () => {
+  it('merges classNameOverrides.component onto the group root', () => {
     render(
-      <RadioGroup label="Group" classNameOverrides={{ group: 'mt-2' }} data-testid="my-group">
+      <RadioGroup label="Group" classNameOverrides={{ component: 'mt-2' }} data-testid="my-group">
         <RadioGroup.Item label="Option A" value="a" />
       </RadioGroup>
     );
     expect(screen.getByTestId('my-group')).toHaveClass('mt-2');
   });
 
-  it('merges classNameOverrides.group and className together', () => {
+  it('merges classNameOverrides.component and className together', () => {
     render(
       <RadioGroup
         label="Group"
-        classNameOverrides={{ group: 'mt-2' }}
+        classNameOverrides={{ component: 'mt-2' }}
         className="p-4"
         data-testid="my-group"
       >
@@ -118,7 +118,7 @@ describe('RadioGroup', () => {
       <RadioGroup
         label="Group"
         classNameOverrides={{
-          item: { wrapper: 'gap-4' },
+          item: { button: 'gap-4' },
         }}
       >
         <RadioGroup.Item label="Option A" value="a" />
@@ -135,7 +135,7 @@ describe('RadioGroup', () => {
       <RadioGroup
         label="Group"
         classNameOverrides={{
-          item: { wrapper: 'gap-4' },
+          item: { button: 'gap-4' },
         }}
       >
         <>

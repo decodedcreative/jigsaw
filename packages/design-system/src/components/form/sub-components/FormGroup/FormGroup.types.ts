@@ -15,4 +15,6 @@ export type FormGroupProps = WithoutClassName<ComponentPropsWithoutRef<"section"
   title?: string;
   children?: ReactNode;
   classNameOverrides?: FormGroupClassNameOverrides;
+  /** Extra classes for the root `<section>`, merged last via `twMerge` (wins conflicts). */
+  className?: string;
 };

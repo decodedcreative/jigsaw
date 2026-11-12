@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const tabStyles = {
-  tab: cva(
+  component: cva(
     [
       "px-4 py-2 text-sm font-medium transition-colors outline-hidden",
       "focus-visible:ring-2 focus-visible:ring-interactive-focus focus-visible:ring-offset-2",

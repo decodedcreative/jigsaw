@@ -28,7 +28,7 @@ export const CheckboxGroup = ({
   const classNames = useGetClassNames(checkboxGroupStyles, classNameOverrides, {
     label: { state },
   });
-  const rootClassName = useRootClassName(classNames.group, className);
+  const rootClassName = useRootClassName(classNames.component, className);
 
   const contextValue = useMemo(() => ({ groupHasError }), [groupHasError]);
 

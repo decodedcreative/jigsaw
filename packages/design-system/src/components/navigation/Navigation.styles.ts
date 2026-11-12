@@ -3,20 +3,39 @@ import { cva } from "class-variance-authority";
 export const navigationStyles = {
   component: cva(["w-full border-b border-border-primary bg-surface-primary"]),
   container: cva("max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"),
-  inner: cva("flex items-center justify-between h-16"),
-  brand: cva([
+};
+
+export const navigationInnerStyles = {
+  component: cva("flex items-center justify-between h-16"),
+};
+
+export const navigationBrandStyles = {
+  component: cva([
     "flex items-center gap-2",
     "text-lg font-semibold text-foreground-primary",
     "outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-focus rounded",
   ]),
-  nav: cva("hidden md:flex items-center gap-1"),
-  navItem: cva([
+};
+
+export const navigationLinksStyles = {
+  component: cva("hidden md:flex items-center gap-1"),
+};
+
+export const navigationLinkStyles = {
+  component: cva([
     "px-3 py-2 text-sm font-medium rounded-md transition-colors",
     "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",
     "outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-focus",
     "data-current:text-interactive-primary data-current:bg-interactive-secondary",
   ]),
-  actions: cva("flex items-center gap-2"),
+};
+
+export const navigationActionsStyles = {
+  component: cva("flex items-center gap-2"),
+};
+
+/** MobileNavigation renders a fragment (toggle + overlay), so it has no single root slot. */
+export const mobileNavigationStyles = {
   mobileMenuButton: cva([
     "md:hidden p-2 rounded-md",
     "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",

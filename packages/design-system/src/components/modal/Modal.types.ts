@@ -1,12 +1,16 @@
 import type { ReactElement, ReactNode } from "react";
 import type { ModalOverlayProps } from "react-aria-components";
 import type { ButtonProps } from "../button/Button";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides } from "@jsw-types/component-props";
 import type { modalStyles } from "./Modal.styles";
 
 export type ModalTriggerElement = ReactElement<ButtonProps>;
 
-type ModalPropsShared = WithoutClassName<Omit<ModalOverlayProps, "children">> & {
+/**
+ * The root is the dialog panel: `className` and `classNameOverrides.component` both
+ * style the dialog itself. The surrounding backdrop is `classNameOverrides.overlay`.
+ */
+type ModalPropsShared = Omit<ModalOverlayProps, "children"> & {
   /** Label for the header close button. Defaults to `"Close"`. */
   closeLabel?: string;
   /** Label for the wired footer cancel button. Defaults to `"Cancel"`. */

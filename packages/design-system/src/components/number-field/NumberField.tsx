@@ -36,7 +36,7 @@ export const NumberField = ({
     incrementButton: { size, state },
     description: { state },
   });
-  const rootClassName = useRootClassName(classNames.wrapper, className);
+  const rootClassName = useRootClassName(classNames.component, className);
 
   return (
     <ReactAriaNumberField

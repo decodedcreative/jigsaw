@@ -12,6 +12,12 @@ export type HeadingProps = Omit<WithoutClassName<HTMLAttributes<HTMLHeadingEleme
   as?: HeadingLevel;
   children: ReactNode;
   classNameOverrides?: ClassNameOverrides<typeof headingStyles>;
+  /**
+   * Extra classes for the root element, merged last via `twMerge` (wins conflicts).
+   * Intended for layout/positioning from the outside; use `classNameOverrides` for
+   * internal slots.
+   */
+  className?: string;
   /** Muted foreground colour for supporting headings. */
   muted?: boolean;
   /** Visual size — use a different level than `as` when semantics and style should diverge. */
