@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const textStyles = {
-  component: cva("font-sans leading-normal", {
+  component: cva("font-body leading-normal", {
     variants: {
       size: {
         xs: "text-xs",
