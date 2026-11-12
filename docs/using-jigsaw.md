@@ -271,7 +271,7 @@ Visual light/dark/portfolio theming continues to use `data-theme` (see below) �
 Every component follows the same rule:
 
 - **`className`** — classes for the component's **root element**. Use it for layout and positioning from the outside: margins, grid/flex placement, width.
-- **`classNameOverrides`** — classes per **style slot**, for restyling a component's internals (e.g. a Card's `header`, a Modal's `panel`). The root slot is **always `component`**.
+- **`classNameOverrides`** — classes per **style slot**, for restyling a component's internals (e.g. a Card's `header`, a Modal's `overlay`). The root slot is **always `component`**.
 
 ```tsx
 <Card className="col-span-2 mt-6" classNameOverrides={{ footer: "justify-end" }}>
@@ -286,7 +286,7 @@ On the root element the merge order is: component defaults → `classNameOverrid
 
 **Where the root is.** The root is the outermost element the component renders. Two cases worth knowing:
 
-- `Modal` — the root is the full-screen **backdrop**. Size or position the dialog itself with `classNameOverrides.panel`.
+- `Modal` — the root is the **dialog panel**, so `className` and `classNameOverrides.component` both style the dialog itself. The full-screen backdrop it renders around the dialog is `classNameOverrides.overlay`.
 - Sub-items (`Select.Item`, `RadioGroup.Item`) accept `className` for a single item. Styling shared by every item goes on the parent: `classNameOverrides.item`.
 
 **Exceptions** (no `className`, because there is no single root element to put it on):

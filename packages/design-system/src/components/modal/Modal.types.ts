@@ -7,8 +7,8 @@ import type { modalStyles } from "./Modal.styles";
 export type ModalTriggerElement = ReactElement<ButtonProps>;
 
 /**
- * `className` targets the root backdrop (ModalOverlay). Size/position the dialog
- * panel with `classNameOverrides.panel`.
+ * The root is the dialog panel: `className` and `classNameOverrides.component` both
+ * style the dialog itself. The surrounding backdrop is `classNameOverrides.overlay`.
  */
 type ModalPropsShared = Omit<ModalOverlayProps, "children"> & {
   /** Label for the header close button. Defaults to `"Close"`. */

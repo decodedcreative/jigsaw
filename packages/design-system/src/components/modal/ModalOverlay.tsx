@@ -30,8 +30,8 @@ export const ModalOverlay = ({
   ...props
 }: ModalOverlayProps) => {
   const classNames = useGetClassNames(modalStyles, classNameOverrides, {
+    overlay: {},
     component: {},
-    panel: {},
     dialog: {},
     header: {},
     title: {},
@@ -44,8 +44,8 @@ export const ModalOverlay = ({
   const hasFooter = shouldShowCancelButton || footer != null;
 
   return (
-    <ReactAriaModalOverlay {...props} className={rootClassName}>
-      <ReactAriaModal className={classNames.panel}>
+    <ReactAriaModalOverlay {...props} className={classNames.overlay}>
+      <ReactAriaModal className={rootClassName}>
         <ReactAriaDialog className={classNames.dialog}>
           {({ close }) => (
             <>

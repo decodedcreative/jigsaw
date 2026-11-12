@@ -96,13 +96,13 @@ const cases: Case[] = [
     root: () => screen.getByRole("tabpanel"),
   },
   {
-    name: "Modal (root is the backdrop)",
+    name: "Modal (root is the dialog panel)",
     render: (p) => (
       <Modal title="Dialog" isOpen onOpenChange={() => {}} {...p}>
         Body
       </Modal>
     ),
-    root: () => screen.getByRole("dialog").closest('[class*="bg-black/50"]')!,
+    root: () => screen.getByRole("dialog").closest('[class*="max-w-lg"]')!,
   },
   {
     name: "Navigation",
@@ -166,6 +166,25 @@ describe.each(cases)("$name root className", ({ render: renderCase, root }) => {
     const el = root();
     expect(el).toHaveClass("mt-8", "ring-2");
     expect(el).not.toHaveClass("mt-2");
+  });
+});
+
+describe("Modal className does not leak to the backdrop", () => {
+  it("leaves the overlay styled only by classNameOverrides.overlay", () => {
+    render(
+      <Modal
+        title="Dialog"
+        isOpen
+        onOpenChange={() => {}}
+        className="mt-8"
+        classNameOverrides={{ overlay: "ring-4" }}
+      >
+        Body
+      </Modal>
+    );
+    const overlay = screen.getByRole("dialog").closest('[class*="bg-black/50"]')!;
+    expect(overlay).toHaveClass("ring-4");
+    expect(overlay).not.toHaveClass("mt-8");
   });
 });
 
