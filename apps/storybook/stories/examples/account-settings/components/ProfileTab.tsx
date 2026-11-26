@@ -19,7 +19,7 @@ export const ProfileTab = () => (
     }}
   >
     <div className="flex flex-col gap-6">
-      <Form.Group title="Public profile">
+      <Form.Group titleAs="h2" title="Public profile">
         <div className="flex items-center gap-4">
           <Avatar size="xl" initials="JH" status="online" />
           <div className="flex gap-2">

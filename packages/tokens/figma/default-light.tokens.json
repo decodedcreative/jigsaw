@@ -52,11 +52,11 @@
         "type": "color"
       },
       "tertiary": {
-        "value": "#737373",
+        "value": "#666666",
         "type": "color"
       },
       "muted": {
-        "value": "#737373",
+        "value": "#666666",
         "type": "color"
       },
       "disabled": {
@@ -128,15 +128,15 @@
         "type": "color"
       },
       "accent": {
-        "value": "#ff6b1a",
+        "value": "#c24e03",
         "type": "color"
       },
       "accent-hover": {
-        "value": "#e85d04",
+        "value": "#9a3f03",
         "type": "color"
       },
       "accent-active": {
-        "value": "#c24e03",
+        "value": "#7b3204",
         "type": "color"
       },
       "accent-disabled": {
@@ -174,7 +174,7 @@
         "type": "color"
       },
       "error-text": {
-        "value": "#dc2626",
+        "value": "#b91c1c",
         "type": "color"
       },
       "error-bg": {
@@ -190,7 +190,7 @@
         "type": "color"
       },
       "success-text": {
-        "value": "#16a34a",
+        "value": "#15803d",
         "type": "color"
       },
       "success-bg": {
@@ -206,7 +206,7 @@
         "type": "color"
       },
       "warning-text": {
-        "value": "#d97706",
+        "value": "#b45309",
         "type": "color"
       },
       "warning-bg": {

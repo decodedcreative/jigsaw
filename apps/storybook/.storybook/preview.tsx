@@ -34,6 +34,11 @@ const preview: Preview = {
   },
   decorators: [withAppTheme],
   parameters: {
+    a11y: {
+      // Fail the story test on any axe violation, so CI catches it.
+      // Opt a story out with `parameters: { a11y: { test: "todo" } }` and say why.
+      test: "error",
+    },
     backgrounds: {
       disable: true,
     },

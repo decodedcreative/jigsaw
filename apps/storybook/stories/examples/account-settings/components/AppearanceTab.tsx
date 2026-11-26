@@ -17,7 +17,7 @@ export const AppearanceTab = () => (
       });
     }}
   >
-    <Form.Group title="Display preferences">
+    <Form.Group titleAs="h2" title="Display preferences">
       <Select label="Timezone" defaultValue="utc">
         {TIMEZONES.map((tz) => (
           <Select.Item key={tz.id} id={tz.id}>{tz.label}</Select.Item>

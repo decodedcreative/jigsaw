@@ -91,6 +91,35 @@ jobs:
       - name: Lint
         run: npm run lint
 
+  test-stories:
+    # Playwright's Chromium doesn't support Ubuntu 26.04 yet (ubuntu-latest).
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Build packages the stories import
+        run: |
+          npm run build --workspace=@jigsaw-ds/theme-default
+          npm run build --workspace=@jigsaw-ds/theme-portfolio
+          npm run build --workspace=@jigsaw-ds/tokens
+          npm run build --workspace=@jigsaw-ds/design-system
+
+      # Renders every story in headless Chromium, runs its play function, and
+      # runs axe via the a11y addon. preview.tsx sets a11y.test to "error", so a
+      # violation fails this job.
+      - name: Run Storybook stories in Chromium
+        run: npm run test:stories --workspace=@jigsaw-ds/storybook
+
   test-tokens:
     runs-on: ubuntu-latest
     steps:
