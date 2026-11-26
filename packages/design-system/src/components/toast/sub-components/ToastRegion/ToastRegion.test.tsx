@@ -112,8 +112,8 @@ describe("ToastRegion", () => {
         >
           Bottom
         </button>
-        <ToastRegion region="top" position="top-right" />
-        <ToastRegion region="bottom" position="bottom-right" />
+        <ToastRegion region="top" position="top-right" aria-label="Alerts" />
+        <ToastRegion region="bottom" position="bottom-right" aria-label="Messages" />
       </>
     );
 
@@ -124,6 +124,42 @@ describe("ToastRegion", () => {
     await user.click(screen.getByRole("button", { name: "Bottom" }));
     expect(screen.getByText("Bottom toast")).toBeInTheDocument();
     expect(screen.getAllByRole("alertdialog")).toHaveLength(2);
+  });
+
+  it("names the landmark with aria-label", async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <button type="button" onClick={() => toast({ title: "Saved", duration: 0 })}>
+          Show
+        </button>
+        <ToastRegion aria-label="Alerts" />
+      </>
+    );
+    await user.click(screen.getByRole("button", { name: "Show" }));
+    expect(screen.getByRole("region", { name: "Alerts" })).toBeInTheDocument();
+  });
+
+  it("warns when two mounted regions share an accessible name", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    render(
+      <>
+        <ToastRegion region="top" />
+        <ToastRegion region="bottom" />
+      </>
+    );
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("with no aria-label"));
+  });
+
+  it("does not warn when mounted regions have distinct names", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    render(
+      <>
+        <ToastRegion region="top" aria-label="Alerts" />
+        <ToastRegion region="bottom" aria-label="Messages" />
+      </>
+    );
+    expect(warn).not.toHaveBeenCalled();
   });
 
   it("warns when duplicate region ids are mounted", () => {
@@ -152,8 +188,8 @@ describe("ToastRegion", () => {
         >
           Add top
         </button>
-        <ToastRegion region="top" position="top-right" />
-        <ToastRegion region="bottom" position="bottom-right" />
+        <ToastRegion region="top" position="top-right" aria-label="Alerts" />
+        <ToastRegion region="bottom" position="bottom-right" aria-label="Messages" />
       </>
     );
 

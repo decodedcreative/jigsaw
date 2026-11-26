@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
 import type { headingStyles } from "./Heading.styles";
 
 export type HeadingLevel = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
@@ -7,7 +7,7 @@ export type HeadingLevel = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 /** Visual scale for heading typography. Defaults to match `as` when omitted. */
 export type HeadingSize = HeadingLevel;
 
-export type HeadingProps = Omit<WithoutClassName<HTMLAttributes<HTMLHeadingElement>>, "children"> & {
+export type HeadingProps = RefProp<HTMLHeadingElement> & Omit<WithoutClassName<HTMLAttributes<HTMLHeadingElement>>, "children"> & {
   /** Semantic heading element. */
   as?: HeadingLevel;
   children: ReactNode;

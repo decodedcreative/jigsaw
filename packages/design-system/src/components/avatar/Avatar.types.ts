@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
 import type { avatarStyles } from "./Avatar.styles";
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
@@ -40,4 +40,4 @@ type AvatarWithoutImage = AvatarSharedProps & {
  * - `src` + `alt`: photo; pass `initials` for error fallback.
  * - `status`: presence dot; sizes with `size`.
  */
-export type AvatarProps = AvatarWithImage | AvatarWithoutImage;
+export type AvatarProps = RefProp<HTMLDivElement> & (AvatarWithImage | AvatarWithoutImage);

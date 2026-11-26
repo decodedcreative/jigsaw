@@ -1,9 +1,9 @@
 import * as React from "react";
 import { getClassNames, mergeClassName } from "@utils";
 import { textStyles } from "./Text.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
 
-export type TextProps = WithoutClassName<
+export type TextProps = RefProp<HTMLElement> & WithoutClassName<
   Omit<React.HTMLAttributes<HTMLParagraphElement>, "children">
 > & {
   as?: "p" | "span";
@@ -28,6 +28,7 @@ export const Text = ({
   classNameOverrides = undefined,
   className,
   children,
+  ref,
   ...props
 }: TextProps) => {
   const classNames = getClassNames(
@@ -37,7 +38,11 @@ export const Text = ({
   );
 
   return (
-    <Component {...props} className={mergeClassName(classNames.component, className)}>
+    <Component
+      {...(props as React.HTMLAttributes<HTMLElement>)}
+      ref={ref as React.Ref<HTMLParagraphElement & HTMLSpanElement>}
+      className={mergeClassName(classNames.component, className)}
+    >
       {children}
     </Component>
   );
