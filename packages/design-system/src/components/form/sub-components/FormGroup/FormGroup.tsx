@@ -8,6 +8,7 @@ import type { FormGroupProps } from "./FormGroup.types";
 
 export const FormGroup = ({
   title,
+  titleAs = "h3",
   children,
   classNameOverrides,
   className,
@@ -29,7 +30,7 @@ export const FormGroup = ({
       {title ? (
         <Heading
           id={titleId}
-          as="h3"
+          as={titleAs}
           size="h4"
           classNameOverrides={
             headingClassName ? { component: headingClassName } : undefined

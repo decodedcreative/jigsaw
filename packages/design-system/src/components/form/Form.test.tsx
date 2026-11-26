@@ -70,6 +70,26 @@ describe("Form", () => {
     expect(screen.getByText("Field content")).toBeInTheDocument();
   });
 
+  it("renders the Form.Group title as h3 by default", () => {
+    render(
+      <Form>
+        <Form.Group title="Account details">Field content</Form.Group>
+      </Form>
+    );
+    expect(screen.getByRole("heading", { name: "Account details", level: 3 })).toBeInTheDocument();
+  });
+
+  it("renders the Form.Group title at the level given by titleAs", () => {
+    render(
+      <Form>
+        <Form.Group title="Account details" titleAs="h2">
+          Field content
+        </Form.Group>
+      </Form>
+    );
+    expect(screen.getByRole("heading", { name: "Account details", level: 2 })).toBeInTheDocument();
+  });
+
   it("offsets Form.Group title to the control column when labelPosition is side", () => {
     const { container } = render(
       <Form labelPosition="side">

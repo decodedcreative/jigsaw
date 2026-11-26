@@ -27,6 +27,17 @@ git checkout wip/design-system-overhaul-backup -- path/to/relevant/files
 
 `feat/jsw-XX-short-description` — matches the Jira ticket key.
 
+### Story tests
+
+CI renders every Storybook story in headless Chromium, runs its play function, and runs axe through the a11y addon. Any axe violation fails the check. Run it locally with:
+
+```bash
+npx playwright install chromium   # once
+npm run test:stories --workspace=@jigsaw-ds/storybook
+```
+
+If a story has to accept a violation for now, set `parameters: { a11y: { test: "todo" } }` on that story with a comment linking the JSW ticket that fixes it.
+
 ## Versioning & releasing
 
 Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets) behind a small maintainer script. **Feature PRs must not include `.changeset/*.md` files.**
