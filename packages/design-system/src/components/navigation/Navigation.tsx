@@ -10,7 +10,7 @@ import {
   Modal as ReactAriaModal,
   ModalOverlay as ReactAriaModalOverlay,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon } from "@components/icon";
 import {
   mobileNavigationStyles,
@@ -79,10 +79,11 @@ export const NavigationBrand = ({
   children,
   ref,
 }: NavigationBrandProps) => {
+  const nameRef = useAccessibleNameWarning("NavigationBrand", ref);
   const classNames = useGetClassNames(navigationBrandStyles, classNameOverrides, { component: {} });
   const rootClassName = useRootClassName(classNames.component, className);
   return (
-    <ReactAriaLink ref={ref} href={href} className={rootClassName}>
+    <ReactAriaLink ref={nameRef} href={href} className={rootClassName}>
       {children}
     </ReactAriaLink>
   );
@@ -122,11 +123,12 @@ export const NavigationLink = ({
   children,
   ref,
 }: NavigationLinkProps) => {
+  const nameRef = useAccessibleNameWarning("NavigationLink", ref);
   const classNames = useGetClassNames(navigationLinkStyles, classNameOverrides, { component: {} });
   const rootClassName = useRootClassName(classNames.component, className);
   return (
     <ReactAriaLink
-      ref={ref}
+      ref={nameRef}
       href={href}
       className={rootClassName}
       data-current={isCurrent ? "" : undefined}

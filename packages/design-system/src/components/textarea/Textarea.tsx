@@ -6,7 +6,7 @@ import {
   TextArea as ReactAriaTextArea,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { textareaStyles } from "./Textarea.styles";
 import type { TextareaProps } from "./Textarea.types";
 
@@ -21,8 +21,10 @@ export const Textarea = ({
   className,
   isDisabled,
   isInvalid,
+  ref,
   ...props
 }: TextareaProps) => {
+  const nameRef = useAccessibleNameWarning("Textarea", ref, { target: "textarea" });
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
   const classNames = useGetClassNames(textareaStyles, classNameOverrides, {
@@ -38,6 +40,7 @@ export const Textarea = ({
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
+      ref={nameRef}
     >
       {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <div className={classNames.fieldBody}>

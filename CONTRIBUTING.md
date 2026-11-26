@@ -35,6 +35,12 @@ Jigsaw supports React 19 only. Don't use `forwardRef`: add `RefProp<Element>` (f
 
 `packages/design-system/src/components/a11y.test.tsx` runs axe on every component in its main states, including open and expanded ones. A new component folder fails the test until it has an entry there. Rule exceptions live in `src/test-utils/axe.ts` with their reasons; colour contrast is off in jsdom and is checked by the story tests below.
 
+### Console warnings and screen reader phrases
+
+- **Unexpected console output fails the test.** `src/test-setup.ts` fails any unit test that logs a `console.warn` or `console.error` it didn't expect. If a warning is the point of the test, mock it (`vi.spyOn(console, "warn").mockImplementation(() => {})`) and assert on the spy.
+- **Screen reader phrases** are pinned in `src/components/announcements.test.tsx`, e.g. `"checkbox, Accept terms, checked"`. Add a case when a component gains a state that changes its markup. Changing an expectation changes what assistive technology users hear, so do it only on purpose.
+- **Accessible names:** controls call `useAccessibleNameWarning` (from `@hooks`), which warns in development when the rendered control has no accessible name. New interactive components should use it too; `accessible-name-warning.test.tsx` covers each one.
+
 ### Story tests
 
 CI renders every Storybook story in headless Chromium, runs its play function, and runs axe through the a11y addon. Any axe violation fails the check. Run it locally with:

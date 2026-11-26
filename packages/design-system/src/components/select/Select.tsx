@@ -11,7 +11,7 @@ import {
   ListBox as ReactAriaListBox,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon } from "@components/icon";
 import { selectStyles } from "./Select.styles";
 import { SelectProvider } from "./SelectContext";
@@ -29,8 +29,14 @@ export const Select = ({
   className,
   isDisabled,
   isInvalid,
+  ref,
   ...props
 }: SelectProps) => {
+  const nameRef = useAccessibleNameWarning("Select", ref, {
+    // The trigger's computed name includes the placeholder or selected value,
+    // which doesn't say what the field is for. Only a real label counts.
+    isNamed: () => Boolean(label || props["aria-label"] || props["aria-labelledby"]),
+  });
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
   const { item: itemClassNameOverride, ...selectClassNameOverrides } = classNameOverrides ?? {};
 
@@ -53,6 +59,7 @@ export const Select = ({
         isDisabled={isDisabled}
         isInvalid={isInvalid || !!errorMessage}
         {...props}
+      ref={nameRef}
       >
         {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
         <div className={classNames.fieldBody}>

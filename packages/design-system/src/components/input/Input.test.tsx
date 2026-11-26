@@ -19,7 +19,7 @@ describe('Input', () => {
   });
 
   it('renders with placeholder', () => {
-    render(<Input placeholder="Enter your email" />);
+    render(<Input label="Email" placeholder="Enter your email" />);
     expect(screen.getByPlaceholderText('Enter your email')).toBeInTheDocument();
   });
 

@@ -14,8 +14,9 @@ export const ToastRegion = ({
   classNameOverrides,
   className,
   ref,
+  "aria-label": ariaLabel,
 }: ToastRegionProps) => {
-  useEffect(() => registerToastRegion(region), [region]);
+  useEffect(() => registerToastRegion(region, ariaLabel), [region, ariaLabel]);
 
   const classNames = useGetClassNames(toastRegionStyles, classNameOverrides, {
     component: { position },
@@ -23,7 +24,12 @@ export const ToastRegion = ({
   const rootClassName = useRootClassName(classNames.component, className);
 
   return (
-    <ReactAriaToastRegion ref={ref} queue={getToastQueue(region)} className={rootClassName}>
+    <ReactAriaToastRegion
+      ref={ref}
+      queue={getToastQueue(region)}
+      className={rootClassName}
+      aria-label={ariaLabel}
+    >
       {({ toast }) => <ToastItem toast={toast} />}
     </ReactAriaToastRegion>
   );
