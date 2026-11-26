@@ -120,6 +120,30 @@ jobs:
       - name: Run Storybook stories in Chromium
         run: npm run test:stories --workspace=@jigsaw-ds/storybook
 
+  test-packed:
+    # Installs the packed packages into a copy of apps/web outside the repo, as
+    # an app gets them from npm, then opens every page in Chromium.
+    # Playwright's Chromium doesn't support Ubuntu 26.04 yet (ubuntu-latest).
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Test the packed-app checks
+        run: node --test scripts/lib/packed-app-checks.test.mjs
+
+      - name: Build, pack and install the packages into a copy of apps/web, then open every page
+        run: npm run test:packed
+
   test-tokens:
     runs-on: ubuntu-latest
     steps:
