@@ -5,7 +5,8 @@ const meta = {
   title: "Introduction/Welcome",
   parameters: {
     layout: "fullscreen",
-    docs: { disable: true },
+    // Welcome page, not a component example: no "Show code" (JSW-134).
+    docs: { disable: true, codePanel: false },
   },
 } satisfies Meta;
 

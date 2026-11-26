@@ -42,6 +42,8 @@ const meta = {
   component: ThemeSwitchDemo,
   parameters: {
     layout: "fullscreen",
+    // Token documentation: no component usage to copy, so no "Show code" (JSW-134).
+    docs: { codePanel: false },
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof ThemeSwitchDemo>;

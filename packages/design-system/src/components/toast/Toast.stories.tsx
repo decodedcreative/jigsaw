@@ -62,7 +62,30 @@ const Trigger = () => (
   </div>
 );
 
+const DEFAULT_SOURCE = `import { Button, ToastRegion, toast } from "@jigsaw-ds/design-system";
+
+// Once, at your app root:
+<ToastRegion position="bottom-right" />
+
+// Anywhere in your app:
+<Button
+  variant="primary"
+  onPress={() => toast({ title: "Saved", description: "Your changes are saved.", variant: "success" })}
+>
+  Success
+</Button>
+<Button
+  variant="destructive"
+  onPress={() => toast({ title: "Error", description: "Something went wrong.", variant: "error" })}
+>
+  Error
+</Button>`;
+
 export const Default: Story = {
+  parameters: {
+    // Trigger is only a row of buttons calling toast(); show the real pattern.
+    docs: { source: { code: DEFAULT_SOURCE, language: "tsx" } },
+  },
   render: (args) => (
     <>
       <Trigger />
@@ -106,6 +129,23 @@ const VariantTrigger = () => (
   </div>
 );
 
+const VARIANTS_SOURCE = `import { BellIcon } from "@phosphor-icons/react/Bell";
+import { ToastRegion, toast } from "@jigsaw-ds/design-system";
+
+<ToastRegion />
+
+toast({ title: "Default", description: 'Leaving out variant uses "default".' });
+toast({ title: "Info", description: "Something happened.", variant: "info" });
+toast({ title: "Success", description: "Your changes are saved.", variant: "success" });
+toast({ title: "Warning", description: "Check before continuing.", variant: "warning" });
+toast({ title: "Error", description: "Something went wrong.", variant: "error" });
+
+// Keep the variant colours but swap the icon:
+toast({ title: "Custom icon", variant: "info", icon: BellIcon });
+
+// duration: 0 keeps a toast until it's dismissed.
+toast({ title: "Pinned", variant: "info", duration: 0 });`;
+
 export const Variants: Story = {
   args: {},
   parameters: {
@@ -114,6 +154,7 @@ export const Variants: Story = {
         story:
           "Each variant uses a default Phosphor icon. Pass `icon` to `toast()` to override while keeping variant colours.",
       },
+      source: { code: VARIANTS_SOURCE, language: "tsx" },
     },
   },
   render: (args) => (
@@ -156,6 +197,13 @@ function PositionPreview({ position }: { position: ToastPosition }) {
   );
 }
 
+const POSITION_SOURCE = `import { ToastRegion, toast } from "@jigsaw-ds/design-system";
+
+// position: "top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right"
+<ToastRegion position="top-right" />
+
+toast({ title: "Toast 1", description: "Newest sits on the anchored edge.", variant: "info" });`;
+
 export const Position: Story = {
   args: {},
   parameters: {
@@ -165,6 +213,7 @@ export const Position: Story = {
         story:
           "Interactive viewport placement. Pick a **position** in Controls — the region remounts and shows a sample toast at that corner. Use **Add toast** to stack more.",
       },
+      source: { code: POSITION_SOURCE, language: "tsx" },
     },
   },
   render: (args) => (

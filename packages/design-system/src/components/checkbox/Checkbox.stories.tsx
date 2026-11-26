@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Checkbox } from "./index";
-import type { CheckboxProps } from "./Checkbox.types";
 
 const meta = {
   title: "Design System/Checkbox",
@@ -18,33 +17,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-type ControlledCheckboxProps = Omit<CheckboxProps, "isSelected" | "isIndeterminate" | "onChange"> & {
-  defaultSelected?: boolean;
-  defaultIndeterminate?: boolean;
-};
-
-/** Standalone checkbox with local selection state — matches typical app usage. */
-const ControlledCheckbox = ({
-  defaultSelected = false,
-  defaultIndeterminate = false,
-  ...props
-}: ControlledCheckboxProps) => {
-  const [isSelected, setIsSelected] = useState(defaultSelected);
-  const [isIndeterminate, setIsIndeterminate] = useState(defaultIndeterminate);
-
-  return (
-    <Checkbox
-      {...props}
-      isSelected={isSelected}
-      isIndeterminate={isIndeterminate}
-      onChange={(selected) => {
-        setIsSelected(selected);
-        setIsIndeterminate(false);
-      }}
-    />
-  );
-};
 
 const SELECT_ALL_ITEMS = [
   { id: "notifications", label: "Email notifications" },
@@ -99,28 +71,64 @@ const IndeterminateExample = () => {
   );
 };
 
+const INDETERMINATE_SOURCE = `const items = [
+  { id: "notifications", label: "Email notifications" },
+  { id: "newsletter", label: "Weekly newsletter" },
+  { id: "updates", label: "Product updates" },
+];
+
+function NotificationPreferences() {
+  const [selected, setSelected] = useState({ notifications: true, newsletter: false, updates: true });
+  const values = Object.values(selected);
+  const allSelected = values.every(Boolean);
+  const isIndeterminate = values.some(Boolean) && !allSelected;
+
+  return (
+    <div className="flex flex-col gap-3">
+      <Checkbox
+        label="Select all"
+        isSelected={allSelected}
+        isIndeterminate={isIndeterminate}
+        onChange={(checked) =>
+          setSelected({ notifications: checked, newsletter: checked, updates: checked })
+        }
+      />
+      <div className="ml-6 flex flex-col gap-2 border-l border-border-default pl-4">
+        {items.map(({ id, label }) => (
+          <Checkbox
+            key={id}
+            label={label}
+            isSelected={selected[id]}
+            onChange={(checked) => setSelected((prev) => ({ ...prev, [id]: checked }))}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}`;
+
 export const Default: Story = {
   args: { label: "Accept terms" },
-  render: (args) => <ControlledCheckbox {...args} />,
 };
 
 export const Checked: Story = {
-  args: { label: "Accept terms" },
-  render: (args) => <ControlledCheckbox {...args} defaultSelected />,
+  args: { label: "Accept terms", defaultSelected: true },
 };
 
 export const Indeterminate: Story = {
   render: () => <IndeterminateExample />,
+  parameters: {
+    // The example keeps the select-all state in a local component; show it in full.
+    docs: { source: { code: INDETERMINATE_SOURCE, language: "tsx" } },
+  },
 };
 
 export const WithDescription: Story = {
   args: { label: "Subscribe", description: "Receive weekly product updates." },
-  render: (args) => <ControlledCheckbox {...args} />,
 };
 
 export const Error: Story = {
   args: { label: "Required field", hasError: true },
-  render: (args) => <ControlledCheckbox {...args} />,
 };
 
 export const ErrorWithDescription: Story = {
@@ -129,7 +137,6 @@ export const ErrorWithDescription: Story = {
     description: "You must accept to continue.",
     hasError: true,
   },
-  render: (args) => <ControlledCheckbox {...args} />,
 };
 
 export const Disabled: Story = {
@@ -149,7 +156,7 @@ export const Sizes: Story = {
     <div className="flex flex-col gap-6">
       {(["sm", "md", "lg"] as const).map((size) => (
         <div key={size} className="flex flex-col gap-2">
-          <ControlledCheckbox size={size} label={`${size} — interactive`} />
+          <Checkbox size={size} label={`${size} — interactive`} />
           <Checkbox size={size} label={`${size} — checked (snapshot)`} isSelected isReadOnly />
           <Checkbox size={size} label={`${size} — indeterminate (snapshot)`} isIndeterminate isReadOnly />
         </div>
@@ -162,11 +169,11 @@ export const Sizes: Story = {
 export const AllStates: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
-      <ControlledCheckbox label="Default (interactive)" />
+      <Checkbox label="Default (interactive)" />
       <Checkbox label="Checked" isSelected isReadOnly />
       <Checkbox label="Indeterminate" isIndeterminate isReadOnly />
-      <ControlledCheckbox label="With description" description="Helpful hint" />
-      <ControlledCheckbox label="Error" hasError />
+      <Checkbox label="With description" description="Helpful hint" />
+      <Checkbox label="Error" hasError />
       <Checkbox label="Disabled" isDisabled />
       <Checkbox label="Disabled checked" isDisabled isSelected />
     </div>

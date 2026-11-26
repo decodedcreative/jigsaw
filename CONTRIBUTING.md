@@ -35,6 +35,13 @@ Jigsaw supports React 19 only. Don't use `forwardRef`: add `RefProp<Element>` (f
 
 `packages/design-system/src/components/a11y.test.tsx` runs axe on every component in its main states, including open and expanded ones. A new component folder fails the test until it has an entry there. Rule exceptions live in `src/test-utils/axe.ts` with their reasons; colour contrast is off in jsdom and is checked by the story tests below.
 
+### Story rules
+
+`apps/storybook/.storybook/story-rules.test.mjs` (part of the Storybook `test` script) checks every story file:
+
+- **"Show code" must be copy-pasteable.** If a story's `render` uses a local helper (a component defined in the story file, or imported from a story-only module), set `parameters.docs.source.code` to the real Jigsaw usage. Prefer rendering the component directly where you can, e.g. uncontrolled with `defaultSelected` rather than wrapped in a stateful helper. Documentation pages and full-page examples with no single snippet to copy set `parameters.docs.codePanel: false` instead.
+- **No layout classes on `Text` or `Heading`** (`flex`, `grid`, `gap-*`, `items-*`, `justify-*`, …). Put layout on a wrapper element.
+
 ### Console warnings and screen reader phrases
 
 - **Unexpected console output fails the test.** `src/test-setup.ts` fails any unit test that logs a `console.warn` or `console.error` it didn't expect. If a warning is the point of the test, mock it (`vi.spyOn(console, "warn").mockImplementation(() => {})`) and assert on the spy.
