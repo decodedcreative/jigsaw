@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect } from "storybook/test";
 import { SearchField } from "./SearchField";
+import { clearFocus } from "../../test-utils/story-play";
 
 const meta = {
   title: "Design System/SearchField",
@@ -18,6 +20,27 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: { label: "Search", placeholder: "Search components..." },
+  play: async ({ canvas, userEvent, step }) => {
+    const input = canvas.getByRole("searchbox", { name: "Search" });
+
+    await step("Tab moves focus to the search input", async () => {
+      await userEvent.tab();
+      await expect(input).toHaveFocus();
+    });
+
+    await step("Typing fills it", async () => {
+      await userEvent.keyboard("Card");
+      await expect(input).toHaveValue("Card");
+    });
+
+    await step("Escape clears it and keeps focus", async () => {
+      await userEvent.keyboard("{Escape}");
+      await expect(input).toHaveValue("");
+      await expect(input).toHaveFocus();
+    });
+
+    clearFocus();
+  },
 };
 
 export const WithValue: Story = {

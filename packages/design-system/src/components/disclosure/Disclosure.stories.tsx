@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect } from "storybook/test";
 import { Disclosure } from "./Disclosure";
 import { DisclosureGroup } from "./DisclosureGroup";
+import { clearFocus } from "../../test-utils/story-play";
 
 const meta = {
   title: "Design System/Disclosure",
@@ -21,6 +23,28 @@ export const Single: Story = {
       </Disclosure>
     </div>
   ),
+  play: async ({ canvas, userEvent, step }) => {
+    const trigger = canvas.getByRole("button", { name: "What is Jigsaw?" });
+
+    await step("Tab moves focus to the trigger", async () => {
+      await userEvent.tab();
+      await expect(trigger).toHaveFocus();
+      await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    });
+
+    await step("Enter expands the panel", async () => {
+      await userEvent.keyboard("{Enter}");
+      await expect(trigger).toHaveAttribute("aria-expanded", "true");
+      await expect(canvas.getByText("Jigsaw is the design system for this monorepo.")).toBeVisible();
+    });
+
+    await step("Space collapses it", async () => {
+      await userEvent.keyboard(" ");
+      await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    });
+
+    clearFocus();
+  },
 };
 
 export const Group: Story = {
@@ -34,4 +58,25 @@ export const Group: Story = {
       </DisclosureGroup>
     </div>
   ),
+  play: async ({ canvas, userEvent, step }) => {
+    const one = canvas.getByRole("button", { name: "Section one" });
+    const two = canvas.getByRole("button", { name: "Section two" });
+
+    await step("Each trigger is its own tab stop", async () => {
+      await userEvent.tab();
+      await expect(one).toHaveFocus();
+      await userEvent.tab();
+      await expect(two).toHaveFocus();
+    });
+
+    await step("Enter expands only the focused section", async () => {
+      await userEvent.keyboard("{Enter}");
+      await expect(two).toHaveAttribute("aria-expanded", "true");
+      await expect(one).toHaveAttribute("aria-expanded", "false");
+      await userEvent.keyboard("{Enter}");
+      await expect(two).toHaveAttribute("aria-expanded", "false");
+    });
+
+    clearFocus();
+  },
 };

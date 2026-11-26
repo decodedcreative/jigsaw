@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect, screen, waitFor } from "storybook/test";
 import { useEffect, useState } from "react";
 import { Heading } from "react-aria-components";
 import { Modal } from "./Modal";
 import type { ModalProps } from "./Modal.types";
 import { Button } from "../button/Button";
+import { TEST_ONLY_PARAMETERS } from "../../test-utils/story-play";
 
 /** Docs stories open by default with controlled open state wired for Storybook. */
 function ModalStory(props: ModalProps) {
@@ -355,4 +357,59 @@ export const WithCustomHeader: Story = {
       </p>
     </ModalStory>
   ),
+};
+
+/**
+ * Test-only: the browsed stories open the modal straight away, so the trigger
+ * flow (open, trap focus, close, return focus) runs here instead.
+ */
+export const KeyboardTest: Story = {
+  tags: ["!dev", "!autodocs"],
+  parameters: TEST_ONLY_PARAMETERS,
+  // Not spread into Modal: the meta's isOpen arg would skip the trigger flow under test.
+  args: { title: "Confirm action" },
+  render: () => (
+    <Modal
+      title="Confirm action"
+      trigger={<Button>Open</Button>}
+      footer={
+        <Button variant="destructive" slot="close">
+          Confirm
+        </Button>
+      }
+    >
+      <p className="text-sm text-foreground-secondary">
+        Are you sure you want to continue? This action cannot be undone.
+      </p>
+    </Modal>
+  ),
+  play: async ({ canvas, userEvent, step }) => {
+    const trigger = canvas.getByRole("button", { name: "Open" });
+
+    await step("Tab to the trigger and press Enter to open the modal", async () => {
+      await userEvent.tab();
+      await expect(trigger).toHaveFocus();
+      await userEvent.keyboard("{Enter}");
+      const dialog = await screen.findByRole("dialog", { name: "Confirm action" });
+      await waitFor(() => expect(dialog).toContainElement(document.activeElement as HTMLElement));
+    });
+
+    await step("Tab and Shift+Tab keep focus inside the modal", async () => {
+      const dialog = screen.getByRole("dialog");
+      for (let i = 0; i < 5; i++) {
+        await userEvent.tab();
+        await expect(dialog).toContainElement(document.activeElement as HTMLElement);
+      }
+      for (let i = 0; i < 5; i++) {
+        await userEvent.tab({ shift: true });
+        await expect(dialog).toContainElement(document.activeElement as HTMLElement);
+      }
+    });
+
+    await step("Escape closes it and focus returns to the trigger", async () => {
+      await userEvent.keyboard("{Escape}");
+      await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+      await waitFor(() => expect(trigger).toHaveFocus());
+    });
+  },
 };

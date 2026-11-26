@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect, screen, waitFor } from "storybook/test";
 import { useEffect, useRef } from "react";
 import { BellIcon } from "@phosphor-icons/react";
 import { ToastRegion, toastPositions, toastVariants, toast } from "./index";
 import type { ToastPosition } from "./Toast.types";
 import { Button } from "../button/Button";
+import { TEST_ONLY_PARAMETERS } from "../../test-utils/story-play";
 
 const meta = {
   title: "Design System/Toast",
@@ -269,4 +271,41 @@ export const MultipleRegions: Story = {
       <ToastRegion region="bottom" position="bottom-right" />
     </div>
   ),
+};
+
+/** Test-only: showing a toast changes the story, so the keyboard flow runs here. */
+export const KeyboardTest: Story = {
+  tags: ["!dev", "!autodocs"],
+  parameters: TEST_ONLY_PARAMETERS,
+  args: { region: "keyboard-test", "aria-label": "Test notifications" },
+  render: (args) => (
+    <>
+      <Button
+        onPress={() =>
+          toast({ title: "Saved", description: "Your changes are saved.", region: "keyboard-test", duration: 0 })
+        }
+      >
+        Save
+      </Button>
+      <ToastRegion {...args} />
+    </>
+  ),
+  play: async ({ canvas, userEvent, step }) => {
+    const trigger = canvas.getByRole("button", { name: "Save" });
+
+    await step("Enter on the trigger shows a toast without moving focus", async () => {
+      await userEvent.tab();
+      await userEvent.keyboard("{Enter}");
+      await expect(await screen.findByText("Your changes are saved.")).toBeVisible();
+      await expect(trigger).toHaveFocus();
+    });
+
+    await step("Tab reaches the toast's Close button, and Enter dismisses the toast", async () => {
+      const close = screen.getByRole("button", { name: "Close" });
+      for (let i = 0; i < 3 && document.activeElement !== close; i++) await userEvent.tab();
+      await expect(close).toHaveFocus();
+      await userEvent.keyboard("{Enter}");
+      await waitFor(() => expect(screen.queryByText("Your changes are saved.")).toBeNull());
+    });
+  },
 };

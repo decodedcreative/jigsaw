@@ -59,6 +59,16 @@ npm run test:stories --workspace=@jigsaw-ds/storybook
 
 If a story has to accept a violation for now, set `parameters: { a11y: { test: "todo" } }` on that story with a comment linking the JSW ticket that fixes it.
 
+### Keyboard play functions
+
+Each interactive component has a `play` function that uses only the keyboard: tab to the control, use its keys, and check focus and the result. Put each check in a named `step` so the Interactions panel reads as a list of behaviours.
+
+- **On the stories people browse**, only when the steps leave the story looking as it did when it opened: press Space twice on a checkbox, open a list and close it with Escape. End with `clearFocus()` from `src/test-utils/story-play.ts` so the story and its Chromatic snapshot don't open with a focus ring.
+- **On a hidden test story** when the steps leave a visible result, such as choosing an option, typing, or submitting a form. Give it `tags: ["!dev", "!autodocs"]` (written out in the story, because Storybook reads tags statically) and `parameters: TEST_ONLY_PARAMETERS`. It's hidden from the sidebar and docs and skipped by Chromatic, but the story tests still run it.
+- Popovers, tooltips, listboxes, dialogs and toasts render outside the story canvas, so query them with `screen` from `storybook/test`.
+- Links in a play function need their `click` default prevented, or following them navigates the test page away from the story.
+- React Aria collections (`Tabs`, `Select` options) render their items after the first pass, and in a production build the play function can start before them. Use `findByRole` for the first query, and wait for focus to return after an overlay closes (`waitFor(() => expect(trigger).toHaveFocus())`).
+
 ## Versioning & releasing
 
 Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets) behind a small maintainer script. **Feature PRs must not include `.changeset/*.md` files.** Instead, fill in the PR description's `## Consumer changelog` section: a sentence per change for app developers, `**Breaking:**` for breaking changes, or `None.`. A PR check requires it when a published package changes, and the release script writes those sentences into the changelogs (see [docs/publication.md](docs/publication.md)).

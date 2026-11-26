@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect, fn } from "storybook/test";
 import { PlayIcon } from "@phosphor-icons/react";
 import { Avatar } from "../avatar";
 import { Icon } from "../icon";
 import { Button } from "./Button";
+import { clearFocus } from "../../test-utils/story-play";
 
 const meta = {
   title: "Design System/Button",
@@ -42,6 +44,27 @@ export const Primary: Story = {
   args: {
     variant: "primary",
     children: "Primary button",
+    onPress: fn(),
+  },
+  play: async ({ args, canvas, userEvent, step }) => {
+    const button = canvas.getByRole("button", { name: "Primary button" });
+
+    await step("Tab moves focus to the button", async () => {
+      await userEvent.tab();
+      await expect(button).toHaveFocus();
+    });
+
+    await step("Enter presses it", async () => {
+      await userEvent.keyboard("{Enter}");
+      await expect(args.onPress).toHaveBeenCalledTimes(1);
+    });
+
+    await step("Space presses it", async () => {
+      await userEvent.keyboard(" ");
+      await expect(args.onPress).toHaveBeenCalledTimes(2);
+    });
+
+    clearFocus();
   },
 };
 
@@ -95,6 +118,12 @@ export const Disabled: Story = {
   args: {
     isDisabled: true,
     children: "Disabled button",
+  },
+  play: async ({ canvas, userEvent, step }) => {
+    await step("Tab skips the disabled button", async () => {
+      await userEvent.tab();
+      await expect(canvas.getByRole("button", { name: "Disabled button" })).not.toHaveFocus();
+    });
   },
 };
 
