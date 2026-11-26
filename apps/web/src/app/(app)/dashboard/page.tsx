@@ -109,7 +109,7 @@ function InviteButton() {
       }
     >
       <p className="text-sm text-foreground-secondary mb-4">
-        Send an invite link to a new team member. They'll be added as a Viewer by default.
+        Send an invite link to a new team member. They&apos;ll be added as a Viewer by default.
       </p>
       <input
         type="email"
@@ -179,7 +179,7 @@ export default function DashboardPage() {
       <div className="p-6 md:p-8 max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground-primary">Good morning, James 👋</h1>
-          <p className="text-sm text-foreground-secondary mt-1">Here's what's happening with Jigsaw today.</p>
+          <p className="text-sm text-foreground-secondary mt-1">Here&apos;s what&apos;s happening with Jigsaw today.</p>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

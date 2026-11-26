@@ -76,6 +76,21 @@ jobs:
       - name: Validate publishable packages (tarball, publint, attw)
         run: npm run validate:packages
 
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
   test-stories:
     # Playwright's Chromium doesn't support Ubuntu 26.04 yet (ubuntu-latest).
     runs-on: ubuntu-24.04
