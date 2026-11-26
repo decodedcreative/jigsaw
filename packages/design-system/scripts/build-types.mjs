@@ -42,7 +42,19 @@ const aliasRoots = {
 };
 const aliasesLongestFirst = Object.keys(aliasRoots).sort((a, b) => b.length - a.length);
 
+/** Module specifiers in `from "…"`, `import("…")` and `import "…"`. */
 const SPECIFIER = /(\bfrom\s+|\bimport\s*\(\s*|\bimport\s+)(["'])([^"']+)\2/g;
+
+/**
+ * Replace each module specifier in `source` with `rewrite(request)`.
+ * Returning `null` leaves that specifier unchanged.
+ */
+function rewriteSpecifiers(source, rewrite) {
+  return source.replace(SPECIFIER, (match, prefix, quote, request) => {
+    const next = rewrite(request);
+    return next == null ? match : `${prefix}${quote}${next}${quote}`;
+  });
+}
 
 function listFiles(dir, predicate, out = []) {
   if (!fs.existsSync(dir)) return out;
@@ -117,21 +129,16 @@ function build() {
   for (const file of declarations) {
     const importerSrcPath = path.join(srcRoot, path.relative(distRoot, file)).replace(/\.d\.ts$/, ".ts");
     const source = fs.readFileSync(file, "utf8");
-    const next = source.replace(SPECIFIER, (match, prefix, quote, request) => {
-      const rewritten = rewriteAlias(request, importerSrcPath);
-      return rewritten ? `${prefix}${quote}${rewritten}${quote}` : match;
-    });
+    const next = rewriteSpecifiers(source, (request) => rewriteAlias(request, importerSrcPath));
     if (next !== source) fs.writeFileSync(file, next);
   }
 
   // Pass 2: `.d.mts` twins with explicit relative specifiers.
   for (const file of declarations) {
     const dir = path.dirname(file);
-    const source = fs.readFileSync(file, "utf8");
-    const esm = source.replace(SPECIFIER, (match, prefix, quote, request) => {
-      if (!request.startsWith(".")) return match;
-      return `${prefix}${quote}${toExplicitEsmSpecifier(request, dir, file)}${quote}`;
-    });
+    const esm = rewriteSpecifiers(fs.readFileSync(file, "utf8"), (request) =>
+      request.startsWith(".") ? toExplicitEsmSpecifier(request, dir, file) : null
+    );
     fs.writeFileSync(file.replace(/\.d\.ts$/, ".d.mts"), esm);
   }
 
@@ -144,7 +151,7 @@ build();
 
 if (process.argv.includes("--watch")) {
   let timer;
-  fs.watch(srcRoot, { recursive: true }, (_event, filename) => {
+  const watcher = fs.watch(srcRoot, { recursive: true }, (_event, filename) => {
     if (!filename || /\.(test|stories)\./.test(filename) || !/\.tsx?$/.test(filename)) return;
     clearTimeout(timer);
     timer = setTimeout(() => {
@@ -155,6 +162,13 @@ if (process.argv.includes("--watch")) {
         console.error(`[build-types] failed: ${error.message}`);
       }
     }, 300);
+  });
+  // A watcher that errors (e.g. src/ removed or remounted) is closed by Node and
+  // won't recover. Say so and exit non-zero, rather than crash with a bare
+  // stack trace or keep running while silently no longer rebuilding types.
+  watcher.on("error", (error) => {
+    console.error(`[build-types] stopped watching src/: ${error.message}. Restart \`npm run dev\`.`);
+    process.exit(1);
   });
   console.log("[build-types] watching src/ for changes");
 }
