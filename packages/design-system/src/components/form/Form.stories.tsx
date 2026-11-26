@@ -37,6 +37,9 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * - **Form.Group** — titled section for stacking related fields (layout only).
+ *   Its title is an `h3` by default. Set `titleAs` so it sits one level below the
+ *   nearest heading above it: `h2` when the form sits directly under the page `h1`,
+ *   `h3` under an `h2` section, and so on.
  * - **CheckboxGroup / RadioGroup** — use their own `label` when the section is a single field group; skip Form.Group.
  */
 export const Default: Story = {
@@ -44,7 +47,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          "Stack fields in `Form.Group` sections, then add a plain `div` action row with Cancel and Submit buttons — see `formStoryStyles.footer` for the recommended layout classes.",
+          "Stack fields in `Form.Group` sections, then add a plain `div` action row with Cancel and Submit buttons — see `formStoryStyles.footer` for the recommended layout classes. Set `titleAs` on `Form.Group` so its title is one level below the nearest heading above it (`h2` directly under the page `h1`); it defaults to `h3`.",
       },
     },
   },

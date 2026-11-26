@@ -21,6 +21,12 @@ type ModalOverlayProps = Omit<ModalProps, "trigger">;
  * Tracks whether an element's content overflows vertically.
  * A scrolling body with nothing focusable inside can't be scrolled from the
  * keyboard, so the content region joins the tab order only while it overflows.
+ *
+ * Cost: one ResizeObserver per open modal, watching the region and its direct
+ * children. Content added later grows the region itself until it hits the
+ * dialog's max height, which the observer sees. ResizeObserver already batches
+ * to once per frame, and React skips the re-render when the boolean doesn't
+ * change, so no debouncing is needed.
  */
 const useIsOverflowing = <T extends HTMLElement>() => {
   const ref = useRef<T>(null);
