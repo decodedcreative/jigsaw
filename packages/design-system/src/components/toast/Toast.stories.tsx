@@ -226,8 +226,9 @@ export const Position: Story = {
           Toasts render in a fixed viewport. Change <strong>position</strong> in the Storybook
           controls to preview each placement.
         </p>
-        <PositionPreview position={args.position ?? "bottom-right"} />
+        {/* The region comes first so it registers before the preview fires its sample toast. */}
         <ToastRegion key={args.position} {...args} />
+        <PositionPreview position={args.position ?? "bottom-right"} />
       </div>
     </div>
   ),
@@ -240,7 +241,8 @@ export const MultipleRegions: Story = {
       description: {
         story:
           "Mount multiple regions with different `region` ids and `position` values. " +
-          "Route toasts with `toast({ title }, { region: \"top\" })` or `toast({ title, region: \"bottom\" })`.",
+          "Route toasts with `toast({ title }, { region: \"top\" })` or `toast({ title, region: \"bottom\" })`. " +
+          "Give each region its own `aria-label` (here \"Messages\" and \"Actions\") so screen readers can tell the landmarks apart.",
       },
     },
   },
@@ -267,8 +269,8 @@ export const MultipleRegions: Story = {
           Bottom region
         </Button>
       </div>
-      <ToastRegion region="top" position="top-right" />
-      <ToastRegion region="bottom" position="bottom-right" />
+      <ToastRegion region="top" position="top-right" aria-label="Messages" />
+      <ToastRegion region="bottom" position="bottom-right" aria-label="Actions" />
     </div>
   ),
 };
