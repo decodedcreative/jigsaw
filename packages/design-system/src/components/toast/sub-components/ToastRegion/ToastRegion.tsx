@@ -13,6 +13,7 @@ export const ToastRegion = ({
   position = "bottom-right",
   classNameOverrides,
   className,
+  ref,
 }: ToastRegionProps) => {
   useEffect(() => registerToastRegion(region), [region]);
 
@@ -22,7 +23,7 @@ export const ToastRegion = ({
   const rootClassName = useRootClassName(classNames.component, className);
 
   return (
-    <ReactAriaToastRegion queue={getToastQueue(region)} className={rootClassName}>
+    <ReactAriaToastRegion ref={ref} queue={getToastQueue(region)} className={rootClassName}>
       {({ toast }) => <ToastItem toast={toast} />}
     </ReactAriaToastRegion>
   );

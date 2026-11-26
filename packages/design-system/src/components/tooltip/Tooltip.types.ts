@@ -4,14 +4,14 @@ import type {
   TooltipProps as ReactAriaTooltipProps,
   TooltipTriggerComponentProps,
 } from "react-aria-components";
-import type { ClassNameOverrides } from "@jsw-types/component-props";
+import type { ClassNameOverrides, RefProp } from "@jsw-types/component-props";
 import type { tooltipStyles } from "./Tooltip.styles";
 
 export type TooltipPlacement = NonNullable<
   VariantProps<typeof tooltipStyles.component>["placement"]
 >;
 
-export type TooltipProps = Omit<ReactAriaTooltipProps, "children"> & {
+export type TooltipProps = RefProp<HTMLDivElement> & Omit<ReactAriaTooltipProps, "children"> & {
   children: ReactNode;
   showArrow?: boolean;
   classNameOverrides?: ClassNameOverrides<typeof tooltipStyles>;

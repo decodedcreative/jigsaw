@@ -2,9 +2,9 @@ import type { ReactNode } from "react";
 import { getClassNames } from "@utils";
 import { H3 } from "../heading/Heading.aliases";
 import { cardStyles } from "./Card.styles";
-import type { ClassNameOverrides } from "@jsw-types/component-props";
+import type { ClassNameOverrides, RefProp } from "@jsw-types/component-props";
 
-type CardHeaderProps = {
+type CardHeaderProps = RefProp<HTMLDivElement> & {
   classNameOverrides?: ClassNameOverrides<typeof cardStyles>;
   title?: string;
   description?: string;
@@ -18,13 +18,18 @@ const CardHeader = ({
   description,
   actions,
   header,
+  ref,
 }: CardHeaderProps) => {
   const classNames = getClassNames(cardStyles, classNameOverrides, {
     header: { hasActions: header == null && Boolean(actions) },
   });
 
   if (header != null) {
-    return <div className={classNames.header}>{header}</div>;
+    return (
+      <div ref={ref} className={classNames.header}>
+        {header}
+      </div>
+    );
   }
 
   if (!title && !description && !actions) {
@@ -32,7 +37,7 @@ const CardHeader = ({
   }
 
   return (
-    <div className={classNames.header}>
+    <div ref={ref} className={classNames.header}>
       <div className={classNames.headerContent}>
         {title ? (
           // h3 semantics with h4 visual scale — card titles sit below page/section headings.
@@ -45,6 +50,6 @@ const CardHeader = ({
   );
 };
 
-CardHeader.displayName = "Card.Header";
+CardHeader.displayName = "DS_Card.Header";
 
 export { CardHeader };
