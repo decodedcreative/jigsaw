@@ -184,6 +184,18 @@ Supported subpaths mirror folder names under `components/` (for example `./badge
 
 Do **not** deep-import internal files under `dist/components/.../Badge.mjs` — only the published `exports` subpaths are supported.
 
+A part attached with dot notation, such as `Select.Item`, is also exported by name from the same subpath. Use the named export in a Server Component, where dot notation on a client component's import doesn't work:
+
+```tsx
+import { Select, SelectItem } from "@jigsaw-ds/design-system/select";
+
+<Select label="Framework">
+  <SelectItem id="react">React</SelectItem>
+</Select>;
+```
+
+The named parts are `CardHeader`, `FormGroup`, `RadioGroupItem` and `SelectItem`.
+
 RSC-safe presentational surface today (import via subpaths):
 
 `Badge`, `Text`, `Heading` / `H1`–`H6`, `Skeleton`, `Icon`, `Card`

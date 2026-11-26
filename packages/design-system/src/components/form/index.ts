@@ -1,4 +1,5 @@
 export { Form } from "./Form";
+export { FormGroup } from "./sub-components/FormGroup";
 export type { FormComponent } from "./Form";
 export type { FormProps } from "./Form.types";
 export type { FormGroupProps, FormGroupClassNameOverrides } from "./sub-components/FormGroup";
