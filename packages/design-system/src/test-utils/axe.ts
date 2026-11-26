@@ -44,7 +44,7 @@ export async function expectNoAxeViolations(
   });
   if (results.violations.length > 0) {
     throw new Error(
-      `Expected no axe violations, found ${results.violations.length}:\n${results.violations
+      `Accessibility check failed: axe found ${results.violations.length} violation(s):\n${results.violations
         .map(formatViolation)
         .join("\n")}`
     );

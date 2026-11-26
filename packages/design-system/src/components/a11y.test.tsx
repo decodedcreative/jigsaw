@@ -16,6 +16,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { GearIcon } from "@phosphor-icons/react/Gear";
+
 import { expectNoAxeViolations } from "../test-utils/axe";
 import { Avatar } from "./avatar";
 import { Badge } from "./badge";
@@ -292,6 +293,8 @@ describe("axe", () => {
     });
   }
 
+  // Guard: every folder in src/components with an index.ts must have an entry
+  // in `cases`, so a new component can't ship without axe checks.
   it("covers every component folder", () => {
     const componentsDir = path.join(__dirname);
     const folders = readdirSync(componentsDir, { withFileTypes: true })
