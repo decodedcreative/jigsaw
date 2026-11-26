@@ -23,7 +23,9 @@ npm run test:stories --workspace=@jigsaw-ds/storybook # Every story in headless 
 
 The story tests need Playwright's Chromium once: `npx playwright install chromium`. `npm run format` formats the code with Prettier.
 
-GitHub Actions runs the same checks on every pull request, from `.github/workflows/ci.yml`, in four jobs: `test-design-system`, `lint`, `test-stories` and `test-tokens`. `main` requires `test-design-system` and `test-tokens`, and a branch that's up to date with `main`. Every push also publishes Storybook to Chromatic, which flags stories whose screenshots changed and fails on a story that throws.
+CI also runs `npm run test:packed`, which packs the publishable packages, installs them into a copy of `apps/web` outside the repo, as an app gets them from npm, then builds it and opens every page in Chromium. It fails on a page that doesn't load, an uncaught or console error, a class with no CSS rule, or a link to a missing page. It's slower than the other checks, so it isn't in the list above: run it after changing a package's `files`, `exports` or dependencies, or `apps/web`'s setup. `--skip-build` uses the packages you've already built, and `--keep` keeps the temporary folder to inspect.
+
+GitHub Actions runs the same checks on every pull request, from `.github/workflows/ci.yml`, in five jobs: `test-design-system`, `lint`, `test-stories`, `test-packed` and `test-tokens`. `main` requires `test-design-system` and `test-tokens`, and a branch that's up to date with `main`. Every push also publishes Storybook to Chromatic, which flags stories whose screenshots changed and fails on a story that throws.
 
 ## Releasing
 
