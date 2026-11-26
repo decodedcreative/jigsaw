@@ -6,7 +6,7 @@ import {
   CheckboxField as ReactAriaCheckboxField,
   CheckboxButton as ReactAriaCheckboxButton,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon, type IconSize } from "@components/icon";
 import { useCheckboxGroupContext } from "../checkbox-group/CheckboxGroupContext";
 import { checkboxStyles } from "./Checkbox.styles";
@@ -30,6 +30,7 @@ export const Checkbox = ({
   ref,
   ...props
 }: CheckboxProps) => {
+  const nameRef = useAccessibleNameWarning("Checkbox", ref, { target: 'input[type="checkbox"]' });
   const group = useCheckboxGroupContext();
   const resolvedHasError = hasError || group?.groupHasError || false;
   const state = resolvedHasError ? "error" : "default";
@@ -44,7 +45,7 @@ export const Checkbox = ({
 
   return (
     <ReactAriaCheckboxField isInvalid={isInvalid || resolvedHasError} {...props}>
-      <ReactAriaCheckboxButton ref={ref} className={rootClassName}>
+      <ReactAriaCheckboxButton ref={nameRef} className={rootClassName}>
         {({ isSelected, isIndeterminate }) => (
           <>
             <div className={classNames.box}>

@@ -23,4 +23,11 @@ export type ToastRegionProps = RefProp<HTMLDivElement> & {
   classNameOverrides?: ClassNameOverrides<typeof toastRegionStyles>;
   /** Extra classes for the root region, merged last via `twMerge` (wins conflicts). */
   className?: string;
+  /**
+   * Accessible name for the region landmark. Defaults to React Aria's
+   * "N notifications". When you mount more than one region, give each its own
+   * name (e.g. "Alerts", "Messages") so screen reader users can tell them apart;
+   * Jigsaw warns in development if two mounted regions share a name.
+   */
+  "aria-label"?: string;
 };

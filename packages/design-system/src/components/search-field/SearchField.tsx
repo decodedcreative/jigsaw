@@ -9,7 +9,7 @@ import {
   Button as ReactAriaButton,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon } from "@components/icon";
 import { searchFieldStyles } from "./SearchField.styles";
 import type { SearchFieldProps } from "./SearchField.types";
@@ -24,9 +24,15 @@ export const SearchField = ({
   className,
   isDisabled,
   isInvalid,
+  ref,
   ...props
 }: SearchFieldProps) => {
+  const nameRef = useAccessibleNameWarning("SearchField", ref, { target: "input" });
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
+  // A search box often has no visible label. Name it "Search" unless the app
+  // gives it a label or its own aria-label / aria-labelledby (JSW-128).
+  const defaultAriaLabel =
+    !label && !props["aria-label"] && !props["aria-labelledby"] ? "Search" : undefined;
 
   const classNames = useGetClassNames(searchFieldStyles, classNameOverrides, {
     label: { state },
@@ -41,7 +47,9 @@ export const SearchField = ({
       className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
+      aria-label={defaultAriaLabel}
       {...props}
+      ref={nameRef}
     >
       {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <div className={classNames.fieldBody}>
