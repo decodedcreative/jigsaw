@@ -29,7 +29,8 @@ export const Default: Story = {
     </div>
   ),
   play: async ({ canvas, userEvent, step }) => {
-    const overview = canvas.getByRole("tab", { name: "Overview" });
+    // React Aria renders collection items after the first pass, so wait for them.
+    const overview = await canvas.findByRole("tab", { name: "Overview" });
     const usage = canvas.getByRole("tab", { name: "Usage" });
     const props = canvas.getByRole("tab", { name: "Props" });
 

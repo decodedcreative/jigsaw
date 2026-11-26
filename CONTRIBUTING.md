@@ -67,6 +67,7 @@ Each interactive component has a `play` function that uses only the keyboard: ta
 - **On a hidden test story** when the steps leave a visible result, such as choosing an option, typing, or submitting a form. Give it `tags: ["!dev", "!autodocs"]` (written out in the story, because Storybook reads tags statically) and `parameters: TEST_ONLY_PARAMETERS`. It's hidden from the sidebar and docs and skipped by Chromatic, but the story tests still run it.
 - Popovers, tooltips, listboxes, dialogs and toasts render outside the story canvas, so query them with `screen` from `storybook/test`.
 - Links in a play function need their `click` default prevented, or following them navigates the test page away from the story.
+- React Aria collections (`Tabs`, `Select` options) render their items after the first pass, and in a production build the play function can start before them. Use `findByRole` for the first query, and wait for focus to return after an overlay closes (`waitFor(() => expect(trigger).toHaveFocus())`).
 
 ## Versioning & releasing
 
