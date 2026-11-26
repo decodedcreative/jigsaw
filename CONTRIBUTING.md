@@ -27,47 +27,9 @@ git checkout wip/design-system-overhaul-backup -- path/to/relevant/files
 
 `feat/jsw-XX-short-description` — matches the Jira ticket key.
 
-### Refs
+### Code conventions
 
-Jigsaw supports React 19 only. Don't use `forwardRef`: add `RefProp<Element>` (from `@jsw-types/component-props`) to the props type, and pass `ref` to the root element that receives `className`. `src/components/ref.test.tsx` renders every component with a ref and fails if it doesn't land on that element, or if a component is missing its `DS_` display name.
-
-### Accessibility unit tests
-
-`packages/design-system/src/components/a11y.test.tsx` runs axe on every component in its main states, including open and expanded ones. A new component folder fails the test until it has an entry there. Rule exceptions live in `src/test-utils/axe.ts` with their reasons; colour contrast is off in jsdom and is checked by the story tests below.
-
-### Story rules
-
-`apps/storybook/.storybook/story-rules.test.mjs` (part of the Storybook `test` script) checks every story file:
-
-- **"Show code" must be copy-pasteable.** If a story's `render` uses a local helper (a component defined in the story file, or imported from a story-only module), set `parameters.docs.source.code` to the real Jigsaw usage. Prefer rendering the component directly where you can, e.g. uncontrolled with `defaultSelected` rather than wrapped in a stateful helper. Documentation pages and full-page examples with no single snippet to copy set `parameters.docs.codePanel: false` instead.
-- **No layout classes on `Text` or `Heading`** (`flex`, `grid`, `gap-*`, `items-*`, `justify-*`, …). Put layout on a wrapper element.
-
-### Console warnings and screen reader phrases
-
-- **Unexpected console output fails the test.** `src/test-setup.ts` fails any unit test that logs a `console.warn` or `console.error` it didn't expect. If a warning is the point of the test, mock it (`vi.spyOn(console, "warn").mockImplementation(() => {})`) and assert on the spy.
-- **Screen reader phrases** are pinned in `src/components/announcements.test.tsx`, e.g. `"checkbox, Accept terms, checked"`. Add a case when a component gains a state that changes its markup. Changing an expectation changes what assistive technology users hear, so do it only on purpose.
-- **Accessible names:** controls call `useAccessibleNameWarning` (from `@hooks`), which warns in development when the rendered control has no accessible name. New interactive components should use it too; `accessible-name-warning.test.tsx` covers each one.
-
-### Story tests
-
-CI renders every Storybook story in headless Chromium, runs its play function, and runs axe through the a11y addon. Any axe violation fails the check. Run it locally with:
-
-```bash
-npx playwright install chromium   # once
-npm run test:stories --workspace=@jigsaw-ds/storybook
-```
-
-If a story has to accept a violation for now, set `parameters: { a11y: { test: "todo" } }` on that story with a comment linking the JSW ticket that fixes it.
-
-### Keyboard play functions
-
-Each interactive component has a `play` function that uses only the keyboard: tab to the control, use its keys, and check focus and the result. Put each check in a named `step` so the Interactions panel reads as a list of behaviours.
-
-- **On the stories people browse**, only when the steps leave the story looking as it did when it opened: press Space twice on a checkbox, open a list and close it with Escape. End with `clearFocus()` from `src/test-utils/story-play.ts` so the story and its Chromatic snapshot don't open with a focus ring.
-- **On a hidden test story** when the steps leave a visible result, such as choosing an option, typing, or submitting a form. Give it `tags: ["!dev", "!autodocs"]` (written out in the story, because Storybook reads tags statically) and `parameters: TEST_ONLY_PARAMETERS`. It's hidden from the sidebar and docs and skipped by Chromatic, but the story tests still run it.
-- Popovers, tooltips, listboxes, dialogs and toasts render outside the story canvas, so query them with `screen` from `storybook/test`.
-- Links in a play function need their `click` default prevented, or following them navigates the test page away from the story.
-- React Aria collections (`Tabs`, `Select` options) render their items after the first pass, and in a production build the play function can start before them. Use `findByRole` for the first query, and wait for focus to return after an overlay closes (`waitFor(() => expect(trigger).toHaveFocus())`).
+How components, tests and stories are written, and the checks to run before finishing a change, are in [AGENTS.md](AGENTS.md). Coding agents read the same file, so the conventions live in one place.
 
 ## Versioning & releasing
 
