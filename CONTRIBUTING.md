@@ -54,7 +54,7 @@ If a story has to accept a violation for now, set `parameters: { a11y: { test: "
 
 ## Versioning & releasing
 
-Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets) behind a small maintainer script. **Feature PRs must not include `.changeset/*.md` files.**
+Published packages (`@jigsaw-ds/*`) are versioned with [Changesets](https://github.com/changesets/changesets) behind a small maintainer script. **Feature PRs must not include `.changeset/*.md` files.** Instead, fill in the PR description's `## Consumer changelog` section: a sentence per change for app developers, `**Breaking:**` for breaking changes, or `None.`. A PR check requires it when a published package changes, and the release script writes those sentences into the changelogs (see [docs/publication.md](docs/publication.md)).
 
 When you are ready to cut a release from `main`:
 

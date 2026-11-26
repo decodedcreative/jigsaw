@@ -11,6 +11,7 @@ import {
   chooseSinceRef,
   parseBump,
   planChangeset,
+  repoSlugFromRemote,
 } from "./generate-changeset-from-changes.mjs";
 
 describe("selectPublishablePackages", () => {
@@ -181,5 +182,49 @@ describe("buildChangesetMarkdown", () => {
 chore: tweak build helper
 `
     );
+  });
+});
+
+describe("planChangeset with consumer changelog entries (JSW-137)", () => {
+  it("uses PR sentences, breaking first, instead of commit subjects", () => {
+    const plan = planChangeset({
+      sinceRef: "v0.4.0",
+      packageNames: new Set(["@jigsaw-ds/design-system"]),
+      bump: "minor",
+      commitSubjects: ["JSW-1: internal refactor"],
+      consumerItems: [
+        { pr: 104, entry: "`SearchField` is named \"Search\" when it has no label." },
+        { pr: 103, entry: "**Breaking:** the design system now requires React 19." },
+      ],
+    });
+    assert.equal(plan.breaking, true);
+    assert.match(plan.markdown, /"@jigsaw-ds\/design-system": minor/);
+    assert.ok(!plan.markdown.includes("internal refactor"));
+    const summary = plan.markdown.split("---\n\n")[1].trim().split("\n");
+    assert.deepEqual(summary, [
+      "- **Breaking:** the design system now requires React 19. (#103)",
+      '- `SearchField` is named "Search" when it has no label. (#104)',
+    ]);
+  });
+
+  it("falls back to commit subjects when there are no entries", () => {
+    const plan = planChangeset({
+      sinceRef: "v0.4.0",
+      packageNames: new Set(["@jigsaw-ds/tokens"]),
+      bump: "patch",
+      commitSubjects: ["fix: token typo (#12)"],
+      consumerItems: [],
+    });
+    assert.equal(plan.breaking, false);
+    assert.match(plan.markdown, /fix: token typo/);
+  });
+});
+
+describe("repoSlugFromRemote", () => {
+  it("reads owner/repo from HTTPS and SSH remotes", () => {
+    assert.equal(repoSlugFromRemote("https://github.com/decodedcreative/jigsaw"), "decodedcreative/jigsaw");
+    assert.equal(repoSlugFromRemote("https://github.com/decodedcreative/jigsaw.git"), "decodedcreative/jigsaw");
+    assert.equal(repoSlugFromRemote("git@github.com:decodedcreative/jigsaw.git"), "decodedcreative/jigsaw");
+    assert.equal(repoSlugFromRemote("https://gitlab.com/x/y"), null);
   });
 });
