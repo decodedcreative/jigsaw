@@ -9,7 +9,8 @@
  */
 import { createRef, useEffect, type ReactElement, type Ref } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { GearIcon } from "@phosphor-icons/react/Gear";
 
 import * as DS from "../index";
@@ -237,6 +238,19 @@ describe("refs and display names", () => {
     expect(titleRef.current).toBeInstanceOf(HTMLDivElement);
     expect(headerRef.current).toBeInstanceOf(HTMLDivElement);
     expect(headerRef.current).toHaveTextContent("Custom header");
+  });
+
+  it("Modal opened from its trigger attaches the ref to the dialog panel", async () => {
+    const ref = createRef<HTMLDivElement>();
+    render(
+      <DS.Modal ref={ref} className={PROBE} title="Dialog" trigger={<DS.Button>Open</DS.Button>}>
+        Body
+      </DS.Modal>
+    );
+    expect(ref.current).toBeNull();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Open" }));
+    await waitFor(() => expect(ref.current).toHaveClass(PROBE));
+    expect(ref.current).toContainElement(screen.getByRole("dialog", { name: "Dialog" }));
   });
 
   it("Select.Item attaches the ref to its option in the open listbox", async () => {
