@@ -12,7 +12,6 @@ export interface PublicEntry {
   /** Output directory under `dist`. */
   distDir: string;
   /** Entry key for the declaration-only tsup build. */
-  dtsEntryKey: string;
 }
 
 /** Conditional `import` / `require` target pair for one subpath. */
@@ -24,8 +23,6 @@ export interface ConditionalExport {
 export type PackageExports = Record<string, string | ConditionalExport>;
 
 export function listPublicEntries(): PublicEntry[];
-
-export function getDtsEntryRecord(): Record<string, string>;
 
 export function buildPackageExports(): PackageExports;
 
