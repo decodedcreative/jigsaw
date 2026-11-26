@@ -42,6 +42,17 @@ jobs:
         run: |
           set -euo pipefail
 
+          # Outcomes. Skips exit 0, and all but the last one post a
+          # "No release tag" notice on the run summary saying why:
+          #   - not main                                  -> exit 0, notice
+          #   - design-system version unchanged vs base   -> exit 0, notice
+          #   - tag exists but points at another commit   -> exit 0, notice
+          #   - tag existed already and a release exists  -> exit 0, notice
+          #   - release already published                 -> exit 0, log line
+          #   - package.json invalid or has no version    -> exit 1, error
+          #   - otherwise: push tag v{version} (if missing), then create or
+          #     update its draft GitHub Release.
+
           # Pin every decision to the push event SHA. Checkout is already that
           # commit; naming it explicitly keeps version/tag atomic even if a later
           # step ever moved HEAD (there is no in-job race otherwise).
