@@ -10,7 +10,7 @@ import {
   Modal as ReactAriaModal,
   ModalOverlay as ReactAriaModalOverlay,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon } from "@components/icon";
 import {
   mobileNavigationStyles,
@@ -21,14 +21,14 @@ import {
   navigationLinksStyles,
   navigationStyles,
 } from "./Navigation.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
 
 /** Root `className`, merged last via `twMerge` (wins conflicts). */
 type RootClassNameProp = {
   className?: string;
 };
 
-export type NavigationProps = WithoutClassName<HTMLAttributes<HTMLElement>> &
+export type NavigationProps = RefProp<HTMLElement> & WithoutClassName<HTMLAttributes<HTMLElement>> &
   RootClassNameProp & {
     classNameOverrides?: ClassNameOverrides<typeof navigationStyles>;
   };
@@ -49,7 +49,7 @@ export const Navigation = ({ classNameOverrides, className, children, ...props }
 
 Navigation.displayName = "DS_Navigation";
 
-export type NavigationInnerProps = WithoutClassName<HTMLAttributes<HTMLDivElement>> &
+export type NavigationInnerProps = RefProp<HTMLDivElement> & WithoutClassName<HTMLAttributes<HTMLDivElement>> &
   RootClassNameProp & {
     classNameOverrides?: ClassNameOverrides<typeof navigationInnerStyles>;
   };
@@ -66,7 +66,7 @@ export const NavigationInner = ({ classNameOverrides, className, children, ...pr
 
 NavigationInner.displayName = "DS_NavigationInner";
 
-export type NavigationBrandProps = RootClassNameProp & {
+export type NavigationBrandProps = RefProp<HTMLAnchorElement> & RootClassNameProp & {
   href?: string;
   children?: ReactNode;
   classNameOverrides?: ClassNameOverrides<typeof navigationBrandStyles>;
@@ -77,11 +77,13 @@ export const NavigationBrand = ({
   classNameOverrides,
   className,
   children,
+  ref,
 }: NavigationBrandProps) => {
+  const nameRef = useAccessibleNameWarning("NavigationBrand", ref);
   const classNames = useGetClassNames(navigationBrandStyles, classNameOverrides, { component: {} });
   const rootClassName = useRootClassName(classNames.component, className);
   return (
-    <ReactAriaLink href={href} className={rootClassName}>
+    <ReactAriaLink ref={nameRef} href={href} className={rootClassName}>
       {children}
     </ReactAriaLink>
   );
@@ -89,7 +91,7 @@ export const NavigationBrand = ({
 
 NavigationBrand.displayName = "DS_NavigationBrand";
 
-export type NavigationLinksProps = WithoutClassName<HTMLAttributes<HTMLDivElement>> &
+export type NavigationLinksProps = RefProp<HTMLDivElement> & WithoutClassName<HTMLAttributes<HTMLDivElement>> &
   RootClassNameProp & {
     classNameOverrides?: ClassNameOverrides<typeof navigationLinksStyles>;
   };
@@ -106,7 +108,7 @@ export const NavigationLinks = ({ classNameOverrides, className, children, ...pr
 
 NavigationLinks.displayName = "DS_NavigationLinks";
 
-export type NavigationLinkProps = RootClassNameProp & {
+export type NavigationLinkProps = RefProp<HTMLAnchorElement> & RootClassNameProp & {
   href: string;
   isCurrent?: boolean;
   children: ReactNode;
@@ -119,11 +121,14 @@ export const NavigationLink = ({
   classNameOverrides,
   className,
   children,
+  ref,
 }: NavigationLinkProps) => {
+  const nameRef = useAccessibleNameWarning("NavigationLink", ref);
   const classNames = useGetClassNames(navigationLinkStyles, classNameOverrides, { component: {} });
   const rootClassName = useRootClassName(classNames.component, className);
   return (
     <ReactAriaLink
+      ref={nameRef}
       href={href}
       className={rootClassName}
       data-current={isCurrent ? "" : undefined}
@@ -136,7 +141,7 @@ export const NavigationLink = ({
 
 NavigationLink.displayName = "DS_NavigationLink";
 
-export type NavigationActionsProps = WithoutClassName<HTMLAttributes<HTMLDivElement>> &
+export type NavigationActionsProps = RefProp<HTMLDivElement> & WithoutClassName<HTMLAttributes<HTMLDivElement>> &
   RootClassNameProp & {
     classNameOverrides?: ClassNameOverrides<typeof navigationActionsStyles>;
   };

@@ -6,7 +6,7 @@ import {
   Input as ReactAriaInput,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { inputStyles } from "./Input.styles";
 import type { InputProps } from "./Input.types";
 
@@ -20,8 +20,10 @@ export const Input = ({
   className,
   isDisabled,
   isInvalid,
+  ref,
   ...props
 }: InputProps) => {
+  const nameRef = useAccessibleNameWarning("Input", ref, { target: "input" });
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
   const classNames = useGetClassNames(inputStyles, classNameOverrides, {
@@ -37,6 +39,7 @@ export const Input = ({
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
+      ref={nameRef}
     >
       {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <div className={classNames.fieldBody}>

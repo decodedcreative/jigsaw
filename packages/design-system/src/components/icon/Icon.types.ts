@@ -2,7 +2,7 @@ import type { VariantProps } from "class-variance-authority";
 import type { CSSProperties, SVGAttributes } from "react";
 import type { Icon as PhosphorIcon, IconProps as PhosphorIconProps } from "@phosphor-icons/react/lib";
 import { customIconStyles, iconStyles } from "./Icon.styles";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
 
 type IconVariants = VariantProps<typeof iconStyles.component>;
 export type IconSize = NonNullable<IconVariants["size"]>;
@@ -72,7 +72,7 @@ export type CustomIconComponentProps = IconSharedProps &
  * bypasses semantic tokens / dark mode. Use `tone` for token-aligned colour, omit `tone`
  * to inherit `currentColor` from the parent, or `style` + `data-fill` for custom SVG.
  */
-export type IconProps = PhosphorIconComponentProps | CustomIconComponentProps;
+export type IconProps = RefProp<SVGSVGElement> & (PhosphorIconComponentProps | CustomIconComponentProps);
 
 export function isCustomIconProps(props: IconProps): props is CustomIconComponentProps {
   return "viewBox" in props && typeof props.viewBox === "string";

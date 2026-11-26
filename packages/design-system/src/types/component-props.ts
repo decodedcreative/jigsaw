@@ -21,3 +21,13 @@ export type RootClassName<P extends { defaultClassName?: string } = { defaultCla
  * `classNameOverrides` (including `component` for the root element).
  */
 export type WithoutClassName<T> = Omit<T, "className">;
+
+/**
+ * `ref` for the component's root element: the one that receives `className`
+ * (JSW-127). Jigsaw supports React 19 only, where `ref` is a normal prop on
+ * function components, so components take it in props and pass it to the root
+ * instead of using the deprecated `forwardRef`.
+ */
+export type RefProp<TElement extends Element> = {
+  ref?: import("react").Ref<TElement>;
+};

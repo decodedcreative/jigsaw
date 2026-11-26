@@ -1,0 +1,31 @@
+name: Consumer changelog
+
+# A PR that changes a publishable package must say, in its description's
+# "## Consumer changelog" section, what an app gets or has to change, or None.
+# The release script copies those sentences into the changelog (JSW-137).
+# Runs again when the description is edited, so fixing it doesn't need a push.
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+concurrency:
+  group: consumer-changelog-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  consumer-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check the PR description
+        run: node scripts/check-consumer-changelog.mjs

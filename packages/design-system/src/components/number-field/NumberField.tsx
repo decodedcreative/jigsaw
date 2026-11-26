@@ -10,7 +10,7 @@ import {
   Button as ReactAriaButton,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon } from "@components/icon";
 import { numberFieldStyles } from "./NumberField.styles";
 import type { NumberFieldProps } from "./NumberField.types";
@@ -24,8 +24,10 @@ export const NumberField = ({
   className,
   isDisabled,
   isInvalid,
+  ref,
   ...props
 }: NumberFieldProps) => {
+  const nameRef = useAccessibleNameWarning("NumberField", ref, { target: "input" });
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
   const classNames = useGetClassNames(numberFieldStyles, classNameOverrides, {
@@ -44,6 +46,7 @@ export const NumberField = ({
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
+      ref={nameRef}
     >
       {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
       <div className={classNames.fieldBody}>

@@ -14,6 +14,23 @@ describe('SearchField', () => {
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
   });
 
+  it('is named "Search" when it has no label', () => {
+    render(<SearchField />);
+    expect(screen.getByRole('searchbox', { name: 'Search' })).toBeInTheDocument();
+  });
+
+  it('uses its label or aria-label instead of the default name', () => {
+    render(
+      <>
+        <SearchField label="Find people" />
+        <SearchField aria-label="Search orders" />
+      </>
+    );
+    expect(screen.getByRole('searchbox', { name: 'Find people' })).toBeInTheDocument();
+    expect(screen.getByRole('searchbox', { name: 'Search orders' })).toBeInTheDocument();
+    expect(screen.queryByRole('searchbox', { name: 'Search' })).not.toBeInTheDocument();
+  });
+
   it('renders with default placeholder', () => {
     render(<SearchField />);
     expect(screen.getByPlaceholderText('Search...')).toBeInTheDocument();

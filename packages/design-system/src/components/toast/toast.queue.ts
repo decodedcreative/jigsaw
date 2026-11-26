@@ -14,6 +14,8 @@ export const DEFAULT_TOAST_REGION = "default";
 /** Queues persist for the app lifetime; use fixed {@link ToastRegionId} values only. */
 const queues = new Map<string, ToastQueue<ToastContent>>();
 const mountCounts = new Map<string, number>();
+/** Mounted regions per accessible name; "" is React Aria's default ("N notifications"). */
+const nameCounts = new Map<string, number>();
 
 /** @internal Returns the queue for a region id, creating one on first use. */
 export function getToastQueue(region: string = DEFAULT_TOAST_REGION): ToastQueue<ToastContent> {
@@ -25,30 +27,41 @@ export function getToastQueue(region: string = DEFAULT_TOAST_REGION): ToastQueue
   return queue;
 }
 
+function decrement(map: Map<string, number>, key: string) {
+  const next = (map.get(key) ?? 1) - 1;
+  if (next <= 0) map.delete(key);
+  else map.set(key, next);
+}
+
 /**
- * @internal Tracks a mounted {@link ToastRegion} for the given region id.
- * Warns in development when duplicate region ids are mounted.
+ * @internal Tracks a mounted {@link ToastRegion} for the given region id and
+ * accessible name. Warns in development when duplicate region ids are mounted,
+ * or when two mounted regions share a name, since screen reader users then
+ * can't tell the landmarks apart.
  */
-export function registerToastRegion(region: string = DEFAULT_TOAST_REGION) {
+export function registerToastRegion(region: string = DEFAULT_TOAST_REGION, name: string = "") {
   if (process.env.NODE_ENV !== "production") {
-    const count = mountCounts.get(region) ?? 0;
-    if (count > 0) {
+    if ((mountCounts.get(region) ?? 0) > 0) {
       console.warn(
         `[@jigsaw-ds/design-system] Multiple <ToastRegion region="${region}" /> instances are mounted. ` +
           "Each toast posted to this region will render once per instance."
+      );
+    } else if ((nameCounts.get(name) ?? 0) > 0) {
+      const described = name ? `aria-label="${name}"` : "no aria-label";
+      console.warn(
+        `[@jigsaw-ds/design-system] Two <ToastRegion>s are mounted with ${described}, so screen readers ` +
+          `announce both landmarks with the same name. Give each region its own aria-label, ` +
+          `e.g. <ToastRegion region="${region}" aria-label="Alerts" />.`
       );
     }
   }
 
   mountCounts.set(region, (mountCounts.get(region) ?? 0) + 1);
+  nameCounts.set(name, (nameCounts.get(name) ?? 0) + 1);
 
   return () => {
-    const next = (mountCounts.get(region) ?? 1) - 1;
-    if (next <= 0) {
-      mountCounts.delete(region);
-    } else {
-      mountCounts.set(region, next);
-    }
+    decrement(mountCounts, region);
+    decrement(nameCounts, name);
   };
 }
 
@@ -70,4 +83,5 @@ export function clearAllToastQueues() {
 /** @internal Resets mount tracking — for tests. */
 export function resetToastRegionMounts() {
   mountCounts.clear();
+  nameCounts.clear();
 }

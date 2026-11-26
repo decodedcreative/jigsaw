@@ -1,6 +1,6 @@
 import type { VariantProps } from "class-variance-authority";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
 import type { cardStyles } from "./Card.styles";
 
 export type CardVariant = NonNullable<VariantProps<typeof cardStyles.component>["variant"]>;
@@ -28,7 +28,6 @@ type CardPropsFor<T extends CardElement> = CardBaseProps &
   (T extends "div" ? { as?: "div" } : { as: T }) &
   WithoutClassName<ComponentPropsWithoutRef<T>>;
 
-export type CardProps =
-  | CardPropsFor<"div">
+export type CardProps = RefProp<HTMLElement> & (| CardPropsFor<"div">
   | CardPropsFor<"a">
-  | CardPropsFor<"button">;
+  | CardPropsFor<"button">);

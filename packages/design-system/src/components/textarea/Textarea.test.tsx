@@ -24,17 +24,17 @@ describe('Textarea', () => {
   });
 
   it('renders with placeholder', () => {
-    render(<Textarea placeholder="Write your message..." />);
+    render(<Textarea label="Message" placeholder="Write your message..." />);
     expect(screen.getByPlaceholderText('Write your message...')).toBeInTheDocument();
   });
 
   it('renders with default rows of 4', () => {
-    const { container } = render(<Textarea />);
+    const { container } = render(<Textarea label="Message" />);
     expect(container.querySelector('textarea')).toHaveAttribute('rows', '4');
   });
 
   it('renders with custom rows', () => {
-    const { container } = render(<Textarea rows={8} />);
+    const { container } = render(<Textarea label="Message" rows={8} />);
     expect(container.querySelector('textarea')).toHaveAttribute('rows', '8');
   });
 

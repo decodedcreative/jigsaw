@@ -10,6 +10,11 @@
  * time; this script does not list untouched peers in the changeset, so their
  * changelogs are not filled with another package's commits.
  *
+ * The summary is the consumer changelog: the sentences from the
+ * `## Consumer changelog` section of each PR merged since the baseline
+ * (JSW-137), breaking changes first. If no PR has any (or GitHub can't be
+ * reached through `gh`), it falls back to commit subjects with a warning.
+ *
  * Prefer the maintainer entrypoint `npm run version-and-tag:*`, which calls this
  * script then runs `changeset version` and creates a git tag.
  *
@@ -18,6 +23,7 @@
  *   node scripts/generate-changeset-from-changes.mjs --bump minor
  *   node scripts/generate-changeset-from-changes.mjs --since v0.1.0 --dry-run
  *   node scripts/generate-changeset-from-changes.mjs --force
+ *   node scripts/generate-changeset-from-changes.mjs --no-pr-changelog   # commit subjects only
  */
 import { execFileSync } from "node:child_process";
 import {
@@ -33,6 +39,12 @@ import { createHash } from "node:crypto";
 import {
   loadChangedPublishablePackages,
 } from "./lib/publishable-packages.mjs";
+import {
+  extractConsumerChangelog,
+  formatChangelogSummary,
+  isBreaking,
+  pullRequestNumbersFromSubjects,
+} from "./lib/consumer-changelog.mjs";
 
 const repoRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const changesetDir = path.join(repoRoot, ".changeset");
@@ -177,6 +189,58 @@ function commitSubjectsForPackages(sinceRef, packagePaths) {
   return list;
 }
 
+/** owner/repo for `gh api`, from GITHUB_REPOSITORY or the origin remote. */
+export function repoSlugFromRemote(remoteUrl) {
+  const match = /github\.com[:/]([^/]+)\/([^/.]+?)(?:\.git)?\/?$/.exec(remoteUrl ?? "");
+  return match ? `${match[1]}/${match[2]}` : null;
+}
+
+function fetchPullRequestBody(slug, number) {
+  return execFileSync("gh", ["api", `repos/${slug}/pulls/${number}`, "--jq", ".body // \"\""], {
+    cwd: repoRoot,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+}
+
+/**
+ * Consumer changelog entries from PRs merged since `sinceRef`.
+ * Returns null when GitHub can't be reached, so the caller can fall back.
+ *
+ * @returns {{ pr: number, entry: string }[] | null}
+ */
+export function collectConsumerChangelog(sinceRef, { fetchBody = fetchPullRequestBody } = {}) {
+  const subjects = runGit(["log", "--format=%s", `${sinceRef}...HEAD`]).split("\n").filter(Boolean);
+  const numbers = pullRequestNumbersFromSubjects(subjects);
+  if (numbers.length === 0) {
+    log(`no merged PRs found since ${sinceRef}`);
+    return [];
+  }
+
+  const slug =
+    process.env.GITHUB_REPOSITORY ??
+    repoSlugFromRemote(runGit(["remote", "get-url", "origin"], { allowFailure: true }));
+  if (!slug) {
+    log("warning: can't tell the GitHub repository from the origin remote; skipping PR changelogs");
+    return null;
+  }
+
+  const items = [];
+  for (const number of numbers) {
+    let body;
+    try {
+      body = fetchBody(slug, number);
+    } catch (error) {
+      log(`warning: couldn't read PR #${number} with gh (${error.message.split("\n")[0]}); skipping PR changelogs`);
+      return null;
+    }
+    const { entries } = extractConsumerChangelog(body);
+    for (const entry of entries) items.push({ pr: number, entry });
+  }
+  log(`consumer changelog: ${items.length} entr${items.length === 1 ? "y" : "ies"} from ${numbers.length} PR(s)`);
+  return items;
+}
+
 function clearPendingChangesets() {
   for (const name of listPendingChangesetFiles()) {
     unlinkSync(path.join(changesetDir, name));
@@ -184,8 +248,24 @@ function clearPendingChangesets() {
   }
 }
 
-export function planChangeset({ packageNames, bump, commitSubjects, sinceRef }) {
+export function planChangeset({ packageNames, bump, commitSubjects, sinceRef, consumerItems = [] }) {
   if (packageNames.size === 0) return null;
+
+  if (consumerItems.length > 0) {
+    const markdown = buildChangesetMarkdown({
+      packages: packageNames,
+      bump,
+      summaryLines: formatChangelogSummary(consumerItems),
+    });
+    return {
+      sinceRef,
+      packages: [...packageNames].sort(),
+      bump,
+      breaking: consumerItems.some(({ entry }) => isBreaking(entry)),
+      fileName: changesetFileName(markdown),
+      markdown,
+    };
+  }
 
   const summaryLines = [];
   const seen = new Set();
@@ -207,6 +287,7 @@ export function planChangeset({ packageNames, bump, commitSubjects, sinceRef }) 
     sinceRef,
     packages: [...packageNames].sort(),
     bump,
+    breaking: false,
     fileName: changesetFileName(markdown),
     markdown,
   };
@@ -251,12 +332,23 @@ function main(argv = process.argv.slice(2)) {
     sinceRef,
     changedPackages.map((pkg) => pkg.path)
   );
+  const consumerItems = hasFlag(argv, "--no-pr-changelog") ? null : collectConsumerChangelog(sinceRef);
+  if (!consumerItems || consumerItems.length === 0) {
+    log("warning: no consumer changelog entries; the changelog will list commit subjects instead");
+  }
   const plan = planChangeset({
     sinceRef,
     packageNames: changedNames,
     bump,
     commitSubjects: subjects,
+    consumerItems: consumerItems ?? [],
   });
+  if (plan.breaking && bump === "patch") {
+    log(
+      "warning: the changelog includes breaking changes but the bump is patch. " +
+        "Under 0.x, use --bump minor (version-and-tag:minor) for breaking changes."
+    );
+  }
 
   const outPath = path.join(changesetDir, plan.fileName);
   log(`${plan.bump} for ${plan.packages.join(", ")}`);
