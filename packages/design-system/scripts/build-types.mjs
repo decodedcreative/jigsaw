@@ -56,6 +56,12 @@ function rewriteSpecifiers(source, rewrite) {
   });
 }
 
+/**
+ * Files under `dir` (recursively) whose name matches `predicate`.
+ * Recursion depth equals directory nesting, which is shallow here (dist/ mirrors
+ * src/, at most ~5 levels deep), so there's no risk to the call stack.
+ * Returns [] if `dir` doesn't exist yet (first build).
+ */
 function listFiles(dir, predicate, out = []) {
   if (!fs.existsSync(dir)) return out;
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -72,7 +78,13 @@ function isFile(p) {
   return fs.existsSync(p) && fs.statSync(p).isFile();
 }
 
-/** Resolve a src/ path (no extension) to the source file tsc compiled. */
+/**
+ * Resolve an extensionless src/ path to the source file tsc compiled, using the
+ * same order as TypeScript's bundler resolution for our sources:
+ * the exact file, then `.ts`, `.tsx`, then a directory's `index.ts` / `index.tsx`.
+ * Returns null if none exist; callers throw, so a moved or renamed file fails
+ * the build instead of emitting a broken import.
+ */
 function resolveSourceModule(absolute) {
   if (isFile(absolute)) return absolute;
   for (const ext of [".ts", ".tsx", "/index.ts", "/index.tsx"]) {

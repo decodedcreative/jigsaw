@@ -3,7 +3,7 @@
   // JavaScript is built by tsup; this config only writes .d.ts files.
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "noEmit": false,
+    // Emit .d.ts only; tsup writes the JavaScript.
     "declaration": true,
     "emitDeclarationOnly": true,
     // src/ isn't published, so declaration maps would point at missing files.
