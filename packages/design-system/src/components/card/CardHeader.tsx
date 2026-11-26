@@ -4,7 +4,7 @@ import { H3 } from "../heading/Heading.aliases";
 import { cardStyles } from "./Card.styles";
 import type { ClassNameOverrides, RefProp } from "@jsw-types/component-props";
 
-type CardHeaderProps = RefProp<HTMLDivElement> & {
+export type CardHeaderProps = RefProp<HTMLDivElement> & {
   classNameOverrides?: ClassNameOverrides<typeof cardStyles>;
   title?: string;
   description?: string;

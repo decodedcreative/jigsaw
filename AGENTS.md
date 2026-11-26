@@ -137,9 +137,10 @@ Components are styled with Tailwind classes and the Jigsaw theme. `button/Button
 
 A component made of parts uses dot notation, such as `Card.Header`, `Form.Group` and `RadioGroup.Item`.
 
-- Each part lives in its own file in the parent's folder, prefixed with the parent's name, such as `CardHeader.tsx` and `RadioGroupItem.tsx`. Form keeps its parts in `form/sub-components/`, from before this rule.
+- Each part lives in its own file in the parent's folder. Card, Select and RadioGroup use files prefixed with the parent's name, such as `CardHeader.tsx`, while Form, Tabs and Toast keep their parts in a `sub-components/` folder. There's no single rule yet, so follow the folder you're working in.
 - Each part follows the declaration rules above, with a dotted display name, such as `DS_Card.Header`.
-- The parent attaches each part as a property, such as `Card.Header = CardHeader`, and the folder's `index.ts` exports the parent and the parts' prop types.
+- The parent attaches each part as a property, such as `Card.Header = CardHeader`.
+- The folder's `index.ts` also exports each part by name, such as `CardHeader`, with its props type. A React Server Component can't reach a part through dot notation on a client component's import, so the named export is the only way to use it there. `src/components/sub-component-exports.test.ts` fails when an attached part isn't exported by name.
 
 ## Writing tests
 

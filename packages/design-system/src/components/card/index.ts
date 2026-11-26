@@ -1,4 +1,6 @@
 export { default as Card } from "./Card";
+export { CardHeader } from "./CardHeader";
+export type { CardHeaderProps } from "./CardHeader";
 export type { CardComponent } from "./Card";
 export type { CardElement, CardProps } from "./Card.types";
 export type { CardVariant } from "./Card.types";

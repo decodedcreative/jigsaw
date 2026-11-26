@@ -64,7 +64,9 @@ function componentExports(): [string, ComponentExport][] {
       .filter(([key, sub]) => /^[A-Z]/.test(key) && sub && (typeof sub === "function" || typeof sub === "object"))
       .map(([key, sub]) => [`${name}.${key}`, sub as ComponentExport] as [string, ComponentExport])
   );
-  return [...top, ...statics];
+  // Parts are also exported by name (CardHeader is Card.Header). Test each once, by its dotted name.
+  const parts = new Set(statics.map(([, sub]) => sub));
+  return [...top.filter(([, value]) => !parts.has(value)), ...statics];
 }
 
 /** Minimal render for each component, passing the ref through. */
