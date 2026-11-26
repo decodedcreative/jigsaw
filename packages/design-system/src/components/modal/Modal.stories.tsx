@@ -77,9 +77,25 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const DEFAULT_SOURCE = `<Modal
+  title="Confirm action"
+  trigger={<Button>Open</Button>}
+  footer={
+    <Button variant="destructive" slot="close">
+      Confirm
+    </Button>
+  }
+>
+  <p className="text-sm text-foreground-secondary">
+    Are you sure you want to continue? This action cannot be undone.
+  </p>
+</Modal>`;
+
 export const Default: Story = {
   parameters: {
     docs: {
+      // ModalStory only wires the open state to Storybook's isOpen control.
+      source: { code: DEFAULT_SOURCE, language: "tsx" },
       description: {
         story:
           "Default confirmation layout with header close, wired footer cancel, and a confirm action. Toggle `showCloseButton` or `showCancelButton` when dismissal should live only in the footer.",
@@ -105,9 +121,27 @@ export const Default: Story = {
   ),
 };
 
+const WITHCONFIRMDISMISS_SOURCE = `<Modal
+  title="Confirm action"
+  showCancelButton={false}
+  showCloseButton={false}
+  trigger={<Button>Open</Button>}
+  footer={
+    <Button variant="destructive" slot="close">
+      Confirm
+    </Button>
+  }
+>
+  <p className="text-sm text-foreground-secondary">
+    Are you sure you want to continue? This action cannot be undone.
+  </p>
+</Modal>`;
+
 export const WithConfirmDismiss: Story = {
   parameters: {
     docs: {
+      // ModalStory only wires the open state to Storybook's isOpen control.
+      source: { code: WITHCONFIRMDISMISS_SOURCE, language: "tsx" },
       description: {
         story: 'A single confirm button in the footer handles dismissal via `slot="close"`.',
       },
@@ -134,9 +168,17 @@ export const WithConfirmDismiss: Story = {
   ),
 };
 
+const WITHFOOTERCANCEL_SOURCE = `<Modal title="Terms updated" showCancelButton trigger={<Button>Open</Button>}>
+  <p className="text-sm text-foreground-secondary">
+    We have updated our terms of service. Review the changes on the settings page when you are ready.
+  </p>
+</Modal>`;
+
 export const WithFooterCancel: Story = {
   parameters: {
     docs: {
+      // ModalStory only wires the open state to Storybook's isOpen control.
+      source: { code: WITHFOOTERCANCEL_SOURCE, language: "tsx" },
       description: {
         story:
           "Informational modal with a wired footer cancel button. Set `showCancelButton` when there is no `footer` action.",
@@ -157,9 +199,17 @@ export const WithFooterCancel: Story = {
   ),
 };
 
+const WITHHEADERCLOSE_SOURCE = `<Modal title="Quick tip" showCancelButton={false} trigger={<Button>Open</Button>}>
+  <p className="text-sm text-foreground-secondary">
+    Use keyboard shortcuts from the command palette to navigate faster.
+  </p>
+</Modal>`;
+
 export const WithHeaderClose: Story = {
   parameters: {
     docs: {
+      // ModalStory only wires the open state to Storybook's isOpen control.
+      source: { code: WITHHEADERCLOSE_SOURCE, language: "tsx" },
       description: {
         story:
           "Dismissal via the header close button. Pair with `showCancelButton={false}` when no footer is needed.",
@@ -179,9 +229,22 @@ export const WithHeaderClose: Story = {
   ),
 };
 
+const WITHSCROLLABLECONTENT_SOURCE = `<Modal
+  title="Release notes"
+  trigger={<Button>Open</Button>}
+  footer={<Button slot="close">Got it</Button>}
+>
+  <div className="flex flex-col gap-4 text-sm text-foreground-secondary">
+    <p>…</p>
+    <p>…</p>
+  </div>
+</Modal>`;
+
 export const WithScrollableContent: Story = {
   parameters: {
     docs: {
+      // ModalStory only wires the open state to Storybook's isOpen control.
+      source: { code: WITHSCROLLABLECONTENT_SOURCE, language: "tsx" },
       description: {
         story: "Long body copy scrolls inside the modal while the header and footer stay fixed.",
       },
@@ -239,9 +302,30 @@ export const Controlled: Story = {
   },
 };
 
+const WITHCUSTOMHEADER_SOURCE = `import { Heading } from "react-aria-components";
+
+<Modal
+  showCancelButton={false}
+  trigger={<Button>Open</Button>}
+  header={
+    <div className="flex w-full items-center justify-between">
+      <Heading slot="title" className="text-lg font-semibold text-foreground-primary">
+        Custom header
+      </Heading>
+      <span className="text-xs text-foreground-muted">Optional metadata</span>
+    </div>
+  }
+>
+  <p className="text-sm text-foreground-secondary">
+    The header region is fully owned by the consumer here.
+  </p>
+</Modal>`;
+
 export const WithCustomHeader: Story = {
   parameters: {
     docs: {
+      // ModalStory only wires the open state to Storybook's isOpen control.
+      source: { code: WITHCUSTOMHEADER_SOURCE, language: "tsx" },
       description: {
         story:
           "Replace the default header with `header`. Include `Heading slot=\"title\"` so assistive tech gets a dialog label.",

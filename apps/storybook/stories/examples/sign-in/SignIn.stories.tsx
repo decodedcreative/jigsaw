@@ -113,7 +113,12 @@ const SignInPage = () => {
 
 const meta = {
   title: "Examples/Sign In",
-  parameters: { layout: "fullscreen" },
+  parameters: {
+    layout: "fullscreen",
+    // Full-page example built from local components: there's no single snippet
+    // to copy, so no "Show code" (JSW-134). See the source files alongside.
+    docs: { codePanel: false },
+  },
 } satisfies Meta;
 
 export default meta;

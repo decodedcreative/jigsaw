@@ -29,7 +29,11 @@ function SpacingContent() {
 
 const meta = {
   title: "Design Tokens/Spacing",
-  parameters: { layout: "fullscreen" },
+  parameters: {
+    layout: "fullscreen",
+    // Token documentation: no component usage to copy, so no "Show code" (JSW-134).
+    docs: { codePanel: false },
+  },
 } satisfies Meta;
 
 export default meta;
