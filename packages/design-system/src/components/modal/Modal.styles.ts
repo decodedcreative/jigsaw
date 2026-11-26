@@ -26,6 +26,9 @@ export const modalStyles = {
     "p-1.5 rounded-md text-foreground-muted hover:text-foreground-primary hover:bg-surface-muted transition-colors",
     "focus:outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-accent",
   ]),
-  content: cva(["min-h-0 overflow-y-auto overscroll-contain p-6"]),
+  content: cva([
+    "min-h-0 overflow-y-auto overscroll-contain p-6",
+    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-interactive-focus",
+  ]),
   footer: cva(["shrink-0 flex items-center justify-end gap-3 p-6 border-t border-border-default"]),
 };
