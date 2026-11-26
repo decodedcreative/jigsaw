@@ -59,12 +59,41 @@ jobs:
           # all of them. Fall back to the first parent when `before` is missing
           # (new branch / force push) or unknown to this clone.
           BASE="${BEFORE_SHA:-}"
-          if [[ -z "$BASE" || "$BASE" =~ ^0+$ ]] || ! git cat-file -e "${BASE}^{commit}" 2>/dev/null; then
+          if [[ -z "$BASE" || "$BASE" =~ ^0+$ ]]; then
             BASE="${SHA}^1"
+            echo "base: ${BASE} (first parent; push event has no before SHA)"
+          elif ! git cat-file -e "${BASE}^{commit}" 2>/dev/null; then
+            echo "base: ${SHA}^1 (first parent; before SHA ${BASE} is not in this clone)"
+            BASE="${SHA}^1"
+          else
+            echo "base: ${BASE} (main before this push)"
           fi
 
+          # Prints the version, or nothing if the file doesn't exist at that
+          # commit. Fails the job if the file exists but isn't valid JSON or has
+          # no version, rather than treating that as "no previous version".
           read_version() {
-            git show "$1:$PKG" 2>/dev/null | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{try{process.stdout.write(JSON.parse(d).version||"")}catch{}})'
+            local json
+            if ! json=$(git show "$1:$PKG" 2>/dev/null); then
+              return 0
+            fi
+            printf '%s' "$json" | node -e '
+              let d = "";
+              process.stdin.on("data", (c) => (d += c)).on("end", () => {
+                let version;
+                try {
+                  version = JSON.parse(d).version;
+                } catch (e) {
+                  console.error(`invalid JSON in ${process.argv[1]}: ${e.message}`);
+                  process.exit(1);
+                }
+                if (typeof version !== "string" || version === "") {
+                  console.error(`no "version" string in ${process.argv[1]}`);
+                  process.exit(1);
+                }
+                process.stdout.write(version);
+              });
+            ' "$1:$PKG"
           }
 
           VERSION=$(read_version "$SHA")
