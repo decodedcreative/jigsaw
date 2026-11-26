@@ -45,12 +45,10 @@ export function listPublicEntries() {
     subpath: name,
     source: "src/components/" + name + "/index.ts",
     distDir: "components/" + name,
-    dtsEntryKey: "components/" + name + "/index",
   }));
 
   const shared = SHARED_ENTRIES.map((entry) => ({
     ...entry,
-    dtsEntryKey: entry.distDir + "/index",
   }));
 
   const missing = [];
@@ -71,17 +69,6 @@ export function listPublicEntries() {
   }
 
   return [...shared, ...components];
-}
-
-/** tsup entry record for the declaration-only build. */
-export function getDtsEntryRecord() {
-  const entry = {
-    index: "src/index.ts",
-  };
-  for (const item of listPublicEntries()) {
-    entry[item.dtsEntryKey] = item.source;
-  }
-  return entry;
 }
 
 function conditionalExport(distDir) {

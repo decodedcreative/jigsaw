@@ -1,6 +1,6 @@
 import type { VariantProps } from "class-variance-authority";
 import type { CSSProperties, SVGAttributes } from "react";
-import type { Icon as PhosphorIcon, IconProps as PhosphorIconProps } from "@phosphor-icons/react";
+import type { Icon as PhosphorIcon, IconProps as PhosphorIconProps } from "@phosphor-icons/react/lib";
 import { customIconStyles, iconStyles } from "./Icon.styles";
 import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
 
