@@ -3,7 +3,13 @@
 import { ListIcon } from "@phosphor-icons/react/List";
 import { XIcon } from "@phosphor-icons/react/X";
 import { type ReactNode, type HTMLAttributes } from "react";
-import { Link as ReactAriaLink } from "react-aria-components";
+import {
+  Button as ReactAriaButton,
+  Dialog as ReactAriaDialog,
+  Link as ReactAriaLink,
+  Modal as ReactAriaModal,
+  ModalOverlay as ReactAriaModalOverlay,
+} from "react-aria-components";
 import { useGetClassNames, useRootClassName } from "@hooks";
 import { Icon } from "@components/icon";
 import {
@@ -164,6 +170,8 @@ export const MobileNavigation = ({
   const classNames = useGetClassNames(mobileNavigationStyles, classNameOverrides, {
     mobileMenuButton: {},
     mobileMenu: {},
+    mobileMenuModal: {},
+    mobileMenuDialog: {},
     mobileMenuHeader: {},
     mobileMenuBody: {},
     mobileNavItem: {},
@@ -172,49 +180,58 @@ export const MobileNavigation = ({
   return (
     <>
       {/* Hamburger toggle — always visible on mobile */}
-      <button
-        type="button"
+      <ReactAriaButton
         className={classNames.mobileMenuButton}
-        onClick={() => onOpenChange(!isOpen)}
+        onPress={() => onOpenChange(!isOpen)}
         aria-expanded={isOpen}
         aria-label="Toggle menu"
       >
         <Icon icon={ListIcon} size="xl" />
-      </button>
+      </ReactAriaButton>
 
-      {/* Full-screen overlay */}
-      {isOpen && (
-        <div className={classNames.mobileMenu} role="dialog" aria-modal="true" aria-label="Navigation menu">
-          {/* Header row mirrors the nav bar */}
-          <div className={classNames.mobileMenuHeader}>
-            <span className="text-lg font-semibold text-foreground-primary">Menu</span>
-            <button
-              type="button"
-              className={classNames.mobileMenuButton}
-              onClick={() => onOpenChange(false)}
-              aria-label="Close menu"
-            >
-              <Icon icon={XIcon} size="xl" />
-            </button>
-          </div>
-
-          {/* Nav links */}
-          <nav className={classNames.mobileMenuBody}>
-            {links.map((link) => (
-              <ReactAriaLink
-                key={link.href}
-                href={link.href}
-                className={classNames.mobileNavItem}
-                data-current={link.isCurrent ? "" : undefined}
-                aria-current={link.isCurrent ? "page" : undefined}
+      {/*
+        Full-screen overlay on React Aria's modal primitives, so it behaves as a modal dialog:
+        focus moves in and stays in, Escape closes it, focus returns to the toggle, page scroll
+        is locked and the rest of the page is hidden from assistive tech (JSW-121).
+      */}
+      <ReactAriaModalOverlay
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        isDismissable
+        className={classNames.mobileMenu}
+      >
+        <ReactAriaModal className={classNames.mobileMenuModal}>
+          <ReactAriaDialog aria-label="Navigation menu" className={classNames.mobileMenuDialog}>
+            {/* Header row mirrors the nav bar */}
+            <div className={classNames.mobileMenuHeader}>
+              <span className="text-lg font-semibold text-foreground-primary">Menu</span>
+              <ReactAriaButton
+                className={classNames.mobileMenuButton}
                 onPress={() => onOpenChange(false)}
+                aria-label="Close menu"
               >
-                {link.label}
-              </ReactAriaLink>
-            ))}
-          </nav>
-        </div>
-      )}
+                <Icon icon={XIcon} size="xl" />
+              </ReactAriaButton>
+            </div>
+
+            {/* Nav links */}
+            <nav className={classNames.mobileMenuBody}>
+              {links.map((link) => (
+                <ReactAriaLink
+                  key={link.href}
+                  href={link.href}
+                  className={classNames.mobileNavItem}
+                  data-current={link.isCurrent ? "" : undefined}
+                  aria-current={link.isCurrent ? "page" : undefined}
+                  onPress={() => onOpenChange(false)}
+                >
+                  {link.label}
+                </ReactAriaLink>
+              ))}
+            </nav>
+          </ReactAriaDialog>
+        </ReactAriaModal>
+      </ReactAriaModalOverlay>
     </>
   );
 };

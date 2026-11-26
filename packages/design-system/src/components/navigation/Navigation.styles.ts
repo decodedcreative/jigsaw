@@ -41,16 +41,19 @@ export const mobileNavigationStyles = {
     "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",
     "outline-hidden focus-visible:ring-2 focus-visible:ring-interactive-focus",
   ]),
+  /** Full-screen overlay (React Aria `ModalOverlay`): locks scroll and hides the page behind. */
   mobileMenu: cva([
     "fixed inset-0 z-50 bg-surface-primary flex flex-col",
     "md:hidden",
   ]),
+  /** React Aria `Modal` inside the overlay. */
+  mobileMenuModal: cva(["flex flex-1 flex-col min-h-0"]),
+  /** React Aria `Dialog`: contains focus and closes on Escape. */
+  mobileMenuDialog: cva(["flex flex-1 flex-col min-h-0 outline-hidden"]),
   mobileMenuHeader: cva([
     "flex items-center justify-between h-16 px-4 border-b border-border-primary shrink-0",
   ]),
-  mobileMenuBody: cva([
-    "flex-1 overflow-y-auto px-4 py-6 space-y-1",
-  ]),
+  mobileMenuBody: cva(["flex-1 overflow-y-auto px-4 py-6 space-y-1"]),
   mobileNavItem: cva([
     "flex items-center px-4 py-3 text-lg font-medium rounded-lg transition-colors",
     "text-foreground-secondary hover:text-foreground-primary hover:bg-surface-hover",
