@@ -27,6 +27,7 @@ export const Checkbox = ({
   className,
   children,
   isInvalid,
+  ref,
   ...props
 }: CheckboxProps) => {
   const group = useCheckboxGroupContext();
@@ -43,7 +44,7 @@ export const Checkbox = ({
 
   return (
     <ReactAriaCheckboxField isInvalid={isInvalid || resolvedHasError} {...props}>
-      <ReactAriaCheckboxButton className={rootClassName}>
+      <ReactAriaCheckboxButton ref={ref} className={rootClassName}>
         {({ isSelected, isIndeterminate }) => (
           <>
             <div className={classNames.box}>

@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import type { ClassNameOverrides } from "@jsw-types/component-props";
+import type { ClassNameOverrides, RefProp } from "@jsw-types/component-props";
 import type { toastRegionStyles } from "./ToastRegion.styles";
 
 type ToastViewportVariants = VariantProps<typeof toastRegionStyles.component>;
@@ -16,7 +16,7 @@ export const toastPositions = [
   "bottom-right",
 ] as const satisfies readonly ToastPosition[];
 
-export type ToastRegionProps = {
+export type ToastRegionProps = RefProp<HTMLDivElement> & {
   /** Queue id — must match `region` passed to {@link toast}. Defaults to `"default"`. */
   region?: string;
   position?: ToastPosition;

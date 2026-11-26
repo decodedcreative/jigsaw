@@ -2,9 +2,9 @@ import { type HTMLAttributes, type CSSProperties } from "react";
 import { getClassNames, mergeClassName } from "@utils";
 import { skeletonCardStyles, skeletonStyles } from "./Skeleton.styles";
 import type { SkeletonVariant } from "./Skeleton.types";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
 
-export type SkeletonProps = WithoutClassName<HTMLAttributes<HTMLDivElement>> & {
+export type SkeletonProps = RefProp<HTMLDivElement> & WithoutClassName<HTMLAttributes<HTMLDivElement>> & {
   variant?: SkeletonVariant;
   width?: string | number;
   height?: string | number;
@@ -63,7 +63,7 @@ export const SkeletonCircle = ({
 
 SkeletonCircle.displayName = "DS_SkeletonCircle";
 
-export type SkeletonCardProps = WithoutClassName<HTMLAttributes<HTMLDivElement>> & {
+export type SkeletonCardProps = RefProp<HTMLDivElement> & WithoutClassName<HTMLAttributes<HTMLDivElement>> & {
   classNameOverrides?: ClassNameOverrides<typeof skeletonCardStyles>;
   /**
    * Extra classes for the root element, merged last via `twMerge` (wins conflicts).

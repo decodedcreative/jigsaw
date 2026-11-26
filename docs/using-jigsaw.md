@@ -18,7 +18,7 @@ Packages will be published to the [npm registry](https://www.npmjs.com/) under t
 ## Prerequisites
 
 - Node.js **≥ 20.9** (20 LTS recommended). Tailwind CSS v4's Oxide engine (`@tailwindcss/oxide`) requires Node 20+, and [Next.js 15](https://nextjs.org/docs/app/getting-started/installation) specifies a minimum of 20.9. Node 18 is not supported.
-- React 18 or 19 (no Node version conflict — both run on Node 20)
+- React **19**. Components take `ref` as a normal prop (React 19), so React 18 is not supported.
 - Tailwind CSS v4: the `tailwindcss` package (for `@import "tailwindcss"` in CSS) and `@tailwindcss/postcss` (PostCSS plugin — configured in step 2)
 
 ## 1. Install
@@ -265,6 +265,15 @@ import "./lib/jigsaw-theme";
 `ThemeProvider` is **optional**. Use it only for **nested client-subtree** `twMerge` overrides (interactive islands that need a different merge than the app default). Presentational / RSC-safe class merging should rely on `configureTwMerge`, not context.
 
 Visual light/dark/portfolio theming continues to use `data-theme` (see below) — that is separate from JS merge config.
+
+### Refs
+
+Every component accepts `ref` and attaches it to its root element: the same element that receives `className`. For example, `<Checkbox ref={ref}>` gives you the checkbox's `<label>`, and `<Modal ref={ref}>` gives you the dialog panel rather than the backdrop. `ThemeProvider`, `TooltipTrigger` and `MobileNavigation` render no single root element, so they don't take a ref.
+
+```tsx
+const buttonRef = useRef<HTMLButtonElement>(null);
+<Button ref={buttonRef}>Save</Button>;
+```
 
 ### Styling components: `className` vs `classNameOverrides`
 

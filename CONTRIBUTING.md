@@ -27,6 +27,10 @@ git checkout wip/design-system-overhaul-backup -- path/to/relevant/files
 
 `feat/jsw-XX-short-description` — matches the Jira ticket key.
 
+### Refs
+
+Jigsaw supports React 19 only. Don't use `forwardRef`: add `RefProp<Element>` (from `@jsw-types/component-props`) to the props type, and pass `ref` to the root element that receives `className`. `src/components/ref.test.tsx` renders every component with a ref and fails if it doesn't land on that element, or if a component is missing its `DS_` display name.
+
 ### Accessibility unit tests
 
 `packages/design-system/src/components/a11y.test.tsx` runs axe on every component in its main states, including open and expanded ones. A new component folder fails the test until it has an entry there. Rule exceptions live in `src/test-utils/axe.ts` with their reasons; colour contrast is off in jsdom and is checked by the story tests below.

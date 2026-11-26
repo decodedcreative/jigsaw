@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { VariantProps } from "class-variance-authority";
 import type { ButtonProps as ReactAriaButtonProps } from "react-aria-components";
-import type { ClassNameOverrides } from "@jsw-types/component-props";
+import type { ClassNameOverrides, RefProp } from "@jsw-types/component-props";
 import type { buttonStyles } from "./Button.styles";
 
 export type ButtonVariant = NonNullable<VariantProps<typeof buttonStyles.component>["variant"]>;
@@ -10,7 +10,7 @@ export type ButtonMediaPosition = NonNullable<
   VariantProps<typeof buttonStyles.component>["mediaPosition"]
 >;
 
-export type ButtonProps = Omit<ReactAriaButtonProps, "children"> & {
+export type ButtonProps = RefProp<HTMLButtonElement> & Omit<ReactAriaButtonProps, "children"> & {
   children?: ReactNode;
   classNameOverrides?: ClassNameOverrides<typeof buttonStyles>;
   /** When true, the button spans the full width of its container. */

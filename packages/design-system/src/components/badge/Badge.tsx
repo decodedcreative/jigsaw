@@ -2,9 +2,9 @@ import { type HTMLAttributes } from "react";
 import { getClassNames, mergeClassName } from "@utils";
 import { badgeStyles } from "./Badge.styles";
 import type { BadgeVariant, BadgeSize } from "./Badge.types";
-import type { ClassNameOverrides, WithoutClassName } from "@jsw-types/component-props";
+import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
 
-export type BadgeProps = WithoutClassName<HTMLAttributes<HTMLSpanElement>> & {
+export type BadgeProps = RefProp<HTMLSpanElement> & WithoutClassName<HTMLAttributes<HTMLSpanElement>> & {
   variant?: BadgeVariant;
   size?: BadgeSize;
   classNameOverrides?: ClassNameOverrides<typeof badgeStyles>;
