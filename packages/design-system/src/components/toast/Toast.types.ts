@@ -1,4 +1,4 @@
-import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react/lib";
 import type { ToastVariant } from "./sub-components/ToastItem/ToastItem.types";
 
 export type { ToastVariant } from "./sub-components/ToastItem/ToastItem.types";

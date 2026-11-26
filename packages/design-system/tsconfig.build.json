@@ -1,0 +1,24 @@
+{
+  // Declaration emit for the published package (scripts/build-types.mjs).
+  // JavaScript is built by tsup; this config only writes .d.ts files.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    // src/ isn't published, so declaration maps would point at missing files.
+    "declarationMap": false,
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.stories.tsx",
+    "src/**/*.stories.*.ts",
+    "src/test-setup.ts"
+  ]
+}
