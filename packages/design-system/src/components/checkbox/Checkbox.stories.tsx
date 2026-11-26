@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect } from "storybook/test";
+import { clearFocus } from "../../test-utils/story-play";
 import { useState } from "react";
 import { Checkbox } from "./index";
 
@@ -109,6 +111,26 @@ function NotificationPreferences() {
 
 export const Default: Story = {
   args: { label: "Accept terms" },
+  play: async ({ canvas, userEvent, step }) => {
+    const checkbox = canvas.getByRole("checkbox", { name: "Accept terms" });
+
+    await step("Tab moves focus to the checkbox", async () => {
+      await userEvent.tab();
+      await expect(checkbox).toHaveFocus();
+    });
+
+    await step("Space checks it", async () => {
+      await userEvent.keyboard(" ");
+      await expect(checkbox).toBeChecked();
+    });
+
+    await step("Space again unchecks it", async () => {
+      await userEvent.keyboard(" ");
+      await expect(checkbox).not.toBeChecked();
+    });
+
+    clearFocus();
+  },
 };
 
 export const Checked: Story = {

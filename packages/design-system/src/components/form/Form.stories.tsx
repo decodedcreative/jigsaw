@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect, fn } from "storybook/test";
 import { getClassNames } from "@utils";
 import { Form } from "./index";
 import { Input } from "../input/Input";
@@ -11,6 +12,7 @@ import { CheckboxGroup } from "../checkbox-group";
 import { RadioGroup } from "../radio-group";
 import { Button } from "../button/Button";
 import { formStoryStyles } from "./Form.stories.styles";
+import { TEST_ONLY_PARAMETERS } from "../../test-utils/story-play";
 
 const meta = {
   title: "Design System/Form",
@@ -144,5 +146,49 @@ export const SideLabels: Story = {
         </Form>
       </div>
     );
+  },
+};
+
+/** Test-only: typing and submitting change the story, so the keyboard flow runs here. */
+export const KeyboardSubmit: Story = {
+  tags: ["!dev", "!autodocs"],
+  parameters: TEST_ONLY_PARAMETERS,
+  args: { onSubmit: fn((event: { preventDefault: () => void }) => event.preventDefault()) },
+  render: (args) => (
+    <Form onSubmit={args.onSubmit}>
+      <Input label="Name" name="name" />
+      <Input label="Email" name="email" type="email" />
+      <Textarea label="Message" name="message" />
+      <Button type="submit">Send</Button>
+    </Form>
+  ),
+  play: async ({ args, canvas, userEvent, step }) => {
+    const name = canvas.getByRole("textbox", { name: "Name" });
+    const email = canvas.getByRole("textbox", { name: "Email" });
+    const message = canvas.getByRole("textbox", { name: "Message" });
+
+    await step("Tab moves through the fields in order", async () => {
+      await userEvent.tab();
+      await expect(name).toHaveFocus();
+      await userEvent.keyboard("Ada Lovelace");
+      await userEvent.tab();
+      await expect(email).toHaveFocus();
+      await userEvent.keyboard("ada@example.com");
+      await userEvent.tab();
+      await expect(message).toHaveFocus();
+    });
+
+    await step("Enter in the textarea adds a new line instead of submitting", async () => {
+      await userEvent.keyboard("Hello{Enter}there");
+      await expect(message).toHaveValue("Hello\nthere");
+      await expect(args.onSubmit).not.toHaveBeenCalled();
+    });
+
+    await step("Enter in a text input submits the form", async () => {
+      await userEvent.tab({ shift: true });
+      await expect(email).toHaveFocus();
+      await userEvent.keyboard("{Enter}");
+      await expect(args.onSubmit).toHaveBeenCalledTimes(1);
+    });
   },
 };

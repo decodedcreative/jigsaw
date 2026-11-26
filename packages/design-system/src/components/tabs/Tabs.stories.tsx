@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect } from "storybook/test";
 import { Tabs, TabList, Tab, TabPanel } from "./index";
+import { clearFocus } from "../../test-utils/story-play";
 
 const meta = {
   title: "Design System/Tabs",
@@ -26,6 +28,39 @@ export const Default: Story = {
       </Tabs>
     </div>
   ),
+  play: async ({ canvas, userEvent, step }) => {
+    const overview = canvas.getByRole("tab", { name: "Overview" });
+    const usage = canvas.getByRole("tab", { name: "Usage" });
+    const props = canvas.getByRole("tab", { name: "Props" });
+
+    await step("Tab moves focus to the selected tab", async () => {
+      await userEvent.tab();
+      await expect(overview).toHaveFocus();
+      await expect(overview).toHaveAttribute("aria-selected", "true");
+    });
+
+    await step("Arrow Right selects the next tab and shows its panel", async () => {
+      await userEvent.keyboard("{ArrowRight}");
+      await expect(usage).toHaveFocus();
+      await expect(usage).toHaveAttribute("aria-selected", "true");
+      await expect(canvas.getByRole("tabpanel")).toHaveTextContent("How to use it in practice.");
+    });
+
+    await step("End selects the last tab and Home the first", async () => {
+      await userEvent.keyboard("{End}");
+      await expect(props).toHaveFocus();
+      await userEvent.keyboard("{Home}");
+      await expect(overview).toHaveFocus();
+      await expect(overview).toHaveAttribute("aria-selected", "true");
+    });
+
+    await step("Tab moves focus from the tab list into the panel", async () => {
+      await userEvent.tab();
+      await expect(canvas.getByRole("tabpanel")).toHaveFocus();
+    });
+
+    clearFocus();
+  },
 };
 
 export const Pills: Story = {

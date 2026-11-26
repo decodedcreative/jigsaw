@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect } from "storybook/test";
 import { RadioGroup } from "./index";
+import { clearFocus } from "../../test-utils/story-play";
 
 const meta = {
   title: "Design System/RadioGroup",
@@ -31,6 +33,36 @@ export const Default: Story = {
 export const WithPreselected: Story = {
   args: { label: "Plan", defaultValue: "pro" },
   render: (args) => <RadioGroup {...args}>{items}</RadioGroup>,
+  play: async ({ canvas, userEvent, step }) => {
+    const pro = canvas.getByRole("radio", { name: /^Pro\b/ });
+    const team = canvas.getByRole("radio", { name: /^Team\b/ });
+
+    await step("Tab moves focus to the selected radio", async () => {
+      await userEvent.tab();
+      await expect(pro).toHaveFocus();
+    });
+
+    await step("Arrow Down moves focus and selection to the next radio", async () => {
+      await userEvent.keyboard("{ArrowDown}");
+      await expect(team).toHaveFocus();
+      await expect(team).toBeChecked();
+    });
+
+    await step("Arrow Up moves back", async () => {
+      await userEvent.keyboard("{ArrowUp}");
+      await expect(pro).toHaveFocus();
+      await expect(pro).toBeChecked();
+    });
+
+    await step("The group is a single tab stop", async () => {
+      await userEvent.tab();
+      for (const radio of canvas.getAllByRole("radio")) {
+        await expect(radio).not.toHaveFocus();
+      }
+    });
+
+    clearFocus();
+  },
 };
 
 export const WithError: Story = {
@@ -41,6 +73,14 @@ export const WithError: Story = {
 export const Disabled: Story = {
   args: { label: "Plan", isDisabled: true, defaultValue: "free" },
   render: (args) => <RadioGroup {...args}>{items}</RadioGroup>,
+  play: async ({ canvas, userEvent, step }) => {
+    await step("Tab skips the disabled group", async () => {
+      await userEvent.tab();
+      for (const radio of canvas.getAllByRole("radio")) {
+        await expect(radio).not.toHaveFocus();
+      }
+    });
+  },
 };
 
 export const ItemSizes: Story = {

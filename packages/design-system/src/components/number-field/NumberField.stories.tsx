@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { expect } from "storybook/test";
 import { NumberField } from "./NumberField";
+import { clearFocus } from "../../test-utils/story-play";
 
 const meta = {
   title: "Design System/NumberField",
@@ -20,6 +22,37 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: { label: "Quantity", defaultValue: 1, minValue: 0, maxValue: 99 },
+  play: async ({ canvas, userEvent, step }) => {
+    const input = canvas.getByRole("textbox", { name: "Quantity" });
+
+    await step("Tab moves focus to the input, not the stepper buttons", async () => {
+      await userEvent.tab();
+      await expect(input).toHaveFocus();
+    });
+
+    await step("Arrow Up and Arrow Down step the value", async () => {
+      await userEvent.keyboard("{ArrowUp}");
+      await expect(input).toHaveValue("2");
+      await userEvent.keyboard("{ArrowDown}");
+      await expect(input).toHaveValue("1");
+    });
+
+    await step("End jumps to the maximum and Home to the minimum", async () => {
+      await userEvent.keyboard("{End}");
+      await expect(input).toHaveValue("99");
+      await userEvent.keyboard("{Home}");
+      await expect(input).toHaveValue("0");
+      await userEvent.keyboard("{ArrowUp}");
+      await expect(input).toHaveValue("1");
+    });
+
+    await step("Tab leaves the field", async () => {
+      await userEvent.tab();
+      await expect(input).not.toHaveFocus();
+    });
+
+    clearFocus();
+  },
 };
 
 export const WithDescription: Story = {
