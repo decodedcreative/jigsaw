@@ -77,7 +77,8 @@ jobs:
         run: npm run validate:packages
 
   test-stories:
-    runs-on: ubuntu-latest
+    # Playwright's Chromium doesn't support Ubuntu 26.04 yet (ubuntu-latest).
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
