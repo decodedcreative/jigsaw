@@ -11,9 +11,14 @@ export const AXE_OPTIONS: RunOptions = {
     // jsdom has no layout or computed colour, so contrast can't be measured
     // here. It is covered by the Storybook story tests in Chromium (JSW-124),
     // which run axe with color-contrast on.
+    // https://dequeuniversity.com/rules/axe/4.11/color-contrast
     "color-contrast": { enabled: false },
     // Components are rendered in isolation, outside any page landmarks or
-    // heading outline. Landmarks and the page `h1` belong to the app.
+    // heading outline. Landmarks and the page `h1` belong to the app
+    // (JSW-122). These rules check the whole page, not a component:
+    // https://dequeuniversity.com/rules/axe/4.11/region
+    // https://dequeuniversity.com/rules/axe/4.11/landmark-one-main
+    // https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one
     region: { enabled: false },
     "landmark-one-main": { enabled: false },
     "page-has-heading-one": { enabled: false },
