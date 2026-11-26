@@ -52,6 +52,14 @@ flowchart TD
 
 Open normal feature PRs. **Do not** commit anything under `.changeset/` except `config.json` / `README.md` (CI enforces this).
 
+Instead, fill in the **`## Consumer changelog`** section of the PR description (the [PR template](../.github/pull_request_template.md) includes it): one sentence per change, written for app developers, with `**Breaking:**` in front of breaking changes. Write `None.` when nothing consumer-facing changed, e.g. tests or docs only. The **Consumer changelog** check fails a PR that changes a publishable package without it, and re-runs when you edit the description.
+
+```markdown
+## Consumer changelog
+- `SearchField` is named "Search" when it has no label.
+- **Breaking:** the design system now requires React 19.
+```
+
 ### 2. Version (open a PR)
 
 On a clean `main` checkout:
@@ -64,7 +72,7 @@ npm run version-and-tag:patch   # or :minor / :major
 `version-and-tag` ([scripts/version-and-tag.mjs](../scripts/version-and-tag.mjs)):
 
 1. Detects which publishable packages have **direct** file changes since the last `v*` tag (git paths under each package, not a root lockfile bump)
-2. Writes a temporary Changeset for those packages only, then runs `changeset version` (updates `package.json` + `CHANGELOG.md`). The Changesets **`fixed` group** still locksteps every publishable package to the same version; untouched packages are not listed in the changeset, so they do not inherit another package's commit summaries.
+2. Writes a temporary Changeset for those packages only, then runs `changeset version` (updates `package.json` + `CHANGELOG.md`). The changeset's summary is the **consumer changelog**: the sentences from each PR merged since the last release, read with `gh`, breaking changes first, each with its PR number. If no PR has any, or `gh` can't reach GitHub, it falls back to commit subjects and says so; `--no-pr-changelog` forces that. It warns when there are breaking changes but the bump is `patch` (under `0.x`, breaking means `minor`). The Changesets **`fixed` group** still locksteps every publishable package to the same version; untouched packages are not listed in the changeset, so they do not inherit another package's entries.
 3. Creates branch `chore/version-{version}`, commits `chore: version packages`, pushes, and opens a PR to `main`
 4. Leaves local `main` at the pre-version tip
 
