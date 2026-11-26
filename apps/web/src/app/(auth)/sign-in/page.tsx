@@ -36,7 +36,7 @@ export default function SignInPage() {
           </div>
           <h1 className="text-2xl font-bold text-foreground-primary">Sign in to Jigsaw</h1>
           <p className="text-sm text-foreground-secondary mt-1">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <NextLink href="/sign-up" className="text-interactive-accent hover:underline font-medium">
               Sign up free
             </NextLink>

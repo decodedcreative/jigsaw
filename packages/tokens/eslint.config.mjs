@@ -12,4 +12,11 @@ export default tseslint.config(
       globals: globals.node,
     },
   },
+  {
+    // Runs inside Figma's plugin sandbox, which provides these globals.
+    files: ["figma-plugin/**/*.js"],
+    languageOptions: {
+      globals: { figma: "readonly", __html__: "readonly" },
+    },
+  },
 );

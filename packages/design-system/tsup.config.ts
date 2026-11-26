@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 import type { Plugin } from "esbuild";
 import { defineConfig } from "tsup";
 import { preserveDirectivesPlugin } from "esbuild-plugin-preserve-directives";
-import { getDtsEntryRecord } from "./scripts/public-entries.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const srcRoot = path.join(root, "src");
@@ -257,8 +256,9 @@ const sharedExternal = [
  * that declare it. A single bundled entry would force one client boundary on
  * the whole package (including RSC-safe presentational components).
  *
- * Types are emitted from a second multi-entry pass so each public subpath
- * (`./badge`, `./theme`, …) has matching `.d.ts` / `.d.mts` files.
+ * Type declarations are not built here: scripts/build-types.mjs emits them with
+ * tsc after this build (JSW-138). tsup's DTS pass bundled declarations per
+ * public entry and needed ~4 GB of heap.
  */
 export default defineConfig([
   {
@@ -273,7 +273,9 @@ export default defineConfig([
     dts: false,
     bundle: false,
     sourcemap: true,
-    clean: true,
+    // Clean everything except declarations, which build-types.mjs owns
+    // (otherwise every watch rebuild would delete them).
+    clean: ["!**/*.d.ts", "!**/*.d.mts"],
     external: [...sharedExternal],
     esbuildPlugins: [
       rewritePathAliasesPlugin(),
@@ -288,13 +290,5 @@ export default defineConfig([
       ensureUseClientBeforeUseStrict(distDir);
       ensureNodeResolvableEsmImports(distDir);
     },
-  },
-  {
-    entry: getDtsEntryRecord(),
-    format: ["cjs", "esm"],
-    dts: { only: true },
-    sourcemap: false,
-    clean: false,
-    external: [...sharedExternal],
   },
 ]);

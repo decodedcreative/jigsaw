@@ -14,7 +14,6 @@ import {
   TabList,
   TabPanel,
   Tabs,
-  Text,
   Textarea,
   toast,
 } from "@jigsaw-ds/design-system";
