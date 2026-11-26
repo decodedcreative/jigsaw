@@ -36,6 +36,13 @@ export type AccessibleNameWarningOptions = {
  * Testing Library uses. That module is only loaded in development; production
  * builds skip the check entirely.
  *
+ * The check runs once per element, shortly after it mounts (once the lazy
+ * import resolves), against the DOM at that moment. A name that arrives later
+ * (e.g. a label loaded asynchronously) can still produce one warning, and a
+ * name removed later won't warn again. That's a deliberate trade-off for a
+ * cheap development hint; the axe and announcement tests check named states
+ * properly.
+ *
  * The check runs on ref attach rather than in an effect because React Aria
  * collection items (Tab, Select.Item, …) first render into a hidden document;
  * the ref only points at the real element later.

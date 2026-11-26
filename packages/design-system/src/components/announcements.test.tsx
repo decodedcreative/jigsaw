@@ -175,6 +175,22 @@ const cases: AnnounceCase[] = [
     expected: ["button, Apple Fruit, has popup listbox, collapsed"],
   },
   {
+    name: "Select after choosing an option",
+    render: () => (
+      <Select label="Fruit">
+        <Select.Item id="apple">Apple</Select.Item>
+        <Select.Item id="banana">Banana</Select.Item>
+      </Select>
+    ),
+    act: async () => {
+      const user = userEvent.setup();
+      await user.click(screen.getByRole("button"));
+      await user.click(await screen.findByRole("option", { name: "Banana" }));
+    },
+    target: "button",
+    expected: ["button, Banana Fruit, has popup listbox, collapsed"],
+  },
+  {
     name: "Select open",
     render: () => (
       <Select label="Fruit">
@@ -187,6 +203,43 @@ const cases: AnnounceCase[] = [
     },
     target: '[role="option"]',
     expected: ["option, Apple"],
+  },
+  {
+    name: "Checkbox after clicking it",
+    render: () => <Checkbox label="Accept terms" />,
+    act: async () => {
+      // Clicks the checkbox itself: clicking the label text doesn't toggle it (JSW-139).
+      await userEvent.setup().click(screen.getByRole("checkbox"));
+    },
+    target: "input",
+    expected: ["checkbox, Accept terms, checked"],
+  },
+  {
+    name: "Disclosure after clicking its trigger",
+    render: () => <Disclosure title="Details">Panel</Disclosure>,
+    act: async () => {
+      await userEvent.setup().click(screen.getByRole("button", { name: "Details" }));
+    },
+    target: "button",
+    expected: ["button, Details, expanded"],
+  },
+  {
+    name: "Tabs after selecting the second tab",
+    render: () => (
+      <Tabs>
+        <TabList aria-label="Settings">
+          <Tab id="profile">Profile</Tab>
+          <Tab id="billing">Billing</Tab>
+        </TabList>
+        <TabPanel id="profile">Profile settings</TabPanel>
+        <TabPanel id="billing">Billing settings</TabPanel>
+      </Tabs>
+    ),
+    act: async () => {
+      await userEvent.setup().click(screen.getByRole("tab", { name: "Billing" }));
+    },
+    target: '[role="tab"]',
+    expected: ["tab, Profile", "tab, Billing, selected"],
   },
   {
     name: "Disclosure collapsed",

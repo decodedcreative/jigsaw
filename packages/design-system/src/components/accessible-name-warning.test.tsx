@@ -134,6 +134,35 @@ describe("accessible name warning", () => {
     expect(warn).not.toHaveBeenCalled();
   });
 
+  it("counts names from aria-label and aria-labelledby on links", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    render(
+      <>
+        <span id="docs-label">Documentation</span>
+        <Link href="/docs" aria-labelledby="docs-label">
+          {null}
+        </Link>
+        <LinkButton href="/signup" aria-label="Create an account">
+          {null}
+        </LinkButton>
+        <NavigationBrand>
+          <img src="/logo.svg" alt="Jigsaw home" />
+        </NavigationBrand>
+      </>
+    );
+    await flushNameCheck();
+    expect(warn).not.toHaveBeenCalled();
+  });
+
+  it("checks the name after mount, so a label added before the check runs doesn't warn", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const { rerender } = render(<Button />);
+    // Same render pass the app would use to fill in a label straight away.
+    rerender(<Button aria-label="Close" />);
+    await flushNameCheck();
+    expect(warn).not.toHaveBeenCalled();
+  });
+
   it("warns once per element across re-renders", async () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const { rerender } = render(<Button />);
