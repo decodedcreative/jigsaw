@@ -27,6 +27,10 @@ git checkout wip/design-system-overhaul-backup -- path/to/relevant/files
 
 `feat/jsw-XX-short-description` — matches the Jira ticket key.
 
+### Accessibility unit tests
+
+`packages/design-system/src/components/a11y.test.tsx` runs axe on every component in its main states, including open and expanded ones. A new component folder fails the test until it has an entry there. Rule exceptions live in `src/test-utils/axe.ts` with their reasons; colour contrast is off in jsdom and is checked by the story tests below.
+
 ### Story tests
 
 CI renders every Storybook story in headless Chromium, runs its play function, and runs axe through the a11y addon. Any axe violation fails the check. Run it locally with:
