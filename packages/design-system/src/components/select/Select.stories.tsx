@@ -57,7 +57,7 @@ export const Default: Story = {
     await step("Escape closes the list without choosing, and focus returns to the trigger", async () => {
       await userEvent.keyboard("{Escape}");
       await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
-      await expect(trigger).toHaveFocus();
+      await waitFor(() => expect(trigger).toHaveFocus());
       await expect(trigger).toHaveTextContent("Pick one");
     });
 
@@ -96,7 +96,7 @@ export const KeyboardSelection: Story = {
     await step("The list closes, the trigger shows Vue and keeps focus", async () => {
       await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
       await expect(trigger).toHaveTextContent("Vue");
-      await expect(trigger).toHaveFocus();
+      await waitFor(() => expect(trigger).toHaveFocus());
     });
   },
 };

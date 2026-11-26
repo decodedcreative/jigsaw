@@ -39,7 +39,7 @@ export const Default: Story = {
     await step("Escape hides it and keeps focus on the trigger", async () => {
       await userEvent.keyboard("{Escape}");
       await waitFor(() => expect(screen.queryByRole("tooltip")).toBeNull());
-      await expect(trigger).toHaveFocus();
+      await waitFor(() => expect(trigger).toHaveFocus());
     });
 
     clearFocus();

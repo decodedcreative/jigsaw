@@ -409,7 +409,7 @@ export const KeyboardTest: Story = {
     await step("Escape closes it and focus returns to the trigger", async () => {
       await userEvent.keyboard("{Escape}");
       await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-      await expect(trigger).toHaveFocus();
+      await waitFor(() => expect(trigger).toHaveFocus());
     });
   },
 };
