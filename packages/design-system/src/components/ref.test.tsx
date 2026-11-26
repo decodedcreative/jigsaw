@@ -225,6 +225,20 @@ describe("refs and display names", () => {
     }
   );
 
+  it("Card.Header attaches the ref on both render paths (title and custom header)", () => {
+    const titleRef = createRef<HTMLDivElement>();
+    const headerRef = createRef<HTMLDivElement>();
+    render(
+      <>
+        <DS.Card.Header ref={titleRef} title="Usage" />
+        <DS.Card.Header ref={headerRef} header={<span>Custom header</span>} />
+      </>
+    );
+    expect(titleRef.current).toBeInstanceOf(HTMLDivElement);
+    expect(headerRef.current).toBeInstanceOf(HTMLDivElement);
+    expect(headerRef.current).toHaveTextContent("Custom header");
+  });
+
   it("Select.Item attaches the ref to its option in the open listbox", async () => {
     const ref = createRef<Element>();
     render(
