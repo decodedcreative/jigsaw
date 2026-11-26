@@ -104,7 +104,7 @@ function TeamInner() {
           }
         >
           <p className="text-sm text-foreground-secondary mb-4">
-            They'll receive an email and be added as a Viewer by default.
+            They&apos;ll receive an email and be added as a Viewer by default.
           </p>
           <Input
             label="Email address"
@@ -201,7 +201,7 @@ function TeamInner() {
                       }
                     >
                       <p className="text-sm text-foreground-secondary mb-4">
-                        Remove <strong className="text-foreground-primary">{m.name}</strong> from this workspace? They'll lose access immediately.
+                        Remove <strong className="text-foreground-primary">{m.name}</strong> from this workspace? They&apos;ll lose access immediately.
                       </p>
                     </Modal>
                   </div>
