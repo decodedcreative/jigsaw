@@ -268,6 +268,7 @@ export default defineConfig([
       "!src/**/*.test.*",
       "!src/**/*.stories.*",
       "!src/test-setup.ts",
+      "!src/test-utils/**",
     ],
     format: ["cjs", "esm"],
     dts: false,
