@@ -1,7 +1,11 @@
 "use client";
 
 import { Button as ReactAriaButton } from "react-aria-components";
-import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
+import {
+  usePartProps,
+  useRootClassName,
+  useAccessibleNameWarning,
+} from "@hooks";
 import { buttonStyles } from "./Button.styles";
 import type { ButtonProps } from "./Button.types";
 
@@ -24,7 +28,7 @@ export function Button({
   const position = mediaPosition ?? "left";
   const layoutPosition = media != null && !mediaOnly ? position : undefined;
 
-  const classNames = useGetClassNames(buttonStyles, classNameOverrides, {
+  const parts = usePartProps("button", buttonStyles, classNameOverrides, {
     component: {
       variant,
       size,
@@ -34,15 +38,20 @@ export function Button({
     },
     text: { fullWidth: fullWidth && children != null },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   const mediaSpan =
-    media != null ? <span className={classNames.media}>{media}</span> : null;
+    media != null ? <span {...parts.media}>{media}</span> : null;
   const textSpan =
-    children != null ? <span className={classNames.text}>{children}</span> : null;
+    children != null ? <span {...parts.text}>{children}</span> : null;
 
   return (
-    <ReactAriaButton {...props} className={rootClassName} ref={nameRef}>
+    <ReactAriaButton
+      {...props}
+      {...parts.component}
+      className={rootClassName}
+      ref={nameRef}
+    >
       {position === "left" && mediaSpan}
       {textSpan}
       {position === "right" && mediaSpan}
