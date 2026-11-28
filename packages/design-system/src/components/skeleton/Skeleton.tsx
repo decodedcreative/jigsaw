@@ -1,5 +1,5 @@
 import { type HTMLAttributes, type CSSProperties } from "react";
-import { getClassNames, mergeClassName } from "@utils";
+import { getPartProps, mergeClassName } from "@utils";
 import { skeletonCardStyles, skeletonStyles } from "./Skeleton.styles";
 import type { SkeletonVariant } from "./Skeleton.types";
 import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
@@ -26,7 +26,7 @@ export const Skeleton = ({
   style,
   ...props
 }: SkeletonProps) => {
-  const classNames = getClassNames(skeletonStyles, classNameOverrides, {
+  const parts = getPartProps("skeleton", skeletonStyles, classNameOverrides, {
     component: { variant },
   });
 
@@ -39,7 +39,8 @@ export const Skeleton = ({
   return (
     <div
       {...props}
-      className={mergeClassName(classNames.component, className)}
+      {...parts.component}
+      className={mergeClassName(parts.component.className, className)}
       style={inlineStyle}
     />
   );
@@ -72,10 +73,10 @@ export type SkeletonCardProps = RefProp<HTMLDivElement> & WithoutClassName<HTMLA
 };
 
 export const SkeletonCard = ({ classNameOverrides, className, ...props }: SkeletonCardProps) => {
-  const classNames = getClassNames(skeletonCardStyles, classNameOverrides);
+  const parts = getPartProps("skeleton-card", skeletonCardStyles, classNameOverrides);
 
   return (
-    <div {...props} className={mergeClassName(classNames.component, className)}>
+    <div {...props} {...parts.component} className={mergeClassName(parts.component.className, className)}>
       <Skeleton width="100%" height={200} />
       <SkeletonText width="80%" />
       <SkeletonText width="60%" />

@@ -144,7 +144,7 @@ export function Example() {
 
 ### Server Components
 
-Presentational Jigsaw modules resolve class names with plain `getClassNames` — no React context. They are compiled **per module**, and `"use client"` stays only on interactive leaves.
+Presentational Jigsaw modules resolve class names with plain `getPartProps` — no React context. They are compiled **per module**, and `"use client"` stays only on interactive leaves.
 
 **Do not import presentational components from the root barrel in a Server Component.** `dist/index.mjs` re-exports interactive modules too, so Next evaluates that mixed graph and fails with `client-only` / `'use client'` boundary errors — even if you only reference `Badge`.
 
@@ -179,7 +179,7 @@ Supported subpaths mirror folder names under `components/` (for example `./badge
 | Subpath | Purpose |
 |---------|---------|
 | `@jigsaw-ds/design-system/theme` | `configureTwMerge` / `configureTheme` (RSC-safe) |
-| `@jigsaw-ds/design-system/utils` | `getClassNames` and related helpers |
+| `@jigsaw-ds/design-system/utils` | `getPartProps`, `getClassNames` and related helpers |
 | `@jigsaw-ds/design-system/providers` | `ThemeProvider` (client — nested overrides only) |
 
 Do **not** deep-import internal files under `dist/components/.../Badge.mjs` — only the published `exports` subpaths are supported.
@@ -303,6 +303,22 @@ On the root element the merge order is: component defaults → `classNameOverrid
 - `TooltipTrigger` — renders no DOM element of its own.
 - `MobileNavigation` — renders a fragment (toggle button + overlay); style it via its named slots.
 - `Card.Header` — internal; style it through Card's `classNameOverrides.header`.
+
+### Targeting parts: `data-scope` and `data-part`
+
+Every element a component styles carries two attributes: `data-scope`, naming the component, and `data-part`, naming the part. The part names are the same keys `classNameOverrides` takes, so the root is always `component`. Use them to reach a part from CSS, tests or analytics without depending on Jigsaw's class names, which can change between releases:
+
+```css
+[data-scope="input"][data-part="label"] {
+  letter-spacing: 0.01em;
+}
+```
+
+```ts
+page.locator('[data-scope="modal"][data-part="footer"]');
+```
+
+The scope is the component's name in kebab case, such as `search-field`, `radio-group-item` or `navigation-link`. A part that is itself a Jigsaw component keeps its own scope: the tick inside a `Checkbox` is `data-scope="icon"`, so target it as `[data-scope="checkbox"] [data-scope="icon"]`. A component's own `data-scope` and `data-part` always win over ones you pass to it.
 
 ## 6. Theme switching
 

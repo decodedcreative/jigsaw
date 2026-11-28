@@ -10,7 +10,7 @@ import {
   Button as ReactAriaButton,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
+import { usePartProps, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon } from "@components/icon";
 import { numberFieldStyles } from "./NumberField.styles";
 import type { NumberFieldProps } from "./NumberField.types";
@@ -30,7 +30,7 @@ export const NumberField = ({
   const nameRef = useAccessibleNameWarning("NumberField", ref, { target: "input" });
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
-  const classNames = useGetClassNames(numberFieldStyles, classNameOverrides, {
+  const parts = usePartProps("number-field", numberFieldStyles, classNameOverrides, {
     label: { state },
     group: { state },
     input: { size, state },
@@ -38,31 +38,32 @@ export const NumberField = ({
     incrementButton: { size, state },
     description: { state },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   return (
     <ReactAriaNumberField
-      className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
+      {...parts.component}
+      className={rootClassName}
       ref={nameRef}
     >
-      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
-      <div className={classNames.fieldBody}>
-        <ReactAriaGroup className={classNames.group}>
-          <ReactAriaButton slot="decrement" className={classNames.decrementButton}>
+      {label && <ReactAriaLabel {...parts.label}>{label}</ReactAriaLabel>}
+      <div {...parts.fieldBody}>
+        <ReactAriaGroup {...parts.group}>
+          <ReactAriaButton slot="decrement" {...parts.decrementButton}>
             <Icon icon={MinusIcon} size={size} />
           </ReactAriaButton>
-          <ReactAriaInput className={classNames.input} />
-          <ReactAriaButton slot="increment" className={classNames.incrementButton}>
+          <ReactAriaInput {...parts.input} />
+          <ReactAriaButton slot="increment" {...parts.incrementButton}>
             <Icon icon={PlusIcon} size={size} />
           </ReactAriaButton>
         </ReactAriaGroup>
         {(description || errorMessage) && (
           <ReactAriaText
             slot={errorMessage ? "errorMessage" : "description"}
-            className={classNames.description}
+            {...parts.description}
           >
             {errorMessage || description}
           </ReactAriaText>

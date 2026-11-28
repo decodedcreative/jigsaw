@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getClassNames, mergeClassName } from "@utils";
+import { getPartProps, mergeClassName } from "@utils";
 import { avatarStyles } from "./Avatar.styles";
 import type { AvatarProps, AvatarStatus } from "./Avatar.types";
 
@@ -32,7 +32,7 @@ export const Avatar = ({
   const showImage = Boolean(src && !hasError);
   const showFallback = Boolean(initials && (!src || hasError));
 
-  const classNames = getClassNames(avatarStyles, classNameOverrides, {
+  const parts = getPartProps("avatar", avatarStyles, classNameOverrides, {
     component: { size },
     image: {},
     fallback: {},
@@ -40,20 +40,20 @@ export const Avatar = ({
   });
 
   return (
-    <div {...props} className={mergeClassName(classNames.component, className)}>
+    <div {...props} {...parts.component} className={mergeClassName(parts.component.className, className)}>
       {showImage && (
         <img
           src={src}
           alt={alt}
-          className={classNames.image}
+          {...parts.image}
           onError={() => setHasError(true)}
         />
       )}
-      {showFallback && <span className={classNames.fallback}>{initials}</span>}
+      {showFallback && <span {...parts.fallback}>{initials}</span>}
       {status && (
         <span
           role="img"
-          className={classNames.status}
+          {...parts.status}
           aria-label={statusLabel ?? `Status: ${statusLabels[status]}`}
         />
       )}

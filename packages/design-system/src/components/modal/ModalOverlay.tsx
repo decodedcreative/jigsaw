@@ -9,7 +9,8 @@ import {
   Modal as ReactAriaModal,
   ModalOverlay as ReactAriaModalOverlay,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { usePartProps, useRootClassName } from "@hooks";
+import type { PartProps } from "@utils";
 import { Icon } from "@components/icon";
 import { Button } from "../button/Button";
 import { modalStyles } from "./Modal.styles";
@@ -44,10 +45,10 @@ const useIsOverflowing = <T extends HTMLElement>() => {
   return [ref, isOverflowing] as const;
 };
 
-const ModalContent = ({ className, children }: { className: string; children: ReactNode }) => {
+const ModalContent = ({ children, ...partProps }: PartProps & { children: ReactNode }) => {
   const [ref, isOverflowing] = useIsOverflowing<HTMLDivElement>();
   return (
-    <div ref={ref} className={className} tabIndex={isOverflowing ? 0 : undefined}>
+    <div ref={ref} {...partProps} tabIndex={isOverflowing ? 0 : undefined}>
       {children}
     </div>
   );
@@ -67,7 +68,7 @@ export const ModalOverlay = ({
   ref,
   ...props
 }: ModalOverlayProps) => {
-  const classNames = useGetClassNames(modalStyles, classNameOverrides, {
+  const parts = usePartProps("modal", modalStyles, classNameOverrides, {
     overlay: {},
     component: {},
     dialog: {},
@@ -77,28 +78,28 @@ export const ModalOverlay = ({
     content: {},
     footer: {},
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
   const shouldShowCancelButton = showCancelButton ?? footer != null;
   const hasFooter = shouldShowCancelButton || footer != null;
 
   return (
-    <ReactAriaModalOverlay {...props} className={classNames.overlay}>
-      <ReactAriaModal ref={ref} className={rootClassName}>
-        <ReactAriaDialog className={classNames.dialog}>
+    <ReactAriaModalOverlay {...props} {...parts.overlay}>
+      <ReactAriaModal ref={ref} {...parts.component} className={rootClassName}>
+        <ReactAriaDialog {...parts.dialog}>
           {({ close }) => (
             <>
               {header != null ? (
-                <div className={classNames.header}>{header}</div>
+                <div {...parts.header}>{header}</div>
               ) : (
-                <div className={classNames.header}>
-                  <ReactAriaHeading slot="title" className={classNames.title}>
+                <div {...parts.header}>
+                  <ReactAriaHeading slot="title" {...parts.title}>
                     {title}
                   </ReactAriaHeading>
                   {showCloseButton ? (
                     <ReactAriaButton
                       aria-label={closeLabel}
                       onPress={close}
-                      className={classNames.closeButton}
+                      {...parts.closeButton}
                     >
                       <Icon icon={XIcon} size="lg" />
                     </ReactAriaButton>
@@ -106,10 +107,10 @@ export const ModalOverlay = ({
                 </div>
               )}
               {children != null ? (
-                <ModalContent className={classNames.content}>{children}</ModalContent>
+                <ModalContent {...parts.content}>{children}</ModalContent>
               ) : null}
               {hasFooter ? (
-                <div className={classNames.footer}>
+                <div {...parts.footer}>
                   {shouldShowCancelButton ? (
                     <Button variant="secondary" onPress={close}>
                       {cancelLabel}

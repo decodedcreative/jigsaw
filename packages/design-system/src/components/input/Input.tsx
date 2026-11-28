@@ -6,7 +6,7 @@ import {
   Input as ReactAriaInput,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
+import { usePartProps, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { inputStyles } from "./Input.styles";
 import type { InputProps } from "./Input.types";
 
@@ -26,28 +26,29 @@ export const Input = ({
   const nameRef = useAccessibleNameWarning("Input", ref, { target: "input" });
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
 
-  const classNames = useGetClassNames(inputStyles, classNameOverrides, {
+  const parts = usePartProps("input", inputStyles, classNameOverrides, {
     label: { state },
     input: { size, state },
     description: { state },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   return (
     <ReactAriaTextField
-      className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
+      {...parts.component}
+      className={rootClassName}
       ref={nameRef}
     >
-      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
-      <div className={classNames.fieldBody}>
-        <ReactAriaInput className={classNames.input} placeholder={placeholder} />
+      {label && <ReactAriaLabel {...parts.label}>{label}</ReactAriaLabel>}
+      <div {...parts.fieldBody}>
+        <ReactAriaInput {...parts.input} placeholder={placeholder} />
         {(description || errorMessage) && (
           <ReactAriaText
             slot={errorMessage ? "errorMessage" : "description"}
-            className={classNames.description}
+            {...parts.description}
           >
             {errorMessage || description}
           </ReactAriaText>

@@ -3,3 +3,4 @@ export * from './getClassNames';
 export * from './isClickable';
 export * from './mergeClassName';
 export * from './mergeRootClassName';
+export * from './getPartProps';

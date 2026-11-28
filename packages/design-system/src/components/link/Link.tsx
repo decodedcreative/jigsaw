@@ -1,7 +1,7 @@
 "use client";
 
 import { Link as ReactAriaLink } from "react-aria-components";
-import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
+import { usePartProps, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { linkStyles } from "./Link.styles";
 import type { LinkProps } from "./Link.types";
 
@@ -15,13 +15,18 @@ export function Link({
   ...props
 }: LinkProps) {
   const nameRef = useAccessibleNameWarning("Link", ref);
-  const classNames = useGetClassNames(linkStyles, classNameOverrides, {
+  const parts = usePartProps("link", linkStyles, classNameOverrides, {
     component: { variant, size },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   return (
-    <ReactAriaLink className={rootClassName} {...props} ref={nameRef}>
+    <ReactAriaLink
+      {...props}
+      {...parts.component}
+      className={rootClassName}
+      ref={nameRef}
+    >
       {children}
     </ReactAriaLink>
   );

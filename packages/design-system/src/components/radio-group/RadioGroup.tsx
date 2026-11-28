@@ -6,7 +6,7 @@ import {
   Label as ReactAriaLabel,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { usePartProps, useRootClassName } from "@hooks";
 import { radioGroupStyles } from "./RadioGroup.styles";
 import { RadioGroupProvider } from "./RadioGroupContext";
 import { RadioGroupItem } from "./RadioGroupItem";
@@ -27,10 +27,10 @@ export const RadioGroup = ({
   const state = isDisabled ? "disabled" : groupHasError ? "error" : "default";
   const { item: itemClassNameOverrides, ...groupClassNameOverrides } = classNameOverrides ?? {};
 
-  const classNames = useGetClassNames(radioGroupStyles, groupClassNameOverrides, {
+  const parts = usePartProps("radio-group", radioGroupStyles, groupClassNameOverrides, {
     label: { state },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   const contextValue = useMemo(
     () => ({ itemClassNameOverrides, groupHasError }),
@@ -40,21 +40,22 @@ export const RadioGroup = ({
   return (
     <RadioGroupProvider value={contextValue}>
       <ReactAriaRadioGroup
-        className={rootClassName}
         isDisabled={isDisabled}
         isInvalid={groupHasError}
         {...props}
+        {...parts.component}
+        className={rootClassName}
       >
-        {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
-        <div className={classNames.fieldBody}>
+        {label && <ReactAriaLabel {...parts.label}>{label}</ReactAriaLabel>}
+        <div {...parts.fieldBody}>
           {description && (
-            <ReactAriaText slot="description" className={classNames.description}>
+            <ReactAriaText slot="description" {...parts.description}>
               {description}
             </ReactAriaText>
           )}
-          <div className={classNames.options}>{children}</div>
+          <div {...parts.options}>{children}</div>
           {errorMessage && (
-            <ReactAriaText slot="errorMessage" className={classNames.errorMessage}>
+            <ReactAriaText slot="errorMessage" {...parts.errorMessage}>
               {errorMessage}
             </ReactAriaText>
           )}

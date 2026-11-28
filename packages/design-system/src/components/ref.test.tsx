@@ -5,7 +5,8 @@
  * Jigsaw supports React 19 only, where `ref` is a normal prop on function
  * components, so components take `ref` in their props instead of using the
  * deprecated forwardRef. The ref goes to the element that receives
- * `className` (the root slot).
+ * `className` (the root slot). The root also keeps its own `data-scope` and
+ * `data-part` when an app passes its own (JSW-132).
  */
 import { createRef, useEffect, type ReactElement, type Ref } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -46,6 +47,16 @@ type ComponentExport = { displayName?: string };
 /** Probe class passed as `className`, so we can check the ref hits the root slot. */
 const PROBE = "ds-ref-probe";
 
+/** The props each render passes to the component's root. */
+type RootProps = { className: string; "data-scope"?: string; "data-part"?: string };
+
+/**
+ * An app's own `data-scope` and `data-part`. Components spread their part
+ * props after the app's, as `getPartProps` documents, so these never reach
+ * the root.
+ */
+const APP_DATA = { "data-scope": "app", "data-part": "app" };
+
 /** Components with no `className` prop, so only the ref itself is checked. */
 const NO_CLASSNAME: Record<string, string> = {
   "Card.Header": "styled through Card's classNameOverrides.header; no className prop",
@@ -68,139 +79,139 @@ function componentExports(): [string, ComponentExport][] {
 }
 
 /** Minimal render for each component, passing the ref through. */
-const renders: Record<string, (ref: Ref<never>, cn: string) => ReactElement> = {
-  Avatar: (ref, cn) => <DS.Avatar ref={ref} className={cn} initials="JH" />,
-  Badge: (ref, cn) => <DS.Badge ref={ref} className={cn}>New</DS.Badge>,
-  Button: (ref, cn) => <DS.Button ref={ref} className={cn}>Save</DS.Button>,
-  Card: (ref, cn) => <DS.Card ref={ref} className={cn}>Content</DS.Card>,
+const renders: Record<string, (ref: Ref<never>, root: RootProps) => ReactElement> = {
+  Avatar: (ref, root) => <DS.Avatar ref={ref} {...root} initials="JH" />,
+  Badge: (ref, root) => <DS.Badge ref={ref} {...root}>New</DS.Badge>,
+  Button: (ref, root) => <DS.Button ref={ref} {...root}>Save</DS.Button>,
+  Card: (ref, root) => <DS.Card ref={ref} {...root}>Content</DS.Card>,
   "Card.Header": (ref) => <DS.Card.Header ref={ref} title="Usage" />,
-  Checkbox: (ref, cn) => <DS.Checkbox ref={ref} className={cn} label="Accept" />,
-  CheckboxGroup: (ref, cn) => (
-    <DS.CheckboxGroup ref={ref} className={cn} label="Options">
+  Checkbox: (ref, root) => <DS.Checkbox ref={ref} {...root} label="Accept" />,
+  CheckboxGroup: (ref, root) => (
+    <DS.CheckboxGroup ref={ref} {...root} label="Options">
       <DS.Checkbox label="A" value="a" />
     </DS.CheckboxGroup>
   ),
-  Disclosure: (ref, cn) => (
-    <DS.Disclosure ref={ref} className={cn} title="More">
+  Disclosure: (ref, root) => (
+    <DS.Disclosure ref={ref} {...root} title="More">
       Panel
     </DS.Disclosure>
   ),
-  DisclosureGroup: (ref, cn) => (
-    <DS.DisclosureGroup ref={ref} className={cn}>
+  DisclosureGroup: (ref, root) => (
+    <DS.DisclosureGroup ref={ref} {...root}>
       <DS.Disclosure title="More">Panel</DS.Disclosure>
     </DS.DisclosureGroup>
   ),
-  Form: (ref, cn) => <DS.Form ref={ref} className={cn}>Fields</DS.Form>,
-  "Form.Group": (ref, cn) => <DS.Form.Group ref={ref} className={cn} title="Account" />,
-  H1: (ref, cn) => <DS.H1 ref={ref} className={cn}>Title</DS.H1>,
-  H2: (ref, cn) => <DS.H2 ref={ref} className={cn}>Title</DS.H2>,
-  H3: (ref, cn) => <DS.H3 ref={ref} className={cn}>Title</DS.H3>,
-  H4: (ref, cn) => <DS.H4 ref={ref} className={cn}>Title</DS.H4>,
-  H5: (ref, cn) => <DS.H5 ref={ref} className={cn}>Title</DS.H5>,
-  H6: (ref, cn) => <DS.H6 ref={ref} className={cn}>Title</DS.H6>,
-  Heading: (ref, cn) => <DS.Heading ref={ref} className={cn}>Title</DS.Heading>,
-  Icon: (ref, cn) => <DS.Icon ref={ref} className={cn} icon={GearIcon} aria-hidden />,
-  Input: (ref, cn) => <DS.Input ref={ref} className={cn} label="Email" />,
-  Link: (ref, cn) => (
-    <DS.Link ref={ref} className={cn} href="/docs">
+  Form: (ref, root) => <DS.Form ref={ref} {...root}>Fields</DS.Form>,
+  "Form.Group": (ref, root) => <DS.Form.Group ref={ref} {...root} title="Account" />,
+  H1: (ref, root) => <DS.H1 ref={ref} {...root}>Title</DS.H1>,
+  H2: (ref, root) => <DS.H2 ref={ref} {...root}>Title</DS.H2>,
+  H3: (ref, root) => <DS.H3 ref={ref} {...root}>Title</DS.H3>,
+  H4: (ref, root) => <DS.H4 ref={ref} {...root}>Title</DS.H4>,
+  H5: (ref, root) => <DS.H5 ref={ref} {...root}>Title</DS.H5>,
+  H6: (ref, root) => <DS.H6 ref={ref} {...root}>Title</DS.H6>,
+  Heading: (ref, root) => <DS.Heading ref={ref} {...root}>Title</DS.Heading>,
+  Icon: (ref, root) => <DS.Icon ref={ref} {...root} icon={GearIcon} aria-hidden />,
+  Input: (ref, root) => <DS.Input ref={ref} {...root} label="Email" />,
+  Link: (ref, root) => (
+    <DS.Link ref={ref} {...root} href="/docs">
       Docs
     </DS.Link>
   ),
-  LinkButton: (ref, cn) => (
-    <DS.LinkButton ref={ref} className={cn} href="/signup">
+  LinkButton: (ref, root) => (
+    <DS.LinkButton ref={ref} {...root} href="/signup">
       Sign up
     </DS.LinkButton>
   ),
-  ButtonLink: (ref, cn) => (
-    <DS.ButtonLink ref={ref} className={cn} href="/signup">
+  ButtonLink: (ref, root) => (
+    <DS.ButtonLink ref={ref} {...root} href="/signup">
       Sign up
     </DS.ButtonLink>
   ),
-  Modal: (ref, cn) => (
-    <DS.Modal ref={ref} className={cn} title="Dialog" isOpen onOpenChange={vi.fn()}>
+  Modal: (ref, root) => (
+    <DS.Modal ref={ref} {...root} title="Dialog" isOpen onOpenChange={vi.fn()}>
       Body
     </DS.Modal>
   ),
-  Navigation: (ref, cn) => <DS.Navigation ref={ref} className={cn} aria-label="Main" />,
-  NavigationInner: (ref, cn) => <DS.NavigationInner ref={ref} className={cn} />,
-  NavigationBrand: (ref, cn) => <DS.NavigationBrand ref={ref} className={cn}>Jigsaw</DS.NavigationBrand>,
-  NavigationLinks: (ref, cn) => <DS.NavigationLinks ref={ref} className={cn} />,
-  NavigationLink: (ref, cn) => (
-    <DS.NavigationLink ref={ref} className={cn} href="/team">
+  Navigation: (ref, root) => <DS.Navigation ref={ref} {...root} aria-label="Main" />,
+  NavigationInner: (ref, root) => <DS.NavigationInner ref={ref} {...root} />,
+  NavigationBrand: (ref, root) => <DS.NavigationBrand ref={ref} {...root}>Jigsaw</DS.NavigationBrand>,
+  NavigationLinks: (ref, root) => <DS.NavigationLinks ref={ref} {...root} />,
+  NavigationLink: (ref, root) => (
+    <DS.NavigationLink ref={ref} {...root} href="/team">
       Team
     </DS.NavigationLink>
   ),
-  NavigationActions: (ref, cn) => <DS.NavigationActions ref={ref} className={cn} />,
-  NumberField: (ref, cn) => <DS.NumberField ref={ref} className={cn} label="Quantity" />,
-  RadioGroup: (ref, cn) => (
-    <DS.RadioGroup ref={ref} className={cn} label="Plan">
+  NavigationActions: (ref, root) => <DS.NavigationActions ref={ref} {...root} />,
+  NumberField: (ref, root) => <DS.NumberField ref={ref} {...root} label="Quantity" />,
+  RadioGroup: (ref, root) => (
+    <DS.RadioGroup ref={ref} {...root} label="Plan">
       <DS.RadioGroup.Item label="Free" value="free" />
     </DS.RadioGroup>
   ),
-  "RadioGroup.Item": (ref, cn) => (
+  "RadioGroup.Item": (ref, root) => (
     <DS.RadioGroup label="Plan">
-      <DS.RadioGroup.Item ref={ref} className={cn} label="Free" value="free" />
+      <DS.RadioGroup.Item ref={ref} {...root} label="Free" value="free" />
     </DS.RadioGroup>
   ),
-  SearchField: (ref, cn) => <DS.SearchField ref={ref} className={cn} label="Search" />,
-  Select: (ref, cn) => (
-    <DS.Select ref={ref} className={cn} label="Fruit">
+  SearchField: (ref, root) => <DS.SearchField ref={ref} {...root} label="Search" />,
+  Select: (ref, root) => (
+    <DS.Select ref={ref} {...root} label="Fruit">
       <DS.Select.Item id="apple">Apple</DS.Select.Item>
     </DS.Select>
   ),
   "Select.Item": () => <></>, // checked separately below: items only mount in the open popover
-  Skeleton: (ref, cn) => <DS.Skeleton ref={ref} className={cn} />,
-  SkeletonText: (ref, cn) => <DS.SkeletonText ref={ref} className={cn} />,
-  SkeletonCircle: (ref, cn) => <DS.SkeletonCircle ref={ref} className={cn} />,
-  SkeletonCard: (ref, cn) => <DS.SkeletonCard ref={ref} className={cn} />,
-  Tabs: (ref, cn) => (
-    <DS.Tabs ref={ref} className={cn}>
+  Skeleton: (ref, root) => <DS.Skeleton ref={ref} {...root} />,
+  SkeletonText: (ref, root) => <DS.SkeletonText ref={ref} {...root} />,
+  SkeletonCircle: (ref, root) => <DS.SkeletonCircle ref={ref} {...root} />,
+  SkeletonCard: (ref, root) => <DS.SkeletonCard ref={ref} {...root} />,
+  Tabs: (ref, root) => (
+    <DS.Tabs ref={ref} {...root}>
       <DS.TabList aria-label="Tabs">
         <DS.Tab id="a">A</DS.Tab>
       </DS.TabList>
       <DS.TabPanel id="a">Panel</DS.TabPanel>
     </DS.Tabs>
   ),
-  TabList: (ref, cn) => (
+  TabList: (ref, root) => (
     <DS.Tabs>
-      <DS.TabList ref={ref} className={cn} aria-label="Tabs">
+      <DS.TabList ref={ref} {...root} aria-label="Tabs">
         <DS.Tab id="a">A</DS.Tab>
       </DS.TabList>
       <DS.TabPanel id="a">Panel</DS.TabPanel>
     </DS.Tabs>
   ),
-  Tab: (ref, cn) => (
+  Tab: (ref, root) => (
     <DS.Tabs>
       <DS.TabList aria-label="Tabs">
-        <DS.Tab ref={ref} className={cn} id="a">
+        <DS.Tab ref={ref} {...root} id="a">
           A
         </DS.Tab>
       </DS.TabList>
       <DS.TabPanel id="a">Panel</DS.TabPanel>
     </DS.Tabs>
   ),
-  TabPanel: (ref, cn) => (
+  TabPanel: (ref, root) => (
     <DS.Tabs>
       <DS.TabList aria-label="Tabs">
         <DS.Tab id="a">A</DS.Tab>
       </DS.TabList>
-      <DS.TabPanel ref={ref} className={cn} id="a">
+      <DS.TabPanel ref={ref} {...root} id="a">
         Panel
       </DS.TabPanel>
     </DS.Tabs>
   ),
-  Text: (ref, cn) => <DS.Text ref={ref} className={cn}>Body</DS.Text>,
-  Textarea: (ref, cn) => <DS.Textarea ref={ref} className={cn} label="Message" />,
-  ToastRegion: (ref, cn) => (
+  Text: (ref, root) => <DS.Text ref={ref} {...root}>Body</DS.Text>,
+  Textarea: (ref, root) => <DS.Textarea ref={ref} {...root} label="Message" />,
+  ToastRegion: (ref, root) => (
     <>
-      <DS.ToastRegion ref={ref} className={cn} />
+      <DS.ToastRegion ref={ref} {...root} />
       <ShowToast />
     </>
   ),
-  Tooltip: (ref, cn) => (
+  Tooltip: (ref, root) => (
     <DS.TooltipTrigger isOpen>
       <DS.Button>Help</DS.Button>
-      <DS.Tooltip ref={ref} className={cn}>Tip</DS.Tooltip>
+      <DS.Tooltip ref={ref} {...root}>Tip</DS.Tooltip>
     </DS.TooltipTrigger>
   ),
 };
@@ -219,10 +230,21 @@ describe("refs and display names", () => {
     "%s attaches the ref to a DOM element",
     async (name) => {
       const ref = createRef<Element>();
-      render(renders[name](ref as Ref<never>, PROBE));
+      render(renders[name](ref as Ref<never>, { className: PROBE }));
       await waitFor(() => expect(ref.current, `${name} ref`).toBeInstanceOf(Element));
       // The ref must land on the root slot: the element that receives className.
       if (!(name in NO_CLASSNAME)) expect(ref.current, `${name} ref target`).toHaveClass(PROBE);
+    }
+  );
+
+  it.each(components.filter(([name]) => name !== "Select.Item"))(
+    "%s keeps its own data-scope and data-part when an app passes its own",
+    async (name) => {
+      const ref = createRef<Element>();
+      render(renders[name](ref as Ref<never>, { className: PROBE, ...APP_DATA }));
+      await waitFor(() => expect(ref.current, `${name} ref`).toBeInstanceOf(Element));
+      expect(ref.current?.getAttribute("data-scope"), `${name} data-scope`).not.toBe("app");
+      expect(ref.current?.getAttribute("data-part"), `${name} data-part`).not.toBe("app");
     }
   );
 

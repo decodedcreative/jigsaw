@@ -10,7 +10,7 @@ import {
   Modal as ReactAriaModal,
   ModalOverlay as ReactAriaModalOverlay,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
+import { usePartProps, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon } from "@components/icon";
 import {
   mobileNavigationStyles,
@@ -34,15 +34,15 @@ export type NavigationProps = RefProp<HTMLElement> & WithoutClassName<HTMLAttrib
   };
 
 export const Navigation = ({ classNameOverrides, className, children, ...props }: NavigationProps) => {
-  const classNames = useGetClassNames(navigationStyles, classNameOverrides, {
+  const parts = usePartProps("navigation", navigationStyles, classNameOverrides, {
     component: {},
     container: {},
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   return (
-    <nav {...props} className={rootClassName}>
-      <div className={classNames.container}>{children}</div>
+    <nav {...props} {...parts.component} className={rootClassName}>
+      <div {...parts.container}>{children}</div>
     </nav>
   );
 };
@@ -55,10 +55,10 @@ export type NavigationInnerProps = RefProp<HTMLDivElement> & WithoutClassName<HT
   };
 
 export const NavigationInner = ({ classNameOverrides, className, children, ...props }: NavigationInnerProps) => {
-  const classNames = useGetClassNames(navigationInnerStyles, classNameOverrides, { component: {} });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const parts = usePartProps("navigation-inner", navigationInnerStyles, classNameOverrides, { component: {} });
+  const rootClassName = useRootClassName(parts.component.className, className);
   return (
-    <div {...props} className={rootClassName}>
+    <div {...props} {...parts.component} className={rootClassName}>
       {children}
     </div>
   );
@@ -80,10 +80,10 @@ export const NavigationBrand = ({
   ref,
 }: NavigationBrandProps) => {
   const nameRef = useAccessibleNameWarning("NavigationBrand", ref);
-  const classNames = useGetClassNames(navigationBrandStyles, classNameOverrides, { component: {} });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const parts = usePartProps("navigation-brand", navigationBrandStyles, classNameOverrides, { component: {} });
+  const rootClassName = useRootClassName(parts.component.className, className);
   return (
-    <ReactAriaLink ref={nameRef} href={href} className={rootClassName}>
+    <ReactAriaLink ref={nameRef} href={href} {...parts.component} className={rootClassName}>
       {children}
     </ReactAriaLink>
   );
@@ -97,10 +97,10 @@ export type NavigationLinksProps = RefProp<HTMLDivElement> & WithoutClassName<HT
   };
 
 export const NavigationLinks = ({ classNameOverrides, className, children, ...props }: NavigationLinksProps) => {
-  const classNames = useGetClassNames(navigationLinksStyles, classNameOverrides, { component: {} });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const parts = usePartProps("navigation-links", navigationLinksStyles, classNameOverrides, { component: {} });
+  const rootClassName = useRootClassName(parts.component.className, className);
   return (
-    <div {...props} className={rootClassName}>
+    <div {...props} {...parts.component} className={rootClassName}>
       {children}
     </div>
   );
@@ -124,12 +124,13 @@ export const NavigationLink = ({
   ref,
 }: NavigationLinkProps) => {
   const nameRef = useAccessibleNameWarning("NavigationLink", ref);
-  const classNames = useGetClassNames(navigationLinkStyles, classNameOverrides, { component: {} });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const parts = usePartProps("navigation-link", navigationLinkStyles, classNameOverrides, { component: {} });
+  const rootClassName = useRootClassName(parts.component.className, className);
   return (
     <ReactAriaLink
       ref={nameRef}
       href={href}
+      {...parts.component}
       className={rootClassName}
       data-current={isCurrent ? "" : undefined}
       aria-current={isCurrent ? "page" : undefined}
@@ -147,10 +148,10 @@ export type NavigationActionsProps = RefProp<HTMLDivElement> & WithoutClassName<
   };
 
 export const NavigationActions = ({ classNameOverrides, className, children, ...props }: NavigationActionsProps) => {
-  const classNames = useGetClassNames(navigationActionsStyles, classNameOverrides, { component: {} });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const parts = usePartProps("navigation-actions", navigationActionsStyles, classNameOverrides, { component: {} });
+  const rootClassName = useRootClassName(parts.component.className, className);
   return (
-    <div {...props} className={rootClassName}>
+    <div {...props} {...parts.component} className={rootClassName}>
       {children}
     </div>
   );
@@ -172,7 +173,7 @@ export const MobileNavigation = ({
   links,
   classNameOverrides,
 }: MobileNavigationProps) => {
-  const classNames = useGetClassNames(mobileNavigationStyles, classNameOverrides, {
+  const parts = usePartProps("mobile-navigation", mobileNavigationStyles, classNameOverrides, {
     mobileMenuButton: {},
     mobileMenu: {},
     mobileMenuModal: {},
@@ -186,7 +187,7 @@ export const MobileNavigation = ({
     <>
       {/* Hamburger toggle — always visible on mobile */}
       <ReactAriaButton
-        className={classNames.mobileMenuButton}
+        {...parts.mobileMenuButton}
         onPress={() => onOpenChange(!isOpen)}
         aria-expanded={isOpen}
         aria-label="Toggle menu"
@@ -203,15 +204,15 @@ export const MobileNavigation = ({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         isDismissable
-        className={classNames.mobileMenu}
+        {...parts.mobileMenu}
       >
-        <ReactAriaModal className={classNames.mobileMenuModal}>
-          <ReactAriaDialog aria-label="Navigation menu" className={classNames.mobileMenuDialog}>
+        <ReactAriaModal {...parts.mobileMenuModal}>
+          <ReactAriaDialog aria-label="Navigation menu" {...parts.mobileMenuDialog}>
             {/* Header row mirrors the nav bar */}
-            <div className={classNames.mobileMenuHeader}>
+            <div {...parts.mobileMenuHeader}>
               <span className="text-lg font-semibold text-foreground-primary">Menu</span>
               <ReactAriaButton
-                className={classNames.mobileMenuButton}
+                {...parts.mobileMenuButton}
                 onPress={() => onOpenChange(false)}
                 aria-label="Close menu"
               >
@@ -220,12 +221,12 @@ export const MobileNavigation = ({
             </div>
 
             {/* Nav links */}
-            <nav className={classNames.mobileMenuBody}>
+            <nav {...parts.mobileMenuBody}>
               {links.map((link) => (
                 <ReactAriaLink
                   key={link.href}
                   href={link.href}
-                  className={classNames.mobileNavItem}
+                  {...parts.mobileNavItem}
                   data-current={link.isCurrent ? "" : undefined}
                   aria-current={link.isCurrent ? "page" : undefined}
                   onPress={() => onOpenChange(false)}

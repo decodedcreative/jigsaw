@@ -9,7 +9,7 @@ import {
   Button as ReactAriaButton,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
+import { usePartProps, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon } from "@components/icon";
 import { searchFieldStyles } from "./SearchField.styles";
 import type { SearchFieldProps } from "./SearchField.types";
@@ -34,40 +34,41 @@ export const SearchField = ({
   const defaultAriaLabel =
     !label && !props["aria-label"] && !props["aria-labelledby"] ? "Search" : undefined;
 
-  const classNames = useGetClassNames(searchFieldStyles, classNameOverrides, {
+  const parts = usePartProps("search-field", searchFieldStyles, classNameOverrides, {
     label: { state },
     input: { size, state },
     clearButton: { size },
     description: { state },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   return (
     <ReactAriaSearchField
-      className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       aria-label={defaultAriaLabel}
       {...props}
+      {...parts.component}
+      className={rootClassName}
       ref={nameRef}
     >
-      {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
-      <div className={classNames.fieldBody}>
-        <div className={classNames.inputWrapper}>
+      {label && <ReactAriaLabel {...parts.label}>{label}</ReactAriaLabel>}
+      <div {...parts.fieldBody}>
+        <div {...parts.inputWrapper}>
           <Icon
             icon={MagnifyingGlassIcon}
             size={size}
-            classNameOverrides={{ component: classNames.searchIcon }}
+            classNameOverrides={{ component: parts.searchIcon.className }}
           />
-          <ReactAriaInput className={classNames.input} placeholder={placeholder} />
-          <ReactAriaButton className={classNames.clearButton}>
+          <ReactAriaInput {...parts.input} placeholder={placeholder} />
+          <ReactAriaButton {...parts.clearButton}>
             <Icon icon={XIcon} size="sm" />
           </ReactAriaButton>
         </div>
         {(description || errorMessage) && (
           <ReactAriaText
             slot={errorMessage ? "errorMessage" : "description"}
-            className={classNames.description}
+            {...parts.description}
           >
             {errorMessage || description}
           </ReactAriaText>

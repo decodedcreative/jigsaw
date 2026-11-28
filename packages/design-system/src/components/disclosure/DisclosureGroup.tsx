@@ -1,7 +1,7 @@
 "use client";
 
 import { DisclosureGroup as ReactAriaDisclosureGroup } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { usePartProps, useRootClassName } from "@hooks";
 import { disclosureGroupStyles } from "./DisclosureGroup.styles";
 import type { DisclosureGroupProps } from "./Disclosure.types";
 
@@ -11,11 +11,11 @@ export function DisclosureGroup({
   className,
   ...props
 }: DisclosureGroupProps) {
-  const classNames = useGetClassNames(disclosureGroupStyles, classNameOverrides);
-  const rootClassName = useRootClassName(classNames.component, className);
+  const parts = usePartProps("disclosure-group", disclosureGroupStyles, classNameOverrides);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   return (
-    <ReactAriaDisclosureGroup className={rootClassName} {...props}>
+    <ReactAriaDisclosureGroup {...props} {...parts.component} className={rootClassName}>
       {children}
     </ReactAriaDisclosureGroup>
   );

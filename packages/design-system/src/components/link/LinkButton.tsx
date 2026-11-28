@@ -1,7 +1,7 @@
 "use client";
 
 import { Link as ReactAriaLink } from "react-aria-components";
-import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
+import { usePartProps, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { linkButtonStyles } from "./LinkButton.styles";
 import type { LinkButtonProps } from "./LinkButton.types";
 
@@ -15,13 +15,18 @@ export function LinkButton({
   ...props
 }: LinkButtonProps) {
   const nameRef = useAccessibleNameWarning("LinkButton", ref);
-  const classNames = useGetClassNames(linkButtonStyles, classNameOverrides, {
+  const parts = usePartProps("link-button", linkButtonStyles, classNameOverrides, {
     component: { variant, size },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   return (
-    <ReactAriaLink className={rootClassName} {...props} ref={nameRef}>
+    <ReactAriaLink
+      {...props}
+      {...parts.component}
+      className={rootClassName}
+      ref={nameRef}
+    >
       {children}
     </ReactAriaLink>
   );

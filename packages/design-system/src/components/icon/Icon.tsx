@@ -1,4 +1,4 @@
-import { getClassNames, mergeClassName } from "@utils";
+import { getPartProps, mergeClassName } from "@utils";
 import { customIconStyles, iconStyles } from "./Icon.styles";
 import { isCustomIconProps, type IconProps } from "./Icon.types";
 
@@ -15,7 +15,7 @@ export function Icon(props: IconProps) {
       ...svgProps
     } = props;
 
-    const classNames = getClassNames(customIconStyles, classNameOverrides, {
+    const parts = getPartProps("custom-icon", customIconStyles, classNameOverrides, {
       component: { size, tone },
     });
 
@@ -26,7 +26,8 @@ export function Icon(props: IconProps) {
         fill="currentColor"
         aria-hidden={ariaHidden}
         {...svgProps}
-        className={mergeClassName(classNames.component, className)}
+        {...parts.component}
+        className={mergeClassName(parts.component.className, className)}
       >
         {children}
       </svg>
@@ -44,7 +45,7 @@ export function Icon(props: IconProps) {
     ...phosphorProps
   } = props;
 
-  const classNames = getClassNames(iconStyles, classNameOverrides, {
+  const parts = getPartProps("icon", iconStyles, classNameOverrides, {
     component: { size, tone },
   });
 
@@ -53,7 +54,8 @@ export function Icon(props: IconProps) {
       weight={weight}
       aria-hidden={ariaHidden}
       {...phosphorProps}
-      className={mergeClassName(classNames.component, className)}
+      {...parts.component}
+      className={mergeClassName(parts.component.className, className)}
     />
   );
 }
