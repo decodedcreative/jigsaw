@@ -40,11 +40,11 @@ export const RadioGroup = ({
   return (
     <RadioGroupProvider value={contextValue}>
       <ReactAriaRadioGroup
-        {...parts.component}
-        className={rootClassName}
         isDisabled={isDisabled}
         isInvalid={groupHasError}
         {...props}
+        {...parts.component}
+        className={rootClassName}
       >
         {label && <ReactAriaLabel {...parts.label}>{label}</ReactAriaLabel>}
         <div {...parts.fieldBody}>

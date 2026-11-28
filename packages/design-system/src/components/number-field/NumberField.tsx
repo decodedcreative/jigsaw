@@ -42,11 +42,11 @@ export const NumberField = ({
 
   return (
     <ReactAriaNumberField
-      {...parts.component}
-      className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       {...props}
+      {...parts.component}
+      className={rootClassName}
       ref={nameRef}
     >
       {label && <ReactAriaLabel {...parts.label}>{label}</ReactAriaLabel>}

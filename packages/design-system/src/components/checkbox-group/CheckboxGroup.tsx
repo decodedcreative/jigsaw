@@ -35,11 +35,11 @@ export const CheckboxGroup = ({
   return (
     <CheckboxGroupProvider value={contextValue}>
       <ReactAriaCheckboxGroup
-        {...parts.component}
-        className={rootClassName}
         isDisabled={isDisabled}
         isInvalid={groupHasError}
         {...props}
+        {...parts.component}
+        className={rootClassName}
       >
         {label && <ReactAriaLabel {...parts.label}>{label}</ReactAriaLabel>}
         <div {...parts.fieldBody}>

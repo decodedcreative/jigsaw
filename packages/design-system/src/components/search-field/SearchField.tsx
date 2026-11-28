@@ -44,12 +44,12 @@ export const SearchField = ({
 
   return (
     <ReactAriaSearchField
-      {...parts.component}
-      className={rootClassName}
       isDisabled={isDisabled}
       isInvalid={isInvalid || !!errorMessage}
       aria-label={defaultAriaLabel}
       {...props}
+      {...parts.component}
+      className={rootClassName}
       ref={nameRef}
     >
       {label && <ReactAriaLabel {...parts.label}>{label}</ReactAriaLabel>}
