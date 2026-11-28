@@ -13,7 +13,7 @@ import { Button } from "../components/button";
 import { Card } from "../components/card";
 import { Checkbox } from "../components/checkbox";
 import { CheckboxGroup } from "../components/checkbox-group";
-import { Disclosure } from "../components/disclosure";
+import { Disclosure, DisclosureGroup } from "../components/disclosure";
 import { Form } from "../components/form";
 import { Heading } from "../components/heading";
 import { Icon } from "../components/icon";
@@ -146,6 +146,15 @@ export const componentStates: Record<string, ComponentState[]> = {
         </Disclosure>
       ),
       assert: () => expect(screen.getByText("Panel")).toBeVisible(),
+    },
+    {
+      name: "grouped",
+      render: () => (
+        <DisclosureGroup>
+          <Disclosure title="Shipping">Ships in two days.</Disclosure>
+          <Disclosure title="Returns">Free for 30 days.</Disclosure>
+        </DisclosureGroup>
+      ),
     },
   ],
   form: [

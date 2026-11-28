@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { UNSTABLE_ToastRegion as ReactAriaToastRegion } from "react-aria-components/Toast";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { usePartProps, useRootClassName } from "@hooks";
 import { DEFAULT_TOAST_REGION, getToastQueue, registerToastRegion } from "../../toast.queue";
 import type { ToastRegionProps } from "./ToastRegion.types";
 import { ToastItem } from "../ToastItem";
@@ -18,15 +18,16 @@ export const ToastRegion = ({
 }: ToastRegionProps) => {
   useEffect(() => registerToastRegion(region, ariaLabel), [region, ariaLabel]);
 
-  const classNames = useGetClassNames(toastRegionStyles, classNameOverrides, {
+  const parts = usePartProps("toast-region", toastRegionStyles, classNameOverrides, {
     component: { position },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   return (
     <ReactAriaToastRegion
       ref={ref}
       queue={getToastQueue(region)}
+      {...parts.component}
       className={rootClassName}
       aria-label={ariaLabel}
     >

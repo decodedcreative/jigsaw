@@ -70,17 +70,24 @@ const CONVERTED = new Set([
   "card",
   "checkbox",
   "checkbox-group",
+  "disclosure",
   "form",
   "heading",
   "icon",
   "input",
+  "link",
+  "modal",
+  "navigation",
   "number-field",
   "radio-group",
   "search-field",
   "select",
   "skeleton",
+  "tabs",
   "text",
   "textarea",
+  "toast",
+  "tooltip",
 ]);
 const NOT_YET_CONVERTED = new Set(
   Object.keys(componentStates).filter((folder) => !CONVERTED.has(folder)),
@@ -96,6 +103,7 @@ const COMPOSED_PARTS: Record<string, string[]> = {
   "form-group": ["title"],
   "search-field": ["searchIcon"],
   select: ["chevron"],
+  "toast-item": ["action", "close"],
 };
 
 /**

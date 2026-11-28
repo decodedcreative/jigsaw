@@ -5,7 +5,7 @@ import {
   DisclosurePanel,
   Button,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { usePartProps, useRootClassName } from "@hooks";
 import { disclosureStyles } from "./Disclosure.styles";
 import type { DisclosureProps } from "./Disclosure.types";
 
@@ -16,16 +16,16 @@ export function Disclosure({
   className,
   ...props
 }: DisclosureProps) {
-  const classNames = useGetClassNames(disclosureStyles, classNameOverrides);
-  const rootClassName = useRootClassName(classNames.component, className);
+  const parts = usePartProps("disclosure", disclosureStyles, classNameOverrides);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   return (
-    <ReactAriaDisclosure className={rootClassName} {...props}>
+    <ReactAriaDisclosure {...props} {...parts.component} className={rootClassName}>
       {/* TODO(JSW-22): Refactor trigger to DS Button with `media`/`mediaPosition` for the chevron
           instead of an inline SVG child once Button icon layout support merges. */}
-      <Button slot="trigger" className={classNames.trigger}>
+      <Button slot="trigger" {...parts.trigger}>
         <span>{title}</span>
-        <svg className={classNames.chevron} viewBox="0 0 16 16" fill="none">
+        <svg {...parts.chevron} viewBox="0 0 16 16" fill="none">
           <path
             d="M4 6L8 10L12 6"
             stroke="currentColor"
@@ -35,7 +35,7 @@ export function Disclosure({
           />
         </svg>
       </Button>
-      <DisclosurePanel className={classNames.panel}>{children}</DisclosurePanel>
+      <DisclosurePanel {...parts.panel}>{children}</DisclosurePanel>
     </ReactAriaDisclosure>
   );
 }
