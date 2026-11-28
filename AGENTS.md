@@ -72,7 +72,7 @@ packages/design-system/src/components/number-field/
 - Shared hooks live in `src/hooks/` and helpers in `src/utils/`. Import them through the path aliases, such as `@hooks`, `@utils` and `@jsw-types/component-props`, rather than relative paths.
 - Comments say why the code is the way it is, not what values it uses.
 - `npm run sync-exports --workspace=@jigsaw-ds/design-system` adds a new component to the package's `exports`, and the unit tests fail until it's run.
-- A new component also needs an entry in `src/components/a11y.test.tsx`, which fails until it has one. See Writing tests.
+- A new component also needs its states in `src/test-utils/component-states.tsx`, which the shared tests fail without. See Writing tests.
 
 ## Declaring a component
 
@@ -98,7 +98,7 @@ packages/design-system/src/components/number-field/
   Button.displayName = "DS_Button";
   ```
 
-- `src/components/ref.test.tsx` renders every export with a ref, and checks that the ref reaches the element carrying the component's class and that each export has a `DS_` display name. Components that render no element of their own, such as `ThemeProvider` and `TooltipTrigger`, are listed there as exceptions.
+- `src/components/ref.test.tsx` renders every export with a ref, and checks that the ref reaches the element carrying the component's class, that the element keeps its own `data-scope` and `data-part` when an app passes its own, and that each export has a `DS_` display name. Components that render no element of their own, such as `ThemeProvider` and `TooltipTrigger`, are listed there as exceptions.
 
 ## The public API
 
@@ -127,7 +127,21 @@ Components are styled with Tailwind classes and the Jigsaw theme. `button/Button
   >;
   ```
 
-- In the component, get each part's classes with `useGetClassNames`, which runs each part's CVA call and merges in `classNameOverrides`. Then merge the app's `className` into the outer element's with `useRootClassName`.
+- In the component, get each part's props with `usePartProps`, or `getPartProps` from `@utils` in a server component. It runs each part's CVA call, merges in `classNameOverrides`, and adds `data-scope` and `data-part`, so apps can target a part without relying on class names: `[data-scope="button"][data-part="text"]`. The scope is the styles export's name without `Styles`, in kebab case, so `navigationLinkStyles` is `navigation-link`. Then merge the app's `className` into the outer element's with `useRootClassName`.
+- Spread each part's props onto its element, after the app's props, so an app can't replace them, then the merged `className`:
+
+  ```tsx
+  const parts = usePartProps("button", buttonStyles, classNameOverrides, {
+    component: { variant, size },
+  });
+  const rootClassName = useRootClassName(parts.component.className, className);
+
+  <ReactAriaButton {...props} {...parts.component} className={rootClassName}>
+    <span {...parts.text}>{children}</span>
+  </ReactAriaButton>;
+  ```
+
+- Where a part is another Jigsaw component, such as Checkbox's `Icon`, pass the part's classes through that component's `classNameOverrides`. It keeps its own `data-scope`.
 - Components take two props for an app's classes: `className`, a string, for the outer element, and `classNameOverrides`, keyed by part, typed with `ClassNameOverrides<typeof buttonStyles>`. Where they set the same thing, the override wins.
 - Prefer a prop for a design choice, such as `tone="secondary"`, over documenting a class an app should add.
 - Size components with padding rather than fixed heights, so long content can wrap. Don't use `@apply`.
@@ -150,9 +164,11 @@ Tests use Vitest and Testing Library. Globals are off: import `describe`, `it`, 
 - Simulate interactions with `userEvent`, not `fireEvent`.
 - A test fails if it logs a warning or an error it didn't expect, from `src/test-setup.ts`. A test of a development warning mocks it with `vi.spyOn(console, "warn").mockImplementation(() => {})` and checks it was called.
 - These shared tests cover every component, so a new component needs an entry in each:
-  - `src/components/a11y.test.tsx` runs axe on every component in each state that changes the markup, such as disabled, invalid or expanded. Rule exceptions live in `src/test-utils/axe.ts`, each with its reason. Colour contrast is off in jsdom, and the story tests check it in Chromium.
+  - `src/test-utils/component-states.tsx` lists each component's states: every state that changes the markup, such as disabled, invalid or expanded, and enough states to render every part. The next two tests render them.
+  - `src/components/a11y.test.tsx` runs axe on every state. Rule exceptions live in `src/test-utils/axe.ts`, each with its reason. Colour contrast is off in jsdom, and the story tests check it in Chromium.
   - `src/components/announcements.test.tsx` pins what a screen reader announces for each state, such as `"checkbox, Accept terms, checked"`, using `src/test-utils/announce.ts`. Changing an expectation changes what assistive technology users hear, so do it only on purpose.
   - `src/components/accessible-name-warning.test.tsx` checks that each control warns when it has no accessible name.
+  - `src/components/data-parts.test.tsx` checks that each `data-scope` and `data-part` names a styles export and one of its parts, and that every part of a folder's styles appears in at least one of its states. When it reports a missing part, either the element doesn't spread its part props or no state renders it. Parts that are another Jigsaw component are listed in `COMPOSED_PARTS`.
   - `src/components/ref.test.tsx`. See Declaring a component.
 
 ## Writing stories

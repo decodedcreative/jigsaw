@@ -10,7 +10,7 @@ export type ClassNameOverrides<TStyles extends Record<string, unknown>> = Partia
  * Root-level `className` prop (JSW-7). String values merge via `twMerge`; function
  * values receive React Aria render props (including `defaultClassName`).
  *
- * After `useGetClassNames`, compose with `useRootClassName(classNames.component, className)`.
+ * After `usePartProps`, compose with `useRootClassName(parts.component.className, className)`.
  */
 export type RootClassName<P extends { defaultClassName?: string } = { defaultClassName?: string }> =
   | string
