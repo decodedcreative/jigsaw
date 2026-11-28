@@ -11,7 +11,7 @@ import {
   ListBox as ReactAriaListBox,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
+import { usePartProps, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon } from "@components/icon";
 import { selectStyles } from "./Select.styles";
 import { SelectProvider } from "./SelectContext";
@@ -40,12 +40,12 @@ export const Select = ({
   const state = isDisabled ? "disabled" : isInvalid || errorMessage ? "error" : "default";
   const { item: itemClassNameOverride, ...selectClassNameOverrides } = classNameOverrides ?? {};
 
-  const classNames = useGetClassNames(selectStyles, selectClassNameOverrides, {
+  const parts = usePartProps("select", selectStyles, selectClassNameOverrides, {
     label: { state },
     trigger: { size, state },
     description: { state },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   const contextValue = useMemo(
     () => ({ itemClassNameOverride }),
@@ -55,31 +55,32 @@ export const Select = ({
   return (
     <SelectProvider value={contextValue}>
       <ReactAriaSelect
+        {...parts.component}
         className={rootClassName}
         isDisabled={isDisabled}
         isInvalid={isInvalid || !!errorMessage}
         {...props}
       ref={nameRef}
       >
-        {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
-        <div className={classNames.fieldBody}>
-          <ReactAriaButton className={classNames.trigger}>
+        {label && <ReactAriaLabel {...parts.label}>{label}</ReactAriaLabel>}
+        <div {...parts.fieldBody}>
+          <ReactAriaButton {...parts.trigger}>
             <ReactAriaSelectValue className="flex-1 text-left truncate">
               {({ selectedText }) => selectedText || placeholder}
             </ReactAriaSelectValue>
-            <Icon icon={CaretDownIcon} size={size} classNameOverrides={{ component: classNames.chevron }} />
+            <Icon icon={CaretDownIcon} size={size} classNameOverrides={{ component: parts.chevron.className }} />
           </ReactAriaButton>
           {(description || errorMessage) && (
             <ReactAriaText
               slot={errorMessage ? "errorMessage" : "description"}
-              className={classNames.description}
+              {...parts.description}
             >
               {errorMessage || description}
             </ReactAriaText>
           )}
         </div>
-        <ReactAriaPopover className={classNames.popover}>
-          <ReactAriaListBox className={classNames.listbox}>{children}</ReactAriaListBox>
+        <ReactAriaPopover {...parts.popover}>
+          <ReactAriaListBox {...parts.listbox}>{children}</ReactAriaListBox>
         </ReactAriaPopover>
       </ReactAriaSelect>
     </SelectProvider>

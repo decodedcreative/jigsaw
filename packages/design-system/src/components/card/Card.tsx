@@ -54,7 +54,8 @@ export const Card = (props: CardProps) => {
     <Component
       {...(element === "button" ? { type: "button" } : undefined)}
       {...(elementProps as ComponentPropsWithoutRef<typeof element>)}
-      {...parts.component} className={mergeClassName(parts.component.className, className)}
+      {...parts.component}
+      className={mergeClassName(parts.component.className, className)}
     >
       {image != null ? <div {...parts.image}>{image}</div> : null}
       <Card.Header

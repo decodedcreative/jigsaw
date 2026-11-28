@@ -39,7 +39,8 @@ export const Skeleton = ({
   return (
     <div
       {...props}
-      {...parts.component} className={mergeClassName(parts.component.className, className)}
+      {...parts.component}
+      className={mergeClassName(parts.component.className, className)}
       style={inlineStyle}
     />
   );

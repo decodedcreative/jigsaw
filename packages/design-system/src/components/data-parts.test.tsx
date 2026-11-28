@@ -63,21 +63,49 @@ for (const [file, module] of Object.entries(styleModules)) {
  * Folders not yet converted to `getPartProps`. Emptied as each component is
  * converted; the PR removes it.
  */
+const CONVERTED = new Set([
+  "avatar",
+  "badge",
+  "button",
+  "card",
+  "checkbox",
+  "checkbox-group",
+  "form",
+  "heading",
+  "icon",
+  "input",
+  "number-field",
+  "radio-group",
+  "search-field",
+  "select",
+  "skeleton",
+  "text",
+  "textarea",
+]);
 const NOT_YET_CONVERTED = new Set(
-  Object.keys(componentStates).filter(
-    (folder) =>
-      ![
-        "avatar",
-        "badge",
-        "button",
-        "card",
-        "heading",
-        "icon",
-        "skeleton",
-        "text",
-      ].includes(folder),
-  ),
+  Object.keys(componentStates).filter((folder) => !CONVERTED.has(folder)),
 );
+
+/**
+ * Parts rendered by another Jigsaw component, which carries its own scope:
+ * Checkbox's `icon` is an `<Icon>`, marked `data-scope="icon"`, inside the
+ * checkbox. Apps target it as `[data-scope="checkbox"] [data-scope="icon"]`.
+ */
+const COMPOSED_PARTS: Record<string, string[]> = {
+  checkbox: ["icon"],
+  "form-group": ["title"],
+  "search-field": ["searchIcon"],
+  select: ["chevron"],
+};
+
+/**
+ * Keys of a styles object that aren't parts of its component. `formStyles`
+ * also holds class fragments that the field components mix into their own
+ * styles, such as `formStyles.fieldLabel()`.
+ */
+const NOT_PARTS: Record<string, string[]> = {
+  form: ["field", "fieldLabel", "fieldBody", "sideLabelControlStart"],
+};
 
 describe("data-scope and data-part", () => {
   it("finds the styles exports", () => {
@@ -122,8 +150,12 @@ describe("data-scope and data-part", () => {
       if (NOT_YET_CONVERTED.has(folder)) return;
       for (const entry of stylesByScope.values()) {
         if (entry.folder !== folder) continue;
+        const exempt = [
+          ...(COMPOSED_PARTS[entry.scope] ?? []),
+          ...(NOT_PARTS[entry.scope] ?? []),
+        ];
         const missing = entry.parts.filter(
-          (part) => !seen.get(entry.scope)?.has(part),
+          (part) => !exempt.includes(part) && !seen.get(entry.scope)?.has(part),
         );
         expect(
           missing,

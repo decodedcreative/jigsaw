@@ -6,7 +6,7 @@ import {
   CheckboxField as ReactAriaCheckboxField,
   CheckboxButton as ReactAriaCheckboxButton,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName, useAccessibleNameWarning } from "@hooks";
+import { usePartProps, useRootClassName, useAccessibleNameWarning } from "@hooks";
 import { Icon, type IconSize } from "@components/icon";
 import { useCheckboxGroupContext } from "../checkbox-group/CheckboxGroupContext";
 import { checkboxStyles } from "./Checkbox.styles";
@@ -36,31 +36,31 @@ export const Checkbox = ({
   const state = resolvedHasError ? "error" : "default";
 
   const iconSize = checkboxIconSize[size];
-  const classNames = useGetClassNames(checkboxStyles, classNameOverrides, {
+  const parts = usePartProps("checkbox", checkboxStyles, classNameOverrides, {
     box: { size, state },
     label: { size },
     description: { size },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   return (
     <ReactAriaCheckboxField isInvalid={isInvalid || resolvedHasError} {...props}>
-      <ReactAriaCheckboxButton ref={nameRef} className={rootClassName}>
+      <ReactAriaCheckboxButton ref={nameRef} {...parts.component} className={rootClassName}>
         {({ isSelected, isIndeterminate }) => (
           <>
-            <div className={classNames.box}>
+            <div {...parts.box}>
               {isIndeterminate && !isSelected ? (
-                <Icon icon={MinusIcon} size={iconSize} classNameOverrides={{ component: classNames.icon }} />
+                <Icon icon={MinusIcon} size={iconSize} classNameOverrides={{ component: parts.icon.className }} />
               ) : isSelected ? (
-                <Icon icon={CheckIcon} size={iconSize} classNameOverrides={{ component: classNames.icon }} />
+                <Icon icon={CheckIcon} size={iconSize} classNameOverrides={{ component: parts.icon.className }} />
               ) : null}
             </div>
             {(label || children || description) && (
               <div className="flex flex-col">
                 {(label || children) && (
-                  <span className={classNames.label}>{label || children}</span>
+                  <span {...parts.label}>{label || children}</span>
                 )}
-                {description && <span className={classNames.description}>{description}</span>}
+                {description && <span {...parts.description}>{description}</span>}
               </div>
             )}
           </>

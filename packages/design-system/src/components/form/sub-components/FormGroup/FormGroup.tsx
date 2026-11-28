@@ -2,7 +2,7 @@
 
 import { useId } from "react";
 import { Heading } from "@components/heading";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { usePartProps, useRootClassName } from "@hooks";
 import { formGroupStyles } from "./FormGroup.styles";
 import type { FormGroupProps } from "./FormGroup.types";
 
@@ -16,15 +16,16 @@ export const FormGroup = ({
 }: FormGroupProps) => {
   const titleId = useId();
   const { title: titleClassName, ...sectionClassNameOverrides } = classNameOverrides ?? {};
-  const classNames = useGetClassNames(formGroupStyles, sectionClassNameOverrides);
-  const rootClassName = useRootClassName(classNames.component, className);
+  const parts = usePartProps("form-group", formGroupStyles, sectionClassNameOverrides);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
-  const headingClassName = [classNames.title, titleClassName].filter(Boolean).join(" ");
+  const headingClassName = [parts.title.className, titleClassName].filter(Boolean).join(" ");
 
   return (
     <section
       aria-labelledby={title ? titleId : undefined}
       {...props}
+      {...parts.component}
       className={rootClassName}
     >
       {title ? (

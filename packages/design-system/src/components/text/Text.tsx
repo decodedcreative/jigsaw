@@ -42,7 +42,8 @@ export const Text = ({
     <Component
       {...(props as React.HTMLAttributes<HTMLElement>)}
       ref={ref as React.Ref<HTMLParagraphElement & HTMLSpanElement>}
-      {...parts.component} className={mergeClassName(parts.component.className, className)}
+      {...parts.component}
+      className={mergeClassName(parts.component.className, className)}
     >
       {children}
     </Component>

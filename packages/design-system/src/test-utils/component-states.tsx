@@ -112,6 +112,10 @@ export const componentStates: Record<string, ComponentState[]> = {
       render: () => <Checkbox label="Accept terms" defaultSelected />,
       assert: () => expect(screen.getByRole("checkbox")).toBeChecked(),
     },
+    {
+      name: "with description",
+      render: () => <Checkbox label="Accept terms" description="You can change this later" />,
+    },
   ],
   "checkbox-group": [
     {
@@ -257,6 +261,10 @@ export const componentStates: Record<string, ComponentState[]> = {
       name: "default",
       render: () => <NumberField label="Quantity" defaultValue={1} />,
     },
+    {
+      name: "with description",
+      render: () => <NumberField label="Quantity" description="Up to 10" defaultValue={1} />,
+    },
   ],
   "radio-group": [
     {
@@ -268,12 +276,33 @@ export const componentStates: Record<string, ComponentState[]> = {
         </RadioGroup>
       ),
     },
+    {
+      name: "with description and error",
+      render: () => (
+        <RadioGroup label="Plan" description="Billed monthly" isInvalid errorMessage="Choose a plan">
+          <RadioGroup.Item label="Free" value="free" description="Up to 3 projects" />
+          <RadioGroup.Item label="Pro" value="pro" />
+        </RadioGroup>
+      ),
+    },
   ],
   "search-field": [
     { name: "default", render: () => <SearchField /> },
     { name: "labelled", render: () => <SearchField label="Search people" /> },
+    {
+      name: "with description",
+      render: () => <SearchField label="Search people" description="By name or email" />,
+    },
   ],
   select: [
+    {
+      name: "with description",
+      render: () => (
+        <Select label="Fruit" description="Pick one">
+          <Select.Item id="apple">Apple</Select.Item>
+        </Select>
+      ),
+    },
     {
       name: "closed",
       render: () => (

@@ -26,7 +26,8 @@ export function Icon(props: IconProps) {
         fill="currentColor"
         aria-hidden={ariaHidden}
         {...svgProps}
-        {...parts.component} className={mergeClassName(parts.component.className, className)}
+        {...parts.component}
+        className={mergeClassName(parts.component.className, className)}
       >
         {children}
       </svg>
@@ -53,7 +54,8 @@ export function Icon(props: IconProps) {
       weight={weight}
       aria-hidden={ariaHidden}
       {...phosphorProps}
-      {...parts.component} className={mergeClassName(parts.component.className, className)}
+      {...parts.component}
+      className={mergeClassName(parts.component.className, className)}
     />
   );
 }

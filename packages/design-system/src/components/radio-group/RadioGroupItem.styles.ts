@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 
-export const radioStyles = {
+export const radioGroupItemStyles = {
   /** Root RadioField element. */
   component: cva(""),
   /** The clickable radio button row (circle + label). */

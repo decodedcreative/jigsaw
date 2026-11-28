@@ -6,7 +6,7 @@ import {
   Label as ReactAriaLabel,
   Text as ReactAriaText,
 } from "react-aria-components";
-import { useGetClassNames, useRootClassName } from "@hooks";
+import { usePartProps, useRootClassName } from "@hooks";
 import { checkboxGroupStyles } from "./CheckboxGroup.styles";
 import { CheckboxGroupProvider } from "./CheckboxGroupContext";
 import type { CheckboxGroupProps } from "./CheckboxGroup.types";
@@ -25,31 +25,32 @@ export const CheckboxGroup = ({
   const groupHasError = isInvalid || !!errorMessage;
   const state = isDisabled ? "disabled" : groupHasError ? "error" : "default";
 
-  const classNames = useGetClassNames(checkboxGroupStyles, classNameOverrides, {
+  const parts = usePartProps("checkbox-group", checkboxGroupStyles, classNameOverrides, {
     label: { state },
   });
-  const rootClassName = useRootClassName(classNames.component, className);
+  const rootClassName = useRootClassName(parts.component.className, className);
 
   const contextValue = useMemo(() => ({ groupHasError }), [groupHasError]);
 
   return (
     <CheckboxGroupProvider value={contextValue}>
       <ReactAriaCheckboxGroup
+        {...parts.component}
         className={rootClassName}
         isDisabled={isDisabled}
         isInvalid={groupHasError}
         {...props}
       >
-        {label && <ReactAriaLabel className={classNames.label}>{label}</ReactAriaLabel>}
-        <div className={classNames.fieldBody}>
+        {label && <ReactAriaLabel {...parts.label}>{label}</ReactAriaLabel>}
+        <div {...parts.fieldBody}>
           {description && (
-            <ReactAriaText slot="description" className={classNames.description}>
+            <ReactAriaText slot="description" {...parts.description}>
               {description}
             </ReactAriaText>
           )}
-          <div className={classNames.options}>{children}</div>
+          <div {...parts.options}>{children}</div>
           {errorMessage && (
-            <ReactAriaText slot="errorMessage" className={classNames.errorMessage}>
+            <ReactAriaText slot="errorMessage" {...parts.errorMessage}>
               {errorMessage}
             </ReactAriaText>
           )}
