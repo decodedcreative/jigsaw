@@ -1,5 +1,5 @@
 import { type HTMLAttributes } from "react";
-import { getClassNames, mergeClassName } from "@utils";
+import { getPartProps, mergeClassName } from "@utils";
 import { badgeStyles } from "./Badge.styles";
 import type { BadgeVariant, BadgeSize } from "./Badge.types";
 import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
@@ -24,12 +24,12 @@ export const Badge = ({
   children,
   ...props
 }: BadgeProps) => {
-  const classNames = getClassNames(badgeStyles, classNameOverrides, {
+  const parts = getPartProps("badge", badgeStyles, classNameOverrides, {
     component: { variant, size },
   });
 
   return (
-    <span {...props} className={mergeClassName(classNames.component, className)}>
+    <span {...props} {...parts.component} className={mergeClassName(parts.component.className, className)}>
       {children}
     </span>
   );

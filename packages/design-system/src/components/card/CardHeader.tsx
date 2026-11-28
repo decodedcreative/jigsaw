@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { getClassNames } from "@utils";
+import { getPartProps } from "@utils";
 import { H3 } from "../heading/Heading.aliases";
 import { cardStyles } from "./Card.styles";
 import type { ClassNameOverrides, RefProp } from "@jsw-types/component-props";
@@ -20,13 +20,13 @@ const CardHeader = ({
   header,
   ref,
 }: CardHeaderProps) => {
-  const classNames = getClassNames(cardStyles, classNameOverrides, {
+  const parts = getPartProps("card", cardStyles, classNameOverrides, {
     header: { hasActions: header == null && Boolean(actions) },
   });
 
   if (header != null) {
     return (
-      <div ref={ref} className={classNames.header}>
+      <div ref={ref} {...parts.header}>
         {header}
       </div>
     );
@@ -37,13 +37,13 @@ const CardHeader = ({
   }
 
   return (
-    <div ref={ref} className={classNames.header}>
-      <div className={classNames.headerContent}>
+    <div ref={ref} {...parts.header}>
+      <div {...parts.headerContent}>
         {title ? (
           // h3 semantics with h4 visual scale — card titles sit below page/section headings.
           <H3 size="h4">{title}</H3>
         ) : null}
-        {description ? <p className={classNames.description}>{description}</p> : null}
+        {description ? <p {...parts.description}>{description}</p> : null}
       </div>
       {actions}
     </div>

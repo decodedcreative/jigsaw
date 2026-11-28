@@ -2,7 +2,7 @@ import {
   type ComponentPropsWithoutRef,
   type ElementType,
 } from "react";
-import { getClassNames, mergeClassName } from "@utils";
+import { getPartProps, mergeClassName } from "@utils";
 import { isClickable } from "@utils";
 import { cardStyles } from "./Card.styles";
 import type { CardProps } from "./Card.types";
@@ -38,7 +38,7 @@ export const Card = (props: CardProps) => {
     );
   }
 
-  const classNames = getClassNames(cardStyles, classNameOverrides, {
+  const parts = getPartProps("card", cardStyles, classNameOverrides, {
     component: {
       variant,
       interactiveState: variant === "interactive" && interactive,
@@ -54,9 +54,9 @@ export const Card = (props: CardProps) => {
     <Component
       {...(element === "button" ? { type: "button" } : undefined)}
       {...(elementProps as ComponentPropsWithoutRef<typeof element>)}
-      className={mergeClassName(classNames.component, className)}
+      {...parts.component} className={mergeClassName(parts.component.className, className)}
     >
-      {image != null ? <div className={classNames.image}>{image}</div> : null}
+      {image != null ? <div {...parts.image}>{image}</div> : null}
       <Card.Header
         classNameOverrides={classNameOverrides}
         title={title}
@@ -64,8 +64,8 @@ export const Card = (props: CardProps) => {
         actions={actions}
         header={header}
       />
-      {children != null ? <div className={classNames.content}>{children}</div> : null}
-      {footer != null ? <div className={classNames.footer}>{footer}</div> : null}
+      {children != null ? <div {...parts.content}>{children}</div> : null}
+      {footer != null ? <div {...parts.footer}>{footer}</div> : null}
     </Component>
   );
 };

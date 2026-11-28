@@ -1,4 +1,4 @@
-import { getClassNames, mergeClassName } from "@utils";
+import { getPartProps, mergeClassName } from "@utils";
 import { headingStyles } from "./Heading.styles";
 import type { HeadingProps } from "./Heading.types";
 
@@ -13,12 +13,12 @@ export const Heading = ({
 }: HeadingProps) => {
   const visualSize = size ?? Component;
 
-  const classNames = getClassNames(headingStyles, classNameOverrides ?? {}, {
+  const parts = getPartProps("heading", headingStyles, classNameOverrides ?? {}, {
     component: { size: visualSize, muted },
   });
 
   return (
-    <Component {...props} className={mergeClassName(classNames.component, className)}>
+    <Component {...props} {...parts.component} className={mergeClassName(parts.component.className, className)}>
       {children}
     </Component>
   );

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getClassNames, mergeClassName } from "@utils";
+import { getPartProps, mergeClassName } from "@utils";
 import { textStyles } from "./Text.styles";
 import type { ClassNameOverrides, WithoutClassName, RefProp } from "@jsw-types/component-props";
 
@@ -31,7 +31,8 @@ export const Text = ({
   ref,
   ...props
 }: TextProps) => {
-  const classNames = getClassNames(
+  const parts = getPartProps(
+    "text",
     textStyles,
     classNameOverrides ?? {},
     { component: { size, weight, muted } }
@@ -41,7 +42,7 @@ export const Text = ({
     <Component
       {...(props as React.HTMLAttributes<HTMLElement>)}
       ref={ref as React.Ref<HTMLParagraphElement & HTMLSpanElement>}
-      className={mergeClassName(classNames.component, className)}
+      {...parts.component} className={mergeClassName(parts.component.className, className)}
     >
       {children}
     </Component>

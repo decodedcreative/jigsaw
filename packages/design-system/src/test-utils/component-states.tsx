@@ -33,7 +33,7 @@ import { NumberField } from "../components/number-field";
 import { RadioGroup } from "../components/radio-group";
 import { SearchField } from "../components/search-field";
 import { Select } from "../components/select";
-import { Skeleton } from "../components/skeleton";
+import { Skeleton, SkeletonCard } from "../components/skeleton";
 import { Tab, TabList, TabPanel, Tabs } from "../components/tabs";
 import { Text } from "../components/text";
 import { Textarea } from "../components/textarea";
@@ -88,6 +88,18 @@ export const componentStates: Record<string, ComponentState[]> = {
       render: () => (
         <Card>
           <Card.Header title="Usage" description="This month" />
+          Content
+        </Card>
+      ),
+    },
+    {
+      name: "with image and footer",
+      render: () => (
+        <Card
+          title="Usage"
+          image={<span>Chart</span>}
+          footer={<span>Updated today</span>}
+        >
           Content
         </Card>
       ),
@@ -148,6 +160,14 @@ export const componentStates: Record<string, ComponentState[]> = {
   heading: [{ name: "h2", render: () => <Heading as="h2">Section</Heading> }],
   icon: [
     { name: "decorative", render: () => <Icon icon={GearIcon} aria-hidden /> },
+    {
+      name: "custom svg",
+      render: () => (
+        <Icon viewBox="0 0 24 24" aria-hidden>
+          <path d="M4 4h16v16H4z" />
+        </Icon>
+      ),
+    },
   ],
   input: [
     {
@@ -280,7 +300,10 @@ export const componentStates: Record<string, ComponentState[]> = {
       assert: () => expect(screen.getByRole("listbox")).toBeInTheDocument(),
     },
   ],
-  skeleton: [{ name: "default", render: () => <Skeleton /> }],
+  skeleton: [
+    { name: "default", render: () => <Skeleton /> },
+    { name: "card", render: () => <SkeletonCard /> },
+  ],
   tabs: [
     {
       name: "default",

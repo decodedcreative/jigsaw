@@ -64,7 +64,19 @@ for (const [file, module] of Object.entries(styleModules)) {
  * converted; the PR removes it.
  */
 const NOT_YET_CONVERTED = new Set(
-  Object.keys(componentStates).filter((folder) => !["button"].includes(folder)),
+  Object.keys(componentStates).filter(
+    (folder) =>
+      ![
+        "avatar",
+        "badge",
+        "button",
+        "card",
+        "heading",
+        "icon",
+        "skeleton",
+        "text",
+      ].includes(folder),
+  ),
 );
 
 describe("data-scope and data-part", () => {
